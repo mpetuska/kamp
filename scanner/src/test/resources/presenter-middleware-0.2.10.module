@@ -1,0 +1,150 @@
+{
+  "formatVersion": "1.0",
+  "component": {
+    "group": "org.reduxkotlin",
+    "module": "presenter-middleware",
+    "version": "0.2.10",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "5.4.1",
+      "buildId": "oqhfk7ew3nf3fijznehygd3hyy"
+    }
+  },
+  "variants": [
+    {
+      "name": "android-debugApiElements",
+      "attributes": {
+        "com.android.build.api.attributes.BuildTypeAttr": "debug",
+        "com.android.build.api.attributes.VariantAttr": "debug",
+        "com.android.build.gradle.internal.dependency.AndroidTypeAttr": "Aar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "available-at": {
+        "url": "../../lib-android-debug/0.2.10/lib-android-debug-0.2.10.module",
+        "group": "org.reduxkotlin",
+        "module": "lib-android-debug",
+        "version": "0.2.10"
+      }
+    },
+    {
+      "name": "android-debugRuntimeElements",
+      "attributes": {
+        "com.android.build.api.attributes.BuildTypeAttr": "debug",
+        "com.android.build.api.attributes.VariantAttr": "debug",
+        "com.android.build.gradle.internal.dependency.AndroidTypeAttr": "Aar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "available-at": {
+        "url": "../../lib-android-debug/0.2.10/lib-android-debug-0.2.10.module",
+        "group": "org.reduxkotlin",
+        "module": "lib-android-debug",
+        "version": "0.2.10"
+      }
+    },
+    {
+      "name": "android-releaseApiElements",
+      "attributes": {
+        "com.android.build.api.attributes.BuildTypeAttr": "release",
+        "com.android.build.api.attributes.VariantAttr": "release",
+        "com.android.build.gradle.internal.dependency.AndroidTypeAttr": "Aar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "available-at": {
+        "url": "../../lib-android/0.2.10/lib-android-0.2.10.module",
+        "group": "org.reduxkotlin",
+        "module": "lib-android",
+        "version": "0.2.10"
+      }
+    },
+    {
+      "name": "android-releaseRuntimeElements",
+      "attributes": {
+        "com.android.build.api.attributes.BuildTypeAttr": "release",
+        "com.android.build.api.attributes.VariantAttr": "release",
+        "com.android.build.gradle.internal.dependency.AndroidTypeAttr": "Aar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "available-at": {
+        "url": "../../lib-android/0.2.10/lib-android-0.2.10.module",
+        "group": "org.reduxkotlin",
+        "module": "lib-android",
+        "version": "0.2.10"
+      }
+    },
+    {
+      "name": "ios-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../presenter-middleware-ios/0.2.10/presenter-middleware-ios-0.2.10.module",
+        "group": "org.reduxkotlin",
+        "module": "presenter-middleware-ios",
+        "version": "0.2.10"
+      }
+    },
+    {
+      "name": "iosSim-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../presenter-middleware-iossim/0.2.10/presenter-middleware-iossim-0.2.10.module",
+        "group": "org.reduxkotlin",
+        "module": "presenter-middleware-iossim",
+        "version": "0.2.10"
+      }
+    },
+    {
+      "name": "jvm-api",
+      "attributes": {
+        "org.gradle.usage": "java-api-jars",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "available-at": {
+        "url": "../../presenter-middleware-jvm/0.2.10/presenter-middleware-jvm-0.2.10.module",
+        "group": "org.reduxkotlin",
+        "module": "presenter-middleware-jvm",
+        "version": "0.2.10"
+      }
+    },
+    {
+      "name": "jvm-runtime",
+      "attributes": {
+        "org.gradle.usage": "java-runtime-jars",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "available-at": {
+        "url": "../../presenter-middleware-jvm/0.2.10/presenter-middleware-jvm-0.2.10.module",
+        "group": "org.reduxkotlin",
+        "module": "presenter-middleware-jvm",
+        "version": "0.2.10"
+      }
+    },
+    {
+      "name": "metadata-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.platform.type": "common"
+      },
+      "available-at": {
+        "url": "../../presenter-middleware-metadata/0.2.10/presenter-middleware-metadata-0.2.10.module",
+        "group": "org.reduxkotlin",
+        "module": "presenter-middleware-metadata",
+        "version": "0.2.10"
+      }
+    }
+  ]
+}

@@ -1,0 +1,587 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "org.reduxkotlin",
+    "module": "redux-kotlin",
+    "version": "0.5.5",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "6.6",
+      "buildId": "j33c2mq7ajg7tb322vuorpcvfi"
+    }
+  },
+  "variants": [
+    {
+      "name": "androidNativeArm32-api",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "android_arm32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-androidnativearm32/0.5.5/redux-kotlin-androidnativearm32-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-androidnativearm32",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "androidNativeArm64-api",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "android_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-androidnativearm64/0.5.5/redux-kotlin-androidnativearm64-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-androidnativearm64",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "iosArm32-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_arm32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-iosarm32/0.5.5/redux-kotlin-iosarm32-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-iosarm32",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "iosArm32-iosArm32MetadataElements",
+      "attributes": {
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_arm32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-iosarm32/0.5.5/redux-kotlin-iosarm32-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-iosarm32",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "iosArm64-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-iosarm64/0.5.5/redux-kotlin-iosarm64-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-iosarm64",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "iosArm64-iosArm64MetadataElements",
+      "attributes": {
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-iosarm64/0.5.5/redux-kotlin-iosarm64-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-iosarm64",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "iosX64-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-iosx64/0.5.5/redux-kotlin-iosx64-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-iosx64",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "iosX64-iosX64MetadataElements",
+      "attributes": {
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-iosx64/0.5.5/redux-kotlin-iosx64-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-iosx64",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "jsLegacy-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.js.compiler": "legacy",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-js/0.5.5/redux-kotlin-js-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-js",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "jsLegacy-runtime",
+      "attributes": {
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.js.compiler": "legacy",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-js/0.5.5/redux-kotlin-js-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-js",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "jsIr-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-js/0.5.5/redux-kotlin-js-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-js",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "jsIr-runtime",
+      "attributes": {
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-js/0.5.5/redux-kotlin-js-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-js",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "jvm-api",
+      "attributes": {
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-jvm/0.5.5/redux-kotlin-jvm-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-jvm",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "jvm-runtime",
+      "attributes": {
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-jvm/0.5.5/redux-kotlin-jvm-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-jvm",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "linuxArm32Hfp-api",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_arm32_hfp",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-linuxarm32hfp/0.5.5/redux-kotlin-linuxarm32hfp-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-linuxarm32hfp",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "linuxArm64-api",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-linuxarm64/0.5.5/redux-kotlin-linuxarm64-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-linuxarm64",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "linuxMips32-api",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_mips32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-linuxmips32/0.5.5/redux-kotlin-linuxmips32-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-linuxmips32",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "linuxMips32-linuxMips32MetadataElements",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "linux_mips32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-linuxmips32/0.5.5/redux-kotlin-linuxmips32-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-linuxmips32",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "linuxMipsel32-api",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_mipsel32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-linuxmipsel32/0.5.5/redux-kotlin-linuxmipsel32-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-linuxmipsel32",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "linuxMipsel32-linuxMipsel32MetadataElements",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "linux_mipsel32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-linuxmipsel32/0.5.5/redux-kotlin-linuxmipsel32-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-linuxmipsel32",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "linuxX64-api",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-linuxx64/0.5.5/redux-kotlin-linuxx64-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-linuxx64",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "macosX64-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "macos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-macosx64/0.5.5/redux-kotlin-macosx64-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-macosx64",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "macosX64-macosX64MetadataElements",
+      "attributes": {
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "macos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-macosx64/0.5.5/redux-kotlin-macosx64-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-macosx64",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "metadata-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.platform.type": "common"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-metadata/0.5.5/redux-kotlin-metadata-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-metadata",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "metadata-commonMainMetadataElements",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.platform.type": "common"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-metadata/0.5.5/redux-kotlin-metadata-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-metadata",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "mingwX64-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "mingw_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-mingwx64/0.5.5/redux-kotlin-mingwx64-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-mingwx64",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "mingwX64-mingwX64MetadataElements",
+      "attributes": {
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "mingw_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-mingwx64/0.5.5/redux-kotlin-mingwx64-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-mingwx64",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "mingwX86-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "mingw_x86",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-mingwx86/0.5.5/redux-kotlin-mingwx86-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-mingwx86",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "mingwX86-mingwX86MetadataElements",
+      "attributes": {
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "mingw_x86",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-mingwx86/0.5.5/redux-kotlin-mingwx86-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-mingwx86",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "tvosArm64-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "tvos_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-tvosarm64/0.5.5/redux-kotlin-tvosarm64-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-tvosarm64",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "tvosArm64-tvosArm64MetadataElements",
+      "attributes": {
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "tvos_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-tvosarm64/0.5.5/redux-kotlin-tvosarm64-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-tvosarm64",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "tvosX64-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "tvos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-tvosx64/0.5.5/redux-kotlin-tvosx64-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-tvosx64",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "tvosX64-tvosX64MetadataElements",
+      "attributes": {
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "tvos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-tvosx64/0.5.5/redux-kotlin-tvosx64-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-tvosx64",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "wasm32-api",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "wasm32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-wasm32/0.5.5/redux-kotlin-wasm32-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-wasm32",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "watchosArm32-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "watchos_arm32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-watchosarm32/0.5.5/redux-kotlin-watchosarm32-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-watchosarm32",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "watchosArm32-watchosArm32MetadataElements",
+      "attributes": {
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "watchos_arm32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-watchosarm32/0.5.5/redux-kotlin-watchosarm32-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-watchosarm32",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "watchosArm64-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "watchos_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-watchosarm64/0.5.5/redux-kotlin-watchosarm64-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-watchosarm64",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "watchosArm64-watchosArm64MetadataElements",
+      "attributes": {
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "watchos_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-watchosarm64/0.5.5/redux-kotlin-watchosarm64-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-watchosarm64",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "watchosX86-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "watchos_x86",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-watchosx86/0.5.5/redux-kotlin-watchosx86-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-watchosx86",
+        "version": "0.5.5"
+      }
+    },
+    {
+      "name": "watchosX86-watchosX86MetadataElements",
+      "attributes": {
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "watchos_x86",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../redux-kotlin-watchosx86/0.5.5/redux-kotlin-watchosx86-0.5.5.module",
+        "group": "org.reduxkotlin",
+        "module": "redux-kotlin-watchosx86",
+        "version": "0.5.5"
+      }
+    }
+  ]
+}
