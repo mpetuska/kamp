@@ -2,7 +2,6 @@ package scanner
 
 import kotlinx.coroutines.*
 import kotlinx.serialization.*
-import kotlinx.serialization.json.*
 import scanner.service.*
 import scanner.util.*
 import java.io.*
@@ -14,9 +13,9 @@ private suspend fun scanRepo(scanner: ScannerService<*>, outputDirectory: File) 
   systemLogger.info { "Starting $scanner scan" }
   scanner.scan { lib ->
     Logger.writeToFile(File(outputDirectory, "${lib.path.replace(":", "_")}.json")) {
-      Json {
-        prettyPrint = true
-      }.encodeToString(lib)
+      val str = prettyJson.encodeToString(lib)
+      systemLogger.info { str }
+      str
     }
   }
 }

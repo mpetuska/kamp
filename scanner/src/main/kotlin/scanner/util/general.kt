@@ -8,7 +8,6 @@ import scanner.*
 
 val prettyJson = Json {
   prettyPrint = true
-  encodeDefaults = true
 }
 
 suspend fun String.asDocument(): Document = withContext(Dispatchers.IO) {

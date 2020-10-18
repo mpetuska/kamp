@@ -3,58 +3,49 @@ package scanner.domain.kotlin
 import kotlinx.serialization.*
 
 @Serializable
-sealed class KotlinTarget {
-  abstract val name: String
-  abstract val category: String
+class KotlinTarget private constructor(
+  val platform: String,
+  val category: String,
+  val variant: String? = null,
+) {
   
-  override fun toString(): String = "$category:$name"
+  override fun toString(): String = "$category:$platform${if (variant == null) "" else ":$variant"}"
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
     if (other !is KotlinTarget) return false
     
-    if (name != other.name) return false
+    if (platform != other.platform) return false
     if (category != other.category) return false
+    if (variant != other.variant) return false
     
     return true
   }
   
   override fun hashCode(): Int {
-    var result = name.hashCode()
+    var result = variant.hashCode()
     result = 31 * result + category.hashCode()
     return result
   }
   
-  
-  @Serializable
-  object Common : KotlinTarget() {
-    override val name: String = "common"
-    override val category = name
+  object Common {
+    const val category = "common"
+    operator fun invoke() = KotlinTarget(category, category)
   }
   
-  @Serializable
-  sealed class JS(override val name: String) : KotlinTarget() {
-    override val category = "js"
-    
-    @Serializable
-    object Legacy : JS("legacy")
-    
-    @Serializable
-    object IR : JS("ir")
+  object JS {
+    const val category = "js"
+    fun Legacy() = KotlinTarget(category, category, "legacy")
+    fun IR() = KotlinTarget(category, category, "ir")
   }
   
-  @Serializable
-  sealed class JVM(override val name: String) : KotlinTarget() {
-    override val category = "jvm"
-    
-    @Serializable
-    object Android : JVM("android")
-    
-    @Serializable
-    object Java : JVM("java")
+  object JVM {
+    const val category = "jvm"
+    fun Java() = KotlinTarget("jvm", category)
+    fun Android() = KotlinTarget("android", category)
   }
   
-  @Serializable
-  class Native(override val name: String) : KotlinTarget() {
-    override val category = "native"
+  object Native {
+    const val category = "native"
+    operator fun invoke(name: String) = KotlinTarget(name, category)
   }
 }

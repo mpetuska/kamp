@@ -11,12 +11,12 @@ object GradleModuleProcessor {
   fun listSupportedTargets(module: GradleModule): Set<KotlinTarget> = module.variants?.mapNotNull { variant ->
     variant.attributes?.let { attrs ->
       when (attrs.orgJetbrainsKotlinPlatformType) {
-        "common" -> KotlinTarget.Common
-        "androidJvm" -> KotlinTarget.JVM.Android
-        "jvm" -> KotlinTarget.JVM.Java
+        "common" -> KotlinTarget.Common()
+        "androidJvm" -> KotlinTarget.JVM.Android()
+        "jvm" -> KotlinTarget.JVM.Java()
         "js" -> when (attrs.orgJetbrainsKotlinJsCompiler) {
-          "legacy" -> KotlinTarget.JS.Legacy
-          "ir" -> KotlinTarget.JS.IR
+          "legacy" -> KotlinTarget.JS.Legacy()
+          "ir" -> KotlinTarget.JS.IR()
           else -> null
         }
         "native" -> attrs.orgJetbrainsKotlinNativeTarget?.let { KotlinTarget.Native(it) }

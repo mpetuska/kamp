@@ -2,7 +2,6 @@ package scanner.service
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.*
-import kotlinx.serialization.*
 import scanner.client.*
 import scanner.domain.*
 import scanner.domain.kotlin.*
@@ -44,7 +43,6 @@ abstract class ScannerService<A : MavenArtifact> {
                     website = website,
                     scm = scm
                   )
-                  logger.info { prettyJson.encodeToString(lib) }
                   send(lib)
                 }
               }
