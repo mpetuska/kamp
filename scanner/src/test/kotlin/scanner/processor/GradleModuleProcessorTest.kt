@@ -3,8 +3,8 @@ package scanner.processor
 import io.kotest.core.spec.style.*
 import io.kotest.matchers.*
 import io.kotest.matchers.collections.*
+import kamp.domain.*
 import scanner.domain.*
-import scanner.domain.kotlin.*
 import scanner.testutil.*
 
 class GradleModuleProcessorTest : FunSpec({
@@ -18,13 +18,13 @@ class GradleModuleProcessorTest : FunSpec({
   test("listSupportedTargets") {
     val targets = GradleModuleProcessor.listSupportedTargets(module)
     targets shouldContainExactlyInAnyOrder setOf(
-      KotlinTarget.JVM.Android,
-      KotlinTarget.JVM.Java,
-      KotlinTarget.JVM.Java,
+      KotlinTarget.JVM.Android(),
+      KotlinTarget.JVM.Java(),
+      KotlinTarget.JVM.Java(),
       KotlinTarget.Native("ios_arm64"),
       KotlinTarget.Native("ios_arm64"),
       KotlinTarget.Native("ios_x64"),
-      KotlinTarget.Common,
+      KotlinTarget.Common(),
     )
     
     val targets1 =
@@ -49,10 +49,10 @@ class GradleModuleProcessorTest : FunSpec({
       KotlinTarget.Native("linux_mips32"),
       KotlinTarget.Native("linux_arm64"),
       KotlinTarget.Native("linux_arm32_hfp"),
-      KotlinTarget.Common,
-      KotlinTarget.JVM.Java,
-      KotlinTarget.JS.IR,
-      KotlinTarget.JS.Legacy,
+      KotlinTarget.Common(),
+      KotlinTarget.JVM.Java(),
+      KotlinTarget.JS.IR(),
+      KotlinTarget.JS.Legacy(),
     )
   }
 })

@@ -1,7 +1,7 @@
 package scanner.domain.mc
 
-import kotlinx.serialization.Serializable
-import scanner.domain.*
+import kamp.domain.*
+import kotlinx.serialization.*
 
 @Serializable
 data class MCArtifact(

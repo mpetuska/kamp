@@ -1,7 +1,7 @@
 package scanner.domain.jc
 
-import kotlinx.serialization.Serializable
-import scanner.domain.*
+import kamp.domain.*
+import kotlinx.serialization.*
 
 @Serializable
 data class JCArtifact(
@@ -10,4 +10,6 @@ data class JCArtifact(
   override val name: String,
   override val latestVersion: String,
   val lastUpdated: String? = null,
-) : MavenArtifact()
+) : MavenArtifact() {
+  val fullPath: String by lazy { "/${pkg.subject}/${pkg.repo}/$path" }
+}

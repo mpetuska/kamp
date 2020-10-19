@@ -1,12 +1,12 @@
 package scanner.processor
 
+import kamp.domain.*
 import scanner.domain.*
-import scanner.domain.kotlin.*
 
 object GradleModuleProcessor {
   val kotlinVersion: String = "1.4.10"
   
-  fun isRootModule(module: GradleModule) = module.component?.let { it.url == null } ?: false
+  fun isRootModule(module: GradleModule) = module.component?.url == null
   
   fun listSupportedTargets(module: GradleModule): Set<KotlinTarget> = module.variants?.mapNotNull { variant ->
     variant.attributes?.let { attrs ->

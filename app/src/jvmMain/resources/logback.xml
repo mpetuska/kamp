@@ -7,14 +7,14 @@
   </appender>
 
   <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>logs/scanner.log</file>
+    <file>logs/kamp.log</file>
     <filter class="ch.qos.logback.classic.filter.LevelFilter">
       <level>DEBUG</level>
       <onMatch>DENY</onMatch>
       <onMismatch>ACCEPT</onMismatch>
     </filter>
     <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-      <fileNamePattern>logs/archived/scanner.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+      <fileNamePattern>logs/archived/kamp.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
       <!-- each archived file, size max 10MB -->
       <maxFileSize>10MB</maxFileSize>
       <!-- total size of all archive files, if total size > 20GB, it will delete old archived file -->
@@ -29,14 +29,14 @@
   </appender>
 
   <appender name="FILE-ROLLING-DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>logs/scanner-debug.log</file>
+    <file>logs/kamp-debug.log</file>
     <filter class="ch.qos.logback.classic.filter.LevelFilter">
       <level>DEBUG</level>
       <onMatch>ACCEPT</onMatch>
       <onMismatch>DENY</onMismatch>
     </filter>
     <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-      <fileNamePattern>logs/archived/scanner-debug.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+      <fileNamePattern>logs/archived/kamp-debug.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
       <!-- each archived file, size max 10MB -->
       <maxFileSize>10MB</maxFileSize>
       <!-- total size of all archive files, if total size > 20GB, it will delete old archived file -->

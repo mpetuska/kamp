@@ -4,15 +4,16 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.*
 import org.slf4j.*
 import java.io.*
+import kotlin.properties.*
 import kotlin.reflect.*
 import org.slf4j.Logger as SLF4JLogger
 
 class Logger(klass: KClass<*>) {
-  private val logger = LoggerFactory.getLogger(klass.qualifiedName)
+  private val logger = LoggerFactory.getLogger(klass.simpleName)
   
-  private suspend inline fun log(
-    crossinline logFn: SLF4JLogger.(String) -> Unit,
-    noinline msg: suspend () -> String,
+  private suspend fun log(
+    logFn: SLF4JLogger.(String) -> Unit,
+    msg: suspend () -> String,
   ) {
     sendAction {
       val txt = msg()
@@ -31,17 +32,25 @@ class Logger(klass: KClass<*>) {
   companion object : Closeable {
     private val context = newSingleThreadContext("logger")
     private val actionChannel = Channel<suspend () -> Unit>(1000)
-    
+  
     init {
       GlobalScope.launch(context) {
-        for (action in actionChannel) {
-          errorSafe {
-            action()
-          }
+        actionChannel.consumeSafe { action ->
+          action()
         }
       }
     }
-    
+  
+    fun appendToFile(file: File, log: suspend () -> String) = runBlocking {
+      sendAction {
+        val txt = log()
+        with(file) {
+          parentFile.mkdirs()
+          appendText(txt)
+        }
+      }
+    }
+  
     fun writeToFile(file: File, log: suspend () -> String) = runBlocking {
       sendAction {
         val txt = log()
@@ -51,15 +60,22 @@ class Logger(klass: KClass<*>) {
         }
       }
     }
-    
-    private suspend inline fun sendAction(noinline action: suspend () -> Unit) {
+  
+    private suspend fun sendAction(action: suspend () -> Unit) {
       actionChannel.send(action)
     }
-    
+  
     override fun close() {
       runBlocking {
         actionChannel.close()
         context.close()
+      }
+    }
+  
+    operator fun invoke() = object : ReadOnlyProperty<Any, Logger> {
+      private var logger: Logger? = null
+      override fun getValue(thisRef: Any, property: KProperty<*>): Logger = logger ?: Logger(thisRef::class).also {
+        logger = it
       }
     }
   }

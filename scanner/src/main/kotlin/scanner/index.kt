@@ -21,12 +21,18 @@ private suspend fun scanRepo(scanner: ScannerService<*>, outputDirectory: File) 
 }
 
 @ExperimentalTime
-suspend fun main() {
+suspend fun main(args: Array<String>) {
   val outputDirectory = File("out")
   val remotes = mapOf(
     "mavenCentral" to MCScannerService,
-    "jCenter" to JCScannerService,
-  )
+//    "jCenter" to JCScannerService,
+    "jCenterAPI" to JCAPIScannerService,
+//    "jCenterRoot" to JCRootScannerService,
+  ).filterKeys {
+    args.isEmpty() || args.any { arg -> arg.equals(it, true) }
+  }
+  
+  systemLogger.info { "Scanning ${remotes.keys} repositories" }
   
   val duration = measureTime {
     coroutineScope {
@@ -37,11 +43,13 @@ suspend fun main() {
   }
   
   systemLogger.info {
-    "Finished scanning [${remotes.keys}] in ${
+    "Finished scanning ${remotes.keys} in ${
       duration.toComponents { hours, minutes, seconds, nanoseconds ->
         "${hours}h ${minutes}m ${seconds}.${nanoseconds}s"
       }
     }"
   }
   Logger.close()
+  ScannerService.close()
+  httpClient.close()
 }

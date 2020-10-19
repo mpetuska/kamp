@@ -1,2 +1,2 @@
 rootProject.name = "kamp"
-include("scanner")
+include("scanner", "app")

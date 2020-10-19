@@ -10,19 +10,19 @@ object MCScannerService : ScannerService<MCArtifact>() {
   override val client = MavenCentralClient
   
   override fun CoroutineScope.produceArtifactChannel(): ReceiveChannel<MCArtifact> =
-    produce {
-      val pages = produce {
-        client.listRepositoryPath("").filter { it.isDirectory }.forEach {
+    produce(capacity = 16) {
+      val pages = produce(capacity = 16) {
+        val repos = client.listRepositoryPath("")
+        val filtered = repos.filter { it.isDirectory }
+        filtered.forEach {
           errorSafe {
             send(client.listRepositoryPath(it.path))
           }
         }
       }
       parallel {
-        for (page in pages) {
-          errorSafe {
-            scanRepoPage(page)
-          }
+        pages.consumeSafe { page ->
+          scanRepoPage(page)
         }
       }
     }
@@ -35,10 +35,17 @@ object MCScannerService : ScannerService<MCArtifact>() {
       }
     } else {
       coroutineScope {
-        page.filter { it.isDirectory }.forEach {
-          errorSafe {
-            logger.debug { "Scanning MC page ${it.path}" }
-            val subpage = client.listRepositoryPath(it.path)
+        val subpages = produce {
+          page.filter { it.isDirectory }.forEach {
+            errorSafe {
+              logger.info { "Scanning MC page ${it.path}" }
+              val subpage = client.listRepositoryPath(it.path)
+              send(subpage)
+            }
+          }
+        }
+        parallel {
+          subpages.consumeSafe { subpage ->
             scanRepoPage(subpage)
           }
         }

@@ -2,40 +2,42 @@ plugins {
   kotlin("multiplatform") version "1.4.10"
   kotlin("plugin.serialization") version "1.4.0"
   id("com.github.johnrengelman.shadow") version "6.1.0"
-  application
+  idea
 }
 
 allprojects {
+  group = "lt.petuska"
+  version = "0.0.1"
+  
+  apply(plugin = "idea")
+  idea {
+    module {
+      isDownloadSources = true
+      isDownloadJavadoc = true
+    }
+  }
   repositories {
     jcenter()
     mavenCentral()
     mavenLocal()
   }
+  tasks {
+    withType<Test> {
+      useJUnitPlatform()
+    }
+  }
 }
 
 kotlin {
-  jvm {
-    withJava()
-  }
-  js {
-    binaries.executable()
-    browser()
-  }
+  explicitApi()
+  jvm()
+  js(BOTH) { browser() }
   
   sourceSets {
-    val jvmMain by getting {
+    named("commonMain") {
       dependencies {
-      }
-    }
-    val jvmTest by getting {
-      dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-test")
-        implementation("org.jetbrains.kotlin:kotlin-test-junit")
+        api("io.ktor:ktor-client-serialization:1.4.1")
       }
     }
   }
-}
-
-application {
-  mainClassName = "kamp.AppKt"
 }
