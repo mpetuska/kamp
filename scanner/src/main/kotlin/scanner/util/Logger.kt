@@ -4,6 +4,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.*
 import org.slf4j.*
 import java.io.*
+import kotlin.properties.*
 import kotlin.reflect.*
 import org.slf4j.Logger as SLF4JLogger
 
@@ -51,15 +52,22 @@ class Logger(klass: KClass<*>) {
         }
       }
     }
-    
+  
     private suspend inline fun sendAction(noinline action: suspend () -> Unit) {
       actionChannel.send(action)
     }
-    
+  
     override fun close() {
       runBlocking {
         actionChannel.close()
         context.close()
+      }
+    }
+  
+    operator fun invoke() = object : ReadOnlyProperty<Any, Logger> {
+      private var logger: Logger? = null
+      override fun getValue(thisRef: Any, property: KProperty<*>): Logger = logger ?: Logger(thisRef::class).also {
+        logger = it
       }
     }
   }

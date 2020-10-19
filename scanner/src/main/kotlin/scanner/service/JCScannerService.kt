@@ -14,27 +14,29 @@ object JCScannerService : ScannerService<JCArtifact>() {
   
   override fun CoroutineScope.produceArtifactChannel(): ReceiveChannel<JCArtifact> =
     produce {
-      val pages = produce {
-        (startPage..endPage).forEach { send(it) }
-      }
-      val packages = produce {
-        parallel {
-          for (page in pages) {
-            logger.debug { "Scanning JC page $page" }
-            val done = errorSafe {
-              JCenterClient.getPackages(page)?.also { packages ->
-                packages.forEach { send(it) }
-              } == null
-            } == true
-            if (done) break
+      JCenterClient.getPageCount()?.let { pageCount ->
+        val pages = produce {
+          (startPage until pageCount).forEach { send(it) }
+        }
+        val packages = produce {
+          parallel {
+            for (page in pages) {
+              logger.info { "Scanning JC page [$page/$pageCount]" }
+              val done = errorSafe {
+                JCenterClient.getPackages(page)?.also { packages ->
+                  packages.forEach { send(it) }
+                } == null
+              } == true
+              if (done) break
+            }
           }
         }
-      }
-      parallel {
-        for (pkg in packages) {
-          errorSafe {
-            JCenterClient.getPackageArtifacts(pkg)?.let { artifacts ->
-              artifacts.forEach { send(it) }
+        parallel {
+          for (pkg in packages) {
+            errorSafe {
+              JCenterClient.getPackageArtifacts(pkg)?.let { artifacts ->
+                artifacts.forEach { send(it) }
+              }
             }
           }
         }

@@ -8,6 +8,7 @@ import scanner.*
 
 val prettyJson = Json {
   prettyPrint = true
+  ignoreUnknownKeys = true
 }
 
 suspend fun String.asDocument(): Document = withContext(Dispatchers.IO) {

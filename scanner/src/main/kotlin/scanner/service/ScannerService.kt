@@ -7,10 +7,11 @@ import scanner.domain.*
 import scanner.domain.kotlin.*
 import scanner.processor.*
 import scanner.util.*
+import java.io.*
 import java.util.concurrent.*
 
 abstract class ScannerService<A : MavenArtifact> {
-  protected val logger by lazy { Logger(this::class) }
+  protected val logger by Logger()
   protected abstract val client: MavenRepositoryClient<A>
   protected abstract fun CoroutineScope.produceArtifactChannel(): ReceiveChannel<A>
   
@@ -20,7 +21,7 @@ abstract class ScannerService<A : MavenArtifact> {
       parallel {
         for (artifact in artifacts) {
           errorSafe {
-            client.getGradleModule(artifact)?.let { module ->
+            client.getGradleModule(artifact)?.also { module ->
               val targets = GradleModuleProcessor.listSupportedTargets(module)
               if (GradleModuleProcessor.isRootModule(module) && targets.isNotEmpty()) {
                 val pom = client.getMavenPom(artifact)
@@ -33,7 +34,7 @@ abstract class ScannerService<A : MavenArtifact> {
                 }
                 pomDetails?.let {
                   val (description, website, scm) = pomDetails
-                  
+  
                   val lib = KotlinMPPLibrary(
                     group = artifact.group,
                     name = artifact.name,
@@ -44,7 +45,9 @@ abstract class ScannerService<A : MavenArtifact> {
                     scm = scm
                   )
                   send(lib)
-                }
+                } ?: logger.warn { "Could not find pom.xml for module: ${artifact.path}" }
+              } else {
+                logger.info { "Non-root gradle module: ${artifact.path}" }
               }
             } ?: logger.debug { "Not a gradle module: ${artifact.path}" }
           }
@@ -62,10 +65,14 @@ abstract class ScannerService<A : MavenArtifact> {
     return this::class.simpleName ?: ""
   }
   
-  companion object {
+  companion object : Closeable {
     protected val coreCount = Runtime.getRuntime().availableProcessors()
     protected val scannerDispatcher: ExecutorCoroutineDispatcher by lazy {
       Executors.newFixedThreadPool(coreCount).asCoroutineDispatcher()
+    }
+    
+    override fun close() {
+      scannerDispatcher.close()
     }
     
     @JvmStatic

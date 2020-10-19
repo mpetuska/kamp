@@ -37,7 +37,7 @@ object MCScannerService : ScannerService<MCArtifact>() {
       coroutineScope {
         page.filter { it.isDirectory }.forEach {
           errorSafe {
-            logger.debug { "Scanning MC page ${it.path}" }
+            logger.info { "Scanning MC page ${it.path}" }
             val subpage = client.listRepositoryPath(it.path)
             scanRepoPage(subpage)
           }
