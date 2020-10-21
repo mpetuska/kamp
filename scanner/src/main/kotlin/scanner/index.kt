@@ -17,6 +17,9 @@ private suspend fun scanRepo(scanner: ScannerService<*>, outputDirectory: File) 
       systemLogger.info { str }
       str
     }
+    Logger.appendToFile(File(outputDirectory, "_.json")) {
+      "${rawJson.encodeToString(lib)}\n"
+    }
   }
 }
 
@@ -25,9 +28,7 @@ suspend fun main(args: Array<String>) {
   val outputDirectory = File("out")
   val remotes = mapOf(
     "mavenCentral" to MCScannerService,
-//    "jCenter" to JCScannerService,
-    "jCenterAPI" to JCAPIScannerService,
-//    "jCenterRoot" to JCRootScannerService,
+    "jCenter" to JCScannerService,
   ).filterKeys {
     args.isEmpty() || args.any { arg -> arg.equals(it, true) }
   }
@@ -50,6 +51,5 @@ suspend fun main(args: Array<String>) {
     }"
   }
   Logger.close()
-  ScannerService.close()
   httpClient.close()
 }

@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+
+  mongo-seed:
+    build: ./
+    depends_on:
+      - mongo
+
+  # my webserver which uses mongo (not shown in example)
+  mongo-express:
+    image: mongo-express
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongo

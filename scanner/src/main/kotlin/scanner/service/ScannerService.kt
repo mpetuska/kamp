@@ -6,8 +6,6 @@ import kotlinx.coroutines.channels.*
 import scanner.client.*
 import scanner.processor.*
 import scanner.util.*
-import java.io.*
-import java.util.concurrent.*
 
 abstract class ScannerService<A : MavenArtifact> {
   protected val logger by Logger()
@@ -90,19 +88,12 @@ abstract class ScannerService<A : MavenArtifact> {
     return this::class.simpleName ?: ""
   }
   
-  companion object : Closeable {
+  companion object {
     protected val coreCount = Runtime.getRuntime().availableProcessors()
-    protected val scannerDispatcher: ExecutorCoroutineDispatcher by lazy {
-      Executors.newFixedThreadPool(coreCount).asCoroutineDispatcher()
-    }
-    
-    override fun close() {
-      scannerDispatcher.close()
-    }
-    
+  
     @JvmStatic
     protected suspend fun <R> parallel(
-      dispatcher: CoroutineDispatcher = scannerDispatcher,
+      dispatcher: CoroutineDispatcher = Dispatchers.Default,
       action: suspend CoroutineScope.() -> R,
     ) = coroutineScope {
       (0 until coreCount).map {

@@ -11,8 +11,6 @@ object MavenCentralClient : MavenRepositoryClient<MCArtifact>() {
   override fun parsePage(page: Document): List<String> = page.getElementById("contents")
     ?.getElementsByTag("a")
     ?.mapNotNull { elm ->
-      elm.takeIf { it.hasAttr("title") }?.let {
-        it.attr("title")
-      }
+      elm.takeIf { it.hasAttr("title") }?.attr("title")
     } ?: listOf()
 }

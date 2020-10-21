@@ -1,49 +1,80 @@
 package scanner.service
 
+import kamp.domain.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.*
 import scanner.client.*
 import scanner.domain.jc.*
 import scanner.util.*
-import java.io.*
 
 object JCScannerService : ScannerService<JCArtifact>() {
   override val client = JCenterClient
-  private const val startPage = 0 //kodein 5863
   
-  override fun CoroutineScope.produceArtifactChannel(): ReceiveChannel<JCArtifact> =
-    produce(capacity = 16) {
-      JCenterClient.getPageCount()?.let { pageCount ->
-        val pages = produce(capacity = 16) {
-          (startPage until pageCount).forEach { send(it) }
+  private val seed = ('a'..'z') + ('0'..'9') + ('A'..'Z')
+  private val extendedSeed = listOf('.', '-') + seed
+  
+  private suspend fun SendChannel<JCPage>.scanGroup(groupPrefix: String) {
+    client.getPageCount(groupPrefix)?.let { count ->
+      logger.info { "Scanned JCenter API with g=$groupPrefix* -> $count pages" }
+      if (count >= client.maxPageCount) {
+        extendedSeed.forEach {
+          scanGroup("$groupPrefix$it")
         }
-        val packages = produce(capacity = 16) {
-          parallel {
-            pages.consumeSafeBreaking { page ->
-              logger.info { "Scanning JC page [$page/$pageCount]" }
-              val done = errorSafe {
-                JCenterClient.getPackages(page)?.also { packages ->
-                  packages.forEach {
-                    Logger.appendToFile(File("out/jc.log")) {
-                      "$it\n"
-                    }
-                    send(it)
-                  }
-                } == null
-              } == true
-              done
-            }
-          }.joinAll()
-          pages.cancel()
-        }
-        parallel {
-          packages.consumeSafe { pkg ->
-            val packageArtifacts = errorSafe {
-              JCenterClient.getPackageArtifacts(pkg)
-            }
-            packageArtifacts?.forEach { send(it) }
-          }
+      } else {
+        for (page in 0 until count) {
+          send(JCPage(page, groupPrefix))
         }
       }
     }
+  }
+  
+  override fun CoroutineScope.produceArtifactChannel(): ReceiveChannel<JCArtifact> = produce(capacity = 16) {
+    val pages = produce(Dispatchers.Default, capacity = 100) {
+      seed.forEach {
+        scanGroup("$it")
+      }
+    }
+    parallel {
+      pages.consumeSafe { page ->
+        logger.debug { "Fetching JC artifacts for $page" }
+        client.getArtifacts(page.page, page.groupPrefix, page.artifactPrefix)?.forEach {
+          send(it)
+        }
+      }
+    }
+  }
+  
+  data class JCPage(val page: Int, val groupPrefix: String, val artifactPrefix: Char? = null)
+  
+  override suspend fun buildMppLibrary(
+    pomDetails: PomDetails,
+    targets: Set<KotlinTarget>,
+    artifact: JCArtifact,
+  ): KotlinMPPLibrary? {
+    var pkgFetched = false
+    var pkg: JCenterClient.JCPackageResponse? = null
+    suspend fun pkg() = if (pkgFetched) {
+      pkg
+    } else {
+      pkg = client.getPackage(artifact)
+      pkgFetched = true
+      pkg
+    }
+    val (description, website, scm) = PomDetails(
+      description = pomDetails.description ?: pkg()?.desc,
+      website = pomDetails.website ?: pkg()?.websiteUrl ?: pkg()?.issueTrackerUrl,
+      scm = pomDetails.scm ?: pkg()?.vcsUrl
+    )
+    
+    KotlinMPPLibrary(
+      group = artifact.group,
+      name = artifact.name,
+      latestVersion = artifact.latestVersion,
+      targets = targets,
+      description = description,
+      website = website,
+      scm = scm
+    )
+    return super.buildMppLibrary(pomDetails, targets, artifact)
+  }
 }

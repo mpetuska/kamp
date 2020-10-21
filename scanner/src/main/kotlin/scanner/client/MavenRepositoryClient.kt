@@ -7,7 +7,7 @@ import scanner.util.*
 
 abstract class MavenRepositoryClient<A : MavenArtifact> {
   private val A.mavenModuleRootUrl: String
-    get() = "$defaultRepositoryRootUrl/${group.replace(".", "/")}/${name.replace(".", "/")}"
+    get() = "$defaultRepositoryRootUrl/${group.replace(".", "/")}/$name"
   private val A.mavenModuleVersionUrl: String
     get() = "$mavenModuleRootUrl/$latestVersion"
   

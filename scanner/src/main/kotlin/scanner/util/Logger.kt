@@ -31,7 +31,7 @@ class Logger(klass: KClass<*>) {
   
   companion object : Closeable {
     private val context = newSingleThreadContext("logger")
-    private val actionChannel = Channel<suspend () -> Unit>(1000)
+    private val actionChannel = Channel<suspend () -> Unit>(Channel.Factory.UNLIMITED)
   
     init {
       GlobalScope.launch(context) {
