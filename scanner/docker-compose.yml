@@ -6,11 +6,14 @@ services:
       - "27017:27017"
 
   mongo-seed:
-    build: ./
+    build:
+      context: .
+      dockerfile: db.dockerfile
+      args:
+        input: out
     depends_on:
       - mongo
 
-  # my webserver which uses mongo (not shown in example)
   mongo-express:
     image: mongo-express
     ports:
