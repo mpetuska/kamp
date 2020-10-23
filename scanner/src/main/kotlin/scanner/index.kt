@@ -9,18 +9,22 @@ import kotlin.time.*
 
 val systemLogger = Logger(System::class)
 
-private suspend fun scanRepo(scanner: ScannerService<*>, outputDirectory: File) {
+private suspend fun scanRepo(scanner: ScannerService<*>, outputDirectory: File): Int {
   systemLogger.info { "Starting $scanner scan" }
+  var count = 0
   scanner.scan { lib ->
     Logger.writeToFile(File(outputDirectory, "${lib.path.replace(":", "_")}.json")) {
       val str = prettyJson.encodeToString(lib)
       systemLogger.info { str }
+      count++
       str
     }
     Logger.appendToFile(File(outputDirectory, "_.json")) {
       "${rawJson.encodeToString(lib)}\n"
     }
   }
+  systemLogger.info { "Completed $scanner scan" }
+  return count
 }
 
 @ExperimentalTime
@@ -37,8 +41,10 @@ suspend fun main(args: Array<String>) {
   
   val duration = measureTime {
     coroutineScope {
-      remotes.forEach { (name, scanner) ->
-        launch { scanRepo(scanner, outputDirectory.resolve(name)) }
+      remotes.map { (name, scanner) ->
+        name to async { scanRepo(scanner, outputDirectory.resolve(name)) }
+      }.map { (k, v) -> k to v.await() }.forEach { (name, count) ->
+        systemLogger.info { "Found $count kotlin modules with gradle metadata in $name repository" }
       }
     }
   }

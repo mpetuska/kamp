@@ -13,20 +13,34 @@ object JCScannerService : ScannerService<JCArtifact>() {
   private val seed = ('a'..'z') + ('0'..'9') + ('A'..'Z')
   private val extendedSeed = listOf('.', '-') + seed
   
-  private suspend fun SendChannel<JCPage>.scanGroup(groupPrefix: String) {
-    client.getPageCount(groupPrefix)?.let { count ->
-      logger.info { "Scanned JCenter API with g=$groupPrefix* -> $count pages" }
+  private suspend fun SendChannel<JCPage>.scanGroup(groupPrefix: String, artifactPrefix: String? = null): Int =
+    client.getPageCount(groupPrefix, artifactPrefix)?.let { count ->
+      logger.info { "Scanned JCenter API with g=$groupPrefix* ${if (artifactPrefix != null) "a=$artifactPrefix*" else ""} -> $count pages" }
       if (count >= client.maxPageCount) {
-        extendedSeed.forEach {
-          scanGroup("$groupPrefix$it")
+        artifactPrefix?.let {
+          extendedSeed.fold(0) { acc, char ->
+            acc + scanGroup(groupPrefix, "$artifactPrefix$char")
+          }
+        } ?: run {
+          var pagesFound = 0
+          extendedSeed.forEach {
+            pagesFound += scanGroup("$groupPrefix$it")
+          }
+          if (pagesFound > 0) {
+            pagesFound
+          } else {
+            seed.fold(0) { acc, char ->
+              acc + scanGroup(groupPrefix, "$char")
+            }
+          }
         }
       } else {
         for (page in 0 until count) {
-          send(JCPage(page, groupPrefix))
+          send(JCPage(page, groupPrefix, artifactPrefix))
         }
+        count
       }
-    }
-  }
+    } ?: 0
   
   override fun CoroutineScope.produceArtifactChannel(): ReceiveChannel<JCArtifact> = produce(capacity = 16) {
     val pages = produce(Dispatchers.Default, capacity = 100) {
@@ -44,7 +58,7 @@ object JCScannerService : ScannerService<JCArtifact>() {
     }
   }
   
-  data class JCPage(val page: Int, val groupPrefix: String, val artifactPrefix: Char? = null)
+  data class JCPage(val page: Int, val groupPrefix: String, val artifactPrefix: String? = null)
   
   override suspend fun buildMppLibrary(
     pomDetails: PomDetails,

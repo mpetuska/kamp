@@ -14,7 +14,7 @@ object JCenterClient : MavenRepositoryClient<JCArtifact>() {
   private val JCPackage.apiPackageDetailsUrl get() = "$apiUrl/packages/${subject}/${repo}/${name}"
   private const val apiMavenSearchUrl = "$apiUrl/search/packages/maven"
   
-  suspend fun getPageCount(groupPrefix: String, artifactPrefix: Char? = null): Int? =
+  suspend fun getPageCount(groupPrefix: String, artifactPrefix: String? = null): Int? =
     request("$apiMavenSearchUrl?start_pos=0&g=$groupPrefix*${artifactPrefix?.let { "&a=$it*" } ?: ""}")?.let { res ->
       res.headers["X-RangeLimit-Total"]?.toIntOrNull()?.let { it / pageSize }
     }?.let {
@@ -24,24 +24,22 @@ object JCenterClient : MavenRepositoryClient<JCArtifact>() {
       } else it
     }
   
-  suspend fun getArtifacts(page: Int, groupPrefix: String, artifactPrefix: Char? = null): List<JCArtifact>? =
+  suspend fun getArtifacts(page: Int, groupPrefix: String, artifactPrefix: String? = null): List<JCArtifact>? =
     fetch<List<JCResponse>>(
       "$apiMavenSearchUrl?start_pos=${pageSize * page}&g=$groupPrefix*${artifactPrefix?.let { "&a=$it*" } ?: ""}"
-    )?.let { res ->
-      res.mapNotNull { jcr ->
-        listOfNotNull(jcr.owner, jcr.repo, jcr.name).takeIf { it.size == 3 }?.let { (subject, repo, name) ->
-          JCPackage(subject, repo, name)
-        }?.let { jcPackage ->
-          jcr.latestVersion?.let { version ->
-            jcr.systemIds?.mapNotNull {
-              it.split(":").takeIf { c -> c.size >= 2 }?.let { (group, artifact) ->
-                JCArtifact(jcPackage, group, artifact, version)
-              }
+    )?.mapNotNull { jcr ->
+      listOfNotNull(jcr.owner, jcr.repo, jcr.name).takeIf { it.size == 3 }?.let { (subject, repo, name) ->
+        JCPackage(subject, repo, name)
+      }?.let { jcPackage ->
+        jcr.latestVersion?.let { version ->
+          jcr.systemIds?.mapNotNull {
+            it.split(":").takeIf { c -> c.size >= 2 }?.let { (group, artifact) ->
+              JCArtifact(jcPackage, group, artifact, version)
             }
           }
         }
-      }.flatten()
-    }
+      }
+    }?.flatten()
   
   suspend fun getPackage(artifact: JCArtifact) = fetch<JCPackageResponse>(artifact.pkg.apiPackageDetailsUrl)
   
