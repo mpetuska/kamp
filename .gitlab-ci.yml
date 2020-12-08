@@ -1,4 +1,4 @@
-image: gradle:alpine
+image: gradle:6.5-alpine
 
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
@@ -16,12 +16,22 @@ build:
       - build
       - .gradle
 
-test:
+app:test:
   stage: test
   script: gradle check
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
     paths:
-      - build
+      - app/build
+      - .gradle
+
+app:publish:
+  stage: publish
+  script: docker login -u $CI_JOB_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - app/build
       - .gradle
