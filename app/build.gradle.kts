@@ -5,6 +5,7 @@ plugins {
   application
 }
 
+val jsOutputFileName = "kamp-$version.js"
 kotlin {
   jvm {
     withJava()
@@ -12,7 +13,16 @@ kotlin {
   js {
     binaries.executable()
     browser {
-    
+      distribution {
+        name = "jsModule"
+      }
+      commonWebpackConfig {
+        outputFileName = "kamp-$version.js"
+        devServer = devServer?.copy(
+          port = 3000,
+          proxy = mapOf("*" to "http://localhost:8080")
+        )
+      }
     }
   }
   
@@ -29,9 +39,40 @@ kotlin {
         implementation("io.kotest:kotest-runner-junit5:4.3.0")
       }
     }
+  
+    named("jsMain") {
+      dependencies {
+        implementation(project(rootProject.path))
+        implementation("io.ktor:ktor-client-js:1.4.1")
+        implementation("dev.fritz2:core:0.8")
+      }
+    }
   }
 }
 
 application {
   mainClassName = "app.IndexKt"
+}
+
+tasks {
+  all {
+    if (group == "distribution") {
+      enabled = false
+    }
+  }
+  named("jsProcessResources", Copy::class) {
+    from(rootProject.rootDir.resolve("docs/kamp.ico"))
+    eachFile {
+      if (name == "index.html") {
+        expand(project.properties + mapOf("jsOutputFileName" to jsOutputFileName))
+      }
+    }
+  }
+  val jsBrowserDistribution by getting
+  named("shadowJar", Jar::class) {
+    dependsOn(jsBrowserDistribution)
+    into("WEB-INF") {
+      from(jsBrowserDistribution)
+    }
+  }
 }

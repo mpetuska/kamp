@@ -16,7 +16,7 @@ fun Application.module() {
     
     static {
       resources("WEB-INF")
-      defaultResource("index.html")
+      defaultResource("WEB-INF/index.html")
     }
   }
 }
