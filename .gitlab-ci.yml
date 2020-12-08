@@ -21,12 +21,16 @@ build:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
     paths:
-      - build
       - .gradle
+      - build
+      - app/build
+      - scanner/build
 
 app:test:
   stage: test
-  script: gradle check
+  script: gradle :app:check
+  needs:
+    - build
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
@@ -37,9 +41,13 @@ app:test:
 app:publish:
   stage: publish
   image: docker:19.03.12
+  needs:
+    - app:test
+    - app:build
   before_script:
     - docker login -u $CI_JOB_USER -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
+    - cd app
     - docker build --pull -t $CONTAINER_TEST_IMAGE .
     - docker push $CONTAINER_TEST_IMAGE
   cache:
@@ -52,6 +60,8 @@ app:publish:
 app:release:
   stage: release
   image: docker:19.03.12
+  needs:
+    - app:publish
   only:
     - master
   before_script:
