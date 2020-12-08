@@ -12,6 +12,7 @@ stages:
   - build
   - test
   - publish
+  - release
 
 build:
   stage: build
@@ -33,7 +34,7 @@ app:test:
       - app/build
       - .gradle
 
-app:image:
+app:publish:
   stage: publish
   image: docker:19.03.12
   before_script:
@@ -48,11 +49,9 @@ app:image:
       - app/build
       - .gradle
 
-app:publish:
-  stage: publish
+app:release:
+  stage: release
   image: docker:19.03.12
-  dependencies:
-    - app:image
   only:
     - master
   before_script:
