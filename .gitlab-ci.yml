@@ -2,8 +2,10 @@ image: gradle:6.5
 
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
-  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
+  APP_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  APP_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
+  SCANNER_TEST_IMAGE: $CI_REGISTRY_IMAGE-scanner:$CI_COMMIT_REF_SLUG
+  SCANNER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE-scanner:latest
 
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
@@ -48,8 +50,8 @@ app:publish:
     - docker login -u $CI_JOB_USER -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
     - cd app
-    - docker build --pull -t $CONTAINER_TEST_IMAGE .
-    - docker push $CONTAINER_TEST_IMAGE
+    - docker build --pull -t $APP_TEST_IMAGE .
+    - docker push $APP_TEST_IMAGE
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
@@ -67,6 +69,51 @@ app:release:
   before_script:
     - docker login -u $CI_JOB_USER -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
-    - docker pull $CONTAINER_TEST_IMAGE
-    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
-    - docker push $CONTAINER_RELEASE_IMAGE
+    - docker pull $APP_TEST_IMAGE
+    - docker tag $APP_TEST_IMAGE $APP_RELEASE_IMAGE
+    - docker push $APP_RELEASE_IMAGE
+
+scanner:test:
+  stage: test
+  script: gradle :scanner:check
+  needs:
+    - build
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - scanner/build
+      - .gradle
+
+scanner:publish:
+  stage: publish
+  image: docker:19.03.12
+  needs:
+    - build
+    - scanner:test
+  before_script:
+    - docker login -u $CI_JOB_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+  script:
+    - cd scanner
+    - docker build --pull -t $SCANNER_TEST_IMAGE .
+    - docker push $SCANNER_TEST_IMAGE
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - scanner/build
+      - .gradle
+
+scanner:release:
+  stage: release
+  image: docker:19.03.12
+  needs:
+    - scanner:publish
+  only:
+    - master
+  before_script:
+    - docker login -u $CI_JOB_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+  script:
+    - docker pull $SCANNER_TEST_IMAGE
+    - docker tag $SCANNER_TEST_IMAGE $SCANNER_RELEASE_IMAGE
+    - docker push $SCANNER_RELEASE_IMAGE
