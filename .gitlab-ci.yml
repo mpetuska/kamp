@@ -58,6 +58,10 @@ app:publish:
     - cd app
     - docker build --pull -t $APP_TEST_IMAGE .
     - docker push $APP_TEST_IMAGE
+  artifacts:
+    name: app
+    paths:
+      - app/build/libs/*-all.jar
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
@@ -107,6 +111,10 @@ scanner:publish:
     - cd scanner
     - docker build --pull -t $SCANNER_TEST_IMAGE .
     - docker push $SCANNER_TEST_IMAGE
+  artifacts:
+    name: scanner
+    paths:
+      - scanner/build/libs/*-all.jar
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
