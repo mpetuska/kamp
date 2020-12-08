@@ -1,6 +1,9 @@
 image: gradle:6.5
 
 variables:
+  # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
+  DOCKER_HOST: tcp://docker:2376
+  DOCKER_TLS_CERTDIR: "/certs"
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
   APP_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
   APP_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
