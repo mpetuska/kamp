@@ -47,6 +47,8 @@ app:test:
 app:publish:
   stage: publish
   image: docker:19.03.12
+  services:
+    - docker:19.03.12-dind
   needs:
     - build
     - app:test
@@ -66,6 +68,8 @@ app:publish:
 app:release:
   stage: release
   image: docker:19.03.12
+  services:
+    - docker:19.03.12-dind
   needs:
     - app:publish
   only:
@@ -92,6 +96,8 @@ scanner:test:
 scanner:publish:
   stage: publish
   image: docker:19.03.12
+  services:
+    - docker:19.03.12-dind
   needs:
     - build
     - scanner:test
@@ -111,6 +117,8 @@ scanner:publish:
 scanner:release:
   stage: release
   image: docker:19.03.12
+  services:
+    - docker:19.03.12-dind
   needs:
     - scanner:publish
   only:
