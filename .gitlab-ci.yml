@@ -19,7 +19,7 @@ stages:
 build:
   stage: build
   script:
-    - echo "docker login -u $CI_JOB_USER -p $CI_JOB_TOKEN $CI_REGISTRY"
+    - echo "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
     - gradle --build-cache assemble
   cache:
     key: "$CI_COMMIT_REF_NAME"
@@ -49,7 +49,7 @@ app:publish:
     - build
     - app:test
   before_script:
-    - docker login -u $CI_JOB_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - cd app
     - docker build --pull -t $APP_TEST_IMAGE .
@@ -69,7 +69,7 @@ app:release:
   only:
     - master
   before_script:
-    - docker login -u $CI_JOB_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - docker pull $APP_TEST_IMAGE
     - docker tag $APP_TEST_IMAGE $APP_RELEASE_IMAGE
@@ -94,7 +94,7 @@ scanner:publish:
     - build
     - scanner:test
   before_script:
-    - docker login -u $CI_JOB_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - cd scanner
     - docker build --pull -t $SCANNER_TEST_IMAGE .
@@ -114,7 +114,7 @@ scanner:release:
   only:
     - master
   before_script:
-    - docker login -u $CI_JOB_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - docker pull $SCANNER_TEST_IMAGE
     - docker tag $SCANNER_TEST_IMAGE $SCANNER_RELEASE_IMAGE
