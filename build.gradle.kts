@@ -22,6 +22,11 @@ allprojects {
     mavenLocal()
   }
   tasks {
+    all {
+      if (group == "distribution") {
+        enabled = false
+      }
+    }
     withType<Test> {
       useJUnitPlatform()
     }

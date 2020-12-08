@@ -55,11 +55,6 @@ application {
 }
 
 tasks {
-  all {
-    if (group == "distribution") {
-      enabled = false
-    }
-  }
   named("jsProcessResources", Copy::class) {
     from(rootProject.rootDir.resolve("docs/kamp.ico"))
     eachFile {
