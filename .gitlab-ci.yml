@@ -18,7 +18,9 @@ stages:
 
 build:
   stage: build
-  script: gradle --build-cache assemble
+  script:
+    - echo "docker login -u $CI_JOB_USER -p $CI_JOB_TOKEN $CI_REGISTRY"
+    - gradle --build-cache assemble
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
