@@ -42,8 +42,8 @@ app:publish:
   stage: publish
   image: docker:19.03.12
   needs:
+    - build
     - app:test
-    - app:build
   before_script:
     - docker login -u $CI_JOB_USER -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
