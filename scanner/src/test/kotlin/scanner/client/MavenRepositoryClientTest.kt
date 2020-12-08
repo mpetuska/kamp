@@ -15,12 +15,12 @@ abstract class MavenRepositoryClientTest(target: MavenRepositoryClient<*>) : Fun
   test("getMavenPom") {
   }
   
-  test("listRepositoryPath") {
+  xtest("listRepositoryPath") {
     suspend fun assertPage(path: String, vararg elm: String) {
       val list = target.listRepositoryPath(path)
       list shouldContainAll elm.asList()
     }
-    
+  
     assertPage("/io/ktor", "ktor-client-cio/")
     assertPage("/io/ktor/ktor-client-cio", "1.4.0/", "maven-metadata.xml")
     assertPage("/io/ktor/ktor-client-cio/1.4.0", "ktor-client-cio-1.4.0.module", "ktor-client-cio-1.4.0.pom")

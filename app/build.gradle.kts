@@ -11,13 +11,16 @@ kotlin {
   }
   js {
     binaries.executable()
-    browser()
+    browser {
+    
+    }
   }
   
   sourceSets {
     named("jvmMain") {
       dependencies {
         implementation(project(rootProject.path))
+        implementation("io.ktor:ktor-server-cio:1.4.1")
         implementation("ch.qos.logback:logback-classic:1.2.3")
       }
     }
@@ -30,5 +33,5 @@ kotlin {
 }
 
 application {
-  mainClassName = "kamp.AppKt"
+  mainClassName = "app.IndexKt"
 }

@@ -3,7 +3,6 @@ package scanner.processor
 import io.kotest.core.spec.style.*
 import io.kotest.matchers.*
 import scanner.testutil.*
-import scanner.util.*
 
 class PomProcessorTest : FunSpec({
   val pom = parseXmlFile("presenter-middleware-0.2.10.pom")
@@ -20,5 +19,6 @@ class PomProcessorTest : FunSpec({
   
   test("getScmUrl") {
     val description = PomProcessor.getScmUrl(pom)
-    description shouldBe "https://github.com/reduxkotlin/presenter-middleare/"}
+    description shouldBe "https://github.com/reduxkotlin/presenter-middleare.git"
+  }
 })

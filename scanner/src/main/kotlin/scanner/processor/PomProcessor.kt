@@ -8,7 +8,9 @@ object PomProcessor {
   fun getUrl(pom: Document) = pom.selectFirst("project>url")?.text()
   
   fun getScmUrl(pom: Document) = pom.selectFirst("project>scm")?.let {
-    it.selectFirst("connection")?.text()
-      ?: it.selectFirst("url")?.text()
+    val url = it.selectFirst("url")?.text()
+      ?: it.selectFirst("connection")?.text()
+    val main = url?.trim()?.split("://")?.getOrNull(1)?.removeSuffix(".git")?.removeSuffix("/")
+    "https://$main.git"
   }
 }
