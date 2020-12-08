@@ -23,9 +23,7 @@ allprojects {
   }
   tasks {
     all {
-      if (group == "distribution") {
-        enabled = false
-      }
+      onlyIf { group != "distribution" }
     }
     withType<Test> {
       useJUnitPlatform()

@@ -5,19 +5,16 @@ plugins {
   application
 }
 
-val jsOutputFileName = "kamp-$version.js"
+val jsModuleName = "kamp-$version"
 kotlin {
   jvm {
     withJava()
   }
   js {
     binaries.executable()
+    moduleName = jsModuleName
     browser {
-      distribution {
-        name = "jsModule"
-      }
       commonWebpackConfig {
-        outputFileName = "kamp-$version.js"
         devServer = devServer?.copy(
           port = 3000,
           proxy = mapOf("*" to "http://localhost:8080")
@@ -59,7 +56,7 @@ tasks {
     from(rootProject.rootDir.resolve("docs/kamp.ico"))
     eachFile {
       if (name == "index.html") {
-        expand(project.properties + mapOf("jsOutputFileName" to jsOutputFileName))
+        expand(project.properties + mapOf("jsOutputFileName" to "${project.name}.js"))
       }
     }
   }
