@@ -19,7 +19,6 @@ stages:
 build:
   stage: build
   script:
-    - echo "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
     - gradle --build-cache assemble
   cache:
     key: "$CI_COMMIT_REF_NAME"
