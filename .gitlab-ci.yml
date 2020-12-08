@@ -84,6 +84,9 @@ app:release:
     - docker pull $APP_TEST_IMAGE
     - docker tag $APP_TEST_IMAGE $APP_RELEASE_IMAGE
     - docker push $APP_RELEASE_IMAGE
+  environment:
+    name: Azure App
+    url: https://kamp.azurewebsites.net
 
 scanner:test:
   stage: test
