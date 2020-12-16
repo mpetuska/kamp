@@ -54,7 +54,6 @@ application {
 
 tasks {
   named("jsProcessResources", Copy::class) {
-    from(rootProject.rootDir.resolve("docs/kamp.ico"))
     eachFile {
       if (name == "index.html") {
         expand(project.properties + mapOf("jsOutputFileName" to "${project.name}.js"))

@@ -1,8 +1,5 @@
 image: gradle:6.5
 
-include:
-  - template: Terraform/Base.latest.gitlab-ci.yml
-
 variables:
   # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
   DOCKER_HOST: tcp://docker:2376
