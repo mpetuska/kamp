@@ -74,13 +74,13 @@ app:release:
     TF_ROOT: $CI_PROJECT_DIR/infra
     TF_VAR_docker_registry_username: $CI_REGISTRY_USER
     TF_VAR_docker_registry_password: $CI_REGISTRY_PASSWORD
-    TF_VAR_docker_image_tag: $APP_RELEASE_IMAGE
   needs:
     - app:publish
   only:
     - master
   script:
-    - cd ${TF_ROOT}
+    - cd $TF_ROOT
+    - export TF_VAR_docker_image_tag=$APP_RELEASE_IMAGE
     - gitlab-terraform init
     - gitlab-terraform validate
     - gitlab-terraform plan
