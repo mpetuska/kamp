@@ -78,6 +78,8 @@ app:release:
     TF_VAR_docker_registry_username: $CI_REGISTRY_USER
     TF_VAR_docker_registry_password: $CI_REGISTRY_PASSWORD
     TF_VAR_docker_image_tag: $APP_RELEASE_IMAGE
+  needs:
+    - app:publish
   only:
     - master
   script:
