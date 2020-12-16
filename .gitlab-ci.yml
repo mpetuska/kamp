@@ -23,7 +23,7 @@ build:
     - gradle --build-cache assemble
   cache:
     key: "$CI_COMMIT_REF_NAME"
-    policy: push
+    policy: pull-push
     paths:
       - .gradle
       - build
