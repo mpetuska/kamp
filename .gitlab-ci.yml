@@ -55,7 +55,7 @@ app:publish:
   script:
     - cd app
     - docker build --pull -t $APP_RELEASE_IMAGE .
-    - docker push $APP_TEST_IMAGE
+    - docker push $APP_RELEASE_IMAGE
   artifacts:
     name: app
     paths:
