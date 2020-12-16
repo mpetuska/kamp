@@ -1,14 +1,15 @@
 image: gradle:6.5
 
+include:
+  - template: Terraform/Base.latest.gitlab-ci.yml
+
 variables:
   # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
   DOCKER_HOST: tcp://docker:2376
   DOCKER_TLS_CERTDIR: "/certs"
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
-  APP_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-  APP_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
-  SCANNER_TEST_IMAGE: $CI_REGISTRY_IMAGE/scanner:$CI_COMMIT_REF_SLUG
-  SCANNER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE/scanner:latest
+  APP_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:$CI_PIPELINE_ID
+  SCANNER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE/scanner:$CI_PIPELINE_ID
 
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
@@ -56,7 +57,7 @@ app:publish:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - cd app
-    - docker build --pull -t $APP_TEST_IMAGE .
+    - docker build --pull -t $APP_RELEASE_IMAGE .
     - docker push $APP_TEST_IMAGE
   artifacts:
     name: app
@@ -71,19 +72,18 @@ app:publish:
 
 app:release:
   stage: release
-  image: docker:19.03.12
-  services:
-    - docker:19.03.12-dind
-  needs:
-    - app:publish
+  image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
+  variables:
+    TF_ROOT: $CI_PROJECT_DIR/infra
+    TF_VAR_docker_registry_username: $CI_REGISTRY_USER
+    TF_VAR_docker_registry_password: $CI_REGISTRY_PASSWORD
+    TF_VAR_docker_image_tag: $APP_RELEASE_IMAGE
   only:
     - master
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker pull $APP_TEST_IMAGE
-    - docker tag $APP_TEST_IMAGE $APP_RELEASE_IMAGE
-    - docker push $APP_RELEASE_IMAGE
+    - cd ${TF_ROOT}
+    - gitlab-terraform init
+    - gitlab-terraform apply
   environment:
     name: Azure App
     url: https://kamp.azurewebsites.net
@@ -112,8 +112,8 @@ scanner:publish:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - cd scanner
-    - docker build --pull -t $SCANNER_TEST_IMAGE .
-    - docker push $SCANNER_TEST_IMAGE
+    - docker build --pull -t $SCANNER_RELEASE_IMAGE .
+    - docker push $SCANNER_RELEASE_IMAGE
   artifacts:
     name: scanner
     paths:
@@ -124,19 +124,3 @@ scanner:publish:
     paths:
       - scanner/build
       - .gradle
-
-scanner:release:
-  stage: release
-  image: docker:19.03.12
-  services:
-    - docker:19.03.12-dind
-  needs:
-    - scanner:publish
-  only:
-    - master
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  script:
-    - docker pull $SCANNER_TEST_IMAGE
-    - docker tag $SCANNER_TEST_IMAGE $SCANNER_RELEASE_IMAGE
-    - docker push $SCANNER_RELEASE_IMAGE

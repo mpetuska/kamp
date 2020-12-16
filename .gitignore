@@ -9,3 +9,6 @@ libs/
 
 # Ignore Gradle build output directory
 build
+.terraform/
+.terraform.lock.hcl
+*.tfvars
