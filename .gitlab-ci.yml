@@ -85,6 +85,7 @@ app:release:
     - gitlab-terraform validate
     - gitlab-terraform plan
     - gitlab-terraform apply
+    - curl https://kamp.azurewebsites.net
   environment:
     name: Azure App
     url: https://kamp.azurewebsites.net
