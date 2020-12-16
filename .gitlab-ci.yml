@@ -82,6 +82,8 @@ app:release:
   script:
     - cd ${TF_ROOT}
     - gitlab-terraform init
+    - gitlab-terraform validate
+    - gitlab-terraform plan
     - gitlab-terraform apply
   environment:
     name: Azure App
