@@ -12,3 +12,4 @@ build
 .terraform/
 .terraform.lock.hcl
 *.tfvars
+graalvm-ce-*.tar.gz

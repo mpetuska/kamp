@@ -1,0 +1,140 @@
+[
+  {
+    "name": "io.ktor.network.selector.InterestSuspensionsMap",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredFields": true,
+    "fields": [
+      {
+        "name": "readHandlerReference",
+        "allowUnsafeAccess": true
+      },
+      {
+        "name": "writeHandlerReference",
+        "allowUnsafeAccess": true
+      },
+      {
+        "name": "connectHandlerReference",
+        "allowUnsafeAccess": true
+      },
+      {
+        "name": "acceptHandlerReference",
+        "allowUnsafeAccess": true
+      }
+    ]
+  },
+  {
+    "name": "io.ktor.utils.io.ByteBufferChannel",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredFields": true,
+    "fields": [
+      {
+        "name": "state",
+        "allowUnsafeAccess": true
+      },
+      {
+        "name": "closed",
+        "allowUnsafeAccess": true
+      },
+      {
+        "name": "joining",
+        "allowUnsafeAccess": true
+      },
+      {
+        "name": "readOp",
+        "allowUnsafeAccess": true
+      },
+      {
+        "name": "writeOp",
+        "allowUnsafeAccess": true
+      },
+      {
+        "name": "attachedJob",
+        "allowUnsafeAccess": true
+      }
+    ]
+  },
+  {
+    "name": "io.ktor.utils.io.pool.DefaultPool",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredFields": true,
+    "fields": [
+      {
+        "name": "top",
+        "allowUnsafeAccess": true
+      }
+    ]
+  },
+  {
+    "name": "io.ktor.utils.io.internal.RingBufferCapacity",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredFields": true,
+    "fields": [
+      {
+        "name": "availableForRead",
+        "allowUnsafeAccess": true
+      },
+      {
+        "name": "availableForWrite",
+        "allowUnsafeAccess": true
+      },
+      {
+        "name": "pendingToFlush",
+        "allowUnsafeAccess": true
+      }
+    ]
+  },
+  {
+    "name": "java.lang.Exception",
+    "allDeclaredFields": true
+  },
+  {
+    "name": "java.lang.IllegalStateException",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true
+  },
+  {
+    "name": "java.lang.Object",
+    "allDeclaredFields": true
+  },
+  {
+    "name": "java.lang.RuntimeException",
+    "allDeclaredFields": true
+  },
+  {
+    "name": "java.lang.Throwable",
+    "allDeclaredFields": true
+  },
+  {
+    "name": "kotlin.internal.jdk8.JDK8PlatformImplementations",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "kotlin.jvm.internal.DefaultConstructorMarker"
+  },
+  {
+    "name": "kotlin.reflect.jvm.internal.ReflectionFactoryImpl",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  }
+]

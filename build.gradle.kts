@@ -2,6 +2,7 @@ plugins {
   kotlin("multiplatform") version "1.4.21"
   kotlin("plugin.serialization") version "1.4.21"
   id("com.github.johnrengelman.shadow") version "6.1.0"
+  id("com.palantir.graal") version "0.7.2" apply false
   idea
 }
 

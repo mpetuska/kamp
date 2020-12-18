@@ -1,0 +1,25 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": "\\QWEB-INF/.*\\E"
+      },
+      {
+        "pattern": "\\QWEB-INF/client.js\\E"
+      },
+      {
+        "pattern": "\\QWEB-INF/favicon-32x32.png\\E"
+      },
+      {
+        "pattern": "\\QWEB-INF/index.html\\E"
+      },
+      {
+        "pattern": "\\Qorg/slf4j/impl/StaticLoggerBinder.class\\E"
+      },
+      {
+        "pattern": "\\Qsimplelogger.properties\\E"
+      }
+    ]
+  },
+  "bundles": []
+}
