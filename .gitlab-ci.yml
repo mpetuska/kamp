@@ -28,6 +28,7 @@ build:
       - .gradle
       - build
       - app/build
+      - app/client/build
       - scanner/build
 
 app:test:
@@ -40,6 +41,7 @@ app:test:
     policy: pull
     paths:
       - app/build
+      - app/client/build
       - .gradle
 
 app:publish:
@@ -65,6 +67,7 @@ app:publish:
     policy: pull
     paths:
       - app/build
+      - app/client/build
       - .gradle
 
 app:release:
