@@ -1,7 +1,6 @@
 plugins {
   kotlin("jvm")
   kotlin("plugin.serialization")
-  id("com.palantir.graal")
   application
 }
 
@@ -27,24 +26,6 @@ kotlin {
 
 application {
   mainClass.set("app.IndexKt")
-}
-
-graal {
-  graalVersion("20.3.0")
-  javaVersion("11")
-  mainClass(application.mainClass.get())
-  outputName("${project.name}-native")
-  option("--no-fallback")
-  option("--report-unsupported-elements-at-runtime")
-  option("--verbose")
-  if (project.hasProperty("alpine")) {
-    option("--static")
-    option("--libc=musl")
-  } else {
-    option("-H:+StaticExecutableWithDynamicLibC")
-  }
-  option("-H:Log=registerResource")
-  option("-H:-UseServiceLoaderFeature")
 }
 
 tasks {
@@ -97,8 +78,8 @@ tasks {
       fatJarfile.absolutePath,
       "$outputFile"
     )
-    val alpine = project.hasProperty("alpine")
-    if (alpine) {
+    val musl = project.hasProperty("musl")
+    if (musl) {
       cmd.add("--static")
       cmd.add("--libc=musl")
     } else {
@@ -107,7 +88,7 @@ tasks {
     workingDir(buildDir)
     commandLine(cmd)
     inputs.file(fatJarfile)
-    inputs.property("alpine", alpine)
+    inputs.property("musl", musl)
     outputs.file(outputFile)
   }
   
