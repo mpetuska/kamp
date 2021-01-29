@@ -1,11 +1,11 @@
 variable "docker_registry" {
   type    = string
-  default = "https://registry.gitlab.com"
+  default = "https://docker.pkg.github.com"
 }
 
 variable "docker_registry_username" {
   type    = string
-  default = "martynas.petuska"
+  default = "mpetuska"
 }
 
 variable "docker_registry_password" {

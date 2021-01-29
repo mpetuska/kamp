@@ -65,10 +65,35 @@ jobs:
           tag_with_sha: true
           add_git_labels: true
 
+  deploy-Infrastructure:
+    runs-on: ubuntu-latest
+    name: Deploy main infrastructure
+    needs: [ build ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Terraform environment
+        uses: marocchino/setup-terraform@v1.0.1
+        with:
+          version: 0.14.5
+      - name: Terraform init
+        run: terraform init
+        env:
+          ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USER }}
+          ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+        working-directory: infra
+      - name: Terraform apply
+        run: terraform apply
+        env:
+          TF_VAR_docker_registry_username: ${{ secrets.GH_PKG_USER }}
+          TF_VAR_docker_registry_password: ${{ secrets.GH_PKG_PASSWORD }}
+          TF_VAR_docker_image_tag: docker.pkg.github.com/mpetuska/kamp/app:sha-${{ github.sha }}
+        working-directory: infra
+
   deploy-StaticWebApp:
     runs-on: ubuntu-latest
     name: Deploy Static Web App
-    needs: [ "build" ]
+    needs: [ build ]
     steps:
       - name: Download Static Web App Artifact
         uses: actions/download-artifact@v2
@@ -80,7 +105,7 @@ jobs:
         with:
           path: app/client/build/distributions/application.env
           contents: |
-            API_URL=https://kamp.azurewebsites.net
+            API_URL=https://kamp.azurewebsites.net/api
           write-mode: overwrite
       - name: Deploy Azure Static Web App
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
