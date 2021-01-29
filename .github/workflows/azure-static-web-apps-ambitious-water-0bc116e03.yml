@@ -41,7 +41,7 @@ jobs:
         uses: actions/upload-artifact@v2
         id: upload
         with:
-          path: app/client/build/distributions
+          path: app/client/build/distributions/
           name: static-web-app
           if-no-files-found: error
       - name: Build App Docker image & push to GitHub Packages
