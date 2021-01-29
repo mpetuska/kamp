@@ -1,19 +1,19 @@
 plugins {
   kotlin("jvm")
   kotlin("plugin.serialization")
-  application
+  id("com.microsoft.azure.azurefunctions") version Version.azureFuntionsPlugin
 }
 
-val jsModuleName = "kamp-$version"
 kotlin {
   sourceSets {
     main {
       dependencies {
         implementation(project(rootProject.path))
-        implementation("io.ktor:ktor-server-cio:1.4.1")
+//        implementation("io.ktor:ktor-server-cio:${Version.ktor}")
+        implementation("com.microsoft.azure.functions:azure-functions-java-library:${Version.azureFuntionsLibrary}")
         implementation("org.slf4j:slf4j-simple:1.7.30")
 //        implementation("ch.qos.logback:logback-classic:1.2.3")
-//        implementation("org.litote.kmongo:kmongo-coroutine-serialization:4.2.3")
+//        implementation("org.litote.kmongo:kmongo-coroutine-serialization:${Version.kmongo}")
       }
     }
     test {
@@ -24,89 +24,12 @@ kotlin {
   }
 }
 
-application {
-  mainClass.set("app.IndexKt")
-}
-
-tasks {
-  val browserDistribution = getByPath("client:browserDistribution")
-  jar {
-    group = "build"
-    dependsOn(browserDistribution)
-    into("WEB-INF") {
-      from(browserDistribution)
-    }
-    doLast {
-      copy {
-        from(browserDistribution)
-        into(File(archiveFile.get().asFile.parentFile, "WEB-INF"))
-      }
-    }
-    val classpath = configurations.compileClasspath.get().files.map { if (it.isDirectory) it else zipTree(it) }
-    from(classpath) {
-      exclude("META-INF/*.SF")
-      exclude("META-INF/*.DSA")
-      exclude("META-INF/*.RSA")
-    }
-    
-    manifest {
-      attributes(
-        "Main-Class" to application.mainClassName,
-        "Implementation-Version" to project.version
-      )
-    }
-    
-    inputs.files(classpath)
-    inputs.files(browserDistribution.outputs)
-    outputs.file(archiveFile)
-  }
+azurefunctions {
+  resourceGroup = rootProject.name
+  appName = rootProject.name
+  appServicePlanName = rootProject.name
   
-  val buildNativeImage by creating(Exec::class) {
-    group = "build"
-    dependsOn(jar)
-    val fatJarfile = jar.get().archiveFile.get().asFile
-    val outputFile = buildDir.resolve("bin/${fatJarfile.nameWithoutExtension}")
-    val cmd = mutableListOf(
-      "native-image",
-      "--no-fallback",
-      "--report-unsupported-elements-at-runtime",
-      "-H:Log=registerResource",
-      "-H:-UseServiceLoaderFeature",
-      "-H:+PrintAnalysisCallTree",
-      "--verbose",
-      "-jar",
-      fatJarfile.absolutePath,
-      "$outputFile"
-    )
-    val musl = project.hasProperty("musl")
-    if (musl) {
-      cmd.add("--static")
-      cmd.add("--libc=musl")
-    } else {
-      cmd.add("-H:+StaticExecutableWithDynamicLibC")
-    }
-    workingDir(buildDir)
-    commandLine(cmd)
-    inputs.file(fatJarfile)
-    inputs.property("musl", musl)
-    outputs.file(outputFile)
-  }
-  
-  create("diagnoseNativeConfig", JavaExec::class) {
-    dependsOn(jar)
-    jvmArgs(
-      "-agentlib:native-image-agent=config-merge-dir=$buildDir/graalvm"
-    )
-    classpath(jar.get().archiveFile)
-  }
-  
-  val runNativeImage by creating(Exec::class) {
-    group = "run"
-    dependsOn(buildNativeImage)
-    workingDir(buildDir)
-    executable(buildNativeImage.outputs.files.first())
-    args(
-      "-Dorg.slf4j.simpleLogger.defaultLogLevel=trace"
-    )
-  }
+  pricingTier = "Free"
+  isDisableAppInsights = true
+  localDebug = "transport=dt_socket,server=y,suspend=n,address=5005"
 }

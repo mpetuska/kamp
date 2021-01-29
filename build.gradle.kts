@@ -1,7 +1,6 @@
 plugins {
-  kotlin("multiplatform") version "1.4.21"
-  kotlin("plugin.serialization") version "1.4.21"
-  id("com.github.johnrengelman.shadow") version "6.1.0"
+  kotlin("multiplatform") version Version.kotlin
+  kotlin("plugin.serialization") version Version.kotlin
   idea
 }
 
@@ -22,9 +21,6 @@ allprojects {
     mavenLocal()
   }
   tasks {
-    all {
-      onlyIf { group != "distribution" }
-    }
     withType<Test> {
       useJUnitPlatform()
     }
@@ -34,12 +30,12 @@ allprojects {
 kotlin {
   explicitApi()
   jvm()
-  js(BOTH) { browser() }
+  js { browser() }
   
   sourceSets {
     named("commonMain") {
       dependencies {
-        api("io.ktor:ktor-client-serialization:1.4.1")
+        api("io.ktor:ktor-client-serialization:${Version.ktor}")
       }
     }
   }

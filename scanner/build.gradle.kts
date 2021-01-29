@@ -1,14 +1,13 @@
 plugins {
   kotlin("jvm")
   kotlin("plugin.serialization")
-  id("com.github.johnrengelman.shadow")
   application
 }
 
 kotlin {
   dependencies {
     implementation(project(rootProject.path))
-    implementation("io.ktor:ktor-client-cio:1.4.1")
+    implementation("io.ktor:ktor-client-cio:${Version.ktor}")
     implementation("org.jsoup:jsoup:1.13.1")
     implementation("ch.qos.logback:logback-classic:1.2.3")
     
@@ -24,4 +23,25 @@ kotlin {
 
 application {
   mainClassName = "scanner.IndexKt"
+}
+
+tasks {
+  jar {
+    val classpath = configurations.compileClasspath.get().files.map { if (it.isDirectory) it else zipTree(it) }
+    from(classpath) {
+      exclude("META-INF/*.SF")
+      exclude("META-INF/*.DSA")
+      exclude("META-INF/*.RSA")
+    }
+    
+    manifest {
+      attributes(
+        "Main-Class" to application.mainClassName,
+        "Implementation-Version" to project.version
+      )
+    }
+    
+    inputs.files(classpath)
+    outputs.file(archiveFile)
+  }
 }

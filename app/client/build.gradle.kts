@@ -3,13 +3,14 @@ plugins {
   kotlin("plugin.serialization")
 }
 
-val jsModuleName = "kamp-$version"
+val jsOutputFile = "kamp-$version.js"
 kotlin {
   js {
     binaries.executable()
-    moduleName = jsModuleName
+//    moduleName = jsModuleName
     browser {
       commonWebpackConfig {
+        outputFileName = jsOutputFile
         devServer = devServer?.copy(
           port = 3000,
           proxy = mapOf("*" to "http://localhost:8080")
@@ -22,8 +23,9 @@ kotlin {
     main {
       dependencies {
         implementation(project(rootProject.path))
-        implementation("io.ktor:ktor-client-js:1.4.1")
-        implementation("dev.fritz2:core:0.8")
+        implementation("io.ktor:ktor-client-js:${Version.ktor}")
+        implementation("dev.fritz2:core:${Version.fritz2}")
+        implementation("dev.fritz2:components:${Version.fritz2}")
       }
     }
   }
@@ -33,9 +35,8 @@ tasks {
   named("processResources", Copy::class) {
     eachFile {
       if (name == "index.html") {
-        expand(project.properties + mapOf("jsOutputFileName" to "${project.name}.js"))
+        expand(project.properties + mapOf("jsOutputFileName" to jsOutputFile))
       }
     }
   }
-  val browserDistribution by getting
 }
