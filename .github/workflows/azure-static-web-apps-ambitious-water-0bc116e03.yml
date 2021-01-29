@@ -75,7 +75,7 @@ jobs:
         with:
           name: static-web-app
       - name: Prepare Env
-        uses: DamianReeves/write-file-action@v1
+        uses: DamianReeves/write-file-action@v1.0
         with:
           path: app/client/build/distributions/application.env
           contents: |
