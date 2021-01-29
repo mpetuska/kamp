@@ -60,7 +60,7 @@ resource "azurerm_application_insights" "main" {
   name                = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
-  application_type    = "web"
+  application_type    = "java"
 }
 
 resource "azurerm_app_service_plan" "main" {

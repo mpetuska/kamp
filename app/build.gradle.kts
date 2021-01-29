@@ -5,7 +5,7 @@ plugins {
 }
 
 application {
-  mainClass.set("app.IndexKt")
+  mainClassName = "app.IndexKt"
 }
 
 kotlin {
@@ -15,6 +15,7 @@ kotlin {
         implementation(project(rootProject.path))
         implementation("io.ktor:ktor-server-cio:${Version.ktor}")
         implementation("org.slf4j:slf4j-simple:1.7.30")
+        implementation("com.microsoft.azure:applicationinsights-web-auto:${Version.applicationInsights}")
 //        implementation("ch.qos.logback:logback-classic:1.2.3")
 //        implementation("org.litote.kmongo:kmongo-coroutine-serialization:${Version.kmongo}")
       }
