@@ -1,3 +1,5 @@
+[![Gitpod ready-to-code](https://img.shields.io/badge/gitpod-ready--to--code-blue?logo=gitpod&style=flat-square)](https://gitpod.io/#https://github.com/mpetuska/kamp)
+
 # KAMP
 This project aims to provide an extensive catalogue of kotlin multiplatform projects across various maven repositories
 out there.
