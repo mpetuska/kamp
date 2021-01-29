@@ -1,4 +1,4 @@
-FROM openjdk:15-jre-alpine
+FROM openjdk:15-alpine
 WORKDIR /app
 COPY build/libs/app-*.jar app.jar
 ENV PORT=8000
