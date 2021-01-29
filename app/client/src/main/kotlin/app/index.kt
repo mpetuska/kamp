@@ -7,7 +7,7 @@ import dev.fritz2.remote.*
 import kotlinx.browser.*
 
 val store = storeOf("Hey there")
-val client = http(window.origin).acceptJson()
+val client = http("https://kamp.azurewebsites.net/api").acceptJson()
   .contentType("application/json")
 
 fun main() {
@@ -16,7 +16,7 @@ fun main() {
       div { store.data.asText() }
       button {
         clicks handledBy store.handle {
-          client.get("/hello").getBody()
+          client.get("/greet").getBody()
         }
         +"Greet backend"
       }
