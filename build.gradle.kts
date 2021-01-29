@@ -30,7 +30,10 @@ allprojects {
 kotlin {
   explicitApi()
   jvm()
-  js { browser() }
+  js {
+    useCommonJs()
+    browser()
+  }
   
   sourceSets {
     named("commonMain") {

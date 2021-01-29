@@ -2,6 +2,7 @@ package app.util
 
 import kotlin.properties.*
 import kotlin.reflect.*
+import kotlin.reflect.full.*
 
 class EnvDelegate<T>(private val converter: (String?) -> T) : ReadOnlyProperty<Any, T> {
   private val camelSplitRegex = "(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])".toRegex()
@@ -15,5 +16,12 @@ class EnvDelegate<T>(private val converter: (String?) -> T) : ReadOnlyProperty<A
 }
 
 object Env {
-  val port by EnvDelegate { it?.toIntOrNull() ?: 8080 }
+  val PORT by EnvDelegate { it?.toIntOrNull() ?: 8080 }
+  
+  override fun toString(): String {
+    return this::class.memberProperties.joinToString("\n") {
+      @Suppress("UNCHECKED_CAST")
+      "${it.name.toUpperCase()}=${(it as KProperty1<Any, *>).get(this)}"
+    }
+  }
 }

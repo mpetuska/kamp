@@ -13,3 +13,4 @@ build
 .terraform.lock.hcl
 *.tfvars
 graalvm-ce-*.tar.gz
+app/client/externals

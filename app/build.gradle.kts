@@ -1,7 +1,11 @@
 plugins {
   kotlin("jvm")
   kotlin("plugin.serialization")
-  id("com.microsoft.azure.azurefunctions") version Version.azureFuntionsPlugin
+  application
+}
+
+application {
+  mainClass.set("app.IndexKt")
 }
 
 kotlin {
@@ -9,8 +13,7 @@ kotlin {
     main {
       dependencies {
         implementation(project(rootProject.path))
-//        implementation("io.ktor:ktor-server-cio:${Version.ktor}")
-        implementation("com.microsoft.azure.functions:azure-functions-java-library:${Version.azureFuntionsLibrary}")
+        implementation("io.ktor:ktor-server-cio:${Version.ktor}")
         implementation("org.slf4j:slf4j-simple:1.7.30")
 //        implementation("ch.qos.logback:logback-classic:1.2.3")
 //        implementation("org.litote.kmongo:kmongo-coroutine-serialization:${Version.kmongo}")
@@ -24,12 +27,29 @@ kotlin {
   }
 }
 
-azurefunctions {
-  resourceGroup = rootProject.name
-  appName = rootProject.name
-  appServicePlanName = rootProject.name
-  
-  pricingTier = "Free"
-  isDisableAppInsights = true
-  localDebug = "transport=dt_socket,server=y,suspend=n,address=5005"
+tasks {
+  val browserDistribution = getByPath("client:browserDistribution")
+  jar {
+    dependsOn(browserDistribution)
+    into("WEB-INF") {
+      from(browserDistribution)
+    }
+    val classpath = configurations.compileClasspath.get().files.map { if (it.isDirectory) it else zipTree(it) }
+    from(classpath) {
+      exclude("META-INF/*.SF")
+      exclude("META-INF/*.DSA")
+      exclude("META-INF/*.RSA")
+    }
+    
+    manifest {
+      attributes(
+        "Main-Class" to application.mainClassName,
+        "Implementation-Version" to project.version
+      )
+    }
+    
+    inputs.property("mainClassName", application.mainClassName)
+    inputs.files(classpath)
+    inputs.files(browserDistribution.outputs)
+  }
 }

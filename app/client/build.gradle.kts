@@ -7,13 +7,13 @@ val jsOutputFile = "kamp-$version.js"
 kotlin {
   js {
     binaries.executable()
-//    moduleName = jsModuleName
+    useCommonJs()
     browser {
       commonWebpackConfig {
         outputFileName = jsOutputFile
         devServer = devServer?.copy(
           port = 3000,
-          proxy = mapOf("*" to "http://localhost:8080")
+          proxy = mapOf("/api" to "http://localhost:8080")
         )
       }
     }

@@ -5,13 +5,18 @@ import dev.fritz2.dom.*
 import dev.fritz2.dom.html.*
 import dev.fritz2.remote.*
 import kotlinx.browser.*
+import kotlinx.coroutines.*
 
 val store = storeOf("Hey there")
-val client = http("https://kamp.azurewebsites.net/api").acceptJson()
-  .contentType("application/json")
+val client by lazy {
+  http(window.env.API_URL).acceptJson()
+    .contentType("application/json")
+}
 
-fun main() {
-  window.onload = {
+suspend fun main() {
+  val env = loadEnv()
+  val onLoad = suspend {
+    env.await()
     render {
       div { store.data.asText() }
       button {
@@ -21,5 +26,8 @@ fun main() {
         +"Greet backend"
       }
     }.mount("root")
+  }
+  window.onload = {
+    GlobalScope.launch { onLoad() }
   }
 }
