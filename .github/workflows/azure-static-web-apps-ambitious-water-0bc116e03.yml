@@ -11,7 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Cache Gradle
+      - name: Restore Gradle cache
+        id: cache
         uses: actions/cache@v2
         with:
           path: |
@@ -26,6 +27,16 @@ jobs:
           java-version: 11
       - name: Build Apps
         run: ./gradlew assemble
+      - name: Cache Gradle
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
       - name: Upload Static Web App Artifact
         uses: actions/upload-artifact@v2
         id: upload
