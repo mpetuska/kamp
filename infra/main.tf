@@ -2,10 +2,9 @@ terraform {
   backend "artifactory" {
     // -backend-config="username=xxx@xxx.com" \
     // -backend-config="password=xxxxxx" \
-    username = "martynas.petuska@outlook.com"
-    url      = "https://mpetuska.jfrog.io/artifactory"
-    repo     = "terraform-state"
-    subpath  = "kamp"
+    url     = "https://mpetuska.jfrog.io/artifactory"
+    repo    = "terraform-state"
+    subpath = "kamp"
   }
 }
 
