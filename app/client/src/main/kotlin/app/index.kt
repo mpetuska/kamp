@@ -16,7 +16,7 @@ fun main() {
       div { store.data.asText() }
       button {
         clicks handledBy store.handle {
-          client.get("/greet").getBody()
+          client.get("/greet?name=Pedro").getBody()
         }
         +"Greet backend"
       }
