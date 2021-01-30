@@ -7,7 +7,8 @@ import dev.fritz2.remote.*
 import kotlinx.browser.*
 import kotlinx.coroutines.*
 
-val store = storeOf("Hey there")
+val greeting = storeOf("Hey there")
+val name = storeOf("")
 val client by lazy {
   http(window.env.API_URL).acceptJson()
     .contentType("application/json")
@@ -18,12 +19,16 @@ suspend fun main() {
   val onLoad = suspend {
     env.await()
     render {
-      div { store.data.asText() }
+      div { greeting.data.asText() }
+      input {
+        value(name.data)
+        changes.values() handledBy name.update
+      }
       button {
-        clicks handledBy store.handle {
-          client.get("/greet?name=Pedro").getBody()
+        clicks handledBy greeting.handle {
+          client.get("/greet?name=${name.current.ifBlank { "Pedro" }}").getBody()
         }
-        +"Greet backend"
+        +"Greet me!"
       }
     }.mount("root")
   }

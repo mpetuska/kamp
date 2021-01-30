@@ -16,7 +16,8 @@ class EnvDelegate<T>(private val converter: (String?) -> T) : ReadOnlyProperty<A
 }
 
 object Env {
-  val PORT by EnvDelegate { it?.toIntOrNull() ?: 8080 }
+  val API_URL by EnvDelegate { it ?: "http://localhost:8080/api" }
+  val MONGO_STRING by EnvDelegate { it ?: "mongodb://localhost:27017" }
   
   override fun toString(): String {
     return this::class.memberProperties.joinToString("\n") {

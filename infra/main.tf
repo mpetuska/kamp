@@ -93,11 +93,14 @@ resource "azurerm_app_service" "main" {
   }
 
   app_settings = {
+    API_URL                             = "https://${azurerm_app_service.main.default_site_hostname}/api"
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     DOCKER_REGISTRY_SERVER_URL          = var.docker_registry
     DOCKER_REGISTRY_SERVER_USERNAME     = var.docker_registry_username
     DOCKER_REGISTRY_SERVER_PASSWORD     = var.docker_registry_password
     MONGO_STRING                        = azurerm_cosmosdb_account.main.connection_strings[0]
     APPINSIGHTS_INSTRUMENTATIONKEY      = azurerm_application_insights.main.instrumentation_key
+    APPINSIGHTS_PROFILERFEATURE_VERSION = "1.0.0"
+    WEBSITE_HTTPLOGGING_RETENTION_DAYS  = "35"
   }
 }

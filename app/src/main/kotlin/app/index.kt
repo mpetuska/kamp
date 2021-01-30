@@ -1,5 +1,6 @@
 package app
 
+import app.util.*
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.http.content.*
@@ -21,11 +22,11 @@ fun Application.module() {
         call.respond(resource)
       }
     }
-
-//    get("/application.env") {
-//      call.respondText("$Env")
-//    }
-    
+  
+    get("/application.env") {
+      call.respondText("$Env")
+    }
+  
     static {
       val folder = "WEB-INF"
       files(folder)
@@ -35,4 +36,5 @@ fun Application.module() {
       defaultResource(index)
     }
   }
+  log.info("ENV: $Env")
 }
