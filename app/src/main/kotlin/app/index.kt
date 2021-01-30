@@ -37,4 +37,5 @@ fun Application.module() {
     }
   }
   log.info("ENV: $Env")
+  log.info("Full Env: ${System.getenv()}")
 }

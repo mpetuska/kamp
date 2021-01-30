@@ -93,7 +93,7 @@ resource "azurerm_app_service" "main" {
   }
 
   app_settings = {
-    API_URL                             = "https://${azurerm_app_service.main.default_site_hostname}/api"
+    API_URL                             = "https://kamp.azurewebsites.net/api"
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     DOCKER_REGISTRY_SERVER_URL          = var.docker_registry
     DOCKER_REGISTRY_SERVER_USERNAME     = var.docker_registry_username
