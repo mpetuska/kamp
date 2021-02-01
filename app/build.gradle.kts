@@ -25,11 +25,18 @@ kotlin {
     }
   }
   sourceSets {
+    named("commonMain") {
+      dependencies {
+        implementation("org.kodein.di:kodein-di:${Version.kodein}")
+      }
+    }
     named("jvmMain") {
       dependencies {
         implementation(project(rootProject.path))
         implementation("io.ktor:ktor-server-cio:${Version.ktor}")
-        implementation("org.slf4j:slf4j-simple:1.7.30")
+        implementation("io.ktor:ktor-serialization:${Version.ktor}")
+        implementation("ch.qos.logback:logback-classic:${Version.logback}")
+        implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:${Version.kodein}")
         implementation("com.microsoft.azure:applicationinsights-web-auto:${Version.applicationInsights}")
 //        implementation("ch.qos.logback:logback-classic:1.2.3")
 //        implementation("org.litote.kmongo:kmongo-coroutine-serialization:${Version.kmongo}")
