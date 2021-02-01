@@ -16,9 +16,6 @@ fun main(args: Array<String>) = EngineMain.main(args)
 
 fun Application.module() {
   install(CallLogging)
-  install(CORS) {
-    host("*")
-  }
   routing {
     route("/api") {
       get("/greet") {
