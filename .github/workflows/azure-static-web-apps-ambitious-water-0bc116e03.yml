@@ -42,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v2
         id: upload
         with:
-          path: app/client/build/distributions/
+          path: app/build/dist/WEB-INF
           name: static-web-app
           if-no-files-found: error
       - name: Build App Docker image & push to GitHub Packages
@@ -109,11 +109,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: static-web-app
-          path: app/client/build/distributions/
+          path: app/client/build/dist/
       - name: Prepare Env
         uses: DamianReeves/write-file-action@v1.0
         with:
-          path: app/client/build/distributions/application.env
+          path: app/client/build/dist/application.env
           contents: |
             API_URL=https://kamp.azurewebsites.net/api
           write-mode: overwrite
@@ -125,5 +125,5 @@ jobs:
           action: "upload"
           ###### Repository/Build Configurations - These values can be configured to match you app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "/app/client/build/distributions"
+          app_location: "/app/client/build/dist"
           ###### End of Repository/Build Configurations ######
