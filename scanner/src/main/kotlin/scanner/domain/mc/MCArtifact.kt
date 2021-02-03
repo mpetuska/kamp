@@ -8,4 +8,4 @@ data class MCArtifact(
   override val group: String,
   override val name: String,
   override val latestVersion: String,
-) : MavenArtifact()
+) : MavenArtifact

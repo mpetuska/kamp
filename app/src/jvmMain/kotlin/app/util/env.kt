@@ -19,7 +19,7 @@ class EnvDelegate<T>(private val converter: EnvDelegate<*>.(String?) -> T) : Rea
 
 object Env {
   val API_URL by EnvDelegate {
-    it ?: findEnv("WEBSITE_HOSTNAME")?.let { host -> "https://$host/api" } ?: "http://localhost:8080/api"
+    it ?: findEnv("WEBSITE_HOSTNAME")?.let { host -> "https://$host" } ?: "http://localhost:8080"
   }
   val MONGO_STRING by EnvDelegate { it ?: "mongodb://localhost:27017" }
   

@@ -1,4 +1,4 @@
-package app
+package app.config
 
 import io.ktor.client.fetch.*
 import kotlinx.browser.*
@@ -12,8 +12,7 @@ external interface AppEnv {
 inline val Window.env: AppEnv
   get() = asDynamic().env.unsafeCast<AppEnv>()
 
-fun loadEnv() = GlobalScope.async {
-  @Suppress("UNUSED_VARIABLE")
+suspend fun loadEnv(): AppEnv {
   val env: AppEnv = fetch("/application.env").await().text().await()
     .split("\n")
     .filter(String::isNotBlank)
@@ -23,6 +22,7 @@ fun loadEnv() = GlobalScope.async {
       }
       "\"$key\": \"$value\""
     }.let(JSON::parse)
-  js("window.env = env")
+  window.asDynamic().env = env
   requireNotNull(window.env.API_URL)
+  return env
 }

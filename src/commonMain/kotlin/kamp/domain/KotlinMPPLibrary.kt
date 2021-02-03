@@ -11,6 +11,7 @@ public data class KotlinMPPLibrary(
   val description: String?,
   val website: String?,
   val scm: String?,
-) : MavenArtifact() {
+) : MavenArtifact {
+  @Transient
   val isMultiplatform: Boolean = targets.size > 1
 }

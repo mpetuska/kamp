@@ -19,7 +19,7 @@ abstract class MavenRepositoryClient<A : MavenArtifact> {
         doc.selectFirst("artifactId")?.text(),
         doc.selectFirst("versioning>latest")?.text() ?: doc.selectFirst("version")?.text()
       ).takeIf { it.size == 3 }?.let {
-        object : MavenArtifact() {
+        object : MavenArtifact {
           override val group: String = it[0]
           override val name: String = it[1]
           override val latestVersion: String = it[2]

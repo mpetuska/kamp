@@ -10,7 +10,7 @@ fun main(args: Array<String>) = EngineMain.main(args)
 fun Application.module() {
   features()
   routing()
-  dependencyInjection()
+  diConfig()
   log.info("ENV: $Env")
-  log.info("Full Env: ${System.getenv()}")
+  log.debug("Full Env: ${System.getenv()}")
 }
