@@ -21,6 +21,7 @@ allprojects {
     jcenter()
     mavenCentral()
     maven("https://dl.bintray.com/patternfly-kotlin/patternfly-fritz2")
+    maven("https://dl.bintray.com/kodein-framework/kodein-dev")
     mavenLocal()
   }
   tasks {

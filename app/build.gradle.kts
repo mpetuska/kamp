@@ -51,7 +51,7 @@ kotlin {
         implementation("org.jetbrains:kotlin-react-dom:_")
         implementation("org.jetbrains:kotlin-styled:_")
         implementation("com.ccfraser.muirwik:muirwik-components:_")
-//        implementation("com.bnorm.react:kotlin-react-function:${Version.reactFunction}")
+        implementation("com.bnorm.react:kotlin-react-function:_")
       }
     }
     named("jvmTest") {
