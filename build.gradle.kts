@@ -1,8 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.*
 
 plugins {
-  kotlin("multiplatform") version Version.kotlin
-  kotlin("plugin.serialization") version Version.kotlin
+  kotlin("multiplatform")
+  id("org.jetbrains.kotlin.plugin.serialization")
+  id("com.bnorm.react.kotlin-react-function") apply false
   idea
 }
 
@@ -42,7 +43,7 @@ kotlin {
   sourceSets {
     named("commonMain") {
       dependencies {
-        api("io.ktor:ktor-client-serialization:${Version.ktor}")
+        api("io.ktor:ktor-client-serialization:_")
       }
     }
   }

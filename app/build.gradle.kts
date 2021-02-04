@@ -1,7 +1,7 @@
 plugins {
   kotlin("multiplatform")
   kotlin("plugin.serialization")
-  id("com.bnorm.react.kotlin-react-function") version Version.reactFunction
+  id("com.bnorm.react.kotlin-react-function")
 }
 
 val mainClassName = "app.IndexKt"
@@ -30,33 +30,33 @@ kotlin {
     named("commonMain") {
       dependencies {
         implementation(project(rootProject.path))
-        implementation("org.kodein.di:kodein-di:${Version.kodein}")
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Version.serialization}")
+        implementation("org.kodein.di:kodein-di:_")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:_")
       }
     }
     named("jvmMain") {
       dependencies {
-        implementation("io.ktor:ktor-server-cio:${Version.ktor}")
-        implementation("io.ktor:ktor-serialization:${Version.ktor}")
-        implementation("ch.qos.logback:logback-classic:${Version.logback}")
-        implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:${Version.kodein}")
-        implementation("com.microsoft.azure:applicationinsights-web-auto:${Version.applicationInsights}")
+        implementation("io.ktor:ktor-server-cio:_")
+        implementation("io.ktor:ktor-serialization:_")
+        implementation("ch.qos.logback:logback-classic:_")
+        implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:_")
+        implementation("com.microsoft.azure:applicationinsights-web-auto:_")
 //        implementation("org.litote.kmongo:kmongo-coroutine-serialization:${Version.kmongo}")
       }
     }
     named("jsMain") {
       dependencies {
-        implementation("io.ktor:ktor-client-serialization:${Version.ktor}")
-        implementation("org.jetbrains:kotlin-react:${Version.react}")
-        implementation("org.jetbrains:kotlin-react-dom:${Version.react}")
-        implementation("org.jetbrains:kotlin-styled:${Version.styledComponents}")
-//        implementation("com.ccfraser.muirwik:muirwik-components:${Version.murwik}")
+        implementation("io.ktor:ktor-client-serialization:_")
+        implementation("org.jetbrains:kotlin-react:_")
+        implementation("org.jetbrains:kotlin-react-dom:_")
+        implementation("org.jetbrains:kotlin-styled:_")
+        implementation("com.ccfraser.muirwik:muirwik-components:_")
 //        implementation("com.bnorm.react:kotlin-react-function:${Version.reactFunction}")
       }
     }
     named("jvmTest") {
       dependencies {
-        implementation("io.kotest:kotest-runner-junit5:4.3.0")
+        implementation("io.kotest:kotest-runner-junit5:_")
       }
     }
   }
