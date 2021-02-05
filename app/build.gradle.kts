@@ -50,8 +50,8 @@ kotlin {
         implementation("org.jetbrains:kotlin-react:_")
         implementation("org.jetbrains:kotlin-react-dom:_")
         implementation("org.jetbrains:kotlin-styled:_")
-        implementation("com.ccfraser.muirwik:muirwik-components:_")
-        implementation("com.bnorm.react:kotlin-react-function:_")
+//        implementation("com.bnorm.react:kotlin-react-function:_")
+//        implementation("io.github.mpetuska:khakra:0.0.1")
       }
     }
     named("jvmTest") {
