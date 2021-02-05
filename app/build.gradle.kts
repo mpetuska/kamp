@@ -1,7 +1,7 @@
 plugins {
   kotlin("multiplatform")
   kotlin("plugin.serialization")
-  id("com.bnorm.react.kotlin-react-function")
+//  id("com.bnorm.react.kotlin-react-function")
 }
 
 val mainClassName = "app.IndexKt"
@@ -50,8 +50,8 @@ kotlin {
         implementation("org.jetbrains:kotlin-react:_")
         implementation("org.jetbrains:kotlin-react-dom:_")
         implementation("org.jetbrains:kotlin-styled:_")
+        implementation("io.github.mpetuska:khakra:0.0.1")
 //        implementation("com.bnorm.react:kotlin-react-function:_")
-//        implementation("io.github.mpetuska:khakra:0.0.1")
       }
     }
     named("jvmTest") {

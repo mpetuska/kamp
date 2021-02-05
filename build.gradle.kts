@@ -22,6 +22,12 @@ allprojects {
     mavenCentral()
     maven("https://dl.bintray.com/patternfly-kotlin/patternfly-fritz2")
     maven("https://dl.bintray.com/kodein-framework/kodein-dev")
+    maven("https://maven.pkg.github.com/mpetuska/khakra") {
+      credentials {
+        username = project.properties["gpr.username"]?.toString() ?: System.getenv("GH_PKG_USER")
+        password = project.properties["gpr.password"]?.toString() ?: System.getenv("GH_PKG_PASSWORD")
+      }
+    }
     mavenLocal()
   }
   tasks {
