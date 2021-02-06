@@ -1,7 +1,6 @@
 plugins {
   kotlin("jvm")
   kotlin("plugin.serialization")
-  application
 }
 
 kotlin {
@@ -10,7 +9,7 @@ kotlin {
     implementation("io.ktor:ktor-client-cio:_")
     implementation("org.jsoup:jsoup:_")
     implementation("ch.qos.logback:logback-classic:_")
-  
+    
     testImplementation("io.kotest:kotest-runner-junit5:_")
   }
   sourceSets.all {
@@ -21,11 +20,21 @@ kotlin {
   }
 }
 
-application {
-  mainClassName = "scanner.IndexKt"
-}
+val mainClassName = "scanner.IndexKt"
 
 tasks {
+  val compileKotlin by getting
+  val processResources by getting
+  create<JavaExec>("run") {
+    group = "run"
+    main = mainClassName
+    dependsOn(compileKotlin, processResources)
+    classpath = files(
+      configurations.compileClasspath,
+      compileKotlin.outputs,
+      processResources.outputs
+    )
+  }
   jar {
     val classpath = configurations.compileClasspath.get().files.map { if (it.isDirectory) it else zipTree(it) }
     from(classpath) {
@@ -36,11 +45,16 @@ tasks {
     
     manifest {
       attributes(
-        "Main-Class" to application.mainClassName,
-        "Implementation-Version" to project.version
+        "Main-Class" to mainClassName,
+        "Built-By" to System.getProperty("user.name"),
+        "Build-Jdk" to System.getProperty("java.version"),
+        "Implementation-Version" to project.version,
+        "Created-By" to "Gradle v${org.gradle.util.GradleVersion.current()}",
+        "Created-From" to Git.headCommitHash
       )
     }
     
+    inputs.property("mainClassName", mainClassName)
     inputs.files(classpath)
     outputs.file(archiveFile)
   }
