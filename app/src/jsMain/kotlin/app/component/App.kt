@@ -7,7 +7,7 @@ import org.kodein.di.*
 import react.dom.*
 
 
-val App by RFunction {
+val App by FC {
   nav("navbar navbar-expand-lg navbar-dark bg-dark") {
     a(classes = "navbar-brand") {
       img(
@@ -22,6 +22,7 @@ val App by RFunction {
       +"KAMP"
     }
   }
+//  Navbar {}
   div(classes = "container") {
     div("row") {
       h2 {

@@ -50,7 +50,7 @@ kotlin {
         implementation("org.jetbrains:kotlin-react:_")
         implementation("org.jetbrains:kotlin-react-dom:_")
         implementation("org.jetbrains:kotlin-styled:_")
-        implementation("io.github.mpetuska:khakra:0.0.1")
+        implementation("io.github.mpetuska:khakra:0.0.2")
 //        implementation("com.bnorm.react:kotlin-react-function:_")
       }
     }
@@ -58,6 +58,9 @@ kotlin {
       dependencies {
         implementation("io.kotest:kotest-runner-junit5:_")
       }
+    }
+    all {
+//      languageSettings.enableLanguageFeature("InlineClasses")
     }
   }
 }

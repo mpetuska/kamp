@@ -12,7 +12,7 @@ external interface Props : RProps {
   var lib: KotlinMPPLibrary
 }
 
-val LibraryCard by RFunction<Props> { props ->
+val LibraryCard by FC<Props> { props ->
   val lib = props.lib
   styledDiv {
     css {

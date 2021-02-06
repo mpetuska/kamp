@@ -8,6 +8,8 @@ import react.dom.*
 suspend fun main() {
   loadEnv()
   render(document.getElementById("root")) {
+//    ChakraProvider {
     App {}
+//    }
   }
 }
