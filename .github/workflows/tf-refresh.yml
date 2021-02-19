@@ -33,3 +33,4 @@ jobs:
           length: 7
       - name: Terraform refresh
         run: terraform refresh
+        working-directory: infra
