@@ -20,13 +20,7 @@ allprojects {
   }
   repositories {
     mavenCentral()
-    maven("https://dl.bintray.com/kodein-framework/kodein-dev")
-    maven("https://maven.pkg.github.com/mpetuska/khakra") {
-      credentials {
-        username = project.properties["gpr.username"]?.toString() ?: System.getenv("GH_PKG_USER")
-        password = project.properties["gpr.password"]?.toString() ?: System.getenv("GH_PKG_PASSWORD")
-      }
-    }
+    maven("https://jitpack.io")
     jcenter()
     mavenLocal()
   }
@@ -50,7 +44,7 @@ kotlin {
   js {
     browser()
   }
-  
+
   sourceSets {
     named("commonMain") {
       dependencies {
