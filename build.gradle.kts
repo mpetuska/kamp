@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.*
 plugins {
   kotlin("multiplatform")
   id("org.jetbrains.kotlin.plugin.serialization")
+  id("org.jlleitschuh.gradle.ktlint")
   id("com.bnorm.react.kotlin-react-function") apply false
   idea
 }
@@ -18,10 +19,9 @@ allprojects {
     }
   }
   repositories {
-    jcenter()
     mavenCentral()
-    maven("https://dl.bintray.com/patternfly-kotlin/patternfly-fritz2")
-    maven("https://dl.bintray.com/kodein-framework/kodein-dev")
+    maven("https://jitpack.io")
+    jcenter()
     mavenLocal()
   }
   tasks {
@@ -30,6 +30,10 @@ allprojects {
     }
     withType<KotlinCompile> {
       kotlinOptions.jvmTarget = "15"
+      kotlinOptions {
+        useIR = true
+        jvmTarget = "${JavaVersion.VERSION_15}"
+      }
     }
   }
 }
@@ -40,7 +44,7 @@ kotlin {
   js {
     browser()
   }
-  
+
   sourceSets {
     named("commonMain") {
       dependencies {

@@ -1,11 +1,9 @@
 plugins {
   kotlin("multiplatform")
   kotlin("plugin.serialization")
-  id("com.bnorm.react.kotlin-react-function")
 }
 
 val mainClassName = "app.IndexKt"
-
 val jsOutputFile = "kamp-$version.js"
 kotlin {
   jvm {}
@@ -47,11 +45,9 @@ kotlin {
     named("jsMain") {
       dependencies {
         implementation("io.ktor:ktor-client-serialization:_")
-        implementation("org.jetbrains:kotlin-react:_")
-        implementation("org.jetbrains:kotlin-react-dom:_")
-        implementation("org.jetbrains:kotlin-styled:_")
-        implementation("com.ccfraser.muirwik:muirwik-components:_")
-        implementation("com.bnorm.react:kotlin-react-function:_")
+        implementation("io.kvision:kvision-bootstrap:_")
+        implementation("io.kvision:kvision-fontawesome:_")
+        implementation("io.kvision:kvision-redux-kotlin:_")
       }
     }
     named("jvmTest") {

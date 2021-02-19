@@ -1,13 +1,10 @@
 package app
 
-import app.component.*
 import app.config.*
-import kotlinx.browser.*
-import react.dom.*
+import app.view.*
+import io.kvision.*
 
 suspend fun main() {
   loadEnv()
-  render(document.getElementById("root")) {
-    App {}
-  }
+  startApplication(::App, module.hot)
 }
