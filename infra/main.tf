@@ -54,6 +54,10 @@ resource "azurerm_cosmosdb_mongo_collection" "libraries" {
     keys   = ["_id"]
     unique = true
   }
+  index {
+    keys   = ["name"]
+    unique = false
+  }
 }
 
 resource "azurerm_application_insights" "main" {
