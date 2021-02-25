@@ -98,6 +98,7 @@ resource "azurerm_app_service" "main" {
     DOCKER_REGISTRY_SERVER_USERNAME     = var.docker_registry_username
     DOCKER_REGISTRY_SERVER_PASSWORD     = var.docker_registry_password
     MONGO_STRING                        = azurerm_cosmosdb_account.main.connection_strings[0]
+    MONGO_DATABASE                      = azurerm_cosmosdb_mongo_database.main.name
     ADMIN_USER                          = var.api_admin_user
     ADMIN_PASSWORD                      = var.api_admin_password
     AZURE_MONITOR_INSTRUMENTATION_KEY   = azurerm_application_insights.main.instrumentation_key
