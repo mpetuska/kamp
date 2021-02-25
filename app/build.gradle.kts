@@ -88,7 +88,7 @@ afterEvaluate {
         from(jsBrowserDistribution)
       }
       val classpath =
-        configurations.getByName("jvmCompileClasspath").map { if (it.isDirectory) it else zipTree(it) }
+        configurations.getByName("jvmRuntimeClasspath").map { if (it.isDirectory) it else zipTree(it) }
       from(classpath) {
         exclude("META-INF/*.SF")
         exclude("META-INF/*.DSA")
