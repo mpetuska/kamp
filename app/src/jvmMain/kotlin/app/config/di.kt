@@ -15,6 +15,6 @@ fun Application.diConfig() = di {
 
 private val services by DIModule {
   bind<CoroutineClient>() with singleton { KMongo.createClient(PrivateEnv.MONGO_STRING).coroutine }
-  bind<CoroutineCollection<KotlinMPPLibrary>>() with singleton { instance<CoroutineClient>().getDatabase("main").getCollection() }
+  bind<CoroutineCollection<KotlinMPPLibrary>>() with singleton { instance<CoroutineClient>().getDatabase("main").getCollection("libraries") }
   bind<LibraryService>() with scoped(CallScope).singleton { LibraryService(context, instance()) }
 }
