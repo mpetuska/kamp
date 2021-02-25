@@ -45,7 +45,7 @@ resource "azurerm_cosmosdb_mongo_database" "main" {
   resource_group_name = azurerm_cosmosdb_account.main.resource_group_name
 }
 
-resource "azurerm_cosmosdb_mongo_collection" "main" {
+resource "azurerm_cosmosdb_mongo_collection" "libraries" {
   account_name        = azurerm_cosmosdb_mongo_database.main.account_name
   database_name       = azurerm_cosmosdb_mongo_database.main.name
   name                = azurerm_cosmosdb_mongo_database.main.name
@@ -100,6 +100,7 @@ resource "azurerm_app_service" "main" {
     MONGO_STRING                        = azurerm_cosmosdb_account.main.connection_strings[0]
     ADMIN_USER                          = var.api_admin_user
     ADMIN_PASSWORD                      = var.api_admin_password
+    AZURE_MONITOR_INSTRUMENTATION_KEY   = azurerm_application_insights.main.instrumentation_key
     APPINSIGHTS_INSTRUMENTATIONKEY      = azurerm_application_insights.main.instrumentation_key
     APPINSIGHTS_PROFILERFEATURE_VERSION = "1.0.0"
     WEBSITE_HTTPLOGGING_RETENTION_DAYS  = "35"
