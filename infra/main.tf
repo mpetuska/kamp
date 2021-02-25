@@ -48,7 +48,7 @@ resource "azurerm_cosmosdb_mongo_database" "main" {
 resource "azurerm_cosmosdb_mongo_collection" "libraries" {
   account_name        = azurerm_cosmosdb_mongo_database.main.account_name
   database_name       = azurerm_cosmosdb_mongo_database.main.name
-  name                = azurerm_cosmosdb_mongo_database.main.name
+  name                = "libraries"
   resource_group_name = azurerm_cosmosdb_mongo_database.main.resource_group_name
   index {
     keys   = ["_id"]
