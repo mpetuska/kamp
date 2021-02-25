@@ -3,8 +3,9 @@ package app.util
 import io.ktor.http.*
 import io.ktor.request.*
 
-fun ApplicationRequest.buildNextUrl(total: Int): String? = if (page * pageSize > total) {
+fun ApplicationRequest.buildNextUrl(currentElementCount: Int): String? = if (currentElementCount == pageSize) {
   URLBuilder(call.request.uri).apply {
+    port = call.request.port()
     parameters["page"] = "${page + 1}"
     parameters["size"] = "$pageSize"
   }.buildString()
@@ -14,6 +15,7 @@ fun ApplicationRequest.buildNextUrl(total: Int): String? = if (page * pageSize >
 
 fun ApplicationRequest.buildPrevUrl(): String? = if (page > 1) {
   URLBuilder(call.request.uri).apply {
+    port = call.request.port()
     parameters["page"] = "${page - 1}"
     parameters["size"] = "$pageSize"
   }.buildString()

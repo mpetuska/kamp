@@ -36,10 +36,11 @@ kotlin {
       dependencies {
         implementation("io.ktor:ktor-server-cio:_")
         implementation("io.ktor:ktor-serialization:_")
+        implementation("io.ktor:ktor-auth:_")
         implementation("ch.qos.logback:logback-classic:_")
         implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:_")
         implementation("com.microsoft.azure:applicationinsights-web-auto:_")
-//        implementation("org.litote.kmongo:kmongo-coroutine-serialization:${Version.kmongo}")
+        implementation("org.litote.kmongo:kmongo-coroutine-serialization:_")
       }
     }
     named("jsMain") {

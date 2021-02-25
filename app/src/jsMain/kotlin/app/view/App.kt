@@ -15,7 +15,7 @@ class App : Application() {
   init {
     val service by di.instance<LibraryService>()
     store.dispatch(suspending { dispatch, _ ->
-      dispatch(AppAction.SetLibraries(service.getAll(1, 50).data))
+      dispatch(AppAction.SetLibraries(service.getAll(1)))
     })
   }
   

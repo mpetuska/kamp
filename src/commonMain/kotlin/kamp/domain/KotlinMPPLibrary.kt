@@ -12,6 +12,12 @@ public data class KotlinMPPLibrary(
   val website: String?,
   val scm: String?,
 ) : MavenArtifact {
+  val _id: String
+
   @Transient
   val isMultiplatform: Boolean = targets.size > 1
+
+  init {
+    _id = "$group:$name"
+  }
 }

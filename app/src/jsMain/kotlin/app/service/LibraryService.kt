@@ -8,5 +8,5 @@ import kamp.domain.*
 
 actual class LibraryService(private val client: HttpClient) {
   actual suspend fun getAll(page: Int, size: Int): PagedResponse<KotlinMPPLibrary> =
-    client.get("/api/library".toApi())
+    client.get("/api/library?page=$page&size=$size".toApi())
 }

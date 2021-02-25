@@ -11,6 +11,6 @@ fun Application.module() {
   features()
   routing()
   diConfig()
-  log.info("ENV: $Env")
+  log.info("ENV: $PublicEnv")
   log.debug("Full Env: ${System.getenv()}")
 }

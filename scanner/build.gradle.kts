@@ -7,6 +7,7 @@ kotlin {
   dependencies {
     implementation(project(rootProject.path))
     implementation("io.ktor:ktor-client-cio:_")
+    implementation("io.ktor:ktor-client-auth:_")
     implementation("org.jsoup:jsoup:_")
     implementation("ch.qos.logback:logback-classic:_")
     

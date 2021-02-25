@@ -10,10 +10,8 @@ import io.kvision.state.*
 fun Container.Content() = vPanel {
   h2("Libraries")
   flexPanel(wrap = FlexWrap.WRAP, spacing = 15).bind(store) { (libraries) ->
-    for (library in libraries) {
-      repeat(20) {
-        LibraryCard(library)
-      }
+    for (library in libraries.data) {
+      LibraryCard(library)
     }
   }
 }

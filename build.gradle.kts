@@ -51,5 +51,10 @@ kotlin {
         api("io.ktor:ktor-client-serialization:_")
       }
     }
+    named("jvmMain") {
+      dependencies {
+        api(kotlin("reflect"))
+      }
+    }
   }
 }
