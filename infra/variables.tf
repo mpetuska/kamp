@@ -16,3 +16,11 @@ variable "docker_registry_password" {
 variable "docker_image_tag" {
   type = string
 }
+
+variable "api_admin_user" {
+  type = string
+}
+
+variable "api_admin_password" {
+  type = string
+}

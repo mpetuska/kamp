@@ -5,14 +5,14 @@ services:
     ports:
       - "27017:27017"
 
-  mongo-seed:
-    build:
-      context: .
-      dockerfile: db.dockerfile
-      args:
-        input: out
-    depends_on:
-      - mongo
+  #  mongo-seed:
+  #    build:
+  #      context: .
+  #      dockerfile: db.dockerfile
+  #      args:
+  #        input: out
+  #    depends_on:
+  #      - mongo
 
   mongo-express:
     image: mongo-express

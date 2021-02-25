@@ -38,13 +38,24 @@ private fun Container.TargetBadge(category: String, targets: Collection<KotlinTa
   }
 }
 
+private fun targetPriority(target: String) = when (target) {
+  KotlinTarget.Common.category -> 1
+  KotlinTarget.JVM.category -> 2
+  KotlinTarget.JS.category -> 3
+  KotlinTarget.Native.category -> 4
+  else -> 0
+}
+
 fun Container.LibraryCard(library: KotlinMPPLibrary) = div(classes = setOf("card", "border-secondary", "mb-3", "mw-25")) {
-  width = 30.em
+  width = 35.em
   div(classes = setOf("card-body")) {
     div(classes = setOf("card-title", "d-flex", "justify-content-between")) {
       h4(library.name)
       div(classes = setOf("mb-2")) {
-        for ((category, targets) in library.targets.groupBy(KotlinTarget::category)) {
+        val groupedTargets = library.targets.groupBy(KotlinTarget::category).entries.sortedWith { (keyA), (keyB) ->
+          targetPriority(keyA) - targetPriority(keyB)
+        }
+        for ((category, targets) in groupedTargets) {
           TargetBadge(category, targets)
         }
       }

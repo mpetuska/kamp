@@ -3,6 +3,8 @@ package scanner.util
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.features.*
+import io.ktor.client.features.auth.*
+import io.ktor.client.features.auth.providers.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
@@ -18,6 +20,9 @@ val httpClient by lazy {
     engine {
       requestTimeout = timeout
     }
+    defaultRequest {
+      contentType(ContentType.Application.Json)
+    }
     install(JsonFeature) {
       serializer = KotlinxSerializer(prettyJson)
     }
@@ -26,8 +31,36 @@ val httpClient by lazy {
       connectTimeoutMillis = timeout
       socketTimeoutMillis = timeout
     }
+    install(Auth)
   }
 }
+
+val authenticatedHttpClient by lazy {
+  val timeout = 5 * 60 * 1000L
+  HttpClient(CIO) {
+    engine {
+      requestTimeout = timeout
+    }
+    defaultRequest {
+      contentType(ContentType.Application.Json)
+    }
+    install(JsonFeature) {
+      serializer = KotlinxSerializer(prettyJson)
+    }
+    install(HttpTimeout) {
+      requestTimeoutMillis = timeout
+      connectTimeoutMillis = timeout
+      socketTimeoutMillis = timeout
+    }
+    install(Auth) {
+      basic {
+        username = PrivateEnv.ADMIN_USER
+        password = PrivateEnv.ADMIN_PASSWORD
+      }
+    }
+  }
+}
+
 
 suspend fun request(url: String, config: HttpRequestBuilder.() -> Unit = {}): HttpResponse? {
   val action = suspend { httpClient.get<HttpResponse>(url, config) }
@@ -59,7 +92,6 @@ suspend fun request(url: String, config: HttpRequestBuilder.() -> Unit = {}): Ht
       null
     } else response
   }
-  
 }
 
 suspend inline fun <reified R> fetch(
@@ -90,4 +122,17 @@ suspend inline fun <reified R> fetch(
   }
 }.onFailure { e ->
   systemLogger.error { "Error parsing ${R::class.qualifiedName} from HttpResponse $e\n\t${e.stackTraceToString()}" }
+}.getOrNull()
+
+suspend inline fun <B : Any> post(
+  url: String,
+  body: B,
+  noinline config: HttpRequestBuilder.() -> Unit = {},
+): HttpResponse? = runCatching {
+  authenticatedHttpClient.post<HttpResponse>(url) {
+    this.body = body
+    config()
+  }
+}.onFailure { e ->
+  systemLogger.error { "Error parsing from HttpResponse $e\n\t${e.stackTraceToString()}" }
 }.getOrNull()

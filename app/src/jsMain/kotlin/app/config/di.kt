@@ -13,7 +13,6 @@ import org.kodein.di.*
 
 private val services by DIModule {
   bind<LibraryService>() with provider { LibraryService(instance()) }
-  bind<GreetService>() with provider { GreetService(instance()) }
 }
 
 val di = DI {
