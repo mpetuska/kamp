@@ -8,8 +8,10 @@ kotlin {
     implementation(project(rootProject.path))
     implementation("io.ktor:ktor-client-cio:_")
     implementation("io.ktor:ktor-client-auth:_")
+    implementation("org.kodein.di:kodein-di:_")
     implementation("org.jsoup:jsoup:_")
     implementation("ch.qos.logback:logback-classic:_")
+    implementation(kotlin("reflect"))
     
     testImplementation("io.kotest:kotest-runner-junit5:_")
   }
@@ -17,6 +19,7 @@ kotlin {
     languageSettings.apply {
       useExperimentalAnnotation("kotlinx.coroutines.ExperimentalCoroutinesApi")
       useExperimentalAnnotation("io.ktor.util.KtorExperimentalAPI")
+      useExperimentalAnnotation("kotlin.time.ExperimentalTime")
     }
   }
 }
@@ -31,13 +34,13 @@ tasks {
     main = mainClassName
     dependsOn(compileKotlin, processResources)
     classpath = files(
-      configurations.compileClasspath,
+      configurations.runtimeClasspath,
       compileKotlin.outputs,
       processResources.outputs
     )
   }
   jar {
-    val classpath = configurations.compileClasspath.get().files.map { if (it.isDirectory) it else zipTree(it) }
+    val classpath = configurations.runtimeClasspath.get().files.map { if (it.isDirectory) it else zipTree(it) }
     from(classpath) {
       exclude("META-INF/*.SF")
       exclude("META-INF/*.DSA")

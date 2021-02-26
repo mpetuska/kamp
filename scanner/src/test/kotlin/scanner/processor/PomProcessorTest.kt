@@ -8,17 +8,23 @@ class PomProcessorTest : FunSpec({
   val pom = parseXmlFile("presenter-middleware-0.2.10.pom")
   
   test("getDescription") {
-    val description = PomProcessor.getDescription(pom)
-    description shouldBe "Presenter middleware for updating views based on selectors & reselect for Redux-Kotlin. Mulitiplatform supported."
+    with(PomProcessor()) {
+      val description = pom.description
+      description shouldBe "Presenter middleware for updating views based on selectors & reselect for Redux-Kotlin. Mulitiplatform supported."
+    }
   }
   
   test("getUrl") {
-    val description = PomProcessor.getUrl(pom)
-    description shouldBe "https://github.com/reduxkotlin/presenter-middleware/"
+    with(PomProcessor()) {
+      val description = pom.url
+      description shouldBe "https://github.com/reduxkotlin/presenter-middleware/"
+    }
   }
   
   test("getScmUrl") {
-    val description = PomProcessor.getScmUrl(pom)
-    description shouldBe "https://github.com/reduxkotlin/presenter-middleare.git"
+    with(PomProcessor()) {
+      val description = pom.scmUrl
+      description shouldBe "https://github.com/reduxkotlin/presenter-middleare.git"
+    }
   }
 })

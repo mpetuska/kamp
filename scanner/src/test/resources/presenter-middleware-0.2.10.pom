@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <!-- This module was also published with a richer model, Gradle metadata,  -->
   <!-- which should be used instead. Do not delete the following line which  -->
   <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
@@ -10,7 +12,9 @@
   <artifactId>presenter-middleware</artifactId>
   <version>0.2.10</version>
   <packaging>pom</packaging>
-  <description>Presenter middleware for updating views based on selectors &amp; reselect for Redux-Kotlin.  Mulitiplatform supported.</description>
+  <description>Presenter middleware for updating views based on selectors &amp; reselect for Redux-Kotlin.
+    Mulitiplatform supported.
+  </description>
   <name>presenter-middleware</name>
   <url>https://github.com/reduxkotlin/presenter-middleware/</url>
   <licenses>
