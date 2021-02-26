@@ -1,6 +1,7 @@
 [![Gitpod ready-to-code](https://img.shields.io/badge/gitpod-ready--to--code-blue?logo=gitpod&style=flat-square)](https://gitpod.io/#https://github.com/mpetuska/kamp)
+[![Kotlin JS IR supported](https://img.shields.io/badge/Kotlin%2FJS-IR%20supported-yellow?style=flat-square&logo=kotlin)](https://kotl.in/jsirsupported)
 
-# KAMP
+# [KAMP](https://www.kamp.ml)
 This project aims to provide an extensive catalogue of kotlin multiplatform projects across various maven repositories
 out there.
 
@@ -19,10 +20,10 @@ An internet crawler that's meant to scan and identify kotlin libraries across th
 It is only able to find the libraries published with gradle-metadata, so older Kotlin libraries might be missing.
 Currently, supported maven repositories are:
 * Maven Central
-* JCenter (limited support due to lackluster bintray API limitations, no guarantees for your package to show up)
 
 ## App
-The driving server and client to expose the data collected by the scanner as a nice web-based catalogue.
-It's still WIP. Star the repo for updates as to when it'll be published.
+
+The driving server and client to expose the data collected by the scanner as a nice web-based catalogue. It's still a
+WIP. Star the repo for updates.
 
   

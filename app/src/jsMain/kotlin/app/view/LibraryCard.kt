@@ -16,7 +16,7 @@ private fun badgeColor(category: String) = when (category) {
   else -> "secondary"
 }
 
-private fun Container.TargetBadge(category: String, targets: Collection<KotlinTarget>) {
+private fun Container.TargetBadge(category: String, targets: List<KotlinTarget>) {
   if (targets.size > 1) {
     buttonGroup {
       link(category, classes = setOf("badge", "badge-pill", "badge-${badgeColor(category)}", "dropdown-toggle", "mr-2")) {
@@ -33,7 +33,7 @@ private fun Container.TargetBadge(category: String, targets: Collection<KotlinTa
     }
   } else {
     span(classes = setOf("badge", "badge-pill", "badge-${badgeColor(category)}", "mr-2")) {
-      +category
+      +(targets.firstOrNull()?.platform ?: category)
     }
   }
 }
