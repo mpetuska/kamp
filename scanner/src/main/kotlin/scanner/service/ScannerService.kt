@@ -58,15 +58,13 @@ abstract class ScannerService<A : MavenArtifact> {
           errorSafe {
             client.getGradleModule(artifact)?.also { module ->
               val targets = GradleModuleProcessor.listSupportedTargets(module)
-              if (GradleModuleProcessor.isRootModule(module) && targets.isNotEmpty()) {
+              if (GradleModuleProcessor.isRootModule(module) && !targets.isNullOrEmpty()) {
                 client.getMavenPom(artifact)?.let { pom ->
-                  val pomDetails = pom.let {
-                    PomDetails(
-                      PomProcessor.getDescription(pom),
-                      PomProcessor.getUrl(pom),
-                      PomProcessor.getScmUrl(pom)
-                    )
-                  }
+                  val pomDetails = PomDetails(
+                    PomProcessor.getDescription(pom),
+                    PomProcessor.getUrl(pom),
+                    PomProcessor.getScmUrl(pom)
+                  )
                   buildMppLibrary(pomDetails, targets, artifact)?.also { lib ->
                     send(lib)
                   }

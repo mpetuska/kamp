@@ -12,17 +12,19 @@ object MCScannerService : ScannerService<MCArtifact>() {
   override fun CoroutineScope.produceArtifactChannel(): ReceiveChannel<MCArtifact> =
     produce(capacity = 16) {
       val pages = produce(capacity = 16) {
-        val repos = client.listRepositoryPath("")
-        val filtered = repos.filter { it.isDirectory }
-        filtered.forEach {
-          errorSafe {
-            send(client.listRepositoryPath(it.path))
+        client.listRepositoryPath("")
+          ?.filter(RepoItem::isDirectory)
+          ?.forEach {
+            errorSafe {
+              send(client.listRepositoryPath(it.path))
+            }
           }
-        }
       }
       parallel {
         pages.consumeSafe { page ->
-          scanRepoPage(page)
+          if (page != null) {
+            scanRepoPage(page)
+          }
         }
       }
     }
@@ -36,17 +38,20 @@ object MCScannerService : ScannerService<MCArtifact>() {
     } else {
       coroutineScope {
         val subpages = produce {
-          page.filter { it.isDirectory }.forEach {
-            errorSafe {
-              logger.info { "Scanning MC page ${it.path}" }
-              val subpage = client.listRepositoryPath(it.path)
-              send(subpage)
+          page.filter(RepoItem::isDirectory)
+            .forEach {
+              errorSafe {
+                logger.info { "Scanning MC page ${it.path}" }
+                val subpage = client.listRepositoryPath(it.path)
+                send(subpage)
+              }
             }
-          }
         }
         parallel {
           subpages.consumeSafe { subpage ->
-            scanRepoPage(subpage)
+            if (subpage != null) {
+              scanRepoPage(subpage)
+            }
           }
         }
       }

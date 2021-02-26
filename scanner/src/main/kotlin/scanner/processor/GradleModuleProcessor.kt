@@ -4,11 +4,11 @@ import kamp.domain.*
 import scanner.domain.*
 
 object GradleModuleProcessor {
-  val kotlinVersion: String = "1.4.10"
+  val kotlinVersion: String = "1.4.30"
   
   fun isRootModule(module: GradleModule) = module.component?.url == null
   
-  fun listSupportedTargets(module: GradleModule): Set<KotlinTarget> = module.variants?.mapNotNull { variant ->
+  fun listSupportedTargets(module: GradleModule): Set<KotlinTarget>? = module.variants?.mapNotNull { variant ->
     variant.attributes?.let { attrs ->
       when (attrs.orgJetbrainsKotlinPlatformType) {
         "common" -> KotlinTarget.Common()
@@ -23,5 +23,5 @@ object GradleModuleProcessor {
         else -> null
       }
     }
-  }?.toSet() ?: setOf()
+  }?.toSet()
 }

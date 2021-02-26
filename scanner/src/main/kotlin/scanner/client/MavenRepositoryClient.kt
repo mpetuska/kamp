@@ -5,7 +5,12 @@ import org.jsoup.nodes.*
 import scanner.domain.*
 import scanner.util.*
 
-abstract class MavenRepositoryClient<A : MavenArtifact> {
+abstract class MavenRepositoryClient<A : MavenArtifact>(
+  private val defaultRepositoryRootUrl: String,
+) {
+  protected abstract fun parsePage(page: Document): List<String>?
+  
+  
   private val A.mavenModuleRootUrl: String
     get() = "$defaultRepositoryRootUrl/${group.replace(".", "/")}/$name"
   private val A.mavenModuleVersionUrl: String
@@ -38,15 +43,10 @@ abstract class MavenRepositoryClient<A : MavenArtifact> {
   suspend fun getMavenPom(artifact: A): Document? =
     fetch<String>("${artifact.mavenModuleVersionUrl}/${artifact.name}-${artifact.latestVersion}.pom")?.asDocument()
   
-  suspend fun listRepositoryPath(path: String): List<RepoItem> =
+  suspend fun listRepositoryPath(path: String): List<RepoItem>? =
     fetch<String>("$defaultRepositoryRootUrl$path")?.let { str ->
-      parsePage(str.asDocument()).mapNotNull { RepoItem(it, path).takeUnless { v -> v.value.startsWith("..") } }
-    } ?: listOf()
-  
-  protected abstract val A.repositoryRootUrl: String
-  protected abstract val defaultRepositoryRootUrl: String
-  
-  protected abstract fun parsePage(page: Document): List<String>
+      parsePage(str.asDocument())?.mapNotNull { RepoItem(it, path).takeUnless { v -> v.value.startsWith("..") } }
+    }
 }
 
 class RepoItem(val value: String, path: String) {
