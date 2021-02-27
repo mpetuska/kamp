@@ -20,7 +20,7 @@ class Orchestrator(override val di: DI) : DIAware {
     
     val duration = measureTime {
       coroutineScope {
-        scanners.mapValues { (_, scanner) -> asyncOrNull { scanRepo(scanner) } }
+        scanners.mapValues { (_, scanner) -> supervisedAsync { scanRepo(scanner) } }
           .mapValues { (_, it) -> it.await() }
           .forEach { (name, count) ->
             logger.info("Found $count kotlin modules with gradle metadata in $name repository")
@@ -40,15 +40,15 @@ class Orchestrator(override val di: DI) : DIAware {
   private suspend fun scanRepo(scanner: MavenScannerService<*>): Int {
     logger.info("Starting $scanner scan")
     val count = MutableStateFlow(0)
+    val kamp by di.instance<HttpClient>()
     scanner.scan { lib ->
       count.value++
-      val kamp by di.instance<HttpClient>()
-      kamp.use {
-        it.post("${PrivateEnv.API_URL}/api/library") {
-          body = lib
-        }
+      kamp.post("${PrivateEnv.API_URL}/api/library") {
+        body = lib
       }
     }
+    kamp.close()
+    scanner.close()
     logger.info("Completed $scanner scan")
     return count.value
   }

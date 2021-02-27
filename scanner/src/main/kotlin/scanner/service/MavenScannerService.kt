@@ -1,25 +1,25 @@
 package scanner.service
 
+import io.ktor.utils.io.core.*
 import kamp.domain.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.channels.*
 import scanner.client.*
 import scanner.processor.*
 import scanner.util.*
 
-abstract class MavenScannerService<A : MavenArtifact>(
-  private val pomProcessor: PomProcessor,
-  private val gradleModuleProcessor: GradleModuleProcessor,
-) {
+abstract class MavenScannerService<A : MavenArtifact> : Closeable {
   protected val logger by LoggerDelegate()
+  protected abstract val pomProcessor: PomProcessor
+  protected abstract val gradleModuleProcessor: GradleModuleProcessor
   protected abstract val client: MavenRepositoryClient<A>
-  protected abstract val artifacts: Flow<A>
+  protected abstract fun CoroutineScope.produceArtifacts(): ReceiveChannel<A>
   
-  protected open suspend fun buildMppLibrary(
+  private fun buildMppLibrary(
     pomDetails: PomDetails,
     targets: Set<KotlinTarget>,
     artifact: A,
-  ): KotlinMPPLibrary? {
+  ): KotlinMPPLibrary {
     val (description, website, scm) = pomDetails
     
     return KotlinMPPLibrary(
@@ -46,37 +46,41 @@ abstract class MavenScannerService<A : MavenArtifact>(
       }
       res
     }
-    
+  
     operator fun component1() = description
     operator fun component2() = website
     operator fun component3() = scm
   }
   
   suspend fun scan(onFound: suspend (KotlinMPPLibrary) -> Unit): Unit = coroutineScope {
-    channelFlow {
-      artifacts.collect { artifact ->
-        client.getGradleModule(artifact)?.also { module ->
-          with(gradleModuleProcessor) {
-            val targets = module.supportedTargets
-            if (module.isRootModule && !targets.isNullOrEmpty()) {
-              client.getMavenPom(artifact)?.let { pom ->
-                val pomDetails = with(pomProcessor) {
-                  PomDetails(
-                    description = pom.description,
-                    website = pom.url,
-                    scm = pom.scmUrl,
-                  )
-                }
-                buildMppLibrary(pomDetails, targets, artifact)?.also { lib ->
-                  send(lib)
-                }
-              } ?: logger.warn("Could not find pom.xml for module: ${artifact.path}")
-            } else {
-              logger.info("Non-root gradle module: ${artifact.path}")
+    val artifactsChannel = produceArtifacts()
+    
+    List(Runtime.getRuntime().availableProcessors() * 2) {
+      supervisedLaunch {
+        for (artifact in artifactsChannel) {
+          client.getGradleModule(artifact)?.also { module ->
+            with(gradleModuleProcessor) {
+              val targets = module.supportedTargets
+              if (module.isRootModule && !targets.isNullOrEmpty()) {
+                client.getMavenPom(artifact)?.let { pom ->
+                  val pomDetails = with(pomProcessor) {
+                    PomDetails(
+                      description = pom.description,
+                      website = pom.url,
+                      scm = pom.scmUrl,
+                    )
+                  }
+                  supervisedLaunch { onFound(buildMppLibrary(pomDetails, targets, artifact)) }
+                } ?: logger.warn("Could not find pom.xml for module: ${artifact.path}")
+              } else {
+                logger.info("Non-root gradle module: ${artifact.path}")
+              }
             }
-          }
-        } ?: logger.debug("Not a gradle module: ${artifact.path}")
+          } ?: logger.debug("Not a gradle module: ${artifact.path}")
+        }
       }
-    }.collect(onFound)
+    }.joinAll()
   }
+  
+  override fun close() = client.close()
 }

@@ -1,42 +1,62 @@
 package scanner.service
 
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.*
-import kotlinx.coroutines.flow.*
 import scanner.client.*
 import scanner.domain.mc.*
 import scanner.processor.*
+import scanner.util.*
+import kotlin.time.*
 
 class MavenCentralScannerService(
   override val client: MavenRepositoryClient<MCArtifact>,
-  pomProcessor: PomProcessor,
-  gradleModuleProcessor: GradleModuleProcessor,
-) : MavenScannerService<MCArtifact>(pomProcessor, gradleModuleProcessor) {
-  
-  private suspend fun ProducerScope<MCArtifact>.scanRepoPage(page: List<MavenRepositoryClient.RepoItem>) {
-    val mavenMetadata = page.find { it.value == "maven-metadata.xml" }
-    if (mavenMetadata != null) {
-      client.getArtifactDetails(mavenMetadata.path)?.let {
-        send(MCArtifact(it.group, it.name, it.latestVersion))
-      }
-    } else {
-      channelFlow {
-        page
-          .filter(MavenRepositoryClient.RepoItem::isDirectory)
-          .forEach {
-            logger.info("Scanning MC page ${it.path}")
-            client.listRepositoryPath(it.path)?.let { item -> send(item) }
-          }
-      }.collect { scanRepoPage(it) }
+  override val pomProcessor: PomProcessor,
+  override val gradleModuleProcessor: GradleModuleProcessor,
+) : MavenScannerService<MCArtifact>() {
+  override fun CoroutineScope.produceArtifacts(): ReceiveChannel<MCArtifact> = produce {
+    val pageChannel = Channel<List<MavenRepositoryClient.RepoItem>>(Channel.BUFFERED)
+    supervisedLaunch {
+      client.listRepositoryPath("")?.let { pageChannel.send(it) }
     }
-  }
-  
-  override val artifacts: Flow<MCArtifact> = channelFlow {
-    channelFlow {
-      client.listRepositoryPath("")
-        ?.filter(MavenRepositoryClient.RepoItem::isDirectory)
-        ?.forEach {
-          client.listRepositoryPath(it.path)?.let { item -> send(item) }
+    
+    // Tracker
+    supervisedLaunch {
+      var ticks = 0
+      do {
+        delay(30.seconds)
+        if (pageChannel.isEmpty) {
+          ticks++
+          logger.info("Page channel empty, ${5 - ticks} ticks remaining until close")
+        } else {
+          ticks = 0
         }
-    }.collect { scanRepoPage(it) }
+      } while (ticks < 5)
+      pageChannel.close()
+    }
+    
+    // Workers
+    List(Runtime.getRuntime().availableProcessors() * 2) {
+      supervisedLaunch {
+        for (page in pageChannel) {
+          val mavenMetadata = page.find { it.value == "maven-metadata.xml" }
+          if (mavenMetadata != null) {
+            client.getArtifactDetails(mavenMetadata.path)?.let {
+              send(MCArtifact(it.group, it.name, it.latestVersion))
+            }
+          } else {
+            page
+              .filter(MavenRepositoryClient.RepoItem::isDirectory)
+              .map {
+                supervisedLaunch {
+                  client.listRepositoryPath(it.path)?.let { item ->
+                    logger.info("Scanning MC page ${it.path}")
+                    pageChannel.send(item)
+                  }
+                }
+              }
+          }
+        }
+      }
+    }.joinAll()
   }
 }

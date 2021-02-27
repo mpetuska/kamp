@@ -4,7 +4,6 @@ plugins {
   kotlin("multiplatform")
   id("org.jetbrains.kotlin.plugin.serialization")
   id("org.jlleitschuh.gradle.ktlint")
-  id("com.bnorm.react.kotlin-react-function") apply false
   idea
 }
 
@@ -21,8 +20,6 @@ allprojects {
   repositories {
     mavenCentral()
     maven("https://jitpack.io")
-    jcenter()
-    mavenLocal()
   }
   tasks {
     withType<Test> {

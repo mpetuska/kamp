@@ -55,7 +55,11 @@ resource "azurerm_cosmosdb_mongo_collection" "libraries" {
     unique = true
   }
   index {
-    keys   = ["name"]
+    keys   = ["group", "name", "description"]
+    unique = false
+  }
+  index {
+    keys   = ["targets.platform"]
     unique = false
   }
 }

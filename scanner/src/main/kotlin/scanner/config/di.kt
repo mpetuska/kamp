@@ -25,7 +25,7 @@ fun HttpClientConfig<CIOEngineConfig>.baseConfig() {
 }
 
 val di = DI {
-  bind() from singleton { MavenCentralClient(di) }
+  bind() from provider { MavenCentralClient(instance()) }
   bind<MavenScannerService<*>>("mavenCentral") with singleton { MavenCentralScannerService(instance(), instance(), instance("1.4.30")) }
   
   bind() from singleton { PomProcessor() }

@@ -2,17 +2,18 @@ package scanner.client
 
 import io.ktor.client.*
 import io.ktor.client.request.*
+import io.ktor.utils.io.core.*
 import kamp.domain.*
 import kotlinx.coroutines.*
 import org.jsoup.nodes.*
-import org.kodein.di.*
 import scanner.domain.*
 import scanner.util.*
 
 abstract class MavenRepositoryClient<A : MavenArtifact>(
   private val defaultRepositoryRootUrl: String,
-) : DIAware {
+) : Closeable {
   protected abstract fun parsePage(page: Document): List<String>?
+  protected abstract val client: HttpClient
   
   private val A.mavenModuleRootUrl: String
     get() = "$defaultRepositoryRootUrl/${group.replace(".", "/")}/$name"
@@ -21,8 +22,7 @@ abstract class MavenRepositoryClient<A : MavenArtifact>(
   
   suspend fun getArtifactDetails(pathToMavenMetadata: String): MavenArtifact? =
     coroutineScope {
-      val client by di.instance<HttpClient>()
-      val artifact = asyncOrNull {
+      val artifact = supervisedAsync {
         val pom = client.get<String>("$defaultRepositoryRootUrl$pathToMavenMetadata").asDocument()
         val doc = pom.getElementsByTag("metadata").first()
         listOfNotNull(
@@ -43,41 +43,39 @@ abstract class MavenRepositoryClient<A : MavenArtifact>(
   
   
   suspend fun getLatestVersion(artifact: A): String? = coroutineScope {
-    asyncOrNull {
-      val client by di.instance<HttpClient>()
+    supervisedAsync {
       client.get<String>("${artifact.mavenModuleRootUrl}/maven-metadata.xml").asDocument().selectFirst("metadata>versioning>latest")?.text()
     }.await()
   }
   
   
   suspend fun getGradleModule(artifact: A): GradleModule? = coroutineScope {
-    asyncOrNull {
-      val client by di.instance<HttpClient>()
+    supervisedAsync {
       client.get<GradleModule>("${artifact.mavenModuleVersionUrl}/${artifact.name}-${artifact.latestVersion}.module")
     }.await()
   }
   
   suspend fun getMavenPom(artifact: A): Document? = coroutineScope {
-    asyncOrNull {
-      val client by di.instance<HttpClient>()
+    supervisedAsync {
       client.get<String>("${artifact.mavenModuleVersionUrl}/${artifact.name}-${artifact.latestVersion}.pom").asDocument()
     }.await()
   }
   
   suspend fun listRepositoryPath(path: String): List<RepoItem>? = coroutineScope {
-    asyncOrNull {
-      val client by di.instance<HttpClient>()
+    supervisedAsync {
       client.get<String>("$defaultRepositoryRootUrl$path").let { str ->
         parsePage(str.asDocument())?.mapNotNull { RepoItem(it, path).takeUnless { v -> v.value.startsWith("..") } }
       }
     }.await()
   }
   
+  override fun close() = client.close()
+  
   class RepoItem(val value: String, path: String) {
     val parentPath = "/${path.removeSuffix("/").removePrefix("/")}"
     val path = "${if (parentPath == "/") "" else parentPath}/$value".removeSuffix("/")
-    val isFile = !value.endsWith("/")
     val isDirectory = value.endsWith("/")
+    val isFile = !isDirectory
     
     override fun toString() = value
   }
