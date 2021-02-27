@@ -73,7 +73,7 @@ abstract class MavenScannerService<A : MavenArtifact> : Closeable {
                   supervisedLaunch { onFound(buildMppLibrary(pomDetails, targets, artifact)) }
                 } ?: logger.warn("Could not find pom.xml for module: ${artifact.path}")
               } else {
-                logger.info("Non-root gradle module: ${artifact.path}")
+                logger.debug("Non-root gradle module: ${artifact.path}")
               }
             }
           } ?: logger.debug("Not a gradle module: ${artifact.path}")

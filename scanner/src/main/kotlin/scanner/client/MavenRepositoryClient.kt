@@ -5,6 +5,8 @@ import io.ktor.client.request.*
 import io.ktor.utils.io.core.*
 import kamp.domain.*
 import kotlinx.coroutines.*
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
 import org.jsoup.nodes.*
 import scanner.domain.*
 import scanner.util.*
@@ -14,6 +16,9 @@ abstract class MavenRepositoryClient<A : MavenArtifact>(
 ) : Closeable {
   protected abstract fun parsePage(page: Document): List<String>?
   protected abstract val client: HttpClient
+  private val JSON = Json {
+    ignoreUnknownKeys = true
+  }
   
   private val A.mavenModuleRootUrl: String
     get() = "$defaultRepositoryRootUrl/${group.replace(".", "/")}/$name"
@@ -51,7 +56,8 @@ abstract class MavenRepositoryClient<A : MavenArtifact>(
   
   suspend fun getGradleModule(artifact: A): GradleModule? = coroutineScope {
     supervisedAsync {
-      client.get<GradleModule>("${artifact.mavenModuleVersionUrl}/${artifact.name}-${artifact.latestVersion}.module")
+      val json = client.get<String>("${artifact.mavenModuleVersionUrl}/${artifact.name}-${artifact.latestVersion}.module")
+      JSON.decodeFromString<GradleModule>(json)
     }.await()
   }
   
@@ -63,7 +69,7 @@ abstract class MavenRepositoryClient<A : MavenArtifact>(
   
   suspend fun listRepositoryPath(path: String): List<RepoItem>? = coroutineScope {
     supervisedAsync {
-      client.get<String>("$defaultRepositoryRootUrl$path").let { str ->
+      client.get<String>("$defaultRepositoryRootUrl${path.removeSuffix("/")}/").let { str ->
         parsePage(str.asDocument())?.mapNotNull { RepoItem(it, path).takeUnless { v -> v.value.startsWith("..") } }
       }
     }.await()

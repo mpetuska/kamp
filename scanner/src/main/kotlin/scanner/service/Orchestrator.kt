@@ -3,7 +3,8 @@ package scanner.service
 import io.ktor.client.*
 import io.ktor.client.request.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
 import org.kodein.di.*
 import scanner.util.*
 import kotlin.time.*
@@ -39,10 +40,14 @@ class Orchestrator(override val di: DI) : DIAware {
   
   private suspend fun scanRepo(scanner: MavenScannerService<*>): Int {
     logger.info("Starting $scanner scan")
-    val count = MutableStateFlow(0)
-    val kamp by di.instance<HttpClient>()
+    val json = Json {
+      prettyPrint = true
+    }
+    var count = 0
+    val kamp by di.instance<HttpClient>("kamp")
     scanner.scan { lib ->
-      count.value++
+      count++
+      logger.info(json.encodeToString(lib))
       kamp.post("${PrivateEnv.API_URL}/api/library") {
         body = lib
       }
@@ -50,6 +55,6 @@ class Orchestrator(override val di: DI) : DIAware {
     kamp.close()
     scanner.close()
     logger.info("Completed $scanner scan")
-    return count.value
+    return count
   }
 }

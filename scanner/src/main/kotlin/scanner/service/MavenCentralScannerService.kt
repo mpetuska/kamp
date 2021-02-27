@@ -25,13 +25,15 @@ class MavenCentralScannerService(
       do {
         delay(30.seconds)
         if (pageChannel.isEmpty) {
-          ticks++
           logger.info("Page channel empty, ${5 - ticks} ticks remaining until close")
+          ticks++
         } else {
           ticks = 0
         }
       } while (ticks < 5)
+      logger.info("Closing page channel")
       pageChannel.close()
+      logger.info("Closed page channel")
     }
     
     // Workers
@@ -49,7 +51,7 @@ class MavenCentralScannerService(
               .map {
                 supervisedLaunch {
                   client.listRepositoryPath(it.path)?.let { item ->
-                    logger.info("Scanning MC page ${it.path}")
+                    logger.debug("Scanning MC page ${it.path}")
                     pageChannel.send(item)
                   }
                 }

@@ -7,17 +7,29 @@ import io.ktor.client.features.auth.*
 import io.ktor.client.features.auth.providers.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
+import io.ktor.client.request.*
 import io.ktor.http.*
 import org.kodein.di.*
 import scanner.client.*
 import scanner.processor.*
 import scanner.service.*
 import scanner.util.*
+import kotlin.time.*
 
 
 fun HttpClientConfig<CIOEngineConfig>.baseConfig() {
+  val timeout = 2.5.minutes.inMilliseconds.toLong()
+  engine {
+    requestTimeout = timeout
+  }
   defaultRequest {
     contentType(ContentType.Application.Json)
+    accept(ContentType.Application.Json)
+  }
+  install(HttpTimeout) {
+    requestTimeoutMillis = timeout
+    connectTimeoutMillis = timeout
+    socketTimeoutMillis = timeout
   }
   install(JsonFeature) {
     serializer = KotlinxSerializer(prettyJson)
