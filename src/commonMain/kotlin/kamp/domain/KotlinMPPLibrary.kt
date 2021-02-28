@@ -39,6 +39,9 @@ public data class KotlinMPPLibrary(
   @Transient
   val isMultiplatform: Boolean = targets.size > 1
 
+  @Transient
+  val version: String = releaseVersion ?: latestVersion
+
   init {
     _id = "$group:$name"
   }
