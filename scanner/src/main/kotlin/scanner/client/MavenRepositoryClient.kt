@@ -16,10 +16,8 @@ abstract class MavenRepositoryClient<A : MavenArtifact>(
 ) : Closeable {
   protected abstract fun parsePage(page: Document): List<String>?
   protected abstract val client: HttpClient
+  protected abstract val json: Json
   private val logger by LoggerDelegate()
-  private val json = Json {
-    ignoreUnknownKeys = true
-  }
   
   private val A.mavenModuleRootUrl: String
     get() = "$defaultRepositoryRootUrl/${group.replace(".", "/")}/$name"

@@ -37,9 +37,15 @@ fun HttpClientConfig<CIOEngineConfig>.baseConfig() {
 }
 
 val di = DI {
-  bind() from provider { MavenCentralClient(instance()) }
+  bind() from provider { MavenCentralClient(instance(), instance()) }
   bind<MavenScannerService<*>>("mavenCentral") with singleton { MavenCentralScannerService(instance(), instance(), instance("1.4.30")) }
   
+  bind() from singleton {
+    kotlinx.serialization.json.Json {
+      prettyPrint = true
+      ignoreUnknownKeys = true
+    }
+  }
   bind() from singleton { PomProcessor() }
   bind("1.4.30") from singleton { GradleModuleProcessor() }
   
