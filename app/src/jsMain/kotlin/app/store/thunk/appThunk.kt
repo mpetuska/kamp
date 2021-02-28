@@ -7,6 +7,7 @@ import app.store.state.*
 import app.util.*
 import io.ktor.http.*
 import io.kvision.redux.*
+import kotlinx.browser.*
 import org.kodein.di.*
 
 
@@ -17,7 +18,9 @@ fun fetchLibraryPage(page: Int, size: Int = 20, search: String? = null): ActionC
   }
   val service by di.instance<LibraryService>()
   suspending {
-    dispatch(AppAction.SetLibraries(service.getAll(page, size, theSearch)))
+    val libraries = service.getAll(page, size, theSearch)
+    dispatch(AppAction.SetLibraries(libraries))
+    window.scrollTo(0.0, 0.0)
   }
 }
 
