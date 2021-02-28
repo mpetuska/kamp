@@ -34,8 +34,7 @@ fun Container.Header() = navbar(
       }
     }
     ul(classes = setOf("pagination", "m-0")) {
-      li(classes = setOf("page-item")) {
-        setAttribute("disabled", "${libraries.prev == null}")
+      li(classes = setOf("page-item", libraries.prev?.let { "" } ?: "disabled")) {
         tag(type = TAG.A, classes = setOf("page-link")) {
           setAttribute("href", "#")
           span(classes = setOf("fas", "fa-arrow-left"))
@@ -64,8 +63,7 @@ fun Container.Header() = navbar(
           }
         }
       }
-      li(classes = setOf("page-item")) {
-        setAttribute("disabled", "${libraries.next == null}")
+      li(classes = setOf("page-item", libraries.next?.let { "" } ?: "disabled")) {
         tag(type = TAG.A, classes = setOf("page-link")) {
           setAttribute("href", "#")
           span(classes = setOf("fas", "fa-arrow-right"))
