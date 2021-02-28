@@ -85,7 +85,7 @@ fun Container.LibraryCard(library: KotlinMPPLibrary) = div(classes = setOf("card
   div(classes = setOf("card-footer")) {
     tabPanel(classes = setOf()) {
       tab("Gradle") {
-        val text = "implementation(\"${library.group}:${library.name}:${library.latestVersion}\")"
+        val text = "implementation(\"${library.group}:${library.name}:${library.version}\")"
         div(
           """
           |<pre>
@@ -100,7 +100,7 @@ fun Container.LibraryCard(library: KotlinMPPLibrary) = div(classes = setOf("card
         val text = """|&lt;dependency&gt;
                       |  &lt;groupId&gt;${library.group}&lt;/groupId&gt;
                       |  &lt;artifactId&gt;${library.name}&lt;/artifactId&gt;
-                      |  &lt;version&gt;${library.latestVersion}&lt;/version&gt;
+                      |  &lt;version&gt;${library.version}&lt;/version&gt;
                       |&lt;/dependency&gt;
                    """.trimMargin()
         div(
