@@ -15,9 +15,7 @@ class App : Application() {
     } ?: store.dispatch(fetchLibraryPage(1))
     root("root", ContainerType.NONE, false) {
       Header()
-      simplePanel(classes = setOf("container")) {
         Content()
-      }
     }
   }
   

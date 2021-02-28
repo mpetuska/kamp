@@ -7,11 +7,13 @@ import io.kvision.panel.*
 import io.kvision.state.*
 
 
-fun Container.Content() = vPanel {
-  h2("Libraries")
-  flexPanel(wrap = FlexWrap.WRAP, spacing = 15).bind(store) { (libraries) ->
-    for (library in libraries.data) {
-      LibraryCard(library)
+fun Container.Content() = div(classes = setOf("container")) {
+  vPanel {
+    h2("Libraries")
+    flexPanel(wrap = FlexWrap.WRAP, spacing = 15).bind(store) { (libraries) ->
+      for (library in libraries.data) {
+        LibraryCard(library)
+      }
     }
   }
 }
