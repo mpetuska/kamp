@@ -51,34 +51,36 @@ abstract class MavenScannerService<A : MavenArtifact> : Closeable {
     operator fun component3() = scm
   }
   
-  suspend fun scan() = channelFlow {
-    val artifactsChannel = produceArtifacts()
-    
-    List(Runtime.getRuntime().availableProcessors() * 2) {
-      supervisedLaunch {
-        for (artifact in artifactsChannel) {
-          client.getGradleModule(artifact)?.also { module ->
-            with(gradleModuleProcessor) {
-              val targets = module.supportedTargets
-              if (module.isRootModule && !targets.isNullOrEmpty()) {
-                client.getMavenPom(artifact)?.let { pom ->
-                  val pomDetails = with(pomProcessor) {
-                    PomDetails(
-                      description = pom.description,
-                      website = pom.url,
-                      scm = pom.scmUrl,
-                    )
-                  }
-                  supervisedLaunch { this@channelFlow.send(buildMppLibrary(pomDetails, targets, artifact)) }
-                } ?: logger.warn("Could not find pom.xml for module: ${artifact.path}")
-              } else {
-                logger.debug("Non-root gradle module: ${artifact.path}")
+  suspend fun scan() = coroutineScope {
+    produce(capacity = Channel.BUFFERED) {
+      val artifactsChannel = produceArtifacts()
+      
+      List(Runtime.getRuntime().availableProcessors() * 2) {
+        supervisedLaunch {
+          for (artifact in artifactsChannel) {
+            client.getGradleModule(artifact)?.also { module ->
+              with(gradleModuleProcessor) {
+                val targets = module.supportedTargets
+                if (module.isRootModule && !targets.isNullOrEmpty()) {
+                  client.getMavenPom(artifact)?.let { pom ->
+                    val pomDetails = with(pomProcessor) {
+                      PomDetails(
+                        description = pom.description,
+                        website = pom.url,
+                        scm = pom.scmUrl,
+                      )
+                    }
+                    supervisedLaunch { this@produce.send(buildMppLibrary(pomDetails, targets, artifact)) }
+                  } ?: logger.warn("Could not find pom.xml for module: ${artifact.path}")
+                } else {
+                  logger.debug("Non-root gradle module: ${artifact.path}")
+                }
               }
-            }
-          } ?: logger.debug("Not a gradle module: ${artifact.path}")
+            } ?: logger.debug("Not a gradle module: ${artifact.path}")
+          }
         }
-      }
-    }.joinAll()
+      }.joinAll()
+    }
   }
   
   override fun close() = client.close()

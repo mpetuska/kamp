@@ -42,7 +42,9 @@ abstract class MavenRepositoryClient<A : MavenArtifact>(
             lastUpdated = doc.selectFirst("versioning>lastUpdated")?.text()?.toLongOrNull(),
           )
         } catch (e: Exception) {
-          logger.warn("Unable to parse maven-metadata.xml from $url")
+          if (doc.selectFirst("plugins") == null) {
+            logger.warn("Unable to parse maven-metadata.xml from $url")
+          }
           null
         }
       }

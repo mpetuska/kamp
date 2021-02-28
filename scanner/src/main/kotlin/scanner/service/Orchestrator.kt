@@ -3,7 +3,6 @@ package scanner.service
 import io.ktor.client.*
 import io.ktor.client.request.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
 import kotlinx.serialization.*
 import kotlinx.serialization.json.*
 import org.kodein.di.*
@@ -46,10 +45,10 @@ class Orchestrator(override val di: DI) : DIAware {
     }
     var count = 0
     val kamp by di.instance<HttpClient>("kamp")
-    scanner.scan().buffer().collect { lib ->
+    for (lib in scanner.scan()) {
       count++
       logger.info(json.encodeToString(lib))
-      kamp.post("${PrivateEnv.API_URL}/api/library") {
+      kamp.post<Unit>("${PrivateEnv.API_URL}/api/library") {
         body = lib
       }
     }
