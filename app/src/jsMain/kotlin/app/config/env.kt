@@ -1,6 +1,5 @@
 package app.config
 
-import io.ktor.client.fetch.*
 import kotlinx.browser.*
 import kotlinx.coroutines.*
 import org.w3c.dom.*
@@ -13,7 +12,7 @@ inline val Window.env: AppEnv
   get() = asDynamic().env.unsafeCast<AppEnv>()
 
 suspend fun loadEnv(): AppEnv {
-  val env: AppEnv = fetch("/application.env").await().text().await()
+  val env: AppEnv = window.fetch("/application.env").await().text().await()
     .split("\n")
     .filter(String::isNotBlank)
     .joinToString(",", "{", "}") {

@@ -47,6 +47,7 @@ kotlin {
       dependencies {
         implementation("io.ktor:ktor-client-serialization:_")
         implementation("io.kvision:kvision-bootstrap:_")
+        implementation("io.kvision:kvision-bootstrap-spinner:_")
         implementation("io.kvision:kvision-fontawesome:_")
         implementation("io.kvision:kvision-redux-kotlin:_")
       }

@@ -23,7 +23,7 @@ private fun Routing.api() = route("/api") {
   route("/library") {
     get {
       val service by inject<LibraryService>()
-      call.respond(service.getAll(call.request.page, call.request.pageSize))
+      call.respond(service.getAll(call.request.page, call.request.pageSize, call.request.search))
     }
   
     authenticate {

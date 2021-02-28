@@ -12,17 +12,18 @@ class PomProcessor {
   
   val Document.scmUrl: String?
     get() = selectFirst("project>scm")?.let {
-      val url = it.selectFirst("url")?.text()
-        ?: it.selectFirst("connection")?.text()
-        ?: it.selectFirst("developerConnection")?.text()
-      url?.trim()
-        ?.split("://")
-        ?.let { chunks ->
-          chunks.getOrNull(1)
-            ?.removeSuffix(".git")
-            ?.removeSuffix("/")
-            ?.let { u -> "${chunks[0]}://$u.git" }
-        }
+      val url = run {
+        it.selectFirst("url")?.text()
+          ?: it.selectFirst("connection")?.text()
+          ?: it.selectFirst("developerConnection")?.text()
+      }?.trim()
+  
+      val path = url?.trim()?.split("://")?.getOrNull(1)
+        ?: url?.split("@")?.getOrNull(1)?.replaceFirst(":", "/")
+  
+      path?.removeSuffix(".git")
+        ?.removeSuffix("/")
+        ?.let { u -> "https://$u.git" }
         ?: url
     }
 }

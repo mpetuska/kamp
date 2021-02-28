@@ -52,7 +52,7 @@ class Orchestrator(override val di: DI) : DIAware {
           kamp.post<Unit>("${PrivateEnv.API_URL}/api/library") {
             body = lib
           }
-        }
+        }.join()
       }
     }
     kamp.close()

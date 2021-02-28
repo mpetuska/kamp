@@ -10,12 +10,20 @@ import io.kvision.redux.*
 import org.kodein.di.*
 
 
-fun fetchLibraryPage(url: String?): ActionCreator<AppAction, AppState> = { dispatch, _ ->
+fun fetchLibraryPage(page: Int, size: Int = 20, search: String? = null): ActionCreator<AppAction, AppState> = { dispatch, getState ->
+  val theSearch = search ?: getState().search
+  if (search != null) {
+    dispatch(AppAction.SetSearch(search.takeIf { it.isNotBlank() }))
+  }
+  val service by di.instance<LibraryService>()
+  suspending {
+    dispatch(AppAction.SetLibraries(service.getAll(page, size, theSearch)))
+  }
+}
+
+fun fetchLibraryPage(url: String?): ActionCreator<AppAction, AppState> = { dispatch, getState ->
   if (url != null) {
-    val service by di.instance<LibraryService>()
     val params = Url(url).parameters
-    suspending {
-      dispatch(AppAction.SetLibraries(service.getAll(params["page"]!!.toInt(), params["size"]!!.toInt())))
-    }
+    fetchLibraryPage(params["page"]!!.toInt(), params["size"]!!.toInt())(dispatch, getState)
   }
 }
