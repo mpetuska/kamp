@@ -1,19 +1,19 @@
 package scanner.service
 
+import kamp.domain.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.*
 import scanner.client.*
-import scanner.domain.mc.*
 import scanner.processor.*
 import scanner.util.*
 import kotlin.time.*
 
 class MavenCentralScannerService(
-  override val client: MavenRepositoryClient<MCArtifact>,
+  override val client: MavenRepositoryClient<MavenArtifactImpl>,
   override val pomProcessor: PomProcessor,
   override val gradleModuleProcessor: GradleModuleProcessor,
-) : MavenScannerService<MCArtifact>() {
-  override fun CoroutineScope.produceArtifacts(): ReceiveChannel<MCArtifact> = produce {
+) : MavenScannerService<MavenArtifactImpl>() {
+  override fun CoroutineScope.produceArtifacts(): ReceiveChannel<MavenArtifactImpl> = produce {
     val pageChannel = Channel<List<MavenRepositoryClient.RepoItem>>(Channel.BUFFERED)
     supervisedLaunch {
       client.listRepositoryPath("")?.let { pageChannel.send(it) }
@@ -40,11 +40,11 @@ class MavenCentralScannerService(
     List(Runtime.getRuntime().availableProcessors() * 2) {
       supervisedLaunch {
         for (page in pageChannel) {
-          val mavenMetadata = page.find { it.value == "maven-metadata.xml" }
-          if (mavenMetadata != null) {
-            client.getArtifactDetails(mavenMetadata.path)?.let {
-              send(MCArtifact(it.group, it.name, it.latestVersion))
-            }
+          val artifactDetails = page.find { it.value == "maven-metadata.xml" }?.let {
+            client.getArtifactDetails(it.path)
+          }
+          if (artifactDetails != null) {
+            send(artifactDetails)
           } else {
             page
               .filter(MavenRepositoryClient.RepoItem::isDirectory)

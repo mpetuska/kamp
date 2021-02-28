@@ -4,6 +4,7 @@ import io.ktor.utils.io.core.*
 import kamp.domain.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.*
+import kotlinx.coroutines.flow.*
 import scanner.client.*
 import scanner.processor.*
 import scanner.util.*
@@ -23,13 +24,11 @@ abstract class MavenScannerService<A : MavenArtifact> : Closeable {
     val (description, website, scm) = pomDetails
     
     return KotlinMPPLibrary(
-      group = artifact.group,
-      name = artifact.name,
-      latestVersion = artifact.latestVersion,
+      artifact = artifact,
       targets = targets,
       description = description,
       website = website,
-      scm = scm
+      scm = scm,
     )
   }
   
@@ -52,7 +51,7 @@ abstract class MavenScannerService<A : MavenArtifact> : Closeable {
     operator fun component3() = scm
   }
   
-  suspend fun scan(onFound: suspend (KotlinMPPLibrary) -> Unit): Unit = coroutineScope {
+  suspend fun scan() = channelFlow {
     val artifactsChannel = produceArtifacts()
     
     List(Runtime.getRuntime().availableProcessors() * 2) {
@@ -70,7 +69,7 @@ abstract class MavenScannerService<A : MavenArtifact> : Closeable {
                       scm = pom.scmUrl,
                     )
                   }
-                  supervisedLaunch { onFound(buildMppLibrary(pomDetails, targets, artifact)) }
+                  supervisedLaunch { this@channelFlow.send(buildMppLibrary(pomDetails, targets, artifact)) }
                 } ?: logger.warn("Could not find pom.xml for module: ${artifact.path}")
               } else {
                 logger.debug("Non-root gradle module: ${artifact.path}")

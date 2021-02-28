@@ -16,54 +16,50 @@ abstract class MavenRepositoryClient<A : MavenArtifact>(
 ) : Closeable {
   protected abstract fun parsePage(page: Document): List<String>?
   protected abstract val client: HttpClient
-  private val JSON = Json {
+  private val logger by LoggerDelegate()
+  private val json = Json {
     ignoreUnknownKeys = true
   }
   
   private val A.mavenModuleRootUrl: String
     get() = "$defaultRepositoryRootUrl/${group.replace(".", "/")}/$name"
   private val A.mavenModuleVersionUrl: String
-    get() = "$mavenModuleRootUrl/$latestVersion"
+    get() = "$mavenModuleRootUrl/$releaseVersion"
   
-  suspend fun getArtifactDetails(pathToMavenMetadata: String): MavenArtifact? =
+  suspend fun getArtifactDetails(pathToMavenMetadata: String): MavenArtifactImpl? =
     coroutineScope {
       val artifact = supervisedAsync {
-        val pom = client.get<String>("$defaultRepositoryRootUrl$pathToMavenMetadata").asDocument()
+        val url = "$defaultRepositoryRootUrl$pathToMavenMetadata"
+        val pom = client.get<String>(url).asDocument()
         val doc = pom.getElementsByTag("metadata").first()
-        listOfNotNull(
-          doc.selectFirst("groupId")?.text(),
-          doc.selectFirst("artifactId")?.text(),
-          doc.selectFirst("versioning>latest")?.text() ?: doc.selectFirst("version")?.text()
-        ).takeIf { it.size == 3 }?.let {
-          object : MavenArtifact {
-            override val group: String = it[0]
-            override val name: String = it[1]
-            override val latestVersion: String = it[2]
-          }
+        try {
+          MavenArtifactImpl(
+            group = doc.selectFirst("groupId").text(),
+            name = doc.selectFirst("artifactId").text(),
+            latestVersion = doc.selectFirst("versioning>latest")?.text() ?: doc.selectFirst("version").text(),
+            releaseVersion = doc.selectFirst("versioning>release")?.text(),
+            versions = doc.selectFirst("versioning>versions")?.children()?.map { v -> v.text() },
+            lastUpdated = doc.selectFirst("versioning>lastUpdated")?.text()?.toLongOrNull(),
+          )
+        } catch (e: Exception) {
+          logger.warn("Unable to parse maven-metadata.xml from $url")
+          null
         }
       }
       
       artifact.await()
     }
   
-  
-  suspend fun getLatestVersion(artifact: A): String? = coroutineScope {
-    supervisedAsync {
-      client.get<String>("${artifact.mavenModuleRootUrl}/maven-metadata.xml").asDocument().selectFirst("metadata>versioning>latest")?.text()
-    }.await()
-  }
-  
-  
   suspend fun getGradleModule(artifact: A): GradleModule? = coroutineScope {
     supervisedAsync {
-      val json = client.get<String>("${artifact.mavenModuleVersionUrl}/${artifact.name}-${artifact.latestVersion}.module")
-      JSON.decodeFromString<GradleModule>(json)
+      val module = client.get<String>("${artifact.mavenModuleVersionUrl}/${artifact.name}-${artifact.releaseVersion}.module")
+      json.decodeFromString<GradleModule>(module)
     }.await()
   }
   
   suspend fun getMavenPom(artifact: A): Document? = coroutineScope {
     supervisedAsync {
-      client.get<String>("${artifact.mavenModuleVersionUrl}/${artifact.name}-${artifact.latestVersion}.pom").asDocument()
+      client.get<String>("${artifact.mavenModuleVersionUrl}/${artifact.name}-${artifact.releaseVersion}.pom").asDocument()
     }.await()
   }
   

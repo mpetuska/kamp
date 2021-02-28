@@ -11,6 +11,7 @@ fun Application.features() {
   install(CallLogging) {
     level = Level.INFO
   }
+  install(StatusPages)
   install(ContentNegotiation) {
     json()
   }
