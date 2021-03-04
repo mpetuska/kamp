@@ -17,7 +17,7 @@ private fun badgeColor(category: String) = when (category) {
 }
 
 private fun Container.TargetBadge(category: String, targets: List<KotlinTarget>) {
-  if (targets.size > 1) {
+  if (targets.size > 1 || targets.firstOrNull()?.variant != null) {
     buttonGroup {
       link(category, classes = setOf("badge", "badge-pill", "badge-${badgeColor(category)}", "dropdown-toggle", "mr-2")) {
         setAttribute("type", "button")
