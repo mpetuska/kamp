@@ -17,8 +17,5 @@ fun Container.Content() = div(classes = setOf("container")) {
         }
       }
     }
-//    flexPanel(wrap = FlexWrap.WRAP, spacing = 15).bind(store) { (libraries) ->
-//
-//    }
   }
 }
