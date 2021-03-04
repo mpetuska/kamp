@@ -27,7 +27,7 @@ private fun Container.TargetBadge(category: String, targets: List<KotlinTarget>)
       }
       div(classes = setOf("dropdown-menu")) {
         for (target in targets) {
-          link("${target.platform}${target.variant?.let { v -> " | $v" } ?: ""}", classes = setOf("dropdown-item"))
+          link(target.variant ?: target.platform, classes = setOf("dropdown-item"))
         }
       }
     }
