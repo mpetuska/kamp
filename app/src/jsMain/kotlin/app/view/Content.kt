@@ -10,10 +10,15 @@ import io.kvision.state.*
 fun Container.Content() = div(classes = setOf("container")) {
   vPanel {
     h2("Libraries")
-    flexPanel(wrap = FlexWrap.WRAP, spacing = 15).bind(store) { (libraries) ->
-      for (library in libraries.data) {
-        LibraryCard(library)
+    responsiveGridPanel().bind(store) { (libraries) ->
+      libraries.data.forEachIndexed { index, kotlinMPPLibrary ->
+        options((index % 2) + 1, (index / 2) + 1) {
+          LibraryCard(kotlinMPPLibrary)
+        }
       }
     }
+//    flexPanel(wrap = FlexWrap.WRAP, spacing = 15).bind(store) { (libraries) ->
+//
+//    }
   }
 }

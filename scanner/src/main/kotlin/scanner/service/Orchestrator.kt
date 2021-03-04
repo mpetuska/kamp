@@ -49,7 +49,7 @@ class Orchestrator(override val di: DI) : DIAware {
         supervisedLaunch {
           count++
           logger.info(json.encodeToString(lib))
-          kamp.post<Unit>("${PrivateEnv.API_URL}/api/library") {
+          kamp.post<Unit>("${PrivateEnv.API_URL}/api/libraries") {
             body = lib
           }
         }.join()

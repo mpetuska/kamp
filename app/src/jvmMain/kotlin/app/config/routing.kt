@@ -12,26 +12,28 @@ import io.ktor.routing.*
 
 
 fun Application.routing() = routing {
-  api()
+  libraries()
   get("/application.env") {
     call.respondText("$PublicEnv")
   }
   staticContent()
 }
 
-private fun Routing.api() = route("/api") {
-  route("/library") {
-    get {
-      val service by inject<LibraryService>()
-      call.respond(service.getAll(call.request.page, call.request.pageSize, call.request.search))
-    }
+private fun Routing.libraries() = route(LibraryService.path) {
+  get {
+    val service by inject<LibraryService>()
+    call.respond(service.getAll(call.request.page, call.request.pageSize, call.request.search))
+  }
+  get("/count") {
+    val service by inject<LibraryService>()
+    call.respond(service.getCount())
+  }
   
-    authenticate {
-      post {
-        val service by inject<LibraryService>()
-        val entity = service.create(call.receive())
-        call.respond(HttpStatusCode.Created, entity)
-      }
+  authenticate {
+    post {
+      val service by inject<LibraryService>()
+      val entity = service.create(call.receive())
+      call.respond(HttpStatusCode.Created, entity)
     }
   }
 }

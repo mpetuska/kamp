@@ -21,9 +21,16 @@ fun Container.Header() = navbar(
   type = NavbarType.STICKYTOP,
   nColor = NavbarColor.DARK,
   bgColor = BsBgColor.DARK,
-) {
+).bind(store) { state ->
+  state.libraryCount?.let {
+    span(classes = setOf("badge", "badge-pill", "badge-info", "mr-2")) {
+      +"$it Libraries"
+    }
+  }
   navForm(rightAlign = true).bind(store) { (libraries, search) ->
     text(type = TextInputType.SEARCH, value = search) {
+      addCssClass("m-0")
+      addCssClass("mr-1")
       placeholder = "Search..."
       onEvent {
         keypress = {

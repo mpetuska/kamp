@@ -10,5 +10,6 @@ val appReducer: ReducerForActionType<AppState, AppAction> = { state, action ->
     is AppAction.ResetState -> action.state
     is AppAction.SetLibraries -> state.copy(libraries = action.libraries)
     is AppAction.SetSearch -> state.copy(search = action.search)
+    is AppAction.SetLibraryCount -> state.copy(libraryCount = action.count)
   }
 }

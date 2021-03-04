@@ -12,10 +12,13 @@ class App : Application() {
   override fun start(state: Map<String, Any>) {
     state["state"]?.let {
       store.dispatch(AppAction.ResetState(it.unsafeCast<AppState>()))
-    } ?: store.dispatch(fetchLibraryPage(1))
+    } ?: run {
+      store.dispatch(fetchLibraryPage(1))
+      store.dispatch(fetchLibraryCount())
+    }
     root("root", ContainerType.NONE, false) {
       Header()
-        Content()
+      Content()
     }
   }
   

@@ -34,7 +34,13 @@ actual class LibraryService(
     )
   }
   
+  actual suspend fun getCount(): LibraryCount {
+    return LibraryCount(collection.countDocuments())
+  }
+  
   suspend fun create(library: KotlinMPPLibrary) {
     collection.save(library)
   }
+  
+  actual companion object
 }

@@ -46,8 +46,8 @@ private fun targetPriority(target: String) = when (target) {
   else -> 0
 }
 
-fun Container.LibraryCard(library: KotlinMPPLibrary) = div(classes = setOf("card", "border-secondary", "mb-3", "mw-25")) {
-  width = 35.em
+fun Container.LibraryCard(library: KotlinMPPLibrary) = div(classes = setOf("card", "border-secondary", "mb-3")) {
+  maxWidth = 35.rem
   div(classes = setOf("card-body")) {
     div(classes = setOf("card-title", "d-flex", "justify-content-between")) {
       h4(library.name)

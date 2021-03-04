@@ -30,3 +30,10 @@ fun fetchLibraryPage(url: String?): ActionCreator<AppAction, AppState> = { dispa
     fetchLibraryPage(params["page"]!!.toInt(), params["size"]!!.toInt())(dispatch, getState)
   }
 }
+
+fun fetchLibraryCount(): ActionCreator<AppAction, AppState> = { dispatch, _ ->
+  val service by di.instance<LibraryService>()
+  suspending {
+    dispatch(AppAction.SetLibraryCount(service.getCount().count))
+  }
+}
