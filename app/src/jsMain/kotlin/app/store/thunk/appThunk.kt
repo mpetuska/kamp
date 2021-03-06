@@ -7,14 +7,17 @@ import kotlinx.browser.*
 import org.kodein.di.*
 
 
-fun fetchLibraryPage(page: Int, size: Int = 20, search: String? = null) = LibraryStore.handle { state ->
+fun fetchLibraryPage(page: Int, size: Int = 20, search: String? = null, targets: Set<String>? = null) = LibraryStore.handle { state ->
   val theSearch = search ?: state.search
+  val theTargets = targets ?: state.targets
+  
   val service by di.instance<LibraryService>()
-  val libraries = service.getAll(page, size, theSearch)
+  val libraries = service.getAll(page, size, theSearch, targets)
   window.scrollTo(0.0, 0.0)
   state.copy(
     libraries = libraries,
-    search = search,
+    search = theSearch,
+    targets = theTargets,
   )
 }
 

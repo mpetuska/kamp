@@ -9,6 +9,7 @@ object LibraryStore : RootStore<LibraryStore.LibraryState>(LibraryState()) {
   data class LibraryState(
     val libraries: PagedResponse<KotlinMPPLibrary>? = null,
     val search: String? = null,
+    val targets: Set<String>? = null,
     val count: Long? = null,
   )
   

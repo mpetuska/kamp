@@ -22,7 +22,7 @@ fun Application.routing() = routing {
 private fun Routing.libraries() = route(LibraryService.path) {
   get {
     val service by inject<LibraryService>()
-    call.respond(service.getAll(call.request.page, call.request.pageSize, call.request.search))
+    call.respond(service.getAll(call.request.page, call.request.pageSize, call.request.search, call.request.targets))
   }
   get("/count") {
     val service by inject<LibraryService>()

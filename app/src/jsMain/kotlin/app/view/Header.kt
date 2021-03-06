@@ -6,8 +6,6 @@ import app.view.component.*
 import dev.fritz2.binding.*
 import dev.fritz2.components.*
 import dev.fritz2.dom.html.*
-import dev.fritz2.styling.params.*
-import kotlinx.browser.*
 import kotlinx.coroutines.flow.*
 
 
@@ -80,22 +78,47 @@ import kotlinx.coroutines.flow.*
 //}
 
 @KampComponent
+private fun RenderContext.SearchModal() = modal { close ->
+  val searchStore = storeOf("")
+  val targetsStore = storeOf(listOf<String>())
+  content {
+    stackUp {
+      formControl {
+        inputField(store = searchStore) {
+          placeholder("Search...")
+        }
+      }
+      formControl {
+        label("Targets:")
+        
+        checkboxGroup(
+          items = listOf("jvm", "android", "js"),
+          store = targetsStore
+        ) {
+          direction { column }
+        }
+      }
+      clickButton {
+        text("Search")
+        icon { fromTheme { search } }
+      } handledBy close
+    }
+  }
+}
+
+@KampComponent
 fun RenderContext.Header() {
-  val menuStore = storeOf(false)
-  
   styled(::div)({
     children("&[data-menu-open] #menu-bottom") {
       display { flex }
     }
   }) {
-    attr("data-menu-open", menuStore.data)
-    
     navBar({
       border { width { "0" } }
       boxShadow { flat }
     }) {
       brand {
-        (::a.styled {
+        styled(::a)({
           after {
             textAlign { center }
             background { color { primary } }
@@ -110,7 +133,7 @@ fun RenderContext.Header() {
             display { inline }
             css("border-radius: 50%")
           }
-          
+    
           styled(::span)({
             margins { left { smaller } }
             verticalAlign { sub }
@@ -118,10 +141,18 @@ fun RenderContext.Header() {
             fontWeight { lighter }
           }) { +"KAMP" }
         }
-        LibraryStore.data.mapNotNull { it.count }.render { count ->
-          Badge("$count Libraries", { success }) {
+        LibraryStore.data.map { it.count }.render { count ->
+          Badge({ success }, {
             margins {
               left { small }
+            }
+          }) {
+            if (count != null) {
+              +"$count Libraries"
+            } else {
+              spinner {
+                speed("1s")
+              }
             }
           }
         }
@@ -130,21 +161,25 @@ fun RenderContext.Header() {
       actions {
         lineUp({
           display(sm = { none }, md = { flex })
-        }, id = "menu-bottom") {
+        }) {
           items {
             NavAnchor("https://github.com/mpetuska/kamp", "_new") {
               +"GitHub"
             }
           }
         }
+        val modal = SearchModal()
         clickButton({
-          display(sm = { flex }, md = { none })
+          display(sm = { inlineBlock }, md = { none })
         }) {
-          icon { fromTheme { menu } }
-        }.map {
-          window.scrollTo(0.0, 0.0)
-          !menuStore.current
-        } handledBy menuStore.update
+          icon { fromTheme { search } }
+        } handledBy modal
+        clickButton({
+          display(sm = { none }, md = { inlineBlock })
+        }) {
+          text("Search")
+          icon { fromTheme { search } }
+        } handledBy modal
       }
     }
   }

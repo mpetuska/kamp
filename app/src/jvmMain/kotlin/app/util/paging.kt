@@ -26,3 +26,4 @@ fun ApplicationRequest.buildPrevUrl(): String? = if (page > 1) {
 val ApplicationRequest.page get() = queryParameters["page"]?.let(String::toIntOrNull) ?: 1
 val ApplicationRequest.pageSize get() = queryParameters["size"]?.let(String::toIntOrNull) ?: 50
 val ApplicationRequest.search get() = queryParameters["search"]?.takeIf { it.isNotBlank() }
+val ApplicationRequest.targets get() = queryParameters.getAll("target")?.toSet()?.takeIf { it.isNotEmpty() }

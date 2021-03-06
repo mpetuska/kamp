@@ -4,7 +4,7 @@ import app.domain.*
 import kamp.domain.*
 
 expect class LibraryService {
-  suspend fun getAll(page: Int, size: Int = 20, search: String? = null): PagedResponse<KotlinMPPLibrary>
+  suspend fun getAll(page: Int, size: Int = 20, search: String? = null, targets: Set<String>? = null): PagedResponse<KotlinMPPLibrary>
   suspend fun getCount(): LibraryCount
   
   companion object

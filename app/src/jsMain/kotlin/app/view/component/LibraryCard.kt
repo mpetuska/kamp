@@ -1,6 +1,7 @@
 package app.view.component
 
 import app.util.*
+import app.view.*
 import dev.fritz2.components.*
 import dev.fritz2.dom.html.*
 import dev.fritz2.styling.theme.*
@@ -17,6 +18,18 @@ private val String.badgeColor: Colors.() -> Property
   }
 
 private fun RenderContext.TargetBadge(category: String, targets: List<KotlinTarget>) {
+  @KampComponent
+  fun RenderContext.RenderBadge(content: Span.() -> Unit) {
+    Badge(category.badgeColor, {
+      css("cursor: pointer")
+      height { large }
+      margins {
+        left { tiny }
+        top { tiny }
+      }
+    }, content)
+  }
+  
   if (targets.size > 1 || targets.firstOrNull()?.variant != null) {
     popover({
       width { minContent }
@@ -24,6 +37,7 @@ private fun RenderContext.TargetBadge(category: String, targets: List<KotlinTarg
       paddings {
         vertical { tiny }
       }
+      boxShadow { flat }
       minWidth { "5rem" }
       textAlign { center }
       background {
@@ -34,13 +48,8 @@ private fun RenderContext.TargetBadge(category: String, targets: List<KotlinTarg
       hasCloseButton(false)
       
       toggle {
-        Badge(category, category.badgeColor) {
-          css("cursor: pointer")
-          margins {
-            left { tiny }
-          }
-          tooltip(*targets.map { it.platform }.toTypedArray())
-        }.apply {
+        RenderBadge {
+          +category
           icon { fromTheme { caretDown } }
         }
       }
@@ -50,16 +59,18 @@ private fun RenderContext.TargetBadge(category: String, targets: List<KotlinTarg
             fontWeight { "500" }
             color { base }
             textShadow { flat }
-          }) { +target.platform }
+          }) {
+            +if (target.category == KotlinTarget.JS.category) {
+              target.variant ?: "UNKNOWN"
+            } else {
+              target.platform
+            }
+          }
         }
       }
     }
   } else {
-    Badge(targets.firstOrNull()?.platform ?: category, category.badgeColor) {
-      margins {
-        left { tiny }
-      }
-    }
+    RenderBadge { +(targets.firstOrNull()?.platform ?: category) }
   }
 }
 
@@ -82,12 +93,17 @@ private fun RenderContext.CardHeader(name: String, group: String, libraryTargets
       alignContent { center }
       justifyContent { spaceBetween }
     }) {
-      h4 { +name }
+      styled(::h4)({
+        margins {
+          top { tiny }
+        }
+      }) { +name }
       box({
         margins {
           left { small }
         }
         justifyContent { flexEnd }
+        css("flex-wrap: wrap")
         display { inlineFlex }
       }) {
         for ((category, targets) in groupedTargets) {
@@ -116,9 +132,9 @@ fun RenderContext.LibraryCard(library: KotlinMPPLibrary) {
     styled(::hr)({
       borders {
         top {
-          color { gray }
+          color { lightGray }
           style { solid }
-          width { "0.15rem" }
+          width { "0.1rem" }
         }
       }
       css("border-radius: 0.5rem")

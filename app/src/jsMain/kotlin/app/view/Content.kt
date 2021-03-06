@@ -38,9 +38,15 @@ fun RenderContext.Content() {
         width { "max-content" }
         css("align-self: center")
       }) {
-        LibraryStore.data.mapNotNull { it.libraries?.data }.render { libraries ->
-          for (library in libraries) {
-            LibraryCard(library)
+        LibraryStore.data.map { it.libraries?.data }.render { libraries ->
+          if (libraries == null) {
+            spinner {
+              speed("1s")
+            }
+          } else {
+            for (library in libraries) {
+              LibraryCard(library)
+            }
           }
         }
       }

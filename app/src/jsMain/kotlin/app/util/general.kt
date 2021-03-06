@@ -1,6 +1,7 @@
 package app.util
 
 import app.config.*
+import app.view.*
 import dev.fritz2.dom.html.*
 import dev.fritz2.styling.params.*
 import kotlinx.browser.*
@@ -23,6 +24,7 @@ fun String.toApi() = "${window.env.API_URL}/${this.removePrefix("/")}"
 
 typealias StyledComponent<E> = RenderContext.(style: BoxParams.() -> Unit, block: E.() -> Unit) -> E
 
+@KampComponent
 fun <E> styled(component: BasicComponent<E>): StyledComponent<E> = { style, block ->
   (component.styled(styling = style))(block)
 }
