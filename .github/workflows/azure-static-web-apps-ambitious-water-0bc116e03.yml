@@ -2,9 +2,8 @@ name: Release
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - master
+  release:
+    types: [ created ]
 
 jobs:
   build:

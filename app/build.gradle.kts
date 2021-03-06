@@ -19,7 +19,8 @@ kotlin {
         outputFileName = jsOutputFile
         devServer = devServer?.copy(
           port = 3000,
-          proxy = mapOf("/api/*" to "http://localhost:8080")
+          proxy = mapOf("/api/*" to "http://localhost:8080"),
+          open = false
         )
       }
     }
@@ -46,10 +47,11 @@ kotlin {
     named("jsMain") {
       dependencies {
         implementation("io.ktor:ktor-client-serialization:_")
-        implementation("io.kvision:kvision-bootstrap:_")
-        implementation("io.kvision:kvision-bootstrap-spinner:_")
-        implementation("io.kvision:kvision-fontawesome:_")
-        implementation("io.kvision:kvision-redux-kotlin:_")
+        implementation("dev.fritz2:core:_")
+        implementation("dev.fritz2:components:_")
+      }
+      languageSettings.apply {
+        useExperimentalAnnotation("kotlinx.coroutines.ExperimentalCoroutinesApi")
       }
     }
     named("jvmTest") {

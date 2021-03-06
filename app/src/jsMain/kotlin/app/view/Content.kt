@@ -1,19 +1,47 @@
 package app.view
 
 import app.store.*
-import io.kvision.core.*
-import io.kvision.html.*
-import io.kvision.panel.*
-import io.kvision.state.*
+import app.util.*
+import app.view.component.*
+import dev.fritz2.components.*
+import dev.fritz2.dom.html.*
+import kotlinx.coroutines.flow.*
 
 
-fun Container.Content() = div(classes = setOf("container")) {
-  vPanel {
-    h2("Libraries")
-    responsiveGridPanel().bind(store) { (libraries) ->
-      libraries.data.forEachIndexed { index, kotlinMPPLibrary ->
-        options((index % 2) + 1, (index / 2) + 1) {
-          LibraryCard(kotlinMPPLibrary)
+@KampComponent
+fun RenderContext.Content() {
+  stackUp({
+    alignItems { stretch }
+    color { dark }
+    minHeight { "100%" }
+    paddings(
+      sm = {
+        left { small }
+        right { small }
+      },
+      md = {
+        left { larger }
+        right { larger }
+      },
+    )
+    margins {
+      top { "5rem" }
+    }
+  }) {
+    items {
+      styled(::h2)({
+        textAlign { center }
+      }) { +"Kotlin Libraries" }
+      gridBox({
+        columns(sm = { "1fr" }, md = { repeat(2) { "1fr" } })
+        gap { small }
+        width { "max-content" }
+        css("align-self: center")
+      }) {
+        LibraryStore.data.mapNotNull { it.libraries?.data }.render { libraries ->
+          for (library in libraries) {
+            LibraryCard(library)
+          }
         }
       }
     }

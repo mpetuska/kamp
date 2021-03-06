@@ -1,6 +1,8 @@
 package app.util
 
 import app.config.*
+import dev.fritz2.dom.html.*
+import dev.fritz2.styling.params.*
 import kotlinx.browser.*
 import kotlinx.coroutines.*
 
@@ -17,3 +19,10 @@ inline fun suspending(crossinline block: suspend CoroutineScope.() -> Unit) {
 }
 
 fun String.toApi() = "${window.env.API_URL}/${this.removePrefix("/")}"
+
+
+typealias StyledComponent<E> = RenderContext.(style: BoxParams.() -> Unit, block: E.() -> Unit) -> E
+
+fun <E> styled(component: BasicComponent<E>): StyledComponent<E> = { style, block ->
+  (component.styled(styling = style))(block)
+}
