@@ -139,6 +139,8 @@ private fun RenderContext.SearchModal() = modal({
             }
             stackUpClose {
               TargetCheckboxGroup(mapOf(
+                "androidNativeX64" to "android_x64",
+                "androidNativeX86" to "android_x86",
                 "androidNativeArm32" to "android_arm32",
                 "androidNativeArm64" to "android_arm64",
               )) {
