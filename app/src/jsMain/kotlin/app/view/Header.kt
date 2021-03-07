@@ -121,6 +121,7 @@ private fun RenderContext.SearchModal() = modal({
           }) {
             stackUpClose {
               TargetCheckboxGroup(mapOf(
+                "linuxArm32Hfp" to "linux_arm32_hfp",
                 "linuxArm64" to "linux_arm64",
                 "linuxMips32" to "linux_mips32",
                 "linuxMipsel32" to "linux_mipsel32",
