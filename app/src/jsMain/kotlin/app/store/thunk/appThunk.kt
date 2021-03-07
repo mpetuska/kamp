@@ -7,7 +7,7 @@ import kotlinx.browser.*
 import org.kodein.di.*
 
 
-fun fetchLibraryPage(page: Int, size: Int = 20, search: String? = null, targets: Set<String>? = null) = LibraryStore.handle { state ->
+fun fetchLibraryPage(page: Int, size: Int = 12, search: String? = null, targets: Set<String>? = null) = LibraryStore.handle { state ->
   val theSearch = search ?: state.search
   val theTargets = targets ?: state.targets
   

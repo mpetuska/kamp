@@ -33,14 +33,16 @@ fun RenderContext.Content() {
         textAlign { center }
       }) { +"Kotlin Libraries" }
       gridBox({
-        columns(sm = { "1fr" }, md = { repeat(2) { "1fr" } })
+        columns(sm = { "1fr" }, md = { repeat(2) { "1fr" } }, xl = { repeat(3) { "1fr" } })
         gap { small }
         width { "max-content" }
         css("align-self: center")
       }) {
         LibraryStore.data.map { it.libraries?.data }.render { libraries ->
           if (libraries == null) {
-            spinner {
+            spinner({
+              size { large }
+            }) {
               speed("1s")
             }
           } else {

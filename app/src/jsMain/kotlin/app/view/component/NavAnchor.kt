@@ -1,12 +1,12 @@
 package app.view.component
 
+import app.util.*
 import app.view.*
 import dev.fritz2.dom.html.*
-import dev.fritz2.styling.params.*
 
 @KampComponent
-fun RenderContext.NavAnchor(href: String, target: String? = null, block: A.() -> Unit = {}) {
-  (::div.styled {
+fun RenderContext.Link(href: String, target: String? = null, block: A.() -> Unit = {}) {
+  styled(::div)({
     radius { small }
     border {
       width { none }
@@ -22,8 +22,8 @@ fun RenderContext.NavAnchor(href: String, target: String? = null, block: A.() ->
       left { small }
       right { small }
     }
-  }){
-    (::a.styled {
+  }) {
+    styled(::a)({
       fontSize { normal }
       fontWeight { semiBold }
       color { dark }
