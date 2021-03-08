@@ -8,7 +8,7 @@ import org.kodein.di.*
 
 
 fun fetchLibraryPage(page: Int, size: Int = 12, search: String? = null, targets: Set<String>? = null) = LibraryStore.handle { state ->
-  val theSearch = search ?: state.search
+  val theSearch = (search ?: state.search)?.takeIf(String::isNotEmpty)
   val theTargets = targets ?: state.targets
   
   val service by di.instance<LibraryService>()
@@ -22,7 +22,7 @@ fun fetchLibraryPage(page: Int, size: Int = 12, search: String? = null, targets:
 }
 
 fun fetchLibraryCount(search: String? = null, targets: Set<String>? = null) = LibraryStore.handle { state ->
-  val theSearch = search ?: state.search
+  val theSearch = (search ?: state.search)?.takeIf(String::isNotEmpty)
   val theTargets = targets ?: state.targets
   
   val service by di.instance<LibraryService>()

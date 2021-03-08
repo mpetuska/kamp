@@ -204,11 +204,11 @@ private fun RenderContext.SearchModal() = modal({
       }.map {}.onEach {
         fetchLibraryPage(
           page = 1,
-          search = searchStore.current.takeIf(String::isNotEmpty),
+          search = searchStore.current,
           targets = targetsStore.current.takeIf(Set<String>::isNotEmpty)
         )()
         fetchLibraryCount(
-          search = searchStore.current.takeIf(String::isNotEmpty),
+          search = searchStore.current,
           targets = targetsStore.current.takeIf(Set<String>::isNotEmpty)
         )()
       } handledBy close
