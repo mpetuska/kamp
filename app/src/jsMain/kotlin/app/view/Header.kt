@@ -20,6 +20,7 @@ private fun RenderContext.stackUpClose(style: BasicParams.() -> Unit = {}, child
 
 @KampComponent
 private fun RenderContext.SearchModal() = modal({
+  maxHeight { "92.5vh" }
   overflow { auto }
 }) { close ->
   val searchStore = storeOf("")
@@ -64,148 +65,153 @@ private fun RenderContext.SearchModal() = modal({
   
   size { large }
   content {
-    stackUp({
-      margins {
-        top { normal }
-      }
+    gridBox({
+      margin { auto }
+      columns { "1fr" }
+      maxWidth { "100%" }
+      overflow { auto }
+      gap { small }
+      width { minContent }
+      css("align-self: center")
     }) {
-      items {
-        box {
-          h3 { +"Text Search" }
-          inputField(store = searchStore) {
-            type("search")
-            placeholder("Search...")
-          }
+      box {
+        h3 { +"Text Search" }
+        inputField(store = searchStore) {
+          type("search")
+          placeholder("Search...")
         }
-        stackUpClose {
-          h3 { +"Targets" }
-          gridBox({
-            columns(
-              sm = { repeat(3) { "1fr" } },
-            )
-            gap { small }
-            margins {
-              bottom { small }
-            }
-          }) {
-            stackUpClose {
-              TargetCheckboxGroup(mapOf(
-                "common" to "common",
-              )) {
-                h4 { +"Metadata" }
-              }
-            }
-            stackUpClose {
-              TargetCheckboxGroup(mapOf(
-                "jvm" to "jvm",
-                "android" to "android",
-              )) {
-                h4 { +"JVM" }
-              }
-            }
-            stackUpClose {
-              TargetCheckboxGroup(mapOf(
-                "js" to "js",
-              )) {
-                h4 { +"JS" }
-              }
-            }
-          }
-          h4 { +"Native" }
-          gridBox({
-            columns(
-              sm = { repeat(2) { "1fr" } },
-              md = { repeat(3) { "1fr" } },
-            )
-            gap { small }
-          }) {
-            stackUpClose {
-              TargetCheckboxGroup(mapOf(
-                "linuxArm32Hfp" to "linux_arm32_hfp",
-                "linuxArm64" to "linux_arm64",
-                "linuxMips32" to "linux_mips32",
-                "linuxMipsel32" to "linux_mipsel32",
-                "linuxX64" to "linux_x64",
-              )) {
-                h6 { +"Linux" }
-              }
-            }
-            stackUpClose {
-              TargetCheckboxGroup(mapOf(
-                "mingwX64" to "mingw_x64",
-                "mingwX86" to "mingw_x86",
-              )) {
-                h6 { +"Windows" }
-              }
-            }
-            stackUpClose {
-              TargetCheckboxGroup(mapOf(
-                "androidNativeX64" to "android_x64",
-                "androidNativeX86" to "android_x86",
-                "androidNativeArm32" to "android_arm32",
-                "androidNativeArm64" to "android_arm64",
-              )) {
-                h6 { +"Android NDK" }
-              }
-            }
-            stackUpClose {
-              TargetCheckboxGroup(mapOf(
-                "tvosArm64" to "tvos_arm64",
-                "tvosX64" to "tvos_x64",
-              )) {
-                h6 { +"tvOS" }
-              }
-            }
-            stackUpClose {
-              TargetCheckboxGroup(mapOf(
-                "iosArm32" to "ios_arm32",
-                "iosArm64" to "ios_arm64",
-                "iosX64" to "ios_x64",
-              )) {
-                h6 { +"iOS" }
-              }
-            }
-            stackUpClose {
-              TargetCheckboxGroup(mapOf(
-                "watchosArm32" to "watchos_arm32",
-                "watchosArm64" to "watchos_arm64",
-                "watchosX86" to "watchos_x86",
-                "watchosX64" to "watchos_x64",
-              )) {
-                h6 { +"watchOS" }
-              }
-            }
-            stackUpClose {
-              TargetCheckboxGroup(mapOf(
-                "macosX64" to "macos_x64",
-              )) {
-                h6 { +"macOS" }
-              }
-            }
-            stackUpClose {
-              TargetCheckboxGroup(mapOf(
-                "wasm32" to "wasm32",
-              )) {
-                h6 { +"WebAssembly" }
-              }
-            }
-          }
-        }
-        clickButton {
-          text("Search")
-          icon { fromTheme { search } }
-        }.map {}.onEach {
-          fetchLibraryPage(
-            page = 1,
-            search = searchStore.current.takeIf(String::isNotEmpty),
-            targets = targetsStore.current.takeIf(Set<String>::isNotEmpty)
-          )()
-          fetchLibraryCount(
-            search = searchStore.current.takeIf(String::isNotEmpty),
-            targets = targetsStore.current.takeIf(Set<String>::isNotEmpty)
-          )()
-        } handledBy close
       }
+      stackUpClose {
+        h3 { +"Targets" }
+        gridBox({
+          columns(
+            sm = { repeat(3) { "1fr" } },
+          )
+          gap { small }
+          margins {
+            bottom { small }
+          }
+        }) {
+          stackUpClose {
+            TargetCheckboxGroup(mapOf(
+              "common" to "common",
+            )) {
+              h4 { +"Metadata" }
+            }
+          }
+          stackUpClose {
+            TargetCheckboxGroup(mapOf(
+              "jvm" to "jvm",
+              "android" to "android",
+            )) {
+              h4 { +"JVM" }
+            }
+          }
+          stackUpClose {
+            TargetCheckboxGroup(mapOf(
+              "js" to "js",
+            )) {
+              h4 { +"JS" }
+            }
+          }
+        }
+        h4 { +"Native" }
+        gridBox({
+          columns(
+            sm = { repeat(2) { "1fr" } },
+            md = { repeat(3) { "1fr" } },
+          )
+          gap { small }
+        }) {
+          stackUpClose {
+            TargetCheckboxGroup(mapOf(
+              "linuxArm32Hfp" to "linux_arm32_hfp",
+              "linuxArm64" to "linux_arm64",
+              "linuxMips32" to "linux_mips32",
+              "linuxMipsel32" to "linux_mipsel32",
+              "linuxX64" to "linux_x64",
+            )) {
+              h6 { +"Linux" }
+            }
+          }
+          stackUpClose {
+            TargetCheckboxGroup(mapOf(
+              "mingwX64" to "mingw_x64",
+              "mingwX86" to "mingw_x86",
+            )) {
+              h6 { +"Windows" }
+            }
+          }
+          stackUpClose {
+            TargetCheckboxGroup(mapOf(
+              "androidNativeX64" to "android_x64",
+              "androidNativeX86" to "android_x86",
+              "androidNativeArm32" to "android_arm32",
+              "androidNativeArm64" to "android_arm64",
+            )) {
+              h6 { +"Android NDK" }
+            }
+          }
+          stackUpClose {
+            TargetCheckboxGroup(mapOf(
+              "tvosArm64" to "tvos_arm64",
+              "tvosX64" to "tvos_x64",
+            )) {
+              h6 { +"tvOS" }
+            }
+          }
+          stackUpClose {
+            TargetCheckboxGroup(mapOf(
+              "iosArm32" to "ios_arm32",
+              "iosArm64" to "ios_arm64",
+              "iosX64" to "ios_x64",
+            )) {
+              h6 { +"iOS" }
+            }
+          }
+          stackUpClose {
+            TargetCheckboxGroup(mapOf(
+              "watchosArm32" to "watchos_arm32",
+              "watchosArm64" to "watchos_arm64",
+              "watchosX86" to "watchos_x86",
+              "watchosX64" to "watchos_x64",
+            )) {
+              h6 { +"watchOS" }
+            }
+          }
+          stackUpClose {
+            TargetCheckboxGroup(mapOf(
+              "macosX64" to "macos_x64",
+            )) {
+              h6 { +"macOS" }
+            }
+          }
+          stackUpClose {
+            TargetCheckboxGroup(mapOf(
+              "wasm32" to "wasm32",
+            )) {
+              h6 { +"WebAssembly" }
+            }
+          }
+        }
+      }
+      clickButton({
+        css("justify-self: center")
+        width { "100%" }
+      }) {
+        text("Search")
+        icon { fromTheme { search } }
+      }.map {}.onEach {
+        fetchLibraryPage(
+          page = 1,
+          search = searchStore.current.takeIf(String::isNotEmpty),
+          targets = targetsStore.current.takeIf(Set<String>::isNotEmpty)
+        )()
+        fetchLibraryCount(
+          search = searchStore.current.takeIf(String::isNotEmpty),
+          targets = targetsStore.current.takeIf(Set<String>::isNotEmpty)
+        )()
+      } handledBy close
     }
   }
 }

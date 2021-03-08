@@ -159,7 +159,7 @@ private fun RenderContext.CardBody(library: KotlinMPPLibrary, selectedVersion: R
         paddings { horizontal { tiny } }
         overflow { auto }
         width { "100%" }
-        minWidth { "4rem" }
+        minWidth { "5rem" }
       }) {
         flexBox({
           css("direction: ltr")
