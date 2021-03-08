@@ -264,7 +264,7 @@ fun RenderContext.Header() {
             verticalAlign { sub }
             fontSize(sm = { large }, md = { larger })
             fontWeight { lighter }
-            display(sm = { none }, md = { flex })
+            display(sm = { none }, md = { initial })
           }) { +"KAMP" }
         }
         LibraryStore.data.map { it.count }.render { count ->
