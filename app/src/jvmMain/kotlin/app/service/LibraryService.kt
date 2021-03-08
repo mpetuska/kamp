@@ -15,7 +15,7 @@ actual class LibraryService(
   private val call: ApplicationCall,
   private val collection: CoroutineCollection<KotlinMPPLibrary>,
 ) {
-  actual suspend fun getAll(page: Int, size: Int, search: String?, targets: Set<String>?): PagedResponse<KotlinMPPLibrary> {
+  private fun buildQuery(search: String?, targets: Set<String>?): String {
     val searchQuery = search?.let {
       """
       {
@@ -43,7 +43,11 @@ actual class LibraryService(
       }
       """.trimIndent()
     } ?: "{}"
-    val data = collection.find(query).sort(ascending(KotlinMPPLibrary::name)).skip(size * (page - 1)).limit(size).toList()
+    return query
+  }
+  
+  actual suspend fun getAll(page: Int, size: Int, search: String?, targets: Set<String>?): PagedResponse<KotlinMPPLibrary> {
+    val data = collection.find(buildQuery(search, targets)).sort(ascending(KotlinMPPLibrary::name)).skip(size * (page - 1)).limit(size).toList()
     return PagedResponse(
       data = data,
       page = page,
@@ -52,8 +56,8 @@ actual class LibraryService(
     )
   }
   
-  actual suspend fun getCount(): LibraryCount {
-    return LibraryCount(collection.countDocuments())
+  actual suspend fun getCount(search: String?, targets: Set<String>?): LibraryCount {
+    return LibraryCount(collection.countDocuments(buildQuery(search, targets)))
   }
   
   suspend fun create(library: KotlinMPPLibrary) {

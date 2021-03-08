@@ -200,6 +200,10 @@ private fun RenderContext.SearchModal() = modal({
             search = searchStore.current.takeIf(String::isNotEmpty),
             targets = targetsStore.current.takeIf(Set<String>::isNotEmpty)
           )()
+          fetchLibraryCount(
+            search = searchStore.current.takeIf(String::isNotEmpty),
+            targets = targetsStore.current.takeIf(Set<String>::isNotEmpty)
+          )()
         } handledBy close
       }
     }
@@ -260,6 +264,7 @@ fun RenderContext.Header() {
             verticalAlign { sub }
             fontSize(sm = { large }, md = { larger })
             fontWeight { lighter }
+            display(sm = { none }, md = { flex })
           }) { +"KAMP" }
         }
         LibraryStore.data.map { it.count }.render { count ->
@@ -291,6 +296,9 @@ fun RenderContext.Header() {
         }
         lineUp({
           alignItems { center }
+          margins {
+            left { tiny }
+          }
         }) {
           spacing { tiny }
           items {

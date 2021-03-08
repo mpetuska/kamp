@@ -26,7 +26,7 @@ private fun Routing.libraries() = route(LibraryService.path) {
   }
   get("/count") {
     val service by inject<LibraryService>()
-    call.respond(service.getCount())
+    call.respond(service.getCount(call.request.search, call.request.targets))
   }
   
   authenticate {

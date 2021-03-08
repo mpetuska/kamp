@@ -12,7 +12,7 @@ fun fetchLibraryPage(page: Int, size: Int = 12, search: String? = null, targets:
   val theTargets = targets ?: state.targets
   
   val service by di.instance<LibraryService>()
-  val libraries = service.getAll(page, size, theSearch, targets)
+  val libraries = service.getAll(page, size, theSearch, theTargets)
   window.scrollTo(0.0, 0.0)
   state.copy(
     libraries = libraries,
@@ -21,8 +21,15 @@ fun fetchLibraryPage(page: Int, size: Int = 12, search: String? = null, targets:
   )
 }
 
-fun fetchLibraryCount() = LibraryStore.handle { state ->
+fun fetchLibraryCount(search: String? = null, targets: Set<String>? = null) = LibraryStore.handle { state ->
+  val theSearch = search ?: state.search
+  val theTargets = targets ?: state.targets
+  
   val service by di.instance<LibraryService>()
-  val count = service.getCount().count
-  state.copy(count = count)
+  val count = service.getCount(theSearch, theTargets).count
+  state.copy(
+    count = count,
+    search = theSearch,
+    targets = theTargets,
+  )
 }
