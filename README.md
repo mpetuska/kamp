@@ -23,6 +23,7 @@ Currently, supported maven repositories are:
 * [Gradle Plugin Portal](https://plugins.gradle.org/m2)
 * [JBoss](https://repository.jboss.org/nexus/content/repositories/releases)
 * [Spring](https://repo.spring.io/release)
+* [Horton Works](https://repo.hortonworks.com/content/repositories/releases)
 
 ## App
 
