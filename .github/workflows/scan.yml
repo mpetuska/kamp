@@ -25,6 +25,7 @@ jobs:
       matrix:
         repository:
           - 'mavenCentral'
+          - 'gradlePluginPortal'
         options:
           - '-i com'
           - '-i org'
