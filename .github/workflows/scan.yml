@@ -24,18 +24,18 @@ jobs:
       max-parallel: 5
       matrix:
         range:
-          - from: a
-            to: b
           - from: c
             to: d
+          - from: o
+            to: p
+          - from: a
+            to: b
           - from: e
             to: f
           - from: g
             to: l
           - from: m
             to: n
-          - from: o
-            to: p
           - from: q
             to: r
           - from: s
