@@ -49,7 +49,7 @@ class MavenCentralScannerService(
             client.getArtifactDetails(it.path)
           }
           if (artifactDetails != null) {
-            logger.info("Found MC artefact ${artifactDetails.group}:${artifactDetails.name}")
+            logger.debug("Found MC artefact ${artifactDetails.group}:${artifactDetails.name}")
             send(artifactDetails)
           } else {
             page
