@@ -5,15 +5,18 @@ on:
   schedule:
     - cron: '0 0 * * 0'
 
+env:
+  API_URL: https://kamp.azurewebsites.net
+  ADMIN_USER: ${{ secrets.API_ADMIN_USER }}
+  ADMIN_PASSWORD: ${{ secrets.API_ADMIN_PASSWORD }}
+  IMAGE: docker.pkg.github.com/mpetuska/kamp/scanner:latest
+  LOG_LEVEL: DEBUG
+
 jobs:
   scan-a-f:
     runs-on: ubuntu-latest
     name: Scan a..f
     env:
-      API_URL: https://kamp.azurewebsites.net
-      ADMIN_USER: ${{ secrets.API_ADMIN_USER }}
-      ADMIN_PASSWORD: ${{ secrets.API_ADMIN_PASSWORD }}
-      IMAGE: docker.pkg.github.com/mpetuska/kamp/scanner:latest
       FROM: a
       TO: f
     steps:
@@ -22,16 +25,12 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
           password: ${{ github.token }}
-      - run: docker run -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD ${{ env.IMAGE }} mavenCentral --from $FROM --to $TO
+      - run: docker run -e LOG_LEVEL -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD ${{ env.IMAGE }} mavenCentral --from $FROM --to $TO
 
   scan-g-l:
     runs-on: ubuntu-latest
     name: Scan g..l
     env:
-      API_URL: https://kamp.azurewebsites.net
-      ADMIN_USER: ${{ secrets.API_ADMIN_USER }}
-      ADMIN_PASSWORD: ${{ secrets.API_ADMIN_PASSWORD }}
-      IMAGE: docker.pkg.github.com/mpetuska/kamp/scanner:latest
       FROM: g
       TO: l
     steps:
@@ -40,16 +39,12 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
           password: ${{ github.token }}
-      - run: docker run -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD ${{ env.IMAGE }} mavenCentral --from $FROM --to $TO
+      - run: docker run -e LOG_LEVEL -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD ${{ env.IMAGE }} mavenCentral --from $FROM --to $TO
 
   scan-m-r:
     runs-on: ubuntu-latest
     name: Scan m..r
     env:
-      API_URL: https://kamp.azurewebsites.net
-      ADMIN_USER: ${{ secrets.API_ADMIN_USER }}
-      ADMIN_PASSWORD: ${{ secrets.API_ADMIN_PASSWORD }}
-      IMAGE: docker.pkg.github.com/mpetuska/kamp/scanner:latest
       FROM: m
       TO: r
     steps:
@@ -58,16 +53,12 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
           password: ${{ github.token }}
-      - run: docker run -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD ${{ env.IMAGE }} mavenCentral --from $FROM --to $TO
+      - run: docker run -e LOG_LEVEL -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD ${{ env.IMAGE }} mavenCentral --from $FROM --to $TO
 
   scan-s-z:
     runs-on: ubuntu-latest
     name: Scan s..z
     env:
-      API_URL: https://kamp.azurewebsites.net
-      ADMIN_USER: ${{ secrets.API_ADMIN_USER }}
-      ADMIN_PASSWORD: ${{ secrets.API_ADMIN_PASSWORD }}
-      IMAGE: docker.pkg.github.com/mpetuska/kamp/scanner:latest
       FROM: s
       TO: z
     steps:
@@ -76,4 +67,4 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
           password: ${{ github.token }}
-      - run: docker run -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD ${{ env.IMAGE }} mavenCentral --from $FROM --to $TO
+      - run: docker run -e LOG_LEVEL -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD ${{ env.IMAGE }} mavenCentral --from $FROM --to $TO
