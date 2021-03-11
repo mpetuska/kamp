@@ -16,12 +16,10 @@ abstract class MavenScannerService<A : MavenArtifact> : Closeable {
   protected abstract val client: MavenRepositoryClient<A>
   protected abstract fun CoroutineScope.produceArtifacts(rootArtefactsFilter: Set<String>? = null): ReceiveChannel<A>
   
-  suspend fun scanMavenArtefacts(rootArtefactsFilter: Set<String>? = null) = channelFlow {
+  fun CoroutineScope.scanMavenArtefacts(rootArtefactsFilter: Set<String>? = null): Flow<A> = run {
     logger.info("Scanning from repository root and filtering by ${rootArtefactsFilter ?: setOf()}")
-    for (artefact in produceArtifacts(rootArtefactsFilter)) {
-      send(artefact)
-    }
-  }
+    produceArtifacts(rootArtefactsFilter)
+  }.receiveAsFlow()
   
   suspend fun scanKotlinLibraries(rootArtefactsFilter: Set<String>? = null): Flow<KotlinMPPLibrary> = channelFlow {
     val artefactsFlow = scanMavenArtefacts(rootArtefactsFilter)
