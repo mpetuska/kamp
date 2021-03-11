@@ -13,6 +13,7 @@ jobs:
       API_URL: https://kamp.azurewebsites.net
       ADMIN_USER: ${{ secrets.API_ADMIN_USER }}
       ADMIN_PASSWORD: ${{ secrets.API_ADMIN_PASSWORD }}
+      IMAGE: docker.pkg.github.com/mpetuska/kamp/scanner:latest
       FROM: a
       TO: f
     steps:
@@ -23,8 +24,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ github.token }}
       - run: docker run -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD $IMAGE mavenCentral --from $FROM --to $TO
-        env:
-          IMAGE: docker.pkg.github.com/mpetuska/kamp/scanner:${{ env.BRANCH_NAME }}
 
   scan-g-l:
     runs-on: ubuntu-latest
@@ -43,8 +42,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ github.token }}
       - run: docker run -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD $IMAGE mavenCentral --from $FROM --to $TO
-        env:
-          IMAGE: docker.pkg.github.com/mpetuska/kamp/scanner:${{ env.BRANCH_NAME }}
 
   scan-m-r:
     runs-on: ubuntu-latest
@@ -63,8 +60,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ github.token }}
       - run: docker run -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD $IMAGE mavenCentral --from $FROM --to $TO
-        env:
-          IMAGE: docker.pkg.github.com/mpetuska/kamp/scanner:${{ env.BRANCH_NAME }}
 
   scan-s-z:
     runs-on: ubuntu-latest
@@ -83,5 +78,3 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ github.token }}
       - run: docker run -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD $IMAGE mavenCentral --from $FROM --to $TO
-        env:
-          IMAGE: docker.pkg.github.com/mpetuska/kamp/scanner:${{ env.BRANCH_NAME }}
