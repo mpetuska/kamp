@@ -21,8 +21,9 @@ It is only able to find the libraries published with gradle-metadata, so older K
 Currently, supported maven repositories are:
 * [Maven Central](https://repo1.maven.org/maven2)
 * [Gradle Plugin Portal](https://plugins.gradle.org/m2)
-* [JBoss](https://repository.jboss.org/nexus/content/repositories/releases)
 * [Spring](https://repo.spring.io/release)
+* [Atlassian](https://packages.atlassian.com/content/repositories/atlassian-public)
+* [JBoss](https://repository.jboss.org/nexus/content/repositories/releases)
 * [Horton Works](https://repo.hortonworks.com/content/repositories/releases)
 
 ## App

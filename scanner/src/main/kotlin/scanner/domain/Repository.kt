@@ -1,12 +1,31 @@
 package scanner.domain
 
+import kamp.domain.*
+import org.kodein.di.*
+import scanner.client.*
+
 enum class Repository(
   val alias: String,
   val url: String,
+  val client: DirectDIAware.(url: String) -> MavenRepositoryClient<MavenArtifactImpl>,
 ) {
-  MAVEN_CENTRAL("mavenCentral", "https://repo1.maven.org/maven2"),
-  GRADLE_PLUGIN_PORTAL("gradlePluginPortal", "https://plugins.gradle.org/m2"),
-  J_BOSS("jBoss", "https://repository.jboss.org/nexus/content/repositories/releases"),
-  SPRING("spring", "https://repo.spring.io/release"),
-  HORTON_WORKS("hortonWorks", "https://repo.hortonworks.com/content/repositories/releases"),
+  MAVEN_CENTRAL("mavenCentral", "https://repo1.maven.org/maven2", {
+    ArtifactoryClient(it, instance(), instance())
+  }),
+  GRADLE_PLUGIN_PORTAL("gradlePluginPortal", "https://plugins.gradle.org/m2", {
+    ArtifactoryClient(it, instance(), instance())
+  }),
+  SPRING("spring", "https://repo.spring.io/release", {
+    ArtifactoryClient(it, instance(), instance())
+  }),
+  ATLASSIAN("atlassian", "https://packages.atlassian.com/content/repositories/atlassian-public", {
+    ArtifactoryClient(it, instance(), instance())
+  }),
+  
+  J_BOSS("jBoss", "https://repository.jboss.org/nexus/content/repositories/releases", {
+    JBossClient(it, instance(), instance())
+  }),
+  HORTON_WORKS("hortonWorks", "https://repo.hortonworks.com/content/repositories/releases", {
+    JBossClient(it, instance(), instance())
+  }),
 }

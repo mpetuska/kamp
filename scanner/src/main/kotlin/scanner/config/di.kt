@@ -27,6 +27,7 @@ fun HttpClientConfig<CIOEngineConfig>.baseConfig() {
   defaultRequest {
     contentType(ContentType.Application.Json)
     accept(ContentType.Application.Json)
+    accept(ContentType.Text.Html)
   }
   install(HttpTimeout) {
     requestTimeoutMillis = timeout
@@ -39,16 +40,10 @@ fun HttpClientConfig<CIOEngineConfig>.baseConfig() {
 }
 
 val di = DI {
-  bind(MAVEN_CENTRAL.alias) from provider { MavenCentralClient(instance(), instance()) }
-  bind(GRADLE_PLUGIN_PORTAL.alias) from provider { GradlePluginPortalClient(instance(), instance()) }
-  bind(J_BOSS.alias) from provider { JBossClient(instance(), instance()) }
-  bind(SPRING.alias) from provider { SpringClient(instance(), instance()) }
-  bind(HORTON_WORKS.alias) from provider { HortonWorksClient(instance(), instance()) }
-  bind<MavenScannerService<*>>(MAVEN_CENTRAL.alias) with singleton { MavenScannerServiceImpl(instance(MAVEN_CENTRAL.alias), instance(), instance()) }
-  bind<MavenScannerService<*>>(GRADLE_PLUGIN_PORTAL.alias) with singleton { MavenScannerServiceImpl(instance(GRADLE_PLUGIN_PORTAL.alias), instance(), instance()) }
-  bind<MavenScannerService<*>>(J_BOSS.alias) with singleton { MavenScannerServiceImpl(instance(J_BOSS.alias), instance(), instance()) }
-  bind<MavenScannerService<*>>(SPRING.alias) with singleton { MavenScannerServiceImpl(instance(SPRING.alias), instance(), instance()) }
-  bind<MavenScannerService<*>>(HORTON_WORKS.alias) with singleton { MavenScannerServiceImpl(instance(HORTON_WORKS.alias), instance(), instance()) }
+  Repository.values().forEach { repo ->
+    bind(repo.alias) from provider { with(repo) { client(url) } }
+    bind<MavenScannerService<*>>(repo.alias) with singleton { MavenScannerServiceImpl(instance(repo.alias), instance(), instance()) }
+  }
   
   bind() from singleton {
     kotlinx.serialization.json.Json {
