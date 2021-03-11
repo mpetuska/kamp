@@ -35,4 +35,4 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
           password: ${{ github.token }}
-      - run: docker run -a stderr -a stdin -e LOG_LEVEL -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD ${{ env.IMAGE }} mavenCentral --from ${{ matrix.range.from }} --to ${{ matrix.range.to }}
+      - run: docker run -a stderr -a stdout -e LOG_LEVEL -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD ${{ env.IMAGE }} mavenCentral --from ${{ matrix.range.from }} --to ${{ matrix.range.to }}
