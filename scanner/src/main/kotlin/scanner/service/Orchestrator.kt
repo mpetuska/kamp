@@ -25,7 +25,7 @@ class Orchestrator(override val di: DI) : DIAware {
           supervisedLaunch {
             logger.info("Starting $scanner scan")
             val count = scanRepo(scannerService, rootArtefactsFilter)
-            logger.info("Found $count kotlin modules with gradle metadata in $scanner repository")
+            logger.info("Found $count kotlin modules with gradle metadata in $scanner repository filtered by ${rootArtefactsFilter ?: setOf()}")
           }
         }
       }
