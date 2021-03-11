@@ -25,10 +25,18 @@ jobs:
       matrix:
         range:
           - from: a
+            to: b
+          - from: c
+            to: d
+          - from: e
             to: f
           - from: g
             to: l
           - from: m
+            to: n
+          - from: o
+            to: p
+          - from: q
             to: r
           - from: s
             to: z
