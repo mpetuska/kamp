@@ -66,7 +66,7 @@ abstract class MavenRepositoryClient<A : MavenArtifact>(
   suspend fun listRepositoryPath(path: String): List<RepoItem>? = coroutineScope {
     supervisedAsync {
       client.get<String>("$defaultRepositoryRootUrl${path.removeSuffix("/")}/").let { str ->
-        parsePage(str.asDocument())?.mapNotNull { RepoItem(it, path).takeUnless { v -> v.value.startsWith("..") } }
+        parsePage(str.asDocument())?.map { RepoItem(it, path) }
       }
     }.await()
   }

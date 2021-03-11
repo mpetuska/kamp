@@ -13,6 +13,6 @@ class MavenCentralClient(
   override fun parsePage(page: Document): List<String>? = page.getElementById("contents")
     ?.getElementsByTag("a")
     ?.mapNotNull { elm ->
-      elm.takeIf { it.hasAttr("title") }?.attr("title")
+      elm.takeIf { it.hasAttr("title") }?.attr("title")?.takeUnless { it.startsWith("..") }
     }
 }

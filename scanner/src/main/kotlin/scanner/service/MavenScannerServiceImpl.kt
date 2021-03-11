@@ -17,11 +17,12 @@ class MavenScannerServiceImpl(
     val pageChannel = Channel<List<MavenRepositoryClient.RepoItem>>(Channel.BUFFERED)
     supervisedLaunch {
       client.listRepositoryPath("")?.filter { repoItem ->
+        val path = repoItem.path.removePrefix("/")
         val included = rootArtefactsFilter
-          ?.let { filter -> filter.any { repoItem.path.removePrefix("/").startsWith(it) } }
+          ?.let { filter -> filter.any { path.startsWith(it) } }
           ?: true
         val excluded = rootArtefactsExcludeFilter
-          ?.let { filter -> filter.any { repoItem.path.removePrefix("/").startsWith(it) } }
+          ?.let { filter -> filter.any { path.startsWith(it) } }
           ?: false
         included && !excluded
       }?.let { pageChannel.send(it) }

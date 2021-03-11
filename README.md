@@ -19,8 +19,9 @@ The project consists of two modules - a background processor providing the data 
 An internet crawler that's meant to scan and identify kotlin libraries across the web. 
 It is only able to find the libraries published with gradle-metadata, so older Kotlin libraries might be missing.
 Currently, supported maven repositories are:
-* Maven Central
-* Gradle Plugin Portal
+* [Maven Central](https://repo1.maven.org/maven2)
+* [Gradle Plugin Portal](https://plugins.gradle.org/m2)
+* [JBoss](https://repository.jboss.org/nexus/content/repositories/releases)
 
 ## App
 

@@ -13,6 +13,7 @@ import org.kodein.di.*
 import scanner.client.*
 import scanner.domain.*
 import scanner.domain.Repository.GRADLE_PLUGIN_PORTAL
+import scanner.domain.Repository.J_BOSS
 import scanner.domain.Repository.MAVEN_CENTRAL
 import scanner.processor.*
 import scanner.service.*
@@ -42,8 +43,10 @@ fun HttpClientConfig<CIOEngineConfig>.baseConfig() {
 val di = DI {
   bind(MAVEN_CENTRAL.alias) from provider { MavenCentralClient(instance(), instance()) }
   bind(GRADLE_PLUGIN_PORTAL.alias) from provider { GradlePluginPortalClient(instance(), instance()) }
+  bind(J_BOSS.alias) from provider { JBossClient(instance(), instance()) }
   bind<MavenScannerService<*>>(MAVEN_CENTRAL.alias) with singleton { MavenScannerServiceImpl(instance(MAVEN_CENTRAL.alias), instance(), instance()) }
   bind<MavenScannerService<*>>(GRADLE_PLUGIN_PORTAL.alias) with singleton { MavenScannerServiceImpl(instance(GRADLE_PLUGIN_PORTAL.alias), instance(), instance()) }
+  bind<MavenScannerService<*>>(J_BOSS.alias) with singleton { MavenScannerServiceImpl(instance(J_BOSS.alias), instance(), instance()) }
   
   bind() from singleton {
     kotlinx.serialization.json.Json {

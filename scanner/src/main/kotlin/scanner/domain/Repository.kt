@@ -5,5 +5,6 @@ enum class Repository(
   val url: String,
 ) {
   MAVEN_CENTRAL("mavenCentral", "https://repo1.maven.org/maven2"),
-  GRADLE_PLUGIN_PORTAL("gradlePluginPortal", "https://plugins.gradle.org/m2")
+  GRADLE_PLUGIN_PORTAL("gradlePluginPortal", "https://plugins.gradle.org/m2"),
+  J_BOSS("jBoss", "https://repository.jboss.org/nexus/content/repositories/releases"),
 }
