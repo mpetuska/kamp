@@ -6,13 +6,13 @@ import kotlinx.serialization.json.*
 import org.jsoup.nodes.*
 import scanner.domain.*
 
-class JBossClient(
+class SpringClient(
   override val client: HttpClient,
   override val json: Json,
-) : MavenRepositoryClient<MavenArtifactImpl>(Repository.J_BOSS.url) {
+) : MavenRepositoryClient<MavenArtifactImpl>(Repository.SPRING.url) {
   override fun parsePage(page: Document): List<String>? = page.getElementsByTag("a")
     ?.mapNotNull { elm ->
       val text = elm.text()
-      text.takeIf { it.isNotBlank() && !it.equals("Parent Directory", true) }
+      text.takeIf { it.isNotBlank() && !it.startsWith("..") }
     }
 }
