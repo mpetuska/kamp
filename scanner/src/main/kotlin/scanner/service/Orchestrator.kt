@@ -14,18 +14,19 @@ class Orchestrator(override val di: DI) : DIAware {
   private val logger by LoggerDelegate()
   private val json by di.instance<Json>()
   
-  suspend fun run(scanner: String, rootArtefactsFilter: Set<String>? = null) {
+  suspend fun run(scanner: String, rootArtefactsFilter: Set<String>? = null, rootArtefactsExcludeFilter: Set<String>? = null) {
     val scannerService = di.direct.instanceOrNull<MavenScannerService<*>>(scanner)
-    
+  
     scannerService?.let {
       logger.info("Scanning repository: $scanner")
-      
+    
       val duration = measureTime {
         coroutineScope {
           supervisedLaunch {
             logger.info("Starting $scanner scan")
-            val count = scanRepo(scannerService, rootArtefactsFilter)
-            logger.info("Found $count kotlin modules with gradle metadata in $scanner repository filtered by ${rootArtefactsFilter ?: setOf()}")
+            val count = scanRepo(scannerService, rootArtefactsFilter, rootArtefactsExcludeFilter)
+            logger.info("Found $count kotlin modules with gradle metadata in $scanner repository filtered by ${rootArtefactsFilter ?: setOf()}, " +
+              "explicitly excluding ${rootArtefactsExcludeFilter ?: setOf()}")
           }
         }
       }
@@ -39,10 +40,10 @@ class Orchestrator(override val di: DI) : DIAware {
     } ?: logger.error("ScannerService for $scanner not found")
   }
   
-  private suspend fun scanRepo(scanner: MavenScannerService<*>, rootArtefactsFilter: Set<String>? = null): Int {
+  private suspend fun scanRepo(scanner: MavenScannerService<*>, rootArtefactsFilter: Set<String>? = null, rootArtefactsExcludeFilter: Set<String>? = null): Int {
     var count = 0
     val kamp by di.instance<HttpClient>("kamp")
-    scanner.scanKotlinLibraries(rootArtefactsFilter).buffer().collect { lib ->
+    scanner.scanKotlinLibraries(rootArtefactsFilter, rootArtefactsExcludeFilter).buffer().collect { lib ->
       coroutineScope {
         supervisedLaunch {
           count++

@@ -27,10 +27,16 @@ suspend fun main(args: Array<String>) {
     shortName = "i",
     description = "Repository root page filter to include"
   ).multiple()
+  val exclude by parser.option(
+    type = ArgType.String,
+    shortName = "e",
+    description = "Repository root page filter to exclude"
+  ).multiple()
   parser.parse(args)
   
   val rangeFilter = from?.let { f -> to?.let { t -> (f..t).map(Char::toString).toSet() } } ?: setOf()
   val filters = ((include.toSet()) + rangeFilter).takeIf { it.isNotEmpty() }
+  val excludeFilters = exclude.toSet().takeIf { it.isNotEmpty() }
   
-  Orchestrator(di).run(scanner, filters)
+  Orchestrator(di).run(scanner, filters, excludeFilters)
 }

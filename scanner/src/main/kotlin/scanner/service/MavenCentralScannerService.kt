@@ -13,14 +13,17 @@ class MavenCentralScannerService(
   override val pomProcessor: PomProcessor,
   override val gradleModuleProcessor: GradleModuleProcessor,
 ) : MavenScannerService<MavenArtifactImpl>() {
-  override fun CoroutineScope.produceArtifacts(rootArtefactsFilter: Set<String>?): ReceiveChannel<MavenArtifactImpl> = produce {
+  override fun CoroutineScope.produceArtifacts(rootArtefactsFilter: Set<String>?, rootArtefactsExcludeFilter: Set<String>?): ReceiveChannel<MavenArtifactImpl> = produce {
     val pageChannel = Channel<List<MavenRepositoryClient.RepoItem>>(Channel.BUFFERED)
     supervisedLaunch {
       client.listRepositoryPath("")?.filter { repoItem ->
-        rootArtefactsFilter
-          ?.map { it.removePrefix("/") }
+        val included = rootArtefactsFilter
           ?.let { filter -> filter.any { repoItem.path.removePrefix("/").startsWith(it) } }
           ?: true
+        val excluded = rootArtefactsExcludeFilter
+          ?.let { filter -> filter.any { repoItem.path.removePrefix("/").startsWith(it) } }
+          ?: false
+        included && !excluded
       }?.let { pageChannel.send(it) }
     }
     
