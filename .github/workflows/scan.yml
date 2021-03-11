@@ -25,12 +25,12 @@ jobs:
       matrix:
         range:
           - from: c
-            to: d
+            to: c
           - from: o
             to: p
           - from: a
             to: b
-          - from: e
+          - from: d
             to: f
           - from: g
             to: l
