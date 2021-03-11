@@ -17,7 +17,6 @@ jobs:
       FROM: a
       TO: f
     steps:
-      - uses: nelonoel/branch-name@v1
       - uses: docker/login-action@v1.8.0
         with:
           registry: gcr.io
@@ -35,7 +34,6 @@ jobs:
       FROM: g
       TO: l
     steps:
-      - uses: nelonoel/branch-name@v1
       - uses: docker/login-action@v1.8.0
         with:
           registry: gcr.io
@@ -53,7 +51,6 @@ jobs:
       FROM: m
       TO: r
     steps:
-      - uses: nelonoel/branch-name@v1
       - uses: docker/login-action@v1.8.0
         with:
           registry: gcr.io
@@ -71,7 +68,6 @@ jobs:
       FROM: s
       TO: z
     steps:
-      - uses: nelonoel/branch-name@v1
       - uses: docker/login-action@v1.8.0
         with:
           registry: gcr.io
