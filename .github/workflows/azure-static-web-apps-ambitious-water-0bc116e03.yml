@@ -42,6 +42,7 @@ jobs:
           password: ${{ github.token }}
           registry: docker.pkg.github.com
           repository: mpetuska/kamp/app
+          tag_with_ref: true
           tag_with_sha: true
           add_git_labels: true
       - name: Build Scanner Docker image & push to GitHub Packages
@@ -52,6 +53,7 @@ jobs:
           password: ${{ github.token }}
           registry: docker.pkg.github.com
           repository: mpetuska/kamp/scanner
+          tag_with_ref: true
           tag_with_sha: true
           add_git_labels: true
 
