@@ -1,5 +1,7 @@
 package kamp.domain
 
+import kotlinx.serialization.*
+
 public interface MavenArtifact {
   public val group: String
   public val name: String
@@ -11,6 +13,7 @@ public interface MavenArtifact {
   public val path: String get() = "$group:$name:$releaseVersion"
 }
 
+@Serializable
 public data class MavenArtifactImpl(
   override val group: String,
   override val name: String,

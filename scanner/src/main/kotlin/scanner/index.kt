@@ -31,7 +31,6 @@ suspend fun main(args: Array<String>) {
   
   val rangeFilter = from?.let { f -> to?.let { t -> (f..t).map(Char::toString).toSet() } } ?: setOf()
   val filters = ((include.toSet()) + rangeFilter).takeIf { it.isNotEmpty() }
-  println(filters)
   
   Orchestrator(di).run(scanner, filters)
 }
