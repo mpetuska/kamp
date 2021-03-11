@@ -2,6 +2,11 @@ name: Scan
 
 on:
   workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: INFO
   schedule:
     - cron: '0 0 * * 0'
 
@@ -10,7 +15,7 @@ env:
   ADMIN_USER: ${{ secrets.API_ADMIN_USER }}
   ADMIN_PASSWORD: ${{ secrets.API_ADMIN_PASSWORD }}
   IMAGE: docker.pkg.github.com/mpetuska/kamp/scanner:latest
-  LOG_LEVEL: DEBUG
+  LOG_LEVEL: ${{ github.event.inputs.logLevel }}
 
 jobs:
   scan:
