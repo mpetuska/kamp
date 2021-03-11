@@ -2,13 +2,14 @@ package scanner
 
 import kotlinx.cli.*
 import scanner.config.*
+import scanner.domain.*
 import scanner.service.*
 
 
 suspend fun main(args: Array<String>) {
   val parser = ArgParser("scanner")
   val scanner by parser.argument(
-    type = ArgType.Choice(listOf("mavenCentral"), { it }),
+    type = ArgType.Choice(Repository.values().map(Repository::alias), { it }),
     description = "Repository alias to scan for"
   )
   

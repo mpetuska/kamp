@@ -11,6 +11,9 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import org.kodein.di.*
 import scanner.client.*
+import scanner.domain.*
+import scanner.domain.Repository.GRADLE_PLUGIN_PORTAL
+import scanner.domain.Repository.MAVEN_CENTRAL
 import scanner.processor.*
 import scanner.service.*
 import scanner.util.*
@@ -37,8 +40,10 @@ fun HttpClientConfig<CIOEngineConfig>.baseConfig() {
 }
 
 val di = DI {
-  bind() from provider { MavenCentralClient(instance(), instance()) }
-  bind<MavenScannerService<*>>("mavenCentral") with singleton { MavenCentralScannerService(instance(), instance(), instance("1.4.30")) }
+  bind(MAVEN_CENTRAL.alias) from provider { MavenCentralClient(instance(), instance()) }
+  bind(GRADLE_PLUGIN_PORTAL.alias) from provider { GradlePluginPortalClient(instance(), instance()) }
+  bind<MavenScannerService<*>>(MAVEN_CENTRAL.alias) with singleton { MavenScannerServiceImpl(instance(MAVEN_CENTRAL.alias), instance(), instance()) }
+  bind<MavenScannerService<*>>(GRADLE_PLUGIN_PORTAL.alias) with singleton { MavenScannerServiceImpl(instance(GRADLE_PLUGIN_PORTAL.alias), instance(), instance()) }
   
   bind() from singleton {
     kotlinx.serialization.json.Json {
@@ -47,7 +52,7 @@ val di = DI {
     }
   }
   bind() from singleton { PomProcessor() }
-  bind("1.4.30") from singleton { GradleModuleProcessor() }
+  bind() from singleton { GradleModuleProcessor() }
   
   bind() from provider { HttpClient(CIO, HttpClientConfig<CIOEngineConfig>::baseConfig) }
   bind("kamp") from provider {

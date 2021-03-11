@@ -8,7 +8,7 @@ import scanner.processor.*
 import scanner.util.*
 import kotlin.time.*
 
-class MavenCentralScannerService(
+class MavenScannerServiceImpl(
   override val client: MavenRepositoryClient<MavenArtifactImpl>,
   override val pomProcessor: PomProcessor,
   override val gradleModuleProcessor: GradleModuleProcessor,

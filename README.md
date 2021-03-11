@@ -20,10 +20,8 @@ An internet crawler that's meant to scan and identify kotlin libraries across th
 It is only able to find the libraries published with gradle-metadata, so older Kotlin libraries might be missing.
 Currently, supported maven repositories are:
 * Maven Central
+* Gradle Plugin Portal
 
 ## App
 
-The driving server and client to expose the data collected by the scanner as a nice web-based catalogue. It's still a
-WIP. Star the repo for updates.
-
-  
+The driving server and client to expose the data collected by the scanner as a nice web-based catalogue. 
