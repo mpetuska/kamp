@@ -19,15 +19,20 @@ jobs:
       max-parallel: 5
       matrix:
         range:
-          - [ 'a', 'f' ]
-          - [ 'g', 'l' ]
-          - [ 'm', 'r' ]
-          - [ 's', 'x' ]
-          - [ 'y', 'z' ]
+          - from: a
+            to: f
+          - from: g
+            to: l
+          - from: m
+            to: r
+          - from: s
+            to: x
+          - from: y
+            to: z
     steps:
       - uses: docker/login-action@v1.8.0
         with:
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
           password: ${{ github.token }}
-      - run: docker run -a stderr -a stdin -e LOG_LEVEL -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD ${{ env.IMAGE }} mavenCentral --from ${{ matrix.range.0 }} --to ${{ matrix.range.1 }}
+      - run: docker run -a stderr -a stdin -e LOG_LEVEL -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD ${{ env.IMAGE }} mavenCentral --from ${{ matrix.range.from }} --to ${{ matrix.range.to }}
