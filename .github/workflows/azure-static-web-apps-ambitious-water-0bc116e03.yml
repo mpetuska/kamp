@@ -48,7 +48,7 @@ jobs:
       - name: Build Scanner Docker image & push to GitHub Packages
         uses: docker/build-push-action@v1
         with:
-          path: app
+          path: scanner
           username: ${{ github.actor }}
           password: ${{ github.token }}
           registry: docker.pkg.github.com
