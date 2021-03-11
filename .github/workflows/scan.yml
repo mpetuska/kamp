@@ -27,11 +27,11 @@ jobs:
           - 'mavenCentral'
         options:
           - '-i com'
+          - '-i org'
           - '-e com -f a -t c'
           - '-f d -t f'
           - '-f g -t l'
           - '-e org -f m -t p'
-          - '-i org'
           - '-f q -t t'
           - '-f u -t z'
     steps:
