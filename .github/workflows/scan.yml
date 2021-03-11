@@ -25,7 +25,7 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
           password: ${{ github.token }}
-      - run: docker run -e LOG_LEVEL -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD ${{ env.IMAGE }} mavenCentral --from $FROM --to $TO
+      - run: docker run -a stderr -a stdin -e LOG_LEVEL -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD ${{ env.IMAGE }} mavenCentral --from $FROM --to $TO
 
   scan-g-l:
     runs-on: ubuntu-latest
@@ -39,7 +39,7 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
           password: ${{ github.token }}
-      - run: docker run -e LOG_LEVEL -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD ${{ env.IMAGE }} mavenCentral --from $FROM --to $TO
+      - run: docker run -a stderr -a stdin -e LOG_LEVEL -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD ${{ env.IMAGE }} mavenCentral --from $FROM --to $TO
 
   scan-m-r:
     runs-on: ubuntu-latest
@@ -53,7 +53,7 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
           password: ${{ github.token }}
-      - run: docker run -e LOG_LEVEL -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD ${{ env.IMAGE }} mavenCentral --from $FROM --to $TO
+      - run: docker run -a stderr -a stdin -e LOG_LEVEL -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD ${{ env.IMAGE }} mavenCentral --from $FROM --to $TO
 
   scan-s-z:
     runs-on: ubuntu-latest
@@ -67,4 +67,4 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
           password: ${{ github.token }}
-      - run: docker run -e LOG_LEVEL -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD ${{ env.IMAGE }} mavenCentral --from $FROM --to $TO
+      - run: docker run -a stderr -a stdin -e LOG_LEVEL -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD ${{ env.IMAGE }} mavenCentral --from $FROM --to $TO
