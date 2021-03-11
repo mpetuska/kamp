@@ -221,17 +221,74 @@ fun RenderContext.Pagination() = lineUp {
   spacing { none }
   items {
     LibraryStore.data.mapLatest { it.libraries }.mapNotNull { it }.render { libs ->
-      clickButton {
+      clickButton({
+        css("border-bottom-right-radius: 0")
+        css("border-top-right-radius: 0")
+      }) {
         size { small }
         icon { fromTheme { caretLeft } }
         disabled(libs.prev == null)
       } handledBy fetchLibraryPage(libs.page - 1)
-      clickButton {
-        size { small }
-        variant { outline }
-        text("${libs.page}")
+      popover({
+        width { minContent }
+        css("border-radius: 0.5rem")
+        paddings {
+          vertical { tiny }
+        }
+        boxShadow { flat }
+        minWidth { "5rem" }
+        textAlign { center }
+        background {
+          color { primary }
+        }
+      }) {
+        placement { bottom }
+        closeButtonIcon { play }
+        closeOnBlur(false)
+    
+        toggle {
+          clickButton({
+            css("border-radius: 0")
+          }) {
+            size { small }
+            variant { outline }
+            text("${libs.page}")
+          }
+        }
+        val pageStore = storeOf("${libs.page}")
+        closeButtonRendering {
+          clickButton {
+            icon { fromTheme { play } }
+            color { base }
+            size { small }
+            variant { ghost }
+            events {
+              clicks.map { pageStore.current }.onEach {
+                println(it)
+                it.toIntOrNull()?.let { page ->
+                  fetchLibraryPage(page = page)()
+                }
+              } handledBy LibraryStore.handle { state, _ -> state }
+            }
+          }
+        }
+        content {
+          inputField({
+            paddings { horizontal { tiny } }
+            textAlign { center }
+            fontWeight { "500" }
+            textShadow { flat }
+          }, store = pageStore) {
+            attr("min", 0)
+            type("number")
+            placeholder("Page...")
+          }
+        }
       }
-      clickButton {
+      clickButton({
+        css("border-bottom-left-radius: 0")
+        css("border-top-left-radius: 0")
+      }) {
         size { small }
         icon { fromTheme { caretRight } }
         disabled(libs.next == null)

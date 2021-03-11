@@ -13,10 +13,15 @@ class MavenCentralScannerService(
   override val pomProcessor: PomProcessor,
   override val gradleModuleProcessor: GradleModuleProcessor,
 ) : MavenScannerService<MavenArtifactImpl>() {
-  override fun CoroutineScope.produceArtifacts(): ReceiveChannel<MavenArtifactImpl> = produce {
+  override fun CoroutineScope.produceArtifacts(rootArtefactsFilter: Set<String>?): ReceiveChannel<MavenArtifactImpl> = produce {
     val pageChannel = Channel<List<MavenRepositoryClient.RepoItem>>(Channel.BUFFERED)
     supervisedLaunch {
-      client.listRepositoryPath("")?.let { pageChannel.send(it) }
+      client.listRepositoryPath("")?.filter { repoItem ->
+        rootArtefactsFilter
+          ?.map { it.removePrefix("/") }
+          ?.let { filter -> filter.any { repoItem.path.removePrefix("/").startsWith(it) } }
+          ?: true
+      }?.let { pageChannel.send(it) }
     }
     
     // Tracker
@@ -37,13 +42,14 @@ class MavenCentralScannerService(
     }
     
     // Workers
-    List(Runtime.getRuntime().availableProcessors() * 2) {
+    repeat(Runtime.getRuntime().availableProcessors() * 2) {
       supervisedLaunch {
         for (page in pageChannel) {
           val artifactDetails = page.find { it.value == "maven-metadata.xml" }?.let {
             client.getArtifactDetails(it.path)
           }
           if (artifactDetails != null) {
+            logger.info("Found MC artefact ${artifactDetails.group}:${artifactDetails.name}")
             send(artifactDetails)
           } else {
             page
@@ -51,7 +57,7 @@ class MavenCentralScannerService(
               .map {
                 supervisedLaunch {
                   client.listRepositoryPath(it.path)?.let { item ->
-                    logger.debug("Scanning MC page ${it.path}")
+                    logger.debug("Scanned MC page ${it.path} and found ${item.size} children")
                     pageChannel.send(item)
                   }
                 }
@@ -59,6 +65,6 @@ class MavenCentralScannerService(
           }
         }
       }
-    }.joinAll()
+    }
   }
 }

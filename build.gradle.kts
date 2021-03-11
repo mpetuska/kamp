@@ -20,6 +20,7 @@ allprojects {
   repositories {
     mavenCentral()
     maven("https://jitpack.io")
+    maven("https://kotlin.bintray.com/kotlinx")
   }
   tasks {
     withType<Test> {

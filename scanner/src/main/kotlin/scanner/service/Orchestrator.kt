@@ -14,37 +14,35 @@ class Orchestrator(override val di: DI) : DIAware {
   private val logger by LoggerDelegate()
   private val json by di.instance<Json>()
   
-  suspend fun run(args: Array<String> = arrayOf()) {
-    val scanners = args.map {
-      di.direct.instance<MavenScannerService<*>>(it)
-    }.map { it::class.qualifiedName to it }.toMap()
+  suspend fun run(scanner: String, rootArtefactsFilter: Set<String>? = null) {
+    val scannerService = di.direct.instanceOrNull<MavenScannerService<*>>(scanner)
     
-    logger.info("Scanning repositories: ${scanners.keys}")
-    
-    val duration = measureTime {
-      coroutineScope {
-        scanners.mapValues { (_, scanner) -> supervisedAsync { scanRepo(scanner) } }
-          .mapValues { (_, it) -> it.await() }
-          .forEach { (name, count) ->
-            logger.info("Found $count kotlin modules with gradle metadata in $name repository")
+    scannerService?.let {
+      logger.info("Scanning repository: $scanner")
+      
+      val duration = measureTime {
+        coroutineScope {
+          supervisedLaunch {
+            logger.info("Starting $scanner scan")
+            val count = scanRepo(scannerService, rootArtefactsFilter)
+            logger.info("Found $count kotlin modules with gradle metadata in $scanner repository")
           }
-      }
-    }
-    
-    logger.info(
-      "Finished scanning ${scanners.keys} in ${
-        duration.toComponents { hours, minutes, seconds, nanoseconds ->
-          "${hours}h ${minutes}m ${seconds}.${nanoseconds}s"
         }
-      }"
-    )
+      }
+      logger.info(
+        "Finished scanning $scanner in ${
+          duration.toComponents { hours, minutes, seconds, nanoseconds ->
+            "${hours}h ${minutes}m ${seconds}.${nanoseconds}s"
+          }
+        }"
+      )
+    } ?: logger.error("ScannerService for $scanner not found")
   }
   
-  private suspend fun scanRepo(scanner: MavenScannerService<*>): Int {
-    logger.info("Starting $scanner scan")
+  private suspend fun scanRepo(scanner: MavenScannerService<*>, rootArtefactsFilter: Set<String>? = null): Int {
     var count = 0
     val kamp by di.instance<HttpClient>("kamp")
-    scanner.scan().buffer().collect { lib ->
+    scanner.scanKotlinLibraries(rootArtefactsFilter).buffer().collect { lib ->
       coroutineScope {
         supervisedLaunch {
           count++
@@ -52,12 +50,11 @@ class Orchestrator(override val di: DI) : DIAware {
           kamp.post<Unit>("${PrivateEnv.API_URL}/api/libraries") {
             body = lib
           }
-        }.join()
+        }
       }
     }
     kamp.close()
     scanner.close()
-    logger.info("Completed $scanner scan")
     return count
   }
 }

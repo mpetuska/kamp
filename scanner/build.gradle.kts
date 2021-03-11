@@ -12,6 +12,7 @@ kotlin {
     implementation("org.jsoup:jsoup:_")
     implementation("ch.qos.logback:logback-classic:_")
     implementation(kotlin("reflect"))
+    implementation("org.jetbrains.kotlinx:kotlinx-cli:_")
     
     testImplementation("io.kotest:kotest-runner-junit5:_")
   }
@@ -21,6 +22,7 @@ kotlin {
       useExperimentalAnnotation("io.ktor.util.KtorExperimentalAPI")
       useExperimentalAnnotation("kotlin.time.ExperimentalTime")
       useExperimentalAnnotation("kotlinx.coroutines.FlowPreview")
+      useExperimentalAnnotation("kotlinx.cli.ExperimentalCli")
     }
   }
 }

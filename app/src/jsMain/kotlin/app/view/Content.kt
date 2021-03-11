@@ -25,7 +25,7 @@ fun RenderContext.Content() {
       },
     )
     margins {
-      top { "5rem" }
+      vertical { "5rem" }
     }
   }) {
     items {
@@ -38,7 +38,7 @@ fun RenderContext.Content() {
         width { "max-content" }
         css("align-self: center")
       }) {
-        LibraryStore.data.map { it.libraries?.data }.render { libraries ->
+        LibraryStore.data.map { it.libraries.data }.render { libraries ->
           if (libraries == null) {
             spinner({
               size { large }
