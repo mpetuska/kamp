@@ -31,6 +31,7 @@ jobs:
       API_URL: https://kamp.azurewebsites.net
       ADMIN_USER: ${{ secrets.API_ADMIN_USER }}
       ADMIN_PASSWORD: ${{ secrets.API_ADMIN_PASSWORD }}
+      IMAGE: docker.pkg.github.com/mpetuska/kamp/scanner:latest
       FROM: g
       TO: l
     steps:
@@ -48,6 +49,7 @@ jobs:
       API_URL: https://kamp.azurewebsites.net
       ADMIN_USER: ${{ secrets.API_ADMIN_USER }}
       ADMIN_PASSWORD: ${{ secrets.API_ADMIN_PASSWORD }}
+      IMAGE: docker.pkg.github.com/mpetuska/kamp/scanner:latest
       FROM: m
       TO: r
     steps:
@@ -65,6 +67,7 @@ jobs:
       API_URL: https://kamp.azurewebsites.net
       ADMIN_USER: ${{ secrets.API_ADMIN_USER }}
       ADMIN_PASSWORD: ${{ secrets.API_ADMIN_PASSWORD }}
+      IMAGE: docker.pkg.github.com/mpetuska/kamp/scanner:latest
       FROM: s
       TO: z
     steps:
