@@ -33,11 +33,26 @@ suspend fun main(args: Array<String>) {
     shortName = "e",
     description = "Repository root page filter to exclude"
   ).multiple()
+  val delay by parser.option(
+    type = ArgType.Int,
+    shortName = "d",
+    description = "Worker processing delay in milliseconds"
+  )
+  val workers by parser.option(
+    type = ArgType.Int,
+    shortName = "w",
+    description = "Concurrent worker count"
+  )
   parser.parse(args)
+  val cliOptions = CLIOptions(
+    scanner = scanner,
+    include = include.toSet().takeIf { it.isNotEmpty() },
+    from = from,
+    to = to,
+    exclude = exclude.toSet().takeIf { it.isNotEmpty() },
+    delayMS = delay?.toLong(),
+    workers = workers
+  )
   
-  val rangeFilter = from?.let { f -> to?.let { t -> (f..t).map(Char::toString).toSet() } } ?: setOf()
-  val filters = ((include.toSet()) + rangeFilter).takeIf { it.isNotEmpty() }
-  val excludeFilters = exclude.toSet().takeIf { it.isNotEmpty() }
-  
-  Orchestrator(di).run(scanner, filters, excludeFilters)
+  Orchestrator(di).run(scanner, cliOptions)
 }

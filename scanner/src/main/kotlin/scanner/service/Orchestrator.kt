@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.serialization.*
 import kotlinx.serialization.json.*
 import org.kodein.di.*
+import scanner.domain.*
 import scanner.util.*
 import kotlin.time.*
 
@@ -14,19 +15,19 @@ class Orchestrator(override val di: DI) : DIAware {
   private val logger by LoggerDelegate()
   private val json by di.instance<Json>()
   
-  suspend fun run(scanner: String, rootArtefactsFilter: Set<String>? = null, rootArtefactsExcludeFilter: Set<String>? = null) {
+  suspend fun run(scanner: String, cliOptions: CLIOptions? = null) {
     val scannerService = di.direct.instanceOrNull<MavenScannerService<*>>(scanner)
-  
+    
     scannerService?.let {
       logger.info("Scanning repository: $scanner")
-    
+      
       val duration = measureTime {
         coroutineScope {
           supervisedLaunch {
             logger.info("Starting $scanner scan")
-            val count = scanRepo(scannerService, rootArtefactsFilter, rootArtefactsExcludeFilter)
-            logger.info("Found $count kotlin modules with gradle metadata in $scanner repository filtered by ${rootArtefactsFilter ?: setOf()}, " +
-              "explicitly excluding ${rootArtefactsExcludeFilter ?: setOf()}")
+            val count = scanRepo(scannerService, cliOptions)
+            logger.info("Found $count kotlin modules with gradle metadata in $scanner repository filtered by ${cliOptions?.include ?: setOf()}, " +
+              "explicitly excluding ${cliOptions?.exclude ?: setOf()}")
           }
         }
       }
@@ -40,10 +41,10 @@ class Orchestrator(override val di: DI) : DIAware {
     } ?: logger.error("ScannerService for $scanner not found")
   }
   
-  private suspend fun scanRepo(scanner: MavenScannerService<*>, rootArtefactsFilter: Set<String>? = null, rootArtefactsExcludeFilter: Set<String>? = null): Int {
+  private suspend fun scanRepo(scanner: MavenScannerService<*>, cliOptions: CLIOptions? = null): Int {
     var count = 0
     val kamp by di.instance<HttpClient>("kamp")
-    scanner.scanKotlinLibraries(rootArtefactsFilter, rootArtefactsExcludeFilter).buffer().collect { lib ->
+    scanner.scanKotlinLibraries(cliOptions).buffer().collect { lib ->
       coroutineScope {
         supervisedLaunch {
           count++

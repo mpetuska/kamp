@@ -6,6 +6,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.*
 import kotlinx.coroutines.flow.*
 import scanner.client.*
+import scanner.domain.*
 import scanner.processor.*
 import scanner.util.*
 
@@ -14,15 +15,15 @@ abstract class MavenScannerService<A : MavenArtifact> : Closeable {
   protected abstract val pomProcessor: PomProcessor
   protected abstract val gradleModuleProcessor: GradleModuleProcessor
   protected abstract val client: MavenRepositoryClient<A>
-  protected abstract fun CoroutineScope.produceArtifacts(rootArtefactsFilter: Set<String>? = null, rootArtefactsExcludeFilter: Set<String>? = null): ReceiveChannel<A>
+  protected abstract fun CoroutineScope.produceArtifacts(cliOptions: CLIOptions? = null): ReceiveChannel<A>
   
-  fun CoroutineScope.scanMavenArtefacts(rootArtefactsFilter: Set<String>? = null, rootArtefactsExcludeFilter: Set<String>? = null): Flow<A> = run {
-    logger.info("Scanning from repository root and filtering by ${rootArtefactsFilter ?: setOf()}, explicitly excluding ${rootArtefactsExcludeFilter ?: setOf()}")
-    produceArtifacts(rootArtefactsFilter, rootArtefactsExcludeFilter)
+  fun CoroutineScope.scanMavenArtefacts(cliOptions: CLIOptions? = null): Flow<A> = run {
+    logger.info("Scanning from repository root and filtering by ${cliOptions?.include ?: setOf()}, explicitly excluding ${cliOptions?.exclude ?: setOf()}")
+    produceArtifacts(cliOptions)
   }.receiveAsFlow()
   
-  suspend fun scanKotlinLibraries(rootArtefactsFilter: Set<String>? = null, rootArtefactsExcludeFilter: Set<String>? = null): Flow<KotlinMPPLibrary> = channelFlow {
-    val artefactsFlow = scanMavenArtefacts(rootArtefactsFilter, rootArtefactsExcludeFilter)
+  suspend fun scanKotlinLibraries(cliOptions: CLIOptions? = null): Flow<KotlinMPPLibrary> = channelFlow {
+    val artefactsFlow = scanMavenArtefacts(cliOptions)
     
     repeat(Runtime.getRuntime().availableProcessors() * 2) {
       supervisedLaunch {

@@ -10,7 +10,13 @@ public interface MavenArtifact {
   public val versions: List<String>?
   public val lastUpdated: Long?
 
-  public val path: String get() = "$group:$name:$releaseVersion"
+  @Transient
+  public val version: String
+    get() = releaseVersion ?: latestVersion
+
+  @Transient
+  public val path: String
+    get() = "$group:$name:$version"
 }
 
 @Serializable

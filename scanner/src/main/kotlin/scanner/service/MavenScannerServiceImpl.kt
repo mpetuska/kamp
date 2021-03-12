@@ -4,6 +4,7 @@ import kamp.domain.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.*
 import scanner.client.*
+import scanner.domain.*
 import scanner.processor.*
 import scanner.util.*
 import kotlin.time.*
@@ -13,15 +14,15 @@ class MavenScannerServiceImpl(
   override val pomProcessor: PomProcessor,
   override val gradleModuleProcessor: GradleModuleProcessor,
 ) : MavenScannerService<MavenArtifactImpl>() {
-  override fun CoroutineScope.produceArtifacts(rootArtefactsFilter: Set<String>?, rootArtefactsExcludeFilter: Set<String>?): ReceiveChannel<MavenArtifactImpl> = produce {
+  override fun CoroutineScope.produceArtifacts(cliOptions: CLIOptions?): ReceiveChannel<MavenArtifactImpl> = produce {
     val pageChannel = Channel<List<MavenRepositoryClient.RepoItem>>(Channel.BUFFERED)
     supervisedLaunch {
       client.listRepositoryPath("")?.filter { repoItem ->
         val path = repoItem.path.removePrefix("/")
-        val included = rootArtefactsFilter
+        val included = cliOptions?.include
           ?.let { filter -> filter.any { path.startsWith(it) } }
           ?: true
-        val excluded = rootArtefactsExcludeFilter
+        val excluded = cliOptions?.exclude
           ?.let { filter -> filter.any { path.startsWith(it) } }
           ?: false
         included && !excluded
@@ -32,7 +33,7 @@ class MavenScannerServiceImpl(
     supervisedLaunch {
       var ticks = 0
       do {
-        delay(15.seconds)
+        delay(10.seconds)
         if (pageChannel.isEmpty) {
           logger.info("Page channel empty, ${5 - ticks} ticks remaining until close")
           ticks++
@@ -46,9 +47,12 @@ class MavenScannerServiceImpl(
     }
     
     // Workers
-    repeat(Runtime.getRuntime().availableProcessors() * 2) {
+    repeat(cliOptions?.workers ?: Runtime.getRuntime().availableProcessors() * 2) {
       supervisedLaunch {
         for (page in pageChannel) {
+          cliOptions?.delayMS?.let {
+            delay(it)
+          }
           val artifactDetails = page.find { it.value == "maven-metadata.xml" }?.let {
             client.getArtifactDetails(it.path)
           }
