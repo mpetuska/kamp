@@ -33,7 +33,7 @@ class MavenScannerServiceImpl(
     supervisedLaunch {
       var ticks = 0
       do {
-        delay(10.seconds)
+        delay(cliOptions?.delayMS?.milliseconds ?: 10.seconds)
         if (pageChannel.isEmpty) {
           logger.info("Page channel empty, ${5 - ticks} ticks remaining until close")
           ticks++
@@ -51,7 +51,7 @@ class MavenScannerServiceImpl(
       supervisedLaunch {
         for (page in pageChannel) {
           cliOptions?.delayMS?.let {
-            delay(it)
+            delay(it.milliseconds)
           }
           val artifactDetails = page.find { it.value == "maven-metadata.xml" }?.let {
             client.getArtifactDetails(it.path)
