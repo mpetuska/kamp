@@ -109,7 +109,8 @@ private fun RenderContext.SearchModal() = modal({
           }
           stackUpClose {
             TargetCheckboxGroup(mapOf(
-              "js" to "js",
+              "legacy" to "legacy",
+              "ir" to "ir",
             )) {
               h4 { +"JS" }
             }
@@ -221,17 +222,25 @@ fun RenderContext.Pagination() = lineUp {
   spacing { none }
   items {
     LibraryStore.data.mapLatest { it.libraries }.mapNotNull { it }.render { libs ->
-      clickButton {
+      clickButton({
+        css("border-top-right-radius: 0")
+        css("border-bottom-right-radius: 0")
+      }) {
         size { small }
         icon { fromTheme { caretLeft } }
         disabled(libs.prev == null)
       } handledBy fetchLibraryPage(libs.page - 1)
-      clickButton {
+      clickButton({
+        css("border-radius: 0")
+      }) {
         size { small }
         variant { outline }
         text("${libs.page}")
       }
-      clickButton {
+      clickButton({
+        css("border-top-left-radius: 0")
+        css("border-bottom-left-radius: 0")
+      }) {
         size { small }
         icon { fromTheme { caretRight } }
         disabled(libs.next == null)

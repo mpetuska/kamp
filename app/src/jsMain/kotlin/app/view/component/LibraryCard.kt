@@ -6,6 +6,8 @@ import dev.fritz2.binding.*
 import dev.fritz2.components.*
 import dev.fritz2.dom.html.*
 import dev.fritz2.styling.theme.*
+import io.ktor.http.*
+import io.ktor.util.date.*
 import kamp.domain.*
 import kotlinx.coroutines.flow.*
 
@@ -41,7 +43,7 @@ private fun RenderContext.TargetBadge(category: String, targets: List<KotlinTarg
     }, content)
   }
   
-  if (targets.size > 1 || targets.firstOrNull()?.variant != null) {
+  if (targets.size > 1) {
     popover({
       width { minContent }
       css("border-radius: 0.5rem")
@@ -71,11 +73,7 @@ private fun RenderContext.TargetBadge(category: String, targets: List<KotlinTarg
             color { base }
             textShadow { flat }
           }) {
-            +if (target.category == KotlinTarget.JS.category) {
-              target.variant ?: "UNKNOWN"
-            } else {
-              target.platform
-            }
+            +target.platform
           }
         }
       }
@@ -123,18 +121,33 @@ private fun RenderContext.CardHeader(library: KotlinMPPLibrary) {
       }
     }
     lineUp({
-      justifyContent { flexEnd }
+      justifyContent { spaceBetween }
     }) {
-      spacing { none }
       items {
-        library.website?.let {
-          Link(it, "_new") {
-            +"Website"
+        box({
+          css("align-self: flex-end")
+        }) {
+          library.lastUpdated?.let {
+            sub {
+              +GMTDate(it).toHttpDate()
+            }
           }
         }
-        library.scm?.let {
-          Link(it, "_new") {
-            +"SCM"
+        lineUp({
+          justifyContent { flexEnd }
+        }) {
+          spacing { none }
+          items {
+            library.website?.let {
+              Link(it, "_new") {
+                +"Website"
+              }
+            }
+            library.scm?.let {
+              Link(it, "_new") {
+                +"SCM"
+              }
+            }
           }
         }
       }

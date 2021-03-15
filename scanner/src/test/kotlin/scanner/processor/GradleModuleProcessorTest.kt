@@ -19,9 +19,9 @@ class GradleModuleProcessorTest : FunSpec({
   
   test("listSupportedTargets") {
     with(GradleModuleProcessor()) {
-    
+  
       val targets = module.supportedTargets
-    
+  
       targets shouldContainExactlyInAnyOrder setOf(
         KotlinTarget.JVM.Android(),
         KotlinTarget.JVM.Java(),
@@ -31,7 +31,7 @@ class GradleModuleProcessorTest : FunSpec({
         KotlinTarget.Native("ios_x64"),
         KotlinTarget.Common(),
       )
-    
+  
       val targets1 = parseJsonFile<GradleModule>("redux-kotlin-0.5.5.module").supportedTargets
       targets1 shouldContainExactlyInAnyOrder setOf(
         KotlinTarget.Native("android_arm32"),
