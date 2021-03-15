@@ -34,7 +34,8 @@ abstract class MavenRepositoryClient<A : MavenArtifact>(
         try {
           val lastUpdated = doc.selectFirst("versioning>lastUpdated")?.text()?.toLongOrNull()?.let {
             val date = GMTDate(it)
-            if (date.year > GMTDate().year) {
+            // Accounts for incorrect Maven Repository timestamps
+            if (date.year > GMTDate().year + 590) {
               date.copy(date.year - 590).timestamp
             } else {
               it
