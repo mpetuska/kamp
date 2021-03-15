@@ -2,6 +2,7 @@ package scanner.client
 
 import io.ktor.client.*
 import io.ktor.client.request.*
+import io.ktor.util.date.*
 import io.ktor.utils.io.core.*
 import kamp.domain.*
 import kotlinx.coroutines.*
@@ -31,13 +32,23 @@ abstract class MavenRepositoryClient<A : MavenArtifact>(
         val pom = client.get<String>(url).asDocument()
         val doc = pom.getElementsByTag("metadata").first()
         try {
+          val lastUpdated = doc.selectFirst("versioning>lastUpdated")?.text()?.let {
+            GMTDate(
+              year = it.substring(0 until 4).toInt(),
+              month = Month.from(it.substring(4 until 6).toInt() - 1),
+              dayOfMonth = it.substring(6 until 8).toInt(),
+              hours = it.substring(8 until 10).toInt(),
+              minutes = it.substring(10 until 12).toInt(),
+              seconds = it.substring(12 until 14).toInt(),
+            ).timestamp
+          }
           MavenArtifactImpl(
             group = doc.selectFirst("groupId").text(),
             name = doc.selectFirst("artifactId").text(),
             latestVersion = doc.selectFirst("versioning>latest")?.text() ?: doc.selectFirst("version").text(),
             releaseVersion = doc.selectFirst("versioning>release")?.text(),
             versions = doc.selectFirst("versioning>versions")?.children()?.map { v -> v.text() },
-            lastUpdated = doc.selectFirst("versioning>lastUpdated")?.text()?.toLongOrNull(),
+            lastUpdated = lastUpdated,
           )
         } catch (e: Exception) {
           if (doc.selectFirst("plugins") == null) {
