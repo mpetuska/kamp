@@ -35,7 +35,7 @@ jobs:
           name: static-web-app
           if-no-files-found: error
       - name: Build App Docker image & push to GitHub Packages
-        uses: docker/build-push-action@v1
+        uses: docker/build-push-action@v2.3.0
         with:
           path: app
           username: ${{ github.actor }}
@@ -47,7 +47,7 @@ jobs:
           add_git_labels: true
           tags: latest
       - name: Build Scanner Docker image & push to GitHub Packages
-        uses: docker/build-push-action@v1
+        uses: docker/build-push-action@v2.3.0
         with:
           path: scanner
           username: ${{ github.actor }}
