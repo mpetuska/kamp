@@ -87,11 +87,6 @@ resource "azurerm_app_service_plan" "main" {
   }
 }
 
-data "azurerm_search_service" "main" {
-  name                = azurerm_resource_group.main.name
-  resource_group_name = azurerm_resource_group.main.name
-}
-
 resource "azurerm_app_service" "main" {
   resource_group_name = azurerm_app_service_plan.main.resource_group_name
   app_service_plan_id = azurerm_app_service_plan.main.id
@@ -116,8 +111,6 @@ resource "azurerm_app_service" "main" {
     DOCKER_REGISTRY_SERVER_PASSWORD     = var.docker_registry_password
     MONGO_STRING                        = azurerm_cosmosdb_account.main.connection_strings[0]
     MONGO_DATABASE                      = azurerm_cosmosdb_mongo_database.main.name
-    SEARCH_SERVICE_KEY                  = data.azurerm_search_service.main.primary_key
-    SEARCH_SERVICE_URL                  = "https://${data.azurerm_search_service.main.name}.search.windows.net"
     ADMIN_USER                          = var.api_admin_user
     ADMIN_PASSWORD                      = var.api_admin_password
     AZURE_MONITOR_INSTRUMENTATION_KEY   = azurerm_application_insights.main.instrumentation_key

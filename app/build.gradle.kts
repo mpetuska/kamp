@@ -41,7 +41,6 @@ kotlin {
         implementation("ch.qos.logback:logback-classic:_")
         implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:_")
         implementation("com.microsoft.azure:applicationinsights-web-auto:_")
-        implementation("com.azure:azure-search-documents:_")
         implementation("org.litote.kmongo:kmongo-coroutine-serialization:_")
       }
     }
