@@ -10,7 +10,6 @@ libs/
 # Ignore Gradle build output directory
 build
 .terraform/
-.terraform.lock.hcl
 *.tfvars
 graalvm-ce-*.tar.gz
 app/client/externals
