@@ -8,7 +8,7 @@ import dev.fritz2.styling.theme.*
 
 @KampComponent
 fun RenderContext.Badge(
-  color: (Colors.() -> Property) = { primary },
+  color: (Colors.() -> Property) = { primary.base },
   style: BoxParams.() -> Unit = {},
   content: Span.() -> Unit = {},
 ) = styled(::span)({
@@ -34,7 +34,7 @@ fun RenderContext.Badge(
   background {
     color(color)
   }
-  color { base }
+  color { neutral }
   style()
 }, content)
 

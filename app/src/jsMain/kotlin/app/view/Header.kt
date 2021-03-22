@@ -261,15 +261,15 @@ fun RenderContext.Header() {
         styled(::a)({
           after {
             textAlign { center }
-            background { color { primary } }
-            color { lightGray }
+            background { color { primary.base } }
+            color { gray100 }
           }
           alignItems { end }
         }) {
           href("/")
           KampIcon {
             size { "3rem" }
-            color { primary }
+            color { primary.base }
             display { inline }
             css("border-radius: 50%")
           }

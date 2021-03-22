@@ -13,7 +13,7 @@ fun RenderContext.Link(href: String, target: String? = null, block: A.() -> Unit
     }
     hover {
       background {
-        color { lighterGray }
+        color { gray100 }
       }
     }
     paddings {
@@ -26,7 +26,7 @@ fun RenderContext.Link(href: String, target: String? = null, block: A.() -> Unit
     styled(::a)({
       fontSize { normal }
       fontWeight { semiBold }
-      color { dark }
+      color { gray900 }
     }) {
       href(href)
       target?.let { target(it) }

@@ -47,9 +47,7 @@ kotlin {
     named("jsMain") {
       dependencies {
         implementation("io.ktor:ktor-client-serialization:_")
-        implementation("dev.fritz2:core:_")
         implementation("dev.fritz2:components:_")
-        implementation(npm("kotlin-playground", "^1.23.1"))
       }
       languageSettings.apply {
         useExperimentalAnnotation("kotlinx.coroutines.ExperimentalCoroutinesApi")

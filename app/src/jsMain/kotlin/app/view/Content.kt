@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.*
 fun RenderContext.Content() {
   stackUp({
     alignItems { stretch }
-    color { dark }
+    color { gray900 }
     minHeight { "100%" }
     paddings(
       sm = {
@@ -38,7 +38,7 @@ fun RenderContext.Content() {
         width { "max-content" }
         css("align-self: center")
       }) {
-        LibraryStore.data.map { it.libraries?.data }.render { libraries ->
+        LibraryStore.data.map { it.libraries.data }.render { libraries ->
           if (libraries == null) {
             spinner({
               size { large }

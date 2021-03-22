@@ -18,7 +18,7 @@ private val String.badgeColor: Colors.() -> Property
     KotlinTarget.JVM.category -> ({ "#79bf2d" })
     KotlinTarget.JS.category -> ({ "#ffb100" })
     KotlinTarget.Native.category -> ({ "#6d6dff" })
-    else -> ({ gray })
+    else -> ({ gray500 })
   }
 
 private fun targetPriority(target: String) = when (target) {
@@ -50,7 +50,6 @@ private fun RenderContext.TargetBadge(category: String, targets: List<KotlinTarg
       paddings {
         vertical { tiny }
       }
-      boxShadow { flat }
       minWidth { "5rem" }
       textAlign { center }
       background {
@@ -70,7 +69,7 @@ private fun RenderContext.TargetBadge(category: String, targets: List<KotlinTarg
         for (target in targets) {
           styled(::div)({
             fontWeight { "500" }
-            color { base }
+            color { neutral }
             textShadow { flat }
           }) {
             +target.platform
@@ -241,7 +240,7 @@ private fun RenderContext.CardFooter(library: KotlinMPPLibrary, selectedVersion:
     box({
       width { "100%" }
       border {
-        color { primary }
+        color { primary.base }
         width { thin }
       }
       css("border-bottom-left-radius: 0.5rem")
@@ -301,7 +300,7 @@ fun RenderContext.LibraryCard(library: KotlinMPPLibrary) {
     styled(::hr)({
       borders {
         top {
-          color { lightGray }
+          color { gray100 }
           style { solid }
           width { "0.1rem" }
         }
