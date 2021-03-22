@@ -38,7 +38,7 @@ val di = DI {
   Repository.values().forEach { repo ->
     bind(repo.alias) from provider { with(repo) { client(url) } }
     bind<MavenScannerService<*>>(repo.alias) with
-      singleton { MavenScannerServiceImpl(instance(repo.alias), instance(), instance()) }
+        singleton { MavenScannerServiceImpl(instance(repo.alias), instance(), instance()) }
   }
   
   bind() from

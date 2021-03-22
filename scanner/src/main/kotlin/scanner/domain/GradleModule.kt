@@ -52,7 +52,7 @@ data class GradleModule(
       @SerialName("org.jetbrains.kotlin.platform.type")
       val orgJetbrainsKotlinPlatformType: String? = null,
     )
-  
+
     @Serializable
     data class AvailableAt(
       @SerialName("group") val group: String? = null,

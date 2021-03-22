@@ -48,7 +48,7 @@ class MavenScannerServiceImpl(
       pageChannel.close()
       logger.info("Closed page channel")
     }
-    
+
     // Workers
     repeat(cliOptions?.workers ?: Runtime.getRuntime().availableProcessors() * 2) {
       supervisedLaunch {

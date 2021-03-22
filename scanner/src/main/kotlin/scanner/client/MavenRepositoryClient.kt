@@ -19,12 +19,12 @@ abstract class MavenRepositoryClient<A : MavenArtifact>(
   protected abstract val client: HttpClient
   protected abstract val json: Json
   private val logger by LoggerDelegate()
-  
+
   private val A.mavenModuleRootUrl: String
     get() = "$defaultRepositoryRootUrl/${group.replace(".", "/")}/$name"
   private val A.mavenModuleVersionUrl: String
     get() = "$mavenModuleRootUrl/$releaseVersion"
-  
+
   suspend fun getArtifactDetails(pathToMavenMetadata: String): MavenArtifactImpl? = coroutineScope {
     val artifact = supervisedAsync {
       val url = "$defaultRepositoryRootUrl$pathToMavenMetadata"
@@ -59,7 +59,7 @@ abstract class MavenRepositoryClient<A : MavenArtifact>(
         null
       }
     }
-    
+
     artifact.await()
   }
   

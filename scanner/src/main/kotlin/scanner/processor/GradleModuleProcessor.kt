@@ -5,7 +5,7 @@ import scanner.domain.*
 
 class GradleModuleProcessor {
   val kotlinVersion: String = "1.4.30"
-  
+
   val GradleModule.isRootModule
     get() = component?.url == null
   

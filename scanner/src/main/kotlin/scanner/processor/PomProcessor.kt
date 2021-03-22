@@ -8,7 +8,7 @@ class PomProcessor {
 
   val Document.url: String?
     get() = selectFirst("project>url")?.text()
-  
+
   val Document.scmUrl: String?
     get() =
       selectFirst("project>scm")?.let {
@@ -19,11 +19,11 @@ class PomProcessor {
               ?: it.selectFirst("developerConnection")?.text()
           }
             ?.trim()
-        
+      
         val path =
           url?.trim()?.split("://")?.getOrNull(1)
             ?: url?.split("@")?.getOrNull(1)?.replaceFirst(":", "/")
-        
+      
         path?.removeSuffix(".git")?.removeSuffix("/")?.let { u -> "https://$u.git" } ?: url
       }
 }
