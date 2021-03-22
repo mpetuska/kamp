@@ -2,6 +2,7 @@ package scanner.service
 
 import io.ktor.client.*
 import io.ktor.client.request.*
+import kotlin.time.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlinx.serialization.*
@@ -9,7 +10,6 @@ import kotlinx.serialization.json.*
 import org.kodein.di.*
 import scanner.domain.*
 import scanner.util.*
-import kotlin.time.*
 
 class Orchestrator(override val di: DI) : DIAware {
   private val logger by LoggerDelegate()

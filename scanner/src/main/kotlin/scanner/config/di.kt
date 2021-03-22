@@ -9,6 +9,7 @@ import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import kotlin.time.*
 import org.kodein.di.*
 import scanner.client.*
 import scanner.domain.*
@@ -16,7 +17,6 @@ import scanner.domain.Repository.*
 import scanner.processor.*
 import scanner.service.*
 import scanner.util.*
-import kotlin.time.*
 
 fun HttpClientConfig<CIOEngineConfig>.baseConfig() {
   val timeout = 2.5.minutes.inMilliseconds.toLong()

@@ -1,13 +1,13 @@
 package scanner.service
 
 import kamp.domain.*
+import kotlin.time.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.*
 import scanner.client.*
 import scanner.domain.*
 import scanner.processor.*
 import scanner.util.*
-import kotlin.time.*
 
 class MavenScannerServiceImpl(
     override val client: MavenRepositoryClient<MavenArtifactImpl>,
