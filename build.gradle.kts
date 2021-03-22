@@ -38,7 +38,7 @@ allprojects {
       kotlinOptions.jvmTarget = "15"
       kotlinOptions {
         useIR = true
-        jvmTarget = "${JavaVersion.VERSION_15}"
+        jvmTarget = "${JavaVersion.VERSION_11}"
       }
     }
   }
