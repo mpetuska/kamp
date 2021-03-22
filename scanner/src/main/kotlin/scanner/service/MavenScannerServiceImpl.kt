@@ -14,21 +14,24 @@ class MavenScannerServiceImpl(
   override val pomProcessor: PomProcessor,
   override val gradleModuleProcessor: GradleModuleProcessor,
 ) : MavenScannerService<MavenArtifactImpl>() {
-  override fun CoroutineScope.produceArtifacts(cliOptions: CLIOptions?): ReceiveChannel<MavenArtifactImpl> = produce {
+  override fun CoroutineScope.produceArtifacts(
+    cliOptions: CLIOptions?,
+  ): ReceiveChannel<MavenArtifactImpl> = produce {
     val pageChannel = Channel<List<MavenRepositoryClient.RepoItem>>(Channel.BUFFERED)
     supervisedLaunch {
-      client.listRepositoryPath("")?.filter { repoItem ->
-        val path = repoItem.path.removePrefix("/")
-        val included = cliOptions?.include
-          ?.let { filter -> filter.any { path.startsWith(it) } }
-          ?: true
-        val excluded = cliOptions?.exclude
-          ?.let { filter -> filter.any { path.startsWith(it) } }
-          ?: false
-        included && !excluded
-      }?.let { pageChannel.send(it) }
+      client
+        .listRepositoryPath("")
+        ?.filter { repoItem ->
+          val path = repoItem.path.removePrefix("/")
+          val included =
+            cliOptions?.include?.let { filter -> filter.any { path.startsWith(it) } } ?: true
+          val excluded =
+            cliOptions?.exclude?.let { filter -> filter.any { path.startsWith(it) } } ?: false
+          included && !excluded
+        }
+        ?.let { pageChannel.send(it) }
     }
-    
+
     // Tracker
     supervisedLaunch {
       var ticks = 0
@@ -50,26 +53,23 @@ class MavenScannerServiceImpl(
     repeat(cliOptions?.workers ?: Runtime.getRuntime().availableProcessors() * 2) {
       supervisedLaunch {
         for (page in pageChannel) {
-          cliOptions?.delayMS?.let {
-            delay(it.milliseconds)
-          }
-          val artifactDetails = page.find { it.value == "maven-metadata.xml" }?.let {
-            client.getArtifactDetails(it.path)
-          }
+          cliOptions?.delayMS?.let { delay(it.milliseconds) }
+          val artifactDetails =
+            page.find { it.value == "maven-metadata.xml" }?.let {
+              client.getArtifactDetails(it.path)
+            }
           if (artifactDetails != null) {
             logger.debug("Found MC artefact ${artifactDetails.group}:${artifactDetails.name}")
             send(artifactDetails)
           } else {
-            page
-              .filter(MavenRepositoryClient.RepoItem::isDirectory)
-              .map {
-                supervisedLaunch {
-                  client.listRepositoryPath(it.path)?.let { item ->
-                    logger.debug("Scanned MC page ${it.path} and found ${item.size} children")
-                    pageChannel.send(item)
-                  }
+            page.filter(MavenRepositoryClient.RepoItem::isDirectory).map {
+              supervisedLaunch {
+                client.listRepositoryPath(it.path)?.let { item ->
+                  logger.debug("Scanned MC page ${it.path} and found ${item.size} children")
+                  pageChannel.send(item)
                 }
               }
+            }
           }
         }
       }

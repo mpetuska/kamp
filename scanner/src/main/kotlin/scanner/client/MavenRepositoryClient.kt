@@ -25,14 +25,14 @@ abstract class MavenRepositoryClient<A : MavenArtifact>(
   private val A.mavenModuleVersionUrl: String
     get() = "$mavenModuleRootUrl/$releaseVersion"
   
-  suspend fun getArtifactDetails(pathToMavenMetadata: String): MavenArtifactImpl? =
-    coroutineScope {
-      val artifact = supervisedAsync {
-        val url = "$defaultRepositoryRootUrl$pathToMavenMetadata"
-        val pom = client.get<String>(url).asDocument()
-        val doc = pom.getElementsByTag("metadata").first()
-        try {
-          val lastUpdated = doc.selectFirst("versioning>lastUpdated")?.text()?.let {
+  suspend fun getArtifactDetails(pathToMavenMetadata: String): MavenArtifactImpl? = coroutineScope {
+    val artifact = supervisedAsync {
+      val url = "$defaultRepositoryRootUrl$pathToMavenMetadata"
+      val pom = client.get<String>(url).asDocument()
+      val doc = pom.getElementsByTag("metadata").first()
+      try {
+        val lastUpdated =
+          doc.selectFirst("versioning>lastUpdated")?.text()?.let {
             GMTDate(
               year = it.substring(0 until 4).toInt(),
               month = Month.from(it.substring(4 until 6).toInt() - 1),
@@ -40,38 +40,47 @@ abstract class MavenRepositoryClient<A : MavenArtifact>(
               hours = it.substring(8 until 10).toInt(),
               minutes = it.substring(10 until 12).toInt(),
               seconds = it.substring(12 until 14).toInt(),
-            ).timestamp
+            )
+              .timestamp
           }
-          MavenArtifactImpl(
-            group = doc.selectFirst("groupId").text(),
-            name = doc.selectFirst("artifactId").text(),
-            latestVersion = doc.selectFirst("versioning>latest")?.text() ?: doc.selectFirst("version").text(),
-            releaseVersion = doc.selectFirst("versioning>release")?.text(),
-            versions = doc.selectFirst("versioning>versions")?.children()?.map { v -> v.text() },
-            lastUpdated = lastUpdated,
-          )
-        } catch (e: Exception) {
-          if (doc.selectFirst("plugins") == null) {
-            logger.warn("Unable to parse maven-metadata.xml from $url")
-          }
-          null
+        MavenArtifactImpl(
+          group = doc.selectFirst("groupId").text(),
+          name = doc.selectFirst("artifactId").text(),
+          latestVersion = doc.selectFirst("versioning>latest")?.text()
+            ?: doc.selectFirst("version").text(),
+          releaseVersion = doc.selectFirst("versioning>release")?.text(),
+          versions = doc.selectFirst("versioning>versions")?.children()?.map { v -> v.text() },
+          lastUpdated = lastUpdated,
+        )
+      } catch (e: Exception) {
+        if (doc.selectFirst("plugins") == null) {
+          logger.warn("Unable to parse maven-metadata.xml from $url")
         }
+        null
       }
-      
-      artifact.await()
     }
+    
+    artifact.await()
+  }
   
   suspend fun getGradleModule(artifact: A): GradleModule? = coroutineScope {
     supervisedAsync {
-      val module = client.get<String>("${artifact.mavenModuleVersionUrl}/${artifact.name}-${artifact.releaseVersion}.module")
+      val module =
+        client.get<String>(
+          "${artifact.mavenModuleVersionUrl}/${artifact.name}-${artifact.releaseVersion}.module")
       json.decodeFromString<GradleModule>(module)
-    }.await()
+    }
+      .await()
   }
-  
+
   suspend fun getMavenPom(artifact: A): Document? = coroutineScope {
     supervisedAsync {
-      client.get<String>("${artifact.mavenModuleVersionUrl}/${artifact.name}-${artifact.releaseVersion}.pom").asDocument()
-    }.await()
+      client
+        .get<String>(
+          "${artifact.mavenModuleVersionUrl}/${artifact.name}-${artifact.releaseVersion}.pom")
+        .asDocument()
+    }
+      .await()
   }
   
   suspend fun listRepositoryPath(path: String): List<RepoItem>? = coroutineScope {
@@ -79,7 +88,8 @@ abstract class MavenRepositoryClient<A : MavenArtifact>(
       client.get<String>("$defaultRepositoryRootUrl${path.removeSuffix("/")}/").let { str ->
         parsePage(str.asDocument())?.map { RepoItem(it, path) }
       }
-    }.await()
+    }
+      .await()
   }
   
   override fun close() = client.close()

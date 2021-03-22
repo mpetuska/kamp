@@ -18,12 +18,9 @@ import scanner.service.*
 import scanner.util.*
 import kotlin.time.*
 
-
 fun HttpClientConfig<CIOEngineConfig>.baseConfig() {
   val timeout = 2.5.minutes.inMilliseconds.toLong()
-  engine {
-    requestTimeout = timeout
-  }
+  engine { requestTimeout = timeout }
   defaultRequest {
     contentType(ContentType.Application.Json)
     accept(ContentType.Application.Json)
@@ -34,36 +31,37 @@ fun HttpClientConfig<CIOEngineConfig>.baseConfig() {
     connectTimeoutMillis = timeout
     socketTimeoutMillis = timeout
   }
-  install(JsonFeature) {
-    serializer = KotlinxSerializer(prettyJson)
-  }
+  install(JsonFeature) { serializer = KotlinxSerializer(prettyJson) }
 }
 
 val di = DI {
   Repository.values().forEach { repo ->
     bind(repo.alias) from provider { with(repo) { client(url) } }
-    bind<MavenScannerService<*>>(repo.alias) with singleton { MavenScannerServiceImpl(instance(repo.alias), instance(), instance()) }
+    bind<MavenScannerService<*>>(repo.alias) with
+      singleton { MavenScannerServiceImpl(instance(repo.alias), instance(), instance()) }
   }
   
-  bind() from singleton {
-    kotlinx.serialization.json.Json {
-      prettyPrint = true
-      ignoreUnknownKeys = true
+  bind() from
+    singleton {
+      kotlinx.serialization.json.Json {
+        prettyPrint = true
+        ignoreUnknownKeys = true
+      }
     }
-  }
   bind() from singleton { PomProcessor() }
   bind() from singleton { GradleModuleProcessor() }
   
   bind() from provider { HttpClient(CIO, HttpClientConfig<CIOEngineConfig>::baseConfig) }
-  bind("kamp") from provider {
-    HttpClient(CIO) {
-      baseConfig()
-      install(Auth) {
-        basic {
-          username = PrivateEnv.ADMIN_USER
-          password = PrivateEnv.ADMIN_PASSWORD
+  bind("kamp") from
+    provider {
+      HttpClient(CIO) {
+        baseConfig()
+        install(Auth) {
+          basic {
+            username = PrivateEnv.ADMIN_USER
+            password = PrivateEnv.ADMIN_PASSWORD
+          }
         }
       }
     }
-  }
 }

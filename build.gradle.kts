@@ -3,7 +3,8 @@ import org.jetbrains.kotlin.gradle.tasks.*
 plugins {
   kotlin("multiplatform")
   id("org.jetbrains.kotlin.plugin.serialization")
-  id("org.jlleitschuh.gradle.ktlint")
+  id("com.github.jakemarsden.git-hooks")
+  id("com.diffplug.spotless")
   idea
 }
 
@@ -11,6 +12,13 @@ allprojects {
   group = "lt.petuska"
   version = "0.0.1"
   apply(plugin = "idea")
+  apply(plugin = "com.diffplug.spotless")
+  
+  spotless {
+    kotlin {
+      ktfmt("0.22")
+    }
+  }
   idea {
     module {
       isDownloadSources = true
@@ -36,13 +44,17 @@ allprojects {
   }
 }
 
+gitHooks {
+  setHooks(mapOf("pre-commit" to "spotlessApply", "pre-push" to "check"))
+}
+
 kotlin {
   explicitApi()
   jvm()
   js {
     browser()
   }
-
+  
   sourceSets {
     named("commonMain") {
       dependencies {

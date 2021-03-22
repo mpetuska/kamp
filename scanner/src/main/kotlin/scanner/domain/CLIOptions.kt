@@ -15,5 +15,13 @@ data class CLIOptions(
     exclude: Set<String>?,
     delayMS: Long?,
     workers: Int?,
-  ) : this(scanner, ((include ?: setOf()) + (from?.let { to?.let { (from..to).toSet() } } ?: setOf()).map(Char::toString)).takeIf { it.isNotEmpty() }, exclude, delayMS, workers)
+  ) : this(
+    scanner,
+    ((include
+      ?: setOf()) +
+      (from?.let { to?.let { (from..to).toSet() } } ?: setOf()).map(Char::toString))
+      .takeIf { it.isNotEmpty() },
+    exclude,
+    delayMS,
+    workers)
 }
