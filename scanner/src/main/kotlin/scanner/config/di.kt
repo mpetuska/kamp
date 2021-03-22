@@ -40,28 +40,28 @@ val di = DI {
     bind<MavenScannerService<*>>(repo.alias) with
         singleton { MavenScannerServiceImpl(instance(repo.alias), instance(), instance()) }
   }
-  
+
   bind() from
-    singleton {
-      kotlinx.serialization.json.Json {
-        prettyPrint = true
-        ignoreUnknownKeys = true
+      singleton {
+        kotlinx.serialization.json.Json {
+          prettyPrint = true
+          ignoreUnknownKeys = true
+        }
       }
-    }
   bind() from singleton { PomProcessor() }
   bind() from singleton { GradleModuleProcessor() }
-  
+
   bind() from provider { HttpClient(CIO, HttpClientConfig<CIOEngineConfig>::baseConfig) }
   bind("kamp") from
-    provider {
-      HttpClient(CIO) {
-        baseConfig()
-        install(Auth) {
-          basic {
-            username = PrivateEnv.ADMIN_USER
-            password = PrivateEnv.ADMIN_PASSWORD
+      provider {
+        HttpClient(CIO) {
+          baseConfig()
+          install(Auth) {
+            basic {
+              username = PrivateEnv.ADMIN_USER
+              password = PrivateEnv.ADMIN_PASSWORD
+            }
           }
         }
       }
-    }
 }

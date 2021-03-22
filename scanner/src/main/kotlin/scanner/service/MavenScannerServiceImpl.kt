@@ -10,26 +10,26 @@ import scanner.util.*
 import kotlin.time.*
 
 class MavenScannerServiceImpl(
-  override val client: MavenRepositoryClient<MavenArtifactImpl>,
-  override val pomProcessor: PomProcessor,
-  override val gradleModuleProcessor: GradleModuleProcessor,
+    override val client: MavenRepositoryClient<MavenArtifactImpl>,
+    override val pomProcessor: PomProcessor,
+    override val gradleModuleProcessor: GradleModuleProcessor,
 ) : MavenScannerService<MavenArtifactImpl>() {
   override fun CoroutineScope.produceArtifacts(
-    cliOptions: CLIOptions?,
+      cliOptions: CLIOptions?,
   ): ReceiveChannel<MavenArtifactImpl> = produce {
     val pageChannel = Channel<List<MavenRepositoryClient.RepoItem>>(Channel.BUFFERED)
     supervisedLaunch {
       client
-        .listRepositoryPath("")
-        ?.filter { repoItem ->
-          val path = repoItem.path.removePrefix("/")
-          val included =
-            cliOptions?.include?.let { filter -> filter.any { path.startsWith(it) } } ?: true
-          val excluded =
-            cliOptions?.exclude?.let { filter -> filter.any { path.startsWith(it) } } ?: false
-          included && !excluded
-        }
-        ?.let { pageChannel.send(it) }
+          .listRepositoryPath("")
+          ?.filter { repoItem ->
+            val path = repoItem.path.removePrefix("/")
+            val included =
+                cliOptions?.include?.let { filter -> filter.any { path.startsWith(it) } } ?: true
+            val excluded =
+                cliOptions?.exclude?.let { filter -> filter.any { path.startsWith(it) } } ?: false
+            included && !excluded
+          }
+          ?.let { pageChannel.send(it) }
     }
 
     // Tracker
@@ -55,9 +55,9 @@ class MavenScannerServiceImpl(
         for (page in pageChannel) {
           cliOptions?.delayMS?.let { delay(it.milliseconds) }
           val artifactDetails =
-            page.find { it.value == "maven-metadata.xml" }?.let {
-              client.getArtifactDetails(it.path)
-            }
+              page.find { it.value == "maven-metadata.xml" }?.let {
+                client.getArtifactDetails(it.path)
+              }
           if (artifactDetails != null) {
             logger.debug("Found MC artefact ${artifactDetails.group}:${artifactDetails.name}")
             send(artifactDetails)
