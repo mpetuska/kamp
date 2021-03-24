@@ -10,33 +10,37 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
-
 fun Application.routing() = routing {
   libraries()
-  get("/application.env") {
-    call.respondText("$PublicEnv")
-  }
+  get("/application.env") { call.respondText("$PublicEnv") }
+  get("/status") { call.respond(HttpStatusCode.OK) }
   staticContent()
 }
 
-private fun Routing.libraries() = route(LibraryService.path) {
-  get {
-    val service by inject<LibraryService>()
-    call.respond(service.getAll(call.request.page, call.request.pageSize, call.request.search, call.request.targets))
-  }
-  get("/count") {
-    val service by inject<LibraryService>()
-    call.respond(service.getCount(call.request.search, call.request.targets))
-  }
-  
-  authenticate {
-    post {
-      val service by inject<LibraryService>()
-      val entity = service.create(call.receive())
-      call.respond(HttpStatusCode.Created, entity)
+private fun Routing.libraries() =
+    route(LibraryService.path) {
+      get {
+        val service by inject<LibraryService>()
+        call.respond(
+            service.getAll(
+                call.request.page,
+                call.request.pageSize,
+                call.request.search,
+                call.request.targets))
+      }
+      get("/count") {
+        val service by inject<LibraryService>()
+        call.respond(service.getCount(call.request.search, call.request.targets))
+      }
+
+      authenticate {
+        post {
+          val service by inject<LibraryService>()
+          val entity = service.create(call.receive())
+          call.respond(HttpStatusCode.Created, entity)
+        }
+      }
     }
-  }
-}
 
 private fun Routing.staticContent() = static {
   val folder = "WEB-INF"
