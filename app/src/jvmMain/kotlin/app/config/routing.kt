@@ -13,7 +13,7 @@ import io.ktor.routing.*
 fun Application.routing() = routing {
   libraries()
   get("/application.env") { call.respondText("$PublicEnv") }
-  get("/status") { call.respond(HttpStatusCode.OK) }
+  get("/api/status") { call.respond(HttpStatusCode.OK) }
   staticContent()
 }
 
