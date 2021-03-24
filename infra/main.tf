@@ -99,7 +99,7 @@ resource "azurerm_app_service" "main" {
     app_command_line          = ""
     linux_fx_version          = "DOCKER|${var.docker_image_tag}"
     http2_enabled             = true
-    health_check_path         = "/status"
+    health_check_path         = "/api/status"
     cors {
       allowed_origins = ["*"]
     }
