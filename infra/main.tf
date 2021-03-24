@@ -99,8 +99,18 @@ resource "azurerm_app_service" "main" {
     app_command_line          = ""
     linux_fx_version          = "DOCKER|${var.docker_image_tag}"
     http2_enabled             = true
+    health_check_path         = "/status"
     cors {
       allowed_origins = ["*"]
+    }
+  }
+
+  logs {
+    http_logs {
+      file_system {
+        retention_in_days = 35
+        retention_in_mb   = 35
+      }
     }
   }
 
