@@ -52,7 +52,7 @@ class Orchestrator(override val di: DI) : DIAware {
       coroutineScope {
         supervisedLaunch {
           count++
-          logger.info(json.encodeToString(lib))
+          logger.info("Found lib: ${lib.path}")
           kamp.post<Unit>("${PrivateEnv.API_URL}/api/libraries") { body = lib }
         }
       }
