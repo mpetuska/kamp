@@ -8,6 +8,7 @@ import io.ktor.application.ApplicationCall
 import kamp.domain.KotlinMPPLibrary
 import org.litote.kmongo.MongoOperator.all
 import org.litote.kmongo.MongoOperator.and
+import org.litote.kmongo.MongoOperator.language
 import org.litote.kmongo.MongoOperator.search
 import org.litote.kmongo.MongoOperator.text
 import org.litote.kmongo.ascending
@@ -22,7 +23,8 @@ actual class LibraryService(
       """
       {
         $text: {
-          $search: "searchQuery"
+          $search: '$_search',
+          $language: 'en'
         }
       }
       """.trimIndent()
@@ -36,14 +38,13 @@ actual class LibraryService(
       }
       """.trimIndent()
     }
-    val query = setOfNotNull(searchQuery, targetsQuery).takeIf { it.isNotEmpty() }?.let {
+    return setOfNotNull(searchQuery, targetsQuery).takeIf { it.isNotEmpty() }?.let {
       """
       {
         $and: [${it.joinToString(",")}]
       }
       """.trimIndent()
     } ?: "{}"
-    return query
   }
 
   actual suspend fun getAll(
