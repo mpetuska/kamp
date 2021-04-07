@@ -13,6 +13,8 @@ import dev.fritz2.components.popover
 import dev.fritz2.components.stackUp
 import dev.fritz2.dom.html.RenderContext
 import dev.fritz2.dom.html.Span
+import dev.fritz2.styling.params.FlexParams
+import dev.fritz2.styling.params.Style
 import dev.fritz2.styling.theme.Colors
 import dev.fritz2.styling.theme.Property
 import io.ktor.http.toHttpDate
@@ -169,7 +171,14 @@ private fun RenderContext.CardHeader(library: KotlinMPPLibrary) {
 
 @KampComponent
 private fun RenderContext.CardBody(library: KotlinMPPLibrary, selectedVersion: RootStore<String>) = lineUp({
+  margins {
+    bottom { auto }
+  }
 }) {
+  val boxStyle: Style<FlexParams> = {
+    paddings { horizontal { tiny } }
+    overflow { auto }
+  }
   items {
     box({
       maxWidth { "7rem" }
@@ -179,12 +188,9 @@ private fun RenderContext.CardBody(library: KotlinMPPLibrary, selectedVersion: R
       }
       box({
         css("direction: rtl")
-        minHeight { "1rem" }
         maxHeight { "5rem" }
-        paddings { horizontal { tiny } }
-        overflow { auto }
-        width { "100%" }
-        minWidth { "5rem" }
+        minHeight { "1rem" }
+        boxStyle()
       }) {
         flexBox({
           css("direction: ltr")
@@ -211,8 +217,10 @@ private fun RenderContext.CardBody(library: KotlinMPPLibrary, selectedVersion: R
         }
       }
     }
-    styled(::p)({
-      height { "100%" }
+    box({
+      paddings { vertical { tiny } }
+      maxHeight { "10rem" }
+      boxStyle()
     }) {
       library.description?.let { +it }
     }
@@ -308,6 +316,12 @@ fun RenderContext.LibraryCard(library: KotlinMPPLibrary) {
       sm = { "22.5rem" },
       lg = { "30rem" },
     )
+    maxHeight(
+      sm = { "22.5rem" },
+      lg = { "30rem" },
+    )
+    display { flex }
+    css("flex-direction: column")
   }) {
     CardHeader(library)
     styled(::hr)({
