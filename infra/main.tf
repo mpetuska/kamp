@@ -75,6 +75,10 @@ resource "mongodbatlas_database_user" "admin" {
     role_name     = "dbAdmin"
     database_name = local.database_name
   }
+  roles {
+    role_name     = "readWrite"
+    database_name = local.database_name
+  }
 }
 
 resource "mongodbatlas_database_user" "reader" {
@@ -114,12 +118,13 @@ resource "azurerm_app_service_plan" "kamp" {
 }
 
 locals {
-  database_admin_credentials  = "${mongodbatlas_database_user.admin.username}:${mongodbatlas_database_user.admin.password}"
-  database_reader_credentials = "${mongodbatlas_database_user.reader.username}:${mongodbatlas_database_user.reader.password}"
-  connection_string_chunks    = split("//", data.mongodbatlas_cluster.kamp.connection_strings[0].standard_srv)
-  connection_string_options   = "ssl=true&retryWrites=true&w=majority"
-  connection_string           = "${local.connection_string_chunks[0]}//${local.database_admin_credentials}@${local.connection_string_chunks[1]}/${local.database_name}?${local.connection_string_options}"
-  database_name               = "kamp"
+  database_admin_credentials        = "${mongodbatlas_database_user.admin.username}:${mongodbatlas_database_user.admin.password}"
+  database_reader_credentials       = "${mongodbatlas_database_user.reader.username}:${mongodbatlas_database_user.reader.password}"
+  connection_string_chunks          = split("//", data.mongodbatlas_cluster.kamp.connection_strings[0].standard_srv)
+  connection_string_options         = "ssl=true&retryWrites=true&w=majority"
+  database_admin_connection_string  = "${local.connection_string_chunks[0]}//${local.database_admin_credentials}@${local.connection_string_chunks[1]}/${local.database_name}?${local.connection_string_options}"
+  database_reader_connection_string = "${local.connection_string_chunks[0]}//${local.database_reader_credentials}@${local.connection_string_chunks[1]}/${local.database_name}?${local.connection_string_options}"
+  database_name                     = "kamp"
 }
 
 resource "azurerm_app_service" "kamp" {
@@ -154,7 +159,7 @@ resource "azurerm_app_service" "kamp" {
     DOCKER_REGISTRY_SERVER_URL          = var.docker_registry
     DOCKER_REGISTRY_SERVER_USERNAME     = var.docker_registry_username
     DOCKER_REGISTRY_SERVER_PASSWORD     = var.docker_registry_password
-    MONGO_STRING                        = local.connection_string
+    MONGO_STRING                        = local.database_admin_connection_string
     MONGO_DATABASE                      = local.database_name
     ADMIN_USER                          = var.api_admin_user
     ADMIN_PASSWORD                      = var.api_admin_password
