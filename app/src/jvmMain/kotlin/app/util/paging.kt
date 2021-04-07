@@ -1,7 +1,9 @@
 package app.util
 
-import io.ktor.http.*
-import io.ktor.request.*
+import io.ktor.http.URLBuilder
+import io.ktor.request.ApplicationRequest
+import io.ktor.request.port
+import io.ktor.request.uri
 
 fun ApplicationRequest.buildNextUrl(currentElementCount: Int): String? = if (currentElementCount == pageSize) {
   URLBuilder(call.request.uri).apply {

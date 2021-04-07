@@ -1,9 +1,8 @@
 package app.store
 
-import app.domain.*
-import dev.fritz2.binding.*
-import kamp.domain.*
-
+import app.domain.PagedResponse
+import dev.fritz2.binding.RootStore
+import kamp.domain.KotlinMPPLibrary
 
 object LibraryStore : RootStore<LibraryStore.LibraryState>(LibraryState()) {
   data class LibraryState(
@@ -12,17 +11,18 @@ object LibraryStore : RootStore<LibraryStore.LibraryState>(LibraryState()) {
     val targets: Set<String>? = null,
     val count: Long? = null,
   )
-  
-  val setLibraries = handleAndEmit<PagedResponse<KotlinMPPLibrary>, PagedResponse<KotlinMPPLibrary>> { state, libraries ->
-    emit(libraries)
-    state.copy(libraries = libraries)
-  }
-  
+
+  val setLibraries =
+    handleAndEmit<PagedResponse<KotlinMPPLibrary>, PagedResponse<KotlinMPPLibrary>> { state, libraries ->
+      emit(libraries)
+      state.copy(libraries = libraries)
+    }
+
   val setSearch = handleAndEmit<String?, String?> { state, search ->
     emit(search)
     state.copy(search = search)
   }
-  
+
   val setCount = handleAndEmit<Long?, Long?> { state, count ->
     emit(count)
     state.copy(count = count)

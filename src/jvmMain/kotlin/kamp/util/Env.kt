@@ -1,8 +1,9 @@
 package kamp.util
 
-import kotlin.properties.*
-import kotlin.reflect.*
-import kotlin.reflect.full.*
+import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
+import kotlin.reflect.KProperty1
+import kotlin.reflect.full.memberProperties
 
 public abstract class Env {
   protected class EnvDelegate<T>(private val converter: EnvDelegate<*>.(String?) -> T) : ReadOnlyProperty<Any, T> {

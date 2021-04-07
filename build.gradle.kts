@@ -1,30 +1,33 @@
-import org.jetbrains.kotlin.gradle.tasks.*
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
   kotlin("multiplatform")
   id("org.jetbrains.kotlin.plugin.serialization")
   id("com.github.jakemarsden.git-hooks")
-  id("com.diffplug.spotless")
+  id("org.jlleitschuh.gradle.ktlint")
   idea
 }
 
+gitHooks {
+  setHooks(
+    mapOf(
+      "post-checkout" to "ktlintApplyToIdea",
+      "pre-commit" to "ktlintFormat",
+      "pre-push" to "check"
+    )
+  )
+}
+
+idea {
+  module {
+    isDownloadSources = true
+    isDownloadJavadoc = true
+  }
+}
+
 allprojects {
-  group = "lt.petuska"
-  version = "0.0.1"
-  apply(plugin = "idea")
-  apply(plugin = "com.diffplug.spotless")
-  
-  spotless {
-    kotlin {
-      ktfmt("0.22")
-    }
-  }
-  idea {
-    module {
-      isDownloadSources = true
-      isDownloadJavadoc = true
-    }
-  }
+  apply(plugin = "org.jlleitschuh.gradle.ktlint")
+
   repositories {
     mavenCentral()
     maven("https://jitpack.io")
@@ -35,7 +38,6 @@ allprojects {
       useJUnitPlatform()
     }
     withType<KotlinCompile> {
-      kotlinOptions.jvmTarget = "15"
       kotlinOptions {
         useIR = true
         jvmTarget = "${JavaVersion.VERSION_11}"
@@ -44,17 +46,13 @@ allprojects {
   }
 }
 
-gitHooks {
-  setHooks(mapOf("pre-commit" to "spotlessApply", "pre-push" to "check"))
-}
-
 kotlin {
   explicitApi()
   jvm()
   js {
     browser()
   }
-  
+
   sourceSets {
     named("commonMain") {
       dependencies {

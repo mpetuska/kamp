@@ -1,8 +1,9 @@
 package app.view.component
 
-import app.util.*
-import app.view.*
-import dev.fritz2.dom.html.*
+import app.util.styled
+import app.view.KampComponent
+import dev.fritz2.dom.html.A
+import dev.fritz2.dom.html.RenderContext
 
 @KampComponent
 fun RenderContext.Link(href: String, target: String? = null, block: A.() -> Unit = {}) {

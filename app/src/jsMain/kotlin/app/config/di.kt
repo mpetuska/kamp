@@ -1,23 +1,29 @@
 package app.config
 
-import app.service.*
-import app.util.*
-import io.ktor.client.*
-import io.ktor.client.features.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.http.*
-import kotlinx.serialization.json.*
-import org.kodein.di.*
-
+import app.service.LibraryService
+import app.util.DIModule
+import io.ktor.client.HttpClient
+import io.ktor.client.features.defaultRequest
+import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.features.json.serializer.KotlinxSerializer
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
+import kotlinx.serialization.json.Json
+import org.kodein.di.DI
+import org.kodein.di.bind
+import org.kodein.di.instance
+import org.kodein.di.provider
+import org.kodein.di.singleton
 
 private val services by DIModule {
   bind<LibraryService>() with provider { LibraryService(instance()) }
 }
 
 val di = DI {
-  bind() from provider {
-    Json {}
+  bind {
+    provider {
+      Json {}
+    }
   }
   bind<HttpClient>() with singleton {
     HttpClient {

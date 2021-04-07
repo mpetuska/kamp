@@ -1,11 +1,19 @@
 package app.config
 
-import app.util.*
-import io.ktor.application.*
-import io.ktor.auth.*
-import io.ktor.features.*
-import io.ktor.serialization.*
-import org.slf4j.event.*
+import app.util.PrivateEnv
+import io.ktor.application.Application
+import io.ktor.application.install
+import io.ktor.auth.Authentication
+import io.ktor.auth.UserIdPrincipal
+import io.ktor.auth.basic
+import io.ktor.features.CachingHeaders
+import io.ktor.features.CallLogging
+import io.ktor.features.Compression
+import io.ktor.features.ContentNegotiation
+import io.ktor.features.DefaultHeaders
+import io.ktor.features.StatusPages
+import io.ktor.serialization.json
+import org.slf4j.event.Level
 
 fun Application.features() {
   install(CallLogging) {

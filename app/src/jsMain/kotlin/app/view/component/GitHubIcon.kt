@@ -1,10 +1,10 @@
 package app.view.component
 
-import app.view.*
-import dev.fritz2.components.*
-import dev.fritz2.dom.html.*
-import dev.fritz2.styling.params.*
-import dev.fritz2.styling.theme.*
+import app.view.KampComponent
+import dev.fritz2.components.icon
+import dev.fritz2.dom.html.RenderContext
+import dev.fritz2.styling.params.BasicParams
+import dev.fritz2.styling.theme.IconDefinition
 
 private val gitHubSvg = IconDefinition(
   displayName = "github",
@@ -25,7 +25,7 @@ private val gitHubSvg = IconDefinition(
         4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3
         5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6
         2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z" />
-    """.trimIndent()
+  """.trimIndent()
 )
 
 @KampComponent

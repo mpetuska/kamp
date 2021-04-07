@@ -1,11 +1,15 @@
 package app.util
 
-import app.config.*
-import app.view.*
-import dev.fritz2.dom.html.*
-import dev.fritz2.styling.params.*
-import kotlinx.browser.*
-import kotlinx.coroutines.*
+import app.config.env
+import app.view.KampComponent
+import dev.fritz2.dom.html.RenderContext
+import dev.fritz2.styling.params.BasicComponent
+import dev.fritz2.styling.params.BoxParams
+import dev.fritz2.styling.params.styled
+import kotlinx.browser.window
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 external fun require(module: String): dynamic
 
@@ -20,7 +24,6 @@ inline fun suspending(crossinline block: suspend CoroutineScope.() -> Unit) {
 }
 
 fun String.toApi() = "${window.env.API_URL}/${this.removePrefix("/")}"
-
 
 typealias StyledComponent<E> = RenderContext.(style: BoxParams.() -> Unit, block: E.() -> Unit) -> E
 

@@ -1,16 +1,25 @@
 package app.view.component
 
-import app.util.*
-import app.view.*
-import dev.fritz2.binding.*
-import dev.fritz2.components.*
-import dev.fritz2.dom.html.*
-import dev.fritz2.styling.theme.*
-import io.ktor.http.*
-import io.ktor.util.date.*
-import kamp.domain.*
-import kotlinx.coroutines.flow.*
-
+import app.util.styled
+import app.view.KampComponent
+import dev.fritz2.binding.RootStore
+import dev.fritz2.binding.storeOf
+import dev.fritz2.components.box
+import dev.fritz2.components.clickButton
+import dev.fritz2.components.flexBox
+import dev.fritz2.components.icon
+import dev.fritz2.components.lineUp
+import dev.fritz2.components.popover
+import dev.fritz2.components.stackUp
+import dev.fritz2.dom.html.RenderContext
+import dev.fritz2.dom.html.Span
+import dev.fritz2.styling.theme.Colors
+import dev.fritz2.styling.theme.Property
+import io.ktor.http.toHttpDate
+import io.ktor.util.date.GMTDate
+import kamp.domain.KotlinMPPLibrary
+import kamp.domain.KotlinTarget
+import kotlinx.coroutines.flow.map
 
 private val String.badgeColor: Colors.() -> Property
   get() = when (this) {
@@ -33,16 +42,20 @@ private fun targetPriority(target: String) = when (target) {
 private fun RenderContext.TargetBadge(category: String, targets: List<KotlinTarget>) {
   @KampComponent
   fun RenderContext.RenderBadge(content: Span.() -> Unit) {
-    Badge(category.badgeColor, {
-      css("cursor: pointer")
-      height { large }
-      margins {
-        left { tiny }
-        top { tiny }
-      }
-    }, content)
+    Badge(
+      category.badgeColor,
+      {
+        css("cursor: pointer")
+        height { large }
+        margins {
+          left { tiny }
+          top { tiny }
+        }
+      },
+      content
+    )
   }
-  
+
   if (targets.size > 1) {
     popover({
       width { minContent }
@@ -58,7 +71,7 @@ private fun RenderContext.TargetBadge(category: String, targets: List<KotlinTarg
     }) {
       placement { bottom }
       hasCloseButton(false)
-      
+
       toggle {
         RenderBadge {
           +category
@@ -87,7 +100,7 @@ private fun RenderContext.CardHeader(library: KotlinMPPLibrary) {
   val groupedTargets = library.targets.groupBy(KotlinTarget::category).entries.sortedWith { (keyA), (keyB) ->
     targetPriority(keyA) - targetPriority(keyB)
   }
-  
+
   box {
     box({
       display { flex }
@@ -215,7 +228,7 @@ private fun RenderContext.CardFooter(library: KotlinMPPLibrary, selectedVersion:
   margins { top { small } }
 }) {
   val selectedPackageManager = storeOf(PackageManager.GRADLE)
-  
+
   spacing { none }
   items {
     lineUp {
@@ -269,7 +282,7 @@ private fun RenderContext.CardFooter(library: KotlinMPPLibrary, selectedVersion:
               domNode.innerText = """|<dependency>
               |  <groupId>${library.group}</groupId>
               |  <artifactId>${library.name}</artifactId>
-              |  <version>${version}</version>
+              |  <version>$version</version>
               |</dependency>
              """.trimMargin()
             }
@@ -283,7 +296,7 @@ private fun RenderContext.CardFooter(library: KotlinMPPLibrary, selectedVersion:
 @KampComponent
 fun RenderContext.LibraryCard(library: KotlinMPPLibrary) {
   val selectedVersionStore = storeOf(library.version)
-  
+
   box({
     border {
       width { "1px" }

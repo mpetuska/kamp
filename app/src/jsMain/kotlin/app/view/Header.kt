@@ -1,22 +1,37 @@
 package app.view
 
-
-import app.store.*
-import app.store.thunk.*
-import app.util.*
-import app.view.component.*
-import dev.fritz2.binding.*
-import dev.fritz2.components.*
-import dev.fritz2.dom.*
-import dev.fritz2.dom.html.*
-import dev.fritz2.styling.params.*
-import kotlinx.coroutines.flow.*
+import app.store.LibraryStore
+import app.store.thunk.fetchLibraryCount
+import app.store.thunk.fetchLibraryPage
+import app.util.styled
+import app.view.component.Badge
+import app.view.component.KampIcon
+import app.view.component.Link
+import dev.fritz2.binding.storeOf
+import dev.fritz2.components.box
+import dev.fritz2.components.checkbox
+import dev.fritz2.components.clickButton
+import dev.fritz2.components.gridBox
+import dev.fritz2.components.inputField
+import dev.fritz2.components.lineUp
+import dev.fritz2.components.modal
+import dev.fritz2.components.navBar
+import dev.fritz2.components.spinner
+import dev.fritz2.components.stackUp
+import dev.fritz2.dom.html.RenderContext
+import dev.fritz2.dom.states
+import dev.fritz2.styling.params.BasicParams
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.onEach
 
 @KampComponent
-private fun RenderContext.stackUpClose(style: BasicParams.() -> Unit = {}, children: RenderContext.() -> Unit) = stackUp(style) {
-  spacing { none }
-  items(children)
-}
+private fun RenderContext.stackUpClose(style: BasicParams.() -> Unit = {}, children: RenderContext.() -> Unit) =
+  stackUp(style) {
+    spacing { none }
+    items(children)
+  }
 
 @KampComponent
 private fun RenderContext.SearchModal() = modal({
@@ -25,7 +40,7 @@ private fun RenderContext.SearchModal() = modal({
 }) { close ->
   val searchStore = storeOf("")
   val targetsStore = storeOf(setOf<String>())
-  
+
   @KampComponent
   fun RenderContext.TargetCheckbox(values: Set<String>, label: RenderContext.() -> Unit = {}) {
     checkbox {
@@ -42,16 +57,19 @@ private fun RenderContext.SearchModal() = modal({
       label(label)
     }
   }
-  
+
   @KampComponent
   fun RenderContext.TargetCheckbox(values: Set<String>, label: String) = TargetCheckbox(values) {
     label {
       sub { +label }
     }
   }
-  
+
   @KampComponent
-  fun RenderContext.TargetCheckboxGroup(targets: kotlin.collections.Map<String, String>, header: RenderContext.() -> Unit) = stackUpClose {
+  fun RenderContext.TargetCheckboxGroup(
+    targets: kotlin.collections.Map<String, String>,
+    header: RenderContext.() -> Unit,
+  ) = stackUpClose {
     lineUp {
       spacing { none }
       items {
@@ -62,7 +80,7 @@ private fun RenderContext.SearchModal() = modal({
       TargetCheckbox(setOf(value), name)
     }
   }
-  
+
   size { large }
   content {
     gridBox({
@@ -93,25 +111,31 @@ private fun RenderContext.SearchModal() = modal({
           }
         }) {
           stackUpClose {
-            TargetCheckboxGroup(mapOf(
-              "common" to "common",
-            )) {
+            TargetCheckboxGroup(
+              mapOf(
+                "common" to "common",
+              )
+            ) {
               h4 { +"Metadata" }
             }
           }
           stackUpClose {
-            TargetCheckboxGroup(mapOf(
-              "jvm" to "jvm",
-              "android" to "android",
-            )) {
+            TargetCheckboxGroup(
+              mapOf(
+                "jvm" to "jvm",
+                "android" to "android",
+              )
+            ) {
               h4 { +"JVM" }
             }
           }
           stackUpClose {
-            TargetCheckboxGroup(mapOf(
-              "legacy" to "legacy",
-              "ir" to "ir",
-            )) {
+            TargetCheckboxGroup(
+              mapOf(
+                "legacy" to "legacy",
+                "ir" to "ir",
+              )
+            ) {
               h4 { +"JS" }
             }
           }
@@ -125,72 +149,88 @@ private fun RenderContext.SearchModal() = modal({
           gap { small }
         }) {
           stackUpClose {
-            TargetCheckboxGroup(mapOf(
-              "linuxArm32Hfp" to "linux_arm32_hfp",
-              "linuxArm64" to "linux_arm64",
-              "linuxMips32" to "linux_mips32",
-              "linuxMipsel32" to "linux_mipsel32",
-              "linuxX64" to "linux_x64",
-            )) {
+            TargetCheckboxGroup(
+              mapOf(
+                "linuxArm32Hfp" to "linux_arm32_hfp",
+                "linuxArm64" to "linux_arm64",
+                "linuxMips32" to "linux_mips32",
+                "linuxMipsel32" to "linux_mipsel32",
+                "linuxX64" to "linux_x64",
+              )
+            ) {
               h6 { +"Linux" }
             }
           }
           stackUpClose {
-            TargetCheckboxGroup(mapOf(
-              "mingwX64" to "mingw_x64",
-              "mingwX86" to "mingw_x86",
-            )) {
+            TargetCheckboxGroup(
+              mapOf(
+                "mingwX64" to "mingw_x64",
+                "mingwX86" to "mingw_x86",
+              )
+            ) {
               h6 { +"Windows" }
             }
           }
           stackUpClose {
-            TargetCheckboxGroup(mapOf(
-              "androidNativeX64" to "android_x64",
-              "androidNativeX86" to "android_x86",
-              "androidNativeArm32" to "android_arm32",
-              "androidNativeArm64" to "android_arm64",
-            )) {
+            TargetCheckboxGroup(
+              mapOf(
+                "androidNativeX64" to "android_x64",
+                "androidNativeX86" to "android_x86",
+                "androidNativeArm32" to "android_arm32",
+                "androidNativeArm64" to "android_arm64",
+              )
+            ) {
               h6 { +"Android NDK" }
             }
           }
           stackUpClose {
-            TargetCheckboxGroup(mapOf(
-              "tvosArm64" to "tvos_arm64",
-              "tvosX64" to "tvos_x64",
-            )) {
+            TargetCheckboxGroup(
+              mapOf(
+                "tvosArm64" to "tvos_arm64",
+                "tvosX64" to "tvos_x64",
+              )
+            ) {
               h6 { +"tvOS" }
             }
           }
           stackUpClose {
-            TargetCheckboxGroup(mapOf(
-              "iosArm32" to "ios_arm32",
-              "iosArm64" to "ios_arm64",
-              "iosX64" to "ios_x64",
-            )) {
+            TargetCheckboxGroup(
+              mapOf(
+                "iosArm32" to "ios_arm32",
+                "iosArm64" to "ios_arm64",
+                "iosX64" to "ios_x64",
+              )
+            ) {
               h6 { +"iOS" }
             }
           }
           stackUpClose {
-            TargetCheckboxGroup(mapOf(
-              "watchosArm32" to "watchos_arm32",
-              "watchosArm64" to "watchos_arm64",
-              "watchosX86" to "watchos_x86",
-              "watchosX64" to "watchos_x64",
-            )) {
+            TargetCheckboxGroup(
+              mapOf(
+                "watchosArm32" to "watchos_arm32",
+                "watchosArm64" to "watchos_arm64",
+                "watchosX86" to "watchos_x86",
+                "watchosX64" to "watchos_x64",
+              )
+            ) {
               h6 { +"watchOS" }
             }
           }
           stackUpClose {
-            TargetCheckboxGroup(mapOf(
-              "macosX64" to "macos_x64",
-            )) {
+            TargetCheckboxGroup(
+              mapOf(
+                "macosX64" to "macos_x64",
+              )
+            ) {
               h6 { +"macOS" }
             }
           }
           stackUpClose {
-            TargetCheckboxGroup(mapOf(
-              "wasm32" to "wasm32",
-            )) {
+            TargetCheckboxGroup(
+              mapOf(
+                "wasm32" to "wasm32",
+              )
+            ) {
               h6 { +"WebAssembly" }
             }
           }
@@ -273,7 +313,7 @@ fun RenderContext.Header() {
             display { inline }
             css("border-radius: 50%")
           }
-  
+
           styled(::span)({
             margins { left { smaller } }
             verticalAlign { sub }
@@ -283,11 +323,14 @@ fun RenderContext.Header() {
           }) { +"KAMP" }
         }
         LibraryStore.data.map { it.count }.render { count ->
-          Badge({ success }, {
-            margins {
-              left { tiny }
+          Badge(
+            { success },
+            {
+              margins {
+                left { tiny }
+              }
             }
-          }) {
+          ) {
             if (count != null) {
               +"$count Lib${if (count > 1) "s" else ""}"
             } else {
@@ -298,7 +341,7 @@ fun RenderContext.Header() {
           }
         }
       }
-      
+
       actions {
         lineUp({
           display(sm = { none }, md = { flex })

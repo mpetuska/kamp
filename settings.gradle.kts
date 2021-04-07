@@ -1,4 +1,4 @@
-import de.fayard.refreshVersions.*
+import de.fayard.refreshVersions.bootstrapRefreshVersions
 
 buildscript {
   repositories {

@@ -96,7 +96,7 @@ afterEvaluate {
         exclude("META-INF/*.DSA")
         exclude("META-INF/*.RSA")
       }
-      
+
       manifest {
         attributes(
           "Main-Class" to mainClassName,
@@ -107,7 +107,7 @@ afterEvaluate {
           "Created-From" to Git.headCommitHash
         )
       }
-      
+
       inputs.property("mainClassName", mainClassName)
       inputs.files(classpath)
       inputs.files(jsBrowserDistribution.outputs)

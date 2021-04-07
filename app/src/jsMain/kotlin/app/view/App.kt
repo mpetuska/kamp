@@ -1,15 +1,16 @@
 package app.view
 
-import dev.fritz2.components.*
-import dev.fritz2.dom.html.*
-import dev.fritz2.styling.*
+import dev.fritz2.components.stackUp
+import dev.fritz2.dom.html.RenderContext
+import dev.fritz2.styling.staticStyle
 
 @DslMarker
 annotation class KampComponent
 
 @KampComponent
 fun RenderContext.App() {
-  staticStyle("""
+  staticStyle(
+    """
     /* width */
     ::-webkit-scrollbar {
       width: 0.75rem;
@@ -32,7 +33,8 @@ fun RenderContext.App() {
     ::-webkit-scrollbar-thumb:hover {
       background: gray;
     }
-  """.trimIndent())
+    """.trimIndent()
+  )
   stackUp({
     height { "100%" }
     width { "100%" }

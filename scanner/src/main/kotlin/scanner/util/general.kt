@@ -1,11 +1,10 @@
 package scanner.util
 
-import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.*
-import kotlinx.serialization.json.*
-import org.jsoup.*
-import org.jsoup.nodes.*
-import scanner.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 
 val rawJson = Json { ignoreUnknownKeys = true }
 val prettyJson = Json {
@@ -14,4 +13,4 @@ val prettyJson = Json {
 }
 
 suspend fun String.asDocument(): Document =
-    withContext(Dispatchers.IO) { Jsoup.parse(this@asDocument) }
+  withContext(Dispatchers.IO) { Jsoup.parse(this@asDocument) }

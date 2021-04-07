@@ -1,35 +1,40 @@
 package scanner.service
 
-import kamp.domain.*
-import kotlin.time.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.*
-import scanner.client.*
-import scanner.domain.*
-import scanner.processor.*
-import scanner.util.*
+import kamp.domain.MavenArtifactImpl
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.channels.produce
+import kotlinx.coroutines.delay
+import scanner.client.MavenRepositoryClient
+import scanner.domain.CLIOptions
+import scanner.processor.GradleModuleProcessor
+import scanner.processor.PomProcessor
+import scanner.util.supervisedLaunch
+import kotlin.time.milliseconds
+import kotlin.time.seconds
 
 class MavenScannerServiceImpl(
-    override val client: MavenRepositoryClient<MavenArtifactImpl>,
-    override val pomProcessor: PomProcessor,
-    override val gradleModuleProcessor: GradleModuleProcessor,
+  override val client: MavenRepositoryClient<MavenArtifactImpl>,
+  override val pomProcessor: PomProcessor,
+  override val gradleModuleProcessor: GradleModuleProcessor,
 ) : MavenScannerService<MavenArtifactImpl>() {
   override fun CoroutineScope.produceArtifacts(
-      cliOptions: CLIOptions?,
+    cliOptions: CLIOptions?,
   ): ReceiveChannel<MavenArtifactImpl> = produce {
     val pageChannel = Channel<List<MavenRepositoryClient.RepoItem>>(Channel.BUFFERED)
     supervisedLaunch {
       client
-          .listRepositoryPath("")
-          ?.filter { repoItem ->
-            val path = repoItem.path.removePrefix("/")
-            val included =
-                cliOptions?.include?.let { filter -> filter.any { path.startsWith(it) } } ?: true
-            val excluded =
-                cliOptions?.exclude?.let { filter -> filter.any { path.startsWith(it) } } ?: false
-            included && !excluded
-          }
-          ?.let { pageChannel.send(it) }
+        .listRepositoryPath("")
+        ?.filter { repoItem ->
+          val path = repoItem.path.removePrefix("/")
+          val included =
+            cliOptions?.include?.let { filter -> filter.any { path.startsWith(it) } } ?: true
+          val excluded =
+            cliOptions?.exclude?.let { filter -> filter.any { path.startsWith(it) } } ?: false
+          included && !excluded
+        }
+        ?.let { pageChannel.send(it) }
     }
 
     // Tracker
@@ -55,9 +60,9 @@ class MavenScannerServiceImpl(
         for (page in pageChannel) {
           cliOptions?.delayMS?.let { delay(it.milliseconds) }
           val artifactDetails =
-              page.find { it.value == "maven-metadata.xml" }?.let {
-                client.getArtifactDetails(it.path)
-              }
+            page.find { it.value == "maven-metadata.xml" }?.let {
+              client.getArtifactDetails(it.path)
+            }
           if (artifactDetails != null) {
             logger.debug("Found MC artefact ${artifactDetails.group}:${artifactDetails.name}")
             send(artifactDetails)

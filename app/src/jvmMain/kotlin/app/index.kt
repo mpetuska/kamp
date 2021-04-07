@@ -1,9 +1,12 @@
 package app
 
-import app.config.*
-import app.util.*
-import io.ktor.application.*
-import io.ktor.server.cio.*
+import app.config.diConfig
+import app.config.features
+import app.config.routing
+import app.util.PublicEnv
+import io.ktor.application.Application
+import io.ktor.application.log
+import io.ktor.server.cio.EngineMain
 
 fun main(args: Array<String>) {
   System.setProperty("jdk.tls.client.protocols", "TLSv1.2")

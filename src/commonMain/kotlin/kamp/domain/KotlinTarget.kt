@@ -1,6 +1,6 @@
 package kamp.domain
 
-import kotlinx.serialization.*
+import kotlinx.serialization.Serializable
 
 @Serializable
 public class KotlinTarget private constructor(

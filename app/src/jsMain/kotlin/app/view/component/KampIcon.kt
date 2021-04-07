@@ -1,9 +1,9 @@
 package app.view.component
 
-import app.util.*
-import app.view.*
-import dev.fritz2.dom.html.*
-import dev.fritz2.styling.params.*
+import app.util.styled
+import app.view.KampComponent
+import dev.fritz2.dom.html.RenderContext
+import dev.fritz2.styling.params.BoxParams
 
 @KampComponent
 fun RenderContext.KampIcon(style: BoxParams.() -> Unit = {}) {

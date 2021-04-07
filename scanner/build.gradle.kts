@@ -13,7 +13,7 @@ kotlin {
     implementation("ch.qos.logback:logback-classic:_")
     implementation(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx:kotlinx-cli:_")
-    
+
     testImplementation("io.kotest:kotest-runner-junit5:_")
   }
   sourceSets.all {
@@ -49,7 +49,7 @@ tasks {
       exclude("META-INF/*.DSA")
       exclude("META-INF/*.RSA")
     }
-    
+
     manifest {
       attributes(
         "Main-Class" to mainClassName,
@@ -60,7 +60,7 @@ tasks {
         "Created-From" to Git.headCommitHash
       )
     }
-    
+
     inputs.property("mainClassName", mainClassName)
     inputs.files(classpath)
     outputs.file(archiveFile)

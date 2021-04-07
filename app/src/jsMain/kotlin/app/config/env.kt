@@ -1,8 +1,8 @@
 package app.config
 
-import kotlinx.browser.*
-import kotlinx.coroutines.*
-import org.w3c.dom.*
+import kotlinx.browser.window
+import kotlinx.coroutines.await
+import org.w3c.dom.Window
 
 external interface AppEnv {
   val API_URL: String

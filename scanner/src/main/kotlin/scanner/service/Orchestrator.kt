@@ -1,15 +1,21 @@
 package scanner.service
 
-import io.ktor.client.*
-import io.ktor.client.request.*
-import kotlin.time.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
-import kotlinx.serialization.*
-import kotlinx.serialization.json.*
-import org.kodein.di.*
-import scanner.domain.*
-import scanner.util.*
+import io.ktor.client.HttpClient
+import io.ktor.client.request.post
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.collect
+import kotlinx.serialization.json.Json
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.direct
+import org.kodein.di.instance
+import org.kodein.di.instanceOrNull
+import scanner.domain.CLIOptions
+import scanner.util.LoggerDelegate
+import scanner.util.PrivateEnv
+import scanner.util.supervisedLaunch
+import kotlin.time.measureTime
 
 class Orchestrator(override val di: DI) : DIAware {
   private val logger by LoggerDelegate()
@@ -27,24 +33,26 @@ class Orchestrator(override val di: DI) : DIAware {
             logger.info("Starting $scanner scan")
             val count = scanRepo(scannerService, cliOptions)
             logger.info(
-                "Found $count kotlin modules with gradle metadata in $scanner repository filtered by ${cliOptions?.include ?: setOf()}, " +
-                    "explicitly excluding ${cliOptions?.exclude ?: setOf()}")
+              "Found $count kotlin modules with gradle metadata in $scanner repository filtered by ${cliOptions?.include ?: setOf()}, " +
+                "explicitly excluding ${cliOptions?.exclude ?: setOf()}"
+            )
           }
         }
       }
       logger.info(
-          "Finished scanning $scanner in ${
-          duration.toComponents { hours, minutes, seconds, nanoseconds ->
-            "${hours}h ${minutes}m ${seconds}.${nanoseconds}s"
-          }
-        }")
+        "Finished scanning $scanner in ${
+        duration.toComponents { hours, minutes, seconds, nanoseconds ->
+          "${hours}h ${minutes}m $seconds.${nanoseconds}s"
+        }
+        }"
+      )
     }
-        ?: logger.error("ScannerService for $scanner not found")
+      ?: logger.error("ScannerService for $scanner not found")
   }
 
   private suspend fun scanRepo(
-      scanner: MavenScannerService<*>,
-      cliOptions: CLIOptions? = null,
+    scanner: MavenScannerService<*>,
+    cliOptions: CLIOptions? = null,
   ): Int {
     var count = 0
     val kamp by di.instance<HttpClient>("kamp")

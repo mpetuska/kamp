@@ -1,7 +1,6 @@
 package app.util
 
-import kamp.util.*
-
+import kamp.util.Env
 
 object PrivateEnv : Env() {
   val MONGO_STRING by EnvDelegate { it ?: "mongodb://localhost:27017" }

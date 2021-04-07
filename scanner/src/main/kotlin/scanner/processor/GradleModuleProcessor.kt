@@ -1,7 +1,7 @@
 package scanner.processor
 
-import kamp.domain.*
-import scanner.domain.*
+import kamp.domain.KotlinTarget
+import scanner.domain.GradleModule
 
 class GradleModuleProcessor {
   val kotlinVersion: String = "1.4.30"
@@ -11,23 +11,23 @@ class GradleModuleProcessor {
 
   val GradleModule.supportedTargets
     get(): Set<KotlinTarget>? =
-        variants
-            ?.mapNotNull { variant ->
-              variant.attributes?.let { attrs ->
-                when (attrs.orgJetbrainsKotlinPlatformType) {
-                  "common" -> KotlinTarget.Common()
-                  "androidJvm" -> KotlinTarget.JVM.Android()
-                  "jvm" -> KotlinTarget.JVM.Java()
-                  "js" ->
-                      when (attrs.orgJetbrainsKotlinJsCompiler) {
-                        "legacy" -> KotlinTarget.JS.Legacy()
-                        "ir" -> KotlinTarget.JS.IR()
-                        else -> null
-                      }
-                  "native" -> attrs.orgJetbrainsKotlinNativeTarget?.let { KotlinTarget.Native(it) }
+      variants
+        ?.mapNotNull { variant ->
+          variant.attributes?.let { attrs ->
+            when (attrs.orgJetbrainsKotlinPlatformType) {
+              "common" -> KotlinTarget.Common()
+              "androidJvm" -> KotlinTarget.JVM.Android()
+              "jvm" -> KotlinTarget.JVM.Java()
+              "js" ->
+                when (attrs.orgJetbrainsKotlinJsCompiler) {
+                  "legacy" -> KotlinTarget.JS.Legacy()
+                  "ir" -> KotlinTarget.JS.IR()
                   else -> null
                 }
-              }
+              "native" -> attrs.orgJetbrainsKotlinNativeTarget?.let { KotlinTarget.Native(it) }
+              else -> null
             }
-            ?.toSet()
+          }
+        }
+        ?.toSet()
 }
