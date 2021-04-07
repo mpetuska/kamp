@@ -1,21 +1,21 @@
 output "app_service_name" {
-  value = azurerm_app_service.main.name
+  value = azurerm_app_service.kamp.name
 }
 
 output "app_service_default_hostname" {
-  value = "https://${azurerm_app_service.main.default_site_hostname}"
+  value = "https://${azurerm_app_service.kamp.default_site_hostname}"
 }
 
-output "azurerm_cosmosdb_mongo_database_connection_strings" {
-  value = {
-    read_write = {
-      primary   = azurerm_cosmosdb_account.main.connection_strings[0]
-      secondary = azurerm_cosmosdb_account.main.connection_strings[1]
-    }
-    read_only = {
-      primary   = azurerm_cosmosdb_account.main.connection_strings[2]
-      secondary = azurerm_cosmosdb_account.main.connection_strings[3]
-    }
-  }
+output "mongodbatlas_kamp_reader_credentials" {
+  value = local.database_reader_credentials
+}
+
+output "mongodbatlas_kamp_admin_credentials" {
+  value     = local.database_admin_credentials
+  sensitive = true
+}
+
+output "mongodbatlas_connection_string" {
+  value     = local.connection_string
   sensitive = true
 }
