@@ -23,7 +23,7 @@ actual class LibraryService(
       """
       {
         $text: {
-          $search: '$_search',
+          $search: '${_search.replace("'", "\\'")}',
           $language: 'en'
         }
       }
