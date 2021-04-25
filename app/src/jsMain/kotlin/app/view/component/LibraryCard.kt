@@ -190,6 +190,8 @@ private fun RenderContext.CardBody(library: KotlinMPPLibrary, selectedVersion: R
         css("direction: rtl")
         maxHeight { "5rem" }
         minHeight { "1rem" }
+        width { "100%" }
+        minWidth { "3rem" }
         boxStyle()
       }) {
         flexBox({

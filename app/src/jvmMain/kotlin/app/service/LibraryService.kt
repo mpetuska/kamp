@@ -9,16 +9,17 @@ import kamp.domain.KotlinMPPLibrary
 import org.litote.kmongo.MongoOperator.all
 import org.litote.kmongo.MongoOperator.and
 import org.litote.kmongo.MongoOperator.language
+import org.litote.kmongo.MongoOperator.meta
 import org.litote.kmongo.MongoOperator.search
 import org.litote.kmongo.MongoOperator.text
-import org.litote.kmongo.ascending
+import org.litote.kmongo.bson
 import org.litote.kmongo.coroutine.CoroutineCollection
 
 actual class LibraryService(
   private val call: ApplicationCall,
   private val collection: CoroutineCollection<KotlinMPPLibrary>,
 ) {
-  private fun buildQuery(_search: String?, targets: Set<String>?): String {
+  private fun buildQuery(_search: String?, targets: Set<String>?): Pair<String?, String?> {
     val searchQuery = _search?.let {
       """
       {
@@ -38,13 +39,21 @@ actual class LibraryService(
       }
       """.trimIndent()
     }
-    return setOfNotNull(searchQuery, targetsQuery).takeIf { it.isNotEmpty() }?.let {
+    val finalQuery = setOfNotNull(searchQuery, targetsQuery).takeIf { it.isNotEmpty() }?.let {
       """
       {
         $and: [${it.joinToString(",")}]
       }
       """.trimIndent()
-    } ?: "{}"
+    }
+
+    val projection = _search?.let {
+      """
+        { score: {  $meta: "textScore" } }
+      """.trimIndent()
+    }
+
+    return finalQuery to projection
   }
 
   actual suspend fun getAll(
@@ -53,9 +62,16 @@ actual class LibraryService(
     search: String?,
     targets: Set<String>?,
   ): PagedResponse<KotlinMPPLibrary> {
-    val data =
-      collection.find(buildQuery(search, targets)).sort(ascending(KotlinMPPLibrary::name)).skip(size * (page - 1))
-        .limit(size).toList()
+    val (query, projection) = buildQuery(search, targets)
+
+    val dbCall = query?.let { collection.find(it) } ?: collection.find()
+    projection?.let {
+      dbCall.projection(it.bson)
+      dbCall.sort("""{ score: { $meta: "textScore" } }""".bson)
+    } ?: dbCall.ascendingSort(KotlinMPPLibrary::name)
+    dbCall.skip(size * (page - 1))
+      .limit(size)
+    val data = dbCall.toList()
     return PagedResponse(
       data = data,
       page = page,
@@ -65,7 +81,7 @@ actual class LibraryService(
   }
 
   actual suspend fun getCount(search: String?, targets: Set<String>?): LibraryCount {
-    return LibraryCount(collection.countDocuments(buildQuery(search, targets)))
+    return LibraryCount(collection.countDocuments(buildQuery(search, targets).first ?: "{}"))
   }
 
   suspend fun create(library: KotlinMPPLibrary) {
