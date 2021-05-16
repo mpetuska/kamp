@@ -1,7 +1,7 @@
 package scanner.client
 
+import common.domain.MavenArtifactImpl
 import io.ktor.client.HttpClient
-import kamp.domain.MavenArtifactImpl
 import kotlinx.serialization.json.Json
 
 class JBossClient(

@@ -1,6 +1,6 @@
 package scanner.domain
 
-import kamp.domain.MavenArtifactImpl
+import common.domain.MavenArtifactImpl
 import org.kodein.di.DirectDIAware
 import org.kodein.di.instance
 import scanner.client.ArtifactoryClient

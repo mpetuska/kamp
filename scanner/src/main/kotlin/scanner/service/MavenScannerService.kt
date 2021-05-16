@@ -1,8 +1,8 @@
 package scanner.service
 
+import common.domain.KotlinMPPLibrary
+import common.domain.MavenArtifact
 import io.ktor.utils.io.core.Closeable
-import kamp.domain.KotlinMPPLibrary
-import kamp.domain.MavenArtifact
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.flow.Flow

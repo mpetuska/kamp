@@ -1,6 +1,6 @@
 package scanner.processor
 
-import kamp.domain.KotlinTarget
+import common.domain.KotlinTarget
 import scanner.domain.GradleModule
 
 class GradleModuleProcessor {

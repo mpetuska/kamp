@@ -1,12 +1,12 @@
 package scanner.client
 
+import common.domain.MavenArtifact
+import common.domain.MavenArtifactImpl
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.util.date.GMTDate
 import io.ktor.util.date.Month
 import io.ktor.utils.io.core.Closeable
-import kamp.domain.MavenArtifact
-import kamp.domain.MavenArtifactImpl
 import kotlinx.coroutines.coroutineScope
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json

@@ -5,7 +5,7 @@ plugins {
 
 kotlin {
   dependencies {
-    implementation(project(rootProject.path))
+    implementation(project(":common"))
     implementation("io.ktor:ktor-client-cio:_")
     implementation("io.ktor:ktor-client-auth:_")
     implementation("org.kodein.di:kodein-di:_")
@@ -44,6 +44,7 @@ tasks {
   }
   jar {
     val classpath = configurations.runtimeClasspath.get().files.map { if (it.isDirectory) it else zipTree(it) }
+    duplicatesStrategy = DuplicatesStrategy.WARN
     from(classpath) {
       exclude("META-INF/*.SF")
       exclude("META-INF/*.DSA")
