@@ -1,7 +1,5 @@
 package scanner.client
 
-import common.domain.MavenArtifact
-import common.domain.MavenArtifactImpl
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.util.date.GMTDate
@@ -15,6 +13,8 @@ import scanner.domain.GradleModule
 import scanner.util.LoggerDelegate
 import scanner.util.asDocument
 import scanner.util.supervisedAsync
+import shared.domain.MavenArtifact
+import shared.domain.MavenArtifactImpl
 
 abstract class MavenRepositoryClient<A : MavenArtifact>(
   private val defaultRepositoryRootUrl: String,

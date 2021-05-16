@@ -1,6 +1,6 @@
 package scanner.util
 
-import common.util.Env
+import shared.util.Env
 
 object PrivateEnv : Env() {
   val API_URL by EnvDelegate { it ?: "http://localhost:8080" }

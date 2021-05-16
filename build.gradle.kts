@@ -1,8 +1,5 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-  kotlin("multiplatform")
-  id("org.jetbrains.kotlin.plugin.serialization")
+  kotlin("multiplatform") apply false
   id("com.github.jakemarsden.git-hooks")
   id("org.jlleitschuh.gradle.ktlint")
   idea
@@ -18,50 +15,30 @@ gitHooks {
   )
 }
 
-idea {
-  module {
-    isDownloadSources = true
-    isDownloadJavadoc = true
-  }
-}
-
 allprojects {
   apply(plugin = "org.jlleitschuh.gradle.ktlint")
+  apply(plugin = "idea")
+
+  idea {
+    module {
+      isDownloadSources = true
+      isDownloadJavadoc = true
+    }
+  }
 
   repositories {
     mavenCentral()
-    maven("https://jitpack.io")
-    maven("https://kotlin.bintray.com/kotlinx")
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
   }
+
   tasks {
     withType<Test> {
       useJUnitPlatform()
     }
-    withType<KotlinCompile> {
+    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
       kotlinOptions {
         useIR = true
-        jvmTarget = "${JavaVersion.VERSION_11}"
-      }
-    }
-  }
-}
-
-kotlin {
-  explicitApi()
-  jvm()
-  js {
-    browser()
-  }
-
-  sourceSets {
-    named("commonMain") {
-      dependencies {
-        api("io.ktor:ktor-client-serialization:_")
-      }
-    }
-    named("jvmMain") {
-      dependencies {
-        api(kotlin("reflect"))
+        jvmTarget = "${project.properties["org.gradle.project.targetCompatibility"]}"
       }
     }
   }

@@ -1,7 +1,5 @@
 package scanner.service
 
-import common.domain.KotlinMPPLibrary
-import common.domain.MavenArtifact
 import io.ktor.utils.io.core.Closeable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.ReceiveChannel
@@ -16,6 +14,8 @@ import scanner.processor.GradleModuleProcessor
 import scanner.processor.PomProcessor
 import scanner.util.LoggerDelegate
 import scanner.util.supervisedLaunch
+import shared.domain.KotlinMPPLibrary
+import shared.domain.MavenArtifact
 
 abstract class MavenScannerService<A : MavenArtifact> : Closeable {
   protected val logger by LoggerDelegate()

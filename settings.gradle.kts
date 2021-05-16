@@ -1,4 +1,10 @@
 import de.fayard.refreshVersions.bootstrapRefreshVersions
+pluginManagement {
+  repositories {
+    gradlePluginPortal()
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+  }
+}
 
 buildscript {
   repositories {
@@ -13,4 +19,10 @@ buildscript {
 bootstrapRefreshVersions()
 
 rootProject.name = "kamp"
-include(":scanner", ":app")
+include(
+  ":shared",
+  ":scanner",
+  ":app:common",
+  ":app:client",
+  ":app:server",
+)

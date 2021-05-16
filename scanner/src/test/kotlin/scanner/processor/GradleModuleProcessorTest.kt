@@ -1,11 +1,11 @@
 package scanner.processor
 
-import common.domain.KotlinTarget
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import scanner.domain.GradleModule
 import scanner.testutil.parseJsonFile
+import shared.domain.KotlinTarget
 
 class GradleModuleProcessorTest :
   FunSpec({

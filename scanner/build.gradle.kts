@@ -5,9 +5,10 @@ plugins {
 
 kotlin {
   dependencies {
-    implementation(project(":common"))
+    implementation(project(":shared"))
     implementation("io.ktor:ktor-client-cio:_")
     implementation("io.ktor:ktor-client-auth:_")
+    implementation("io.ktor:ktor-client-serialization:_")
     implementation("org.kodein.di:kodein-di:_")
     implementation("org.jsoup:jsoup:_")
     implementation("ch.qos.logback:logback-classic:_")
@@ -27,7 +28,7 @@ kotlin {
   }
 }
 
-val mainClassName = "scanner.IndexKt"
+val mainClassName = "scanner.MainKt"
 
 tasks {
   val compileKotlin by getting

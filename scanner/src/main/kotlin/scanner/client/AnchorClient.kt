@@ -1,7 +1,7 @@
 package scanner.client
 
-import common.domain.MavenArtifact
 import org.jsoup.nodes.Document
+import shared.domain.MavenArtifact
 
 abstract class AnchorClient<T : MavenArtifact>(
   val url: String,

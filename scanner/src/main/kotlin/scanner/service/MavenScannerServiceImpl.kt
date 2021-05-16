@@ -1,6 +1,5 @@
 package scanner.service
 
-import common.domain.MavenArtifactImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
@@ -11,6 +10,7 @@ import scanner.domain.CLIOptions
 import scanner.processor.GradleModuleProcessor
 import scanner.processor.PomProcessor
 import scanner.util.supervisedLaunch
+import shared.domain.MavenArtifactImpl
 import kotlin.time.milliseconds
 import kotlin.time.seconds
 
