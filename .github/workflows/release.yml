@@ -32,17 +32,17 @@ jobs:
         uses: actions/upload-artifact@v2
         id: upload
         with:
-          path: app/build/dist/WEB-INF
+          path: app/client/build/dist/WEB-INF/
           name: static-web-app
           if-no-files-found: error
-      - name: Build App Docker image & push to GitHub Packages
+      - name: Build Server Docker image & push to GitHub Packages
         uses: docker/build-push-action@v1
         with:
-          path: app
+          path: app/server/
           username: ${{ github.actor }}
           password: ${{ github.token }}
           registry: docker.pkg.github.com
-          repository: mpetuska/kamp/app
+          repository: mpetuska/kamp/server
           tag_with_ref: true
           tag_with_sha: true
           add_git_labels: true
@@ -94,7 +94,7 @@ jobs:
         env:
           TF_VAR_docker_registry_username: ${{ secrets.GH_PKG_USER }}
           TF_VAR_docker_registry_password: ${{ secrets.GH_PKG_PASSWORD }}
-          TF_VAR_docker_image_tag: docker.pkg.github.com/mpetuska/kamp/app:sha-${{ steps.short-sha.outputs.sha }}
+          TF_VAR_docker_image_tag: docker.pkg.github.com/mpetuska/kamp/server:sha-${{ steps.short-sha.outputs.sha }}
           TF_VAR_api_admin_user: ${{ secrets.API_ADMIN_USER }}
           TF_VAR_api_admin_password: ${{ secrets.API_ADMIN_PASSWORD }}
 
@@ -119,6 +119,6 @@ jobs:
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_API_TOKEN }}
-          repo_token: ${{ github.token }} # Used for Github integrations (i.e. PR comments)
+          repo_token: ${{ github.token }}
           action: "upload"
           app_location: "/dist"
