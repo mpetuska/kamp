@@ -40,6 +40,7 @@ kotlin {
     }
     named("jsMain") {
       dependencies {
+        implementation(project(":app:client:mdc"))
       }
     }
     named("jvmMain") {

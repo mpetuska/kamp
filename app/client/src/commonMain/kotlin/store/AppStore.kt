@@ -7,4 +7,14 @@ import org.reduxkotlin.applyMiddleware
 import org.reduxkotlin.createStore
 import org.reduxkotlin.createThunkMiddleware
 
-object AppStore : Store<AppState> by createStore(rootReducer, AppState(), applyMiddleware(createThunkMiddleware()))
+typealias AppStore = Store<AppState>
+
+val appStore: AppStore by lazy {
+  createStore(
+    rootReducer,
+    AppState(),
+    applyMiddleware(
+      createThunkMiddleware()
+    )
+  )
+}

@@ -1,10 +1,9 @@
-import de.fayard.refreshVersions.*
-
-buildscript {
-  repositories { gradlePluginPortal() }
-  dependencies {
-    classpath("de.fayard.refreshVersions:refreshVersions:0.9.7")
+pluginManagement {
+  plugins {
+    id("de.fayard.refreshVersions") version "0.10.0"
   }
 }
 
-bootstrapRefreshVersionsForBuildSrc()
+plugins {
+  id("de.fayard.refreshVersions")
+}

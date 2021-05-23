@@ -11,29 +11,52 @@ import androidx.compose.web.elements.Text
 import app.client.store.AppStore
 import app.client.store.action.AppAction
 import app.client.util.select
+import app.client.view.component.FlexColumn
+import app.client.view.component.Navbar
+import dev.petuska.kmdc.button.MDCButton
+import dev.petuska.kmdc.button.MDCButtonIcon
+import dev.petuska.kmdc.button.MDCButtonLabel
+import dev.petuska.kmdc.button.MDCButtonOpts
+import dev.petuska.kmdc.button.MDCButtonRipple
+import dev.petuska.kmdc.icon.button.MDCIconButton
 
 @Composable
-fun App() {
-  val count by AppStore.select { count }
-  Div(style = { padding(25.px) }) {
-    Button(
-      attrs = {
-        onClick { AppStore.dispatch(AppAction.DecrementCount) }
+fun AppStore.App() {
+  Navbar()
+  FlexColumn {
+
+    val count by select { count }
+    MDCButton(
+      opts = {
+        type = MDCButtonOpts.Type.Contained
+        icon = MDCButtonOpts.MDCButtonIconType.Trailing
       }
     ) {
-      Text("-")
+      MDCButtonRipple()
+      MDCButtonLabel("Contained")
+      MDCButtonIcon("favorite")
     }
-
-    Span(style = { padding(15.px) }) {
-      Text("$count")
-    }
-
-    Button(
-      attrs = {
-        onClick { AppStore.dispatch(AppAction.IncrementCount) }
+    MDCIconButton("favorite")
+    Div(style = { padding(25.px) }) {
+      Button(
+        attrs = {
+          onClick { dispatch(AppAction.DecrementCount) }
+        }
+      ) {
+        Text("-")
       }
-    ) {
-      Text("+")
+
+      Span(style = { padding(15.px) }) {
+        Text("$count")
+      }
+
+      Button(
+        attrs = {
+          onClick { dispatch(AppAction.IncrementCount) }
+        }
+      ) {
+        Text("+")
+      }
     }
   }
 }
