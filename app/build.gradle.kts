@@ -86,11 +86,13 @@ afterEvaluate {
     }
     named("jvmJar", Jar::class) {
       dependsOn(jsBrowserDistribution)
+      duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.WARN
+
       into("WEB-INF") {
         from(jsBrowserDistribution)
       }
-      val classpath =
-        configurations.getByName("jvmRuntimeClasspath").map { if (it.isDirectory) it else zipTree(it) }
+      val classpath = configurations.getByName("jvmRuntimeClasspath")
+        .map { if (it.isDirectory) it else zipTree(it) }
       from(classpath) {
         exclude("META-INF/*.SF")
         exclude("META-INF/*.DSA")
