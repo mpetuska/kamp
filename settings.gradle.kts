@@ -1,16 +1,6 @@
-import de.fayard.refreshVersions.bootstrapRefreshVersions
-
-buildscript {
-  repositories {
-    gradlePluginPortal()
-    mavenCentral()
-  }
-  dependencies {
-    classpath("de.fayard.refreshVersions:refreshVersions:0.9.7")
-  }
+plugins {
+  id("de.fayard.refreshVersions") version "0.10.1"
 }
-
-bootstrapRefreshVersions()
 
 rootProject.name = "kamp"
 include(":scanner", ":app")

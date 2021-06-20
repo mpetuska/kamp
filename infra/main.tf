@@ -37,18 +37,24 @@ resource "cloudflare_zone" "kamp" {
   zone = "kamp.ml"
 }
 
+data "cloudflare_zones" "petuska_dev" {
+  filter {
+    name        = "petuska.dev"
+  }
+}
+
 resource "cloudflare_record" "apex" {
-  zone_id = cloudflare_zone.kamp.id
-  name    = "kamp.ml"
-  value   = "www.kamp.ml"
+  zone_id = data.cloudflare_zones.petuska_dev.zones[0].id
+  name    = "kamp"
+  value   = "www.kamp.petuska.dev"
   type    = "CNAME"
   proxied = true
   ttl     = 1
 }
 
 resource "cloudflare_record" "www" {
-  zone_id = cloudflare_zone.kamp.id
-  name    = "www"
+  zone_id = data.cloudflare_zones.petuska_dev.zones[0].id
+  name    = "www.kamp"
   value   = "gentle-mud-0876db203.azurestaticapps.net"
   type    = "CNAME"
   proxied = false
