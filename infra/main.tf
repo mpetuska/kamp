@@ -13,9 +13,6 @@ terraform {
     cloudflare = {
       source = "cloudflare/cloudflare"
     }
-    github = {
-      source = "integrations/github"
-    }
   }
 }
 
@@ -34,10 +31,6 @@ provider "mongodbatlas" {
 
 provider "cloudflare" {
   // export CLOUDFLARE_API_TOKEN=xxx
-}
-
-provider "github" {
-  // export GITHUB_TOKEN=xxx
 }
 
 resource "mongodbatlas_project" "kamp" {
@@ -94,12 +87,6 @@ resource "azurerm_static_site" "kamp" {
   name                = azurerm_resource_group.kamp.name
   resource_group_name = azurerm_resource_group.kamp.name
   location            = azurerm_resource_group.kamp.location
-}
-
-resource "github_actions_secret" "az_site_api_token" {
-  repository       = "kamp"
-  secret_name      = "AZURE_STATIC_WEB_APP_API_TOKEN"
-  plaintext_value  = azurerm_static_site.kamp.api_key
 }
 
 data "cloudflare_zones" "petuska_dev" {
