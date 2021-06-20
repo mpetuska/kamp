@@ -33,10 +33,6 @@ provider "cloudflare" {
   // export CLOUDFLARE_API_TOKEN=xxx
 }
 
-resource "cloudflare_zone" "kamp" {
-  zone = "kamp.ml"
-}
-
 data "cloudflare_zones" "petuska_dev" {
   filter {
     name        = "petuska.dev"
@@ -100,7 +96,7 @@ resource "mongodbatlas_database_user" "reader" {
 }
 
 resource "azurerm_resource_group" "kamp" {
-  location = "westeurope"
+  location = "West Europe"
   name     = "kamp"
 }
 
@@ -109,6 +105,12 @@ resource "azurerm_application_insights" "kamp" {
   location            = azurerm_resource_group.kamp.location
   resource_group_name = azurerm_resource_group.kamp.name
   application_type    = "java"
+}
+
+resource "azurerm_static_site" "kamp" {
+  name                = azurerm_resource_group.kamp.name
+  resource_group_name = azurerm_resource_group.kamp.name
+  location            = azurerm_resource_group.kamp.location
 }
 
 resource "azurerm_app_service_plan" "kamp" {
@@ -134,10 +136,10 @@ locals {
 }
 
 resource "azurerm_app_service" "kamp" {
+  name                = azurerm_app_service_plan.kamp.name
+  location            = azurerm_app_service_plan.kamp.location
   resource_group_name = azurerm_app_service_plan.kamp.resource_group_name
   app_service_plan_id = azurerm_app_service_plan.kamp.id
-  location            = azurerm_app_service_plan.kamp.location
-  name                = azurerm_app_service_plan.kamp.name
   https_only          = true
 
   site_config {
