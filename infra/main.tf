@@ -13,6 +13,9 @@ terraform {
     cloudflare = {
       source = "cloudflare/cloudflare"
     }
+    github = {
+      source = "integrations/github"
+    }
   }
 }
 
@@ -33,28 +36,8 @@ provider "cloudflare" {
   // export CLOUDFLARE_API_TOKEN=xxx
 }
 
-data "cloudflare_zones" "petuska_dev" {
-  filter {
-    name        = "petuska.dev"
-  }
-}
-
-resource "cloudflare_record" "apex" {
-  zone_id = data.cloudflare_zones.petuska_dev.zones[0].id
-  name    = "kamp"
-  value   = "www.kamp.petuska.dev"
-  type    = "CNAME"
-  proxied = true
-  ttl     = 1
-}
-
-resource "cloudflare_record" "www" {
-  zone_id = data.cloudflare_zones.petuska_dev.zones[0].id
-  name    = "www.kamp"
-  value   = "gentle-mud-0876db203.azurestaticapps.net"
-  type    = "CNAME"
-  proxied = false
-  ttl     = 1
+provider "github" {
+  // export GITHUB_TOKEN=xxx
 }
 
 resource "mongodbatlas_project" "kamp" {
@@ -111,6 +94,36 @@ resource "azurerm_static_site" "kamp" {
   name                = azurerm_resource_group.kamp.name
   resource_group_name = azurerm_resource_group.kamp.name
   location            = azurerm_resource_group.kamp.location
+}
+
+resource "github_actions_secret" "az_site_api_token" {
+  repository       = "kamp"
+  secret_name      = "AZURE_STATIC_WEB_APP_API_TOKEN"
+  plaintext_value  = azurerm_static_site.kamp.api_key
+}
+
+data "cloudflare_zones" "petuska_dev" {
+  filter {
+    name        = "petuska.dev"
+  }
+}
+
+resource "cloudflare_record" "www" {
+  zone_id = data.cloudflare_zones.petuska_dev.zones[0].id
+  name    = "www.kamp"
+  value   = azurerm_static_site.kamp.default_host_name
+  type    = "CNAME"
+  proxied = false
+  ttl     = 1
+}
+
+resource "cloudflare_record" "root" {
+  zone_id = data.cloudflare_zones.petuska_dev.zones[0].id
+  name    = "kamp"
+  value   = "www.kamp.petuska.dev"
+  type    = "CNAME"
+  proxied = true
+  ttl     = 1
 }
 
 resource "azurerm_app_service_plan" "kamp" {
