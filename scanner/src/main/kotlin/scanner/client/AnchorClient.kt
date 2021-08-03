@@ -1,7 +1,7 @@
 package scanner.client
 
+import domain.MavenArtifact
 import org.jsoup.nodes.Document
-import shared.domain.MavenArtifact
 
 abstract class AnchorClient<T : MavenArtifact>(
   val url: String,
@@ -9,7 +9,7 @@ abstract class AnchorClient<T : MavenArtifact>(
   abstract fun String.isBackLink(): Boolean
 
   override fun parsePage(page: Document): List<String>? =
-    page.getElementsByTag("a")?.mapNotNull { elm ->
+    page.getElementsByTag("a").mapNotNull { elm ->
       val text = elm.text()
       text.takeIf { it.isNotBlank() && !it.isBackLink() }
     }

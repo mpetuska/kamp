@@ -1,4 +1,4 @@
-package shared.util
+package util
 
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
@@ -11,8 +11,8 @@ abstract class Env {
     override fun getValue(thisRef: Any, property: KProperty<*>): T {
       val env = System.getenv()
       val value = env[property.name]
-        ?: env[property.name.toUpperCase().replace("-", "_")]
-        ?: env[property.name.split(camelSplitRegex).joinToString("_") { it.toUpperCase() }]
+        ?: env[property.name.uppercase().replace("-", "_")]
+        ?: env[property.name.split(camelSplitRegex).joinToString("_") { it.uppercase() }]
       return converter(value)
     }
 
@@ -21,6 +21,6 @@ abstract class Env {
 
   override fun toString(): String = this::class.memberProperties.joinToString("\n") {
     @Suppress("UNCHECKED_CAST")
-    "${it.name.toUpperCase()}=${(it as KProperty1<Any, *>).get(this)}"
+    "${it.name.uppercase()}=${(it as KProperty1<Any, *>).get(this)}"
   }
 }

@@ -1,13 +1,11 @@
 package dev.petuska.kmdc.button
 
 import androidx.compose.runtime.Composable
-import androidx.compose.web.attributes.AttrsBuilder
-import androidx.compose.web.attributes.Tag
-import androidx.compose.web.css.StyleBuilder
-import androidx.compose.web.elements.Button
-import androidx.compose.web.elements.ElementScope
 import dev.petuska.kmdc.MDCDsl
-import org.w3c.dom.HTMLHeadingElement
+import org.jetbrains.compose.web.attributes.AttrsBuilder
+import org.jetbrains.compose.web.dom.Button
+import org.jetbrains.compose.web.dom.ContentBuilder
+import org.w3c.dom.HTMLButtonElement
 
 @PublishedApi
 @JsModule("@material/button/dist/mdc.button.css")
@@ -33,9 +31,8 @@ data class MDCButtonOpts(
 @Composable
 inline fun MDCButton(
   opts: MDCButtonOpts.() -> Unit = {},
-  crossinline attrs: AttrsBuilder<Tag.Button>.() -> Unit = {},
-  crossinline style: (StyleBuilder.() -> Unit) = {},
-  content: @Composable ElementScope<HTMLHeadingElement>.() -> Unit
+  crossinline attrs: AttrsBuilder<HTMLButtonElement>.() -> Unit = {},
+  noinline content: ContentBuilder<HTMLButtonElement> = {}
 ) {
   MDCButtonStyle
   val options = MDCButtonOpts().apply(opts)
@@ -44,7 +41,6 @@ inline fun MDCButton(
       classes("mdc-button", *options.type.classes, *options.icon.classes)
       attrs()
     },
-    style,
     content
   )
 }

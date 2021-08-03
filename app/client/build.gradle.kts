@@ -18,7 +18,7 @@ kotlin {
         outputFileName = jsOutputFile
         devServer = devServer?.copy(
           port = 3000,
-          proxy = mapOf("/api/*" to "http://localhost:8080"),
+          proxy = mutableMapOf("/api/*" to "http://localhost:8080"),
           open = false
         )
       }
@@ -28,12 +28,11 @@ kotlin {
   sourceSets {
     commonMain {
       dependencies {
-        implementation(compose.web.web)
         implementation(compose.runtime)
         implementation(project(":app:common"))
         implementation("org.reduxkotlin:redux-kotlin-threadsafe:_")
         implementation("org.reduxkotlin:redux-kotlin-thunk:_")
-        // implementation("io.ktor:ktor-client-cio:_")
+//        implementation("io.ktor:ktor-client-cio:_")
         implementation("io.ktor:ktor-client-auth:_")
         implementation("io.ktor:ktor-client-serialization:_")
       }
@@ -45,10 +44,6 @@ kotlin {
     }
     named("jvmMain") {
       dependencies {
-        implementation(compose.foundation)
-        implementation(compose.material)
-        implementation(compose.materialIconsExtended)
-        implementation(compose.desktop.common)
       }
     }
   }

@@ -1,4 +1,4 @@
-package shared.util
+package util
 
 import org.kodein.di.DI
 import kotlin.properties.ReadOnlyProperty

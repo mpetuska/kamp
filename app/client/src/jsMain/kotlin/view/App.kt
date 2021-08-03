@@ -2,12 +2,6 @@ package app.client.view
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.web.css.padding
-import androidx.compose.web.css.px
-import androidx.compose.web.elements.Button
-import androidx.compose.web.elements.Div
-import androidx.compose.web.elements.Span
-import androidx.compose.web.elements.Text
 import app.client.store.AppStore
 import app.client.store.action.AppAction
 import app.client.util.select
@@ -19,6 +13,12 @@ import dev.petuska.kmdc.button.MDCButtonLabel
 import dev.petuska.kmdc.button.MDCButtonOpts
 import dev.petuska.kmdc.button.MDCButtonRipple
 import dev.petuska.kmdc.icon.button.MDCIconButton
+import org.jetbrains.compose.web.css.padding
+import org.jetbrains.compose.web.css.px
+import org.jetbrains.compose.web.dom.Button
+import org.jetbrains.compose.web.dom.Div
+import org.jetbrains.compose.web.dom.Span
+import org.jetbrains.compose.web.dom.Text
 
 @Composable
 fun AppStore.App() {
@@ -37,26 +37,26 @@ fun AppStore.App() {
       MDCButtonIcon("favorite")
     }
     MDCIconButton("favorite")
-    Div(style = { padding(25.px) }) {
-      Button(
-        attrs = {
-          onClick { dispatch(AppAction.DecrementCount) }
-        }
-      ) {
-        Text("-")
+    Div(attrs = { style { padding(25.px) } }) {
+    Button(
+      attrs = {
+        onClick { dispatch(AppAction.DecrementCount) }
       }
-
-      Span(style = { padding(15.px) }) {
-        Text("$count")
-      }
-
-      Button(
-        attrs = {
-          onClick { dispatch(AppAction.IncrementCount) }
-        }
-      ) {
-        Text("+")
-      }
+    ) {
+      Text("-")
     }
+
+    Span(attrs = { style { padding(15.px) } }) {
+    Text("$count")
+  }
+
+    Button(
+      attrs = {
+        onClick { dispatch(AppAction.IncrementCount) }
+      }
+    ) {
+      Text("+")
+    }
+  }
   }
 }

@@ -1,7 +1,8 @@
 package app.server.config
 
-import app.server.service.LibraryService
+import app.server.service.LibraryServiceImpl
 import app.server.util.PrivateEnv
+import domain.KotlinMPPLibrary
 import io.ktor.application.Application
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -13,8 +14,8 @@ import org.litote.kmongo.coroutine.CoroutineClient
 import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo.createClient
-import shared.domain.KotlinMPPLibrary
-import shared.util.DIModule
+import service.LibraryService
+import util.DIModule
 
 fun Application.diConfig() = di {
   import(services)
@@ -25,5 +26,5 @@ private val services by DIModule {
   bind<CoroutineCollection<KotlinMPPLibrary>>() with singleton {
     instance<CoroutineClient>().getDatabase(PrivateEnv.MONGO_DATABASE).getCollection("libraries")
   }
-  bind<LibraryService>() with scoped(CallScope).singleton { LibraryService(context, instance()) }
+  bind<LibraryService>() with scoped(CallScope).singleton { LibraryServiceImpl(context, instance()) }
 }

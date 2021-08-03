@@ -1,4 +1,4 @@
-package shared.domain
+package domain
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient

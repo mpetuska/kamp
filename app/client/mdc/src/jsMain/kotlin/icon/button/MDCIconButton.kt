@@ -1,15 +1,13 @@
 package dev.petuska.kmdc.icon.button
 
 import androidx.compose.runtime.Composable
-import androidx.compose.web.attributes.AttrsBuilder
-import androidx.compose.web.attributes.Tag
-import androidx.compose.web.css.StyleBuilder
-import androidx.compose.web.elements.Button
-import androidx.compose.web.elements.ElementScope
-import androidx.compose.web.elements.Text
 import dev.petuska.kmdc.MDCDsl
+import org.jetbrains.compose.web.attributes.AttrsBuilder
+import org.jetbrains.compose.web.dom.Button
+import org.jetbrains.compose.web.dom.ContentBuilder
+import org.jetbrains.compose.web.dom.Text
 import org.w3c.dom.Element
-import org.w3c.dom.HTMLHeadingElement
+import org.w3c.dom.HTMLButtonElement
 
 @PublishedApi
 @JsModule("@material/icon-button/dist/mdc.icon-button.css")
@@ -36,9 +34,8 @@ data class MDCIconButtonOpts(
 @Composable
 inline fun MDCIconButton(
   opts: MDCIconButtonOpts.() -> Unit = {},
-  crossinline attrs: AttrsBuilder<Tag.Button>.() -> Unit = {},
-  crossinline style: (StyleBuilder.() -> Unit) = {},
-  content: @Composable ElementScope<HTMLHeadingElement>.() -> Unit
+  crossinline attrs: AttrsBuilder<HTMLButtonElement>.() -> Unit = {},
+  crossinline content: ContentBuilder<HTMLButtonElement> = {}
 ) {
   MDCIconButtonStyle
   val options = MDCIconButtonOpts().apply(opts)
@@ -47,7 +44,6 @@ inline fun MDCIconButton(
       classes(*listOfNotNull("mdc-icon-button", if (options.on) "mdc-icon-button--on" else null).toTypedArray())
       attrs()
     },
-    style,
   ) {
     DomSideEffect {
       MDCIconButtonModule.MDCIconButtonToggle.attachTo(it)
@@ -60,15 +56,13 @@ inline fun MDCIconButton(
 @Composable
 inline fun MDCIconButton(
   icon: String,
-  crossinline attrs: AttrsBuilder<Tag.Button>.() -> Unit = {},
-  crossinline style: (StyleBuilder.() -> Unit) = {},
+  crossinline attrs: AttrsBuilder<HTMLButtonElement>.() -> Unit = {},
 ) {
   MDCIconButton(
     attrs = {
       classes("mdc-icon-button", "material-icons")
       attrs()
     },
-    style = style,
   ) {
     Text(icon)
   }

@@ -13,10 +13,11 @@ import org.kodein.di.instance
 import org.kodein.di.provider
 import org.kodein.di.singleton
 import service.LibraryService
-import shared.util.DIModule
+import service.LibraryServiceImpl
+import util.DIModule
 
 private val services by DIModule {
-  bind<LibraryService>() with provider { LibraryService(instance()) }
+  bind<LibraryService>() with provider { LibraryServiceImpl(instance()) }
 }
 
 val di = DI {

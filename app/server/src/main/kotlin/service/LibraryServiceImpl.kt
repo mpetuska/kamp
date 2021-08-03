@@ -1,9 +1,10 @@
 package app.server.service
 
-import app.common.domain.LibraryCount
-import app.common.domain.PagedResponse
 import app.server.util.buildNextUrl
 import app.server.util.buildPrevUrl
+import domain.KotlinMPPLibrary
+import domain.LibraryCount
+import domain.PagedResponse
 import io.ktor.application.ApplicationCall
 import org.litote.kmongo.MongoOperator.all
 import org.litote.kmongo.MongoOperator.and
@@ -13,12 +14,12 @@ import org.litote.kmongo.MongoOperator.search
 import org.litote.kmongo.MongoOperator.text
 import org.litote.kmongo.bson
 import org.litote.kmongo.coroutine.CoroutineCollection
-import shared.domain.KotlinMPPLibrary
+import service.LibraryService
 
-class LibraryService(
+class LibraryServiceImpl(
   private val call: ApplicationCall,
   private val collection: CoroutineCollection<KotlinMPPLibrary>,
-) {
+) : LibraryService {
   private fun buildQuery(_search: String?, targets: Set<String>?): Pair<String?, String?> {
     val searchQuery = _search?.let {
       """
@@ -56,7 +57,7 @@ class LibraryService(
     return finalQuery to projection
   }
 
-  suspend fun getAll(
+  override suspend fun getAll(
     page: Int,
     size: Int,
     search: String?,
@@ -80,11 +81,11 @@ class LibraryService(
     )
   }
 
-  suspend fun getCount(search: String?, targets: Set<String>?): LibraryCount {
+  override suspend fun getCount(search: String?, targets: Set<String>?): LibraryCount {
     return LibraryCount(collection.countDocuments(buildQuery(search, targets).first ?: "{}"))
   }
 
-  suspend fun create(library: KotlinMPPLibrary) {
+  override suspend fun create(library: KotlinMPPLibrary) {
     collection.save(library)
   }
 }

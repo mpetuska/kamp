@@ -1,4 +1,4 @@
-package app.common.domain
+package domain
 
 import kotlinx.serialization.Serializable
 

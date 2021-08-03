@@ -1,5 +1,6 @@
 package scanner.service
 
+import domain.MavenArtifactImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
@@ -10,9 +11,7 @@ import scanner.domain.CLIOptions
 import scanner.processor.GradleModuleProcessor
 import scanner.processor.PomProcessor
 import scanner.util.supervisedLaunch
-import shared.domain.MavenArtifactImpl
-import kotlin.time.milliseconds
-import kotlin.time.seconds
+import kotlin.time.Duration
 
 class MavenScannerServiceImpl(
   override val client: MavenRepositoryClient<MavenArtifactImpl>,
@@ -41,7 +40,7 @@ class MavenScannerServiceImpl(
     supervisedLaunch {
       var ticks = 0
       do {
-        delay(cliOptions?.delayMS?.milliseconds ?: 10.seconds)
+        delay(cliOptions?.delayMS?.let { Duration.milliseconds(it) } ?: Duration.seconds(10))
         if (pageChannel.isEmpty) {
           logger.info("Page channel empty, ${5 - ticks} ticks remaining until close")
           ticks++
@@ -55,10 +54,10 @@ class MavenScannerServiceImpl(
     }
 
     // Workers
-    repeat(cliOptions?.workers ?: Runtime.getRuntime().availableProcessors() * 2) {
+    repeat(cliOptions?.workers ?: (Runtime.getRuntime().availableProcessors() * 2)) {
       supervisedLaunch {
         for (page in pageChannel) {
-          cliOptions?.delayMS?.let { delay(it.milliseconds) }
+          cliOptions?.delayMS?.let { delay(Duration.milliseconds(it)) }
           val artifactDetails =
             page.find { it.value == "maven-metadata.xml" }?.let {
               client.getArtifactDetails(it.path)

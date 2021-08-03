@@ -1,5 +1,7 @@
 package scanner.client
 
+import domain.MavenArtifact
+import domain.MavenArtifactImpl
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.util.date.GMTDate
@@ -13,8 +15,6 @@ import scanner.domain.GradleModule
 import scanner.util.LoggerDelegate
 import scanner.util.asDocument
 import scanner.util.supervisedAsync
-import shared.domain.MavenArtifact
-import shared.domain.MavenArtifactImpl
 
 abstract class MavenRepositoryClient<A : MavenArtifact>(
   private val defaultRepositoryRootUrl: String,
@@ -33,7 +33,7 @@ abstract class MavenRepositoryClient<A : MavenArtifact>(
     val artifact = supervisedAsync {
       val url = "$defaultRepositoryRootUrl$pathToMavenMetadata"
       val pom = client.get<String>(url).asDocument()
-      val doc = pom.getElementsByTag("metadata").first()
+      val doc = pom.getElementsByTag("metadata").first()!!
       try {
         val lastUpdated =
           doc.selectFirst("versioning>lastUpdated")?.text()?.let {
@@ -48,10 +48,10 @@ abstract class MavenRepositoryClient<A : MavenArtifact>(
               .timestamp
           }
         MavenArtifactImpl(
-          group = doc.selectFirst("groupId").text(),
-          name = doc.selectFirst("artifactId").text(),
+          group = doc.selectFirst("groupId")!!.text(),
+          name = doc.selectFirst("artifactId")!!.text(),
           latestVersion = doc.selectFirst("versioning>latest")?.text()
-            ?: doc.selectFirst("version").text(),
+            ?: doc.selectFirst("version")!!.text(),
           releaseVersion = doc.selectFirst("versioning>release")?.text(),
           versions = doc.selectFirst("versioning>versions")?.children()?.map { v -> v.text() },
           lastUpdated = lastUpdated,

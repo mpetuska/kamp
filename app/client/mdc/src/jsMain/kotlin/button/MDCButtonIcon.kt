@@ -1,21 +1,18 @@
 package dev.petuska.kmdc.button
 
 import androidx.compose.runtime.Composable
-import androidx.compose.web.attributes.AttrsBuilder
-import androidx.compose.web.attributes.Tag
-import androidx.compose.web.css.StyleBuilder
-import androidx.compose.web.elements.ElementScope
-import androidx.compose.web.elements.I
-import androidx.compose.web.elements.Text
 import dev.petuska.kmdc.MDCDsl
+import org.jetbrains.compose.web.attributes.AttrsBuilder
+import org.jetbrains.compose.web.dom.ElementScope
+import org.jetbrains.compose.web.dom.I
+import org.jetbrains.compose.web.dom.Text
 import org.w3c.dom.HTMLElement
 
 @MDCDsl
 @Composable
 inline fun ElementScope<*>.MDCButtonIcon(
   icon: String,
-  crossinline attrs: AttrsBuilder<Tag>.() -> Unit = {},
-  crossinline style: (StyleBuilder.() -> Unit) = {},
+  crossinline attrs: AttrsBuilder<HTMLElement>.() -> Unit = {},
 ) {
   I(
     attrs = {
@@ -28,7 +25,6 @@ inline fun ElementScope<*>.MDCButtonIcon(
       )
       attrs()
     },
-    style = style
   ) {
     Text(icon)
   }

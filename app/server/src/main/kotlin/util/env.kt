@@ -1,6 +1,6 @@
 package app.server.util
 
-import shared.util.Env
+import util.Env
 
 object PrivateEnv : Env() {
   val MONGO_STRING by EnvDelegate { it ?: "mongodb://localhost:27017" }

@@ -1,6 +1,5 @@
 package app.server.config
 
-import app.server.service.LibraryService
 import app.server.util.PublicEnv
 import app.server.util.inject
 import app.server.util.page
@@ -24,6 +23,7 @@ import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.route
 import io.ktor.routing.routing
+import service.LibraryService
 
 fun Application.routing() = routing {
   libraries()

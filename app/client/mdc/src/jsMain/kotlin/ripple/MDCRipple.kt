@@ -1,9 +1,9 @@
 package dev.petuska.kmdc.ripple
 
 import androidx.compose.runtime.Composable
-import androidx.compose.web.elements.ElementScope
 import dev.petuska.kmdc.MDCDsl
-import dev.petuska.kmdc.jsObject
+import org.jetbrains.compose.web.css.jsObject
+import org.jetbrains.compose.web.dom.ElementScope
 import org.w3c.dom.Element
 
 @JsModule("@material/ripple")
@@ -26,8 +26,8 @@ internal external object MDCRippleModule {
 @Composable
 fun ElementScope<*>.MDCRipple(isUnbounded: Boolean = false) = DomSideEffect {
   MDCRippleModule.MDCRipple.attachTo(
-    it,
-    jsObject {
+    element = it,
+    opts = jsObject {
       this.isUnbounded = isUnbounded
     }
   )

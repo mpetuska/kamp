@@ -1,11 +1,11 @@
 package scanner.domain
 
+import domain.MavenArtifactImpl
 import org.kodein.di.DirectDIAware
 import org.kodein.di.instance
 import scanner.client.ArtifactoryClient
 import scanner.client.JBossClient
 import scanner.client.MavenRepositoryClient
-import shared.domain.MavenArtifactImpl
 
 enum class Repository(
   val alias: String,

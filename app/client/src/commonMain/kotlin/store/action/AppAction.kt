@@ -1,7 +1,7 @@
 package app.client.store.action
 
-import app.common.domain.PagedResponse
-import shared.domain.KotlinMPPLibrary
+import domain.KotlinMPPLibrary
+import domain.PagedResponse
 
 sealed class AppAction {
   object IncrementCount : AppAction()

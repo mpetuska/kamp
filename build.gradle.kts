@@ -26,6 +26,11 @@ allprojects {
     }
   }
 
+  ktlint {
+    version by project.properties["ktlint.version"].toString()
+    additionalEditorconfigFile.set(rootDir.resolve(".editorconfig"))
+  }
+
   repositories {
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
@@ -37,7 +42,6 @@ allprojects {
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
       kotlinOptions {
-        useIR = true
         jvmTarget = "${project.properties["org.gradle.project.targetCompatibility"]}"
       }
     }

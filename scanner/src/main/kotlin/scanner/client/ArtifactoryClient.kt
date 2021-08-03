@@ -1,8 +1,8 @@
 package scanner.client
 
+import domain.MavenArtifactImpl
 import io.ktor.client.HttpClient
 import kotlinx.serialization.json.Json
-import shared.domain.MavenArtifactImpl
 
 class ArtifactoryClient(
   url: String,

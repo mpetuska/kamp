@@ -15,7 +15,7 @@ kotlin {
         api(npm("@material/ripple", mdcVersion))
         api(npm("@material/button", mdcVersion))
         api(npm("@material/icon-button", mdcVersion))
-        api(compose.web.web)
+        api(compose.web.core)
         api(compose.runtime)
       }
     }

@@ -1,5 +1,5 @@
 package app.client.view.style
 
-import androidx.compose.web.css.StyleSheet
+import org.jetbrains.compose.web.css.StyleSheet
 
 object AppStyle : StyleSheet()

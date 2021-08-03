@@ -6,6 +6,7 @@ import io.ktor.client.engine.cio.CIO
 import io.ktor.client.engine.cio.CIOEngineConfig
 import io.ktor.client.features.HttpTimeout
 import io.ktor.client.features.auth.Auth
+import io.ktor.client.features.auth.providers.BasicAuthCredentials
 import io.ktor.client.features.auth.providers.basic
 import io.ktor.client.features.defaultRequest
 import io.ktor.client.features.json.JsonFeature
@@ -26,10 +27,11 @@ import scanner.service.MavenScannerService
 import scanner.service.MavenScannerServiceImpl
 import scanner.util.PrivateEnv
 import scanner.util.prettyJson
-import kotlin.time.minutes
+import kotlin.time.Duration
+import kotlin.time.DurationUnit
 
 fun HttpClientConfig<CIOEngineConfig>.baseConfig() {
-  val timeout = 2.5.minutes.inMilliseconds.toLong()
+  val timeout = Duration.minutes(2.5).toLong(DurationUnit.MILLISECONDS)
   engine { requestTimeout = timeout }
   defaultRequest {
     contentType(ContentType.Application.Json)
@@ -68,8 +70,9 @@ val di = DI {
         baseConfig()
         install(Auth) {
           basic {
-            username = PrivateEnv.ADMIN_USER
-            password = PrivateEnv.ADMIN_PASSWORD
+            credentials {
+              BasicAuthCredentials(username = PrivateEnv.ADMIN_USER, password = PrivateEnv.ADMIN_PASSWORD)
+            }
           }
         }
       }

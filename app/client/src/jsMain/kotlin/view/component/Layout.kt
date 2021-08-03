@@ -1,18 +1,22 @@
 package app.client.view.component
 
 import androidx.compose.runtime.Composable
-import androidx.compose.web.css.DisplayStyle
-import androidx.compose.web.css.FlexDirection
-import androidx.compose.web.css.display
-import androidx.compose.web.css.flexDirection
-import androidx.compose.web.elements.Div
+import org.jetbrains.compose.web.css.DisplayStyle
+import org.jetbrains.compose.web.css.FlexDirection
+import org.jetbrains.compose.web.css.display
+import org.jetbrains.compose.web.css.flexDirection
+import org.jetbrains.compose.web.dom.ContentBuilder
+import org.jetbrains.compose.web.dom.Div
+import org.w3c.dom.HTMLDivElement
 
 @Composable
-inline fun FlexColumn(content: @Composable () -> Unit) {
+inline fun FlexColumn(crossinline content: ContentBuilder<HTMLDivElement>) {
   Div(
-    style = {
-      display(DisplayStyle.Flex)
-      flexDirection(FlexDirection.Column)
+    attrs = {
+      style {
+        display(DisplayStyle.Flex)
+        flexDirection(FlexDirection.Column)
+      }
     }
   ) {
     content()
@@ -20,11 +24,13 @@ inline fun FlexColumn(content: @Composable () -> Unit) {
 }
 
 @Composable
-inline fun FlexRow(content: @Composable () -> Unit) {
+inline fun FlexRow(crossinline content: ContentBuilder<HTMLDivElement>) {
   Div(
-    style = {
-      display(DisplayStyle.Flex)
-      flexDirection(FlexDirection.Row)
+    attrs = {
+      style {
+        display(DisplayStyle.Flex)
+        flexDirection(FlexDirection.Row)
+      }
     }
   ) {
     content()
