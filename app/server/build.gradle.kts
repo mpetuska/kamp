@@ -33,13 +33,14 @@ afterEvaluate {
     val processResources by getting
     create<JavaExec>("run") {
       group = "run"
-      main = mainClassName
+      mainClass by mainClassName
       dependsOn(compileKotlin, processResources)
+      systemProperty("io.ktor.development", "true")
       classpath = files(
         configurations["runtimeClasspath"],
         compileKotlin.outputs,
         processResources.outputs,
-        buildDir.resolve("dist")
+        project(":app:client").buildDir.resolve("dist/js")
       )
     }
     jar {
@@ -47,13 +48,11 @@ afterEvaluate {
       into("WEB-INF") {
         from(jsBrowserDistribution)
       }
-      val classpath =
-        configurations.getByName("runtimeClasspath").map { if (it.isDirectory) it else zipTree(it) }
+      val classpath = configurations.getByName("runtimeClasspath")
+        .map { if (it.isDirectory) it else zipTree(it) }
       duplicatesStrategy = DuplicatesStrategy.WARN
       from(classpath) {
-        exclude("META-INF/*.SF")
-        exclude("META-INF/*.DSA")
-        exclude("META-INF/*.RSA")
+        exclude("META-INF/**")
       }
 
       manifest {

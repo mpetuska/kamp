@@ -10,7 +10,7 @@ import org.w3c.dom.HTMLSpanElement
 
 @MDCDsl
 @Composable
-inline fun MDCButtonLabel(
+inline fun MDCButtonScope.MDCButtonLabel(
   crossinline attrs: AttrsBuilder<HTMLSpanElement>.() -> Unit = {},
   noinline content: ContentBuilder<HTMLSpanElement> = {}
 ) {
@@ -25,7 +25,7 @@ inline fun MDCButtonLabel(
 
 @MDCDsl
 @Composable
-inline fun MDCButtonLabel(
+inline fun MDCButtonScope.MDCButtonLabel(
   content: String,
   crossinline attrs: AttrsBuilder<HTMLSpanElement>.() -> Unit = {},
 ) {

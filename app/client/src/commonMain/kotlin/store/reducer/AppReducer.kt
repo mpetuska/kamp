@@ -7,7 +7,7 @@ import org.reduxkotlin.reducerForActionType
 
 typealias AppReducer = ReducerForActionType<AppState, AppAction>
 
-val rootReducer = reducerForActionType<AppState, AppAction> { state, action ->
+fun loadReducer() = reducerForActionType<AppState, AppAction> { state, action ->
   when (action) {
     AppAction.IncrementCount -> state.copy(count = (state.count ?: 0) + 1)
     AppAction.DecrementCount -> state.copy(count = (state.count ?: 0) - 1)

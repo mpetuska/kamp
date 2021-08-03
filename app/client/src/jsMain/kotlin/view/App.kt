@@ -2,7 +2,7 @@ package app.client.view
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import app.client.store.AppStore
+import app.client.AppContext
 import app.client.store.action.AppAction
 import app.client.util.select
 import app.client.view.component.FlexColumn
@@ -21,10 +21,9 @@ import org.jetbrains.compose.web.dom.Span
 import org.jetbrains.compose.web.dom.Text
 
 @Composable
-fun AppStore.App() {
+fun AppContext.App() {
   Navbar()
   FlexColumn {
-
     val count by select { count }
     MDCButton(
       opts = {
@@ -45,11 +44,9 @@ fun AppStore.App() {
     ) {
       Text("-")
     }
-
     Span(attrs = { style { padding(15.px) } }) {
     Text("$count")
   }
-
     Button(
       attrs = {
         onClick { dispatch(AppAction.IncrementCount) }

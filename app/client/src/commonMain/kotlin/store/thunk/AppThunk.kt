@@ -1,6 +1,6 @@
 package app.client.store.thunk
 
-import app.client.config.di
+import app.client.AppContext
 import app.client.store.action.AppAction
 import app.client.store.state.AppState
 import app.client.util.suspending
@@ -10,7 +10,7 @@ import service.LibraryService
 
 typealias AppThunk = Thunk<AppState>
 
-fun fetchLibraryPage(
+fun AppContext.fetchLibraryPage(
   page: Int,
   size: Int = 12,
   search: String? = null,
@@ -21,7 +21,7 @@ fun fetchLibraryPage(
     val theSearch = (search ?: state.search)?.takeIf(String::isNotEmpty)
     val theTargets = (targets ?: state.targets)?.takeIf(Set<String>::isNotEmpty)
 
-    val service by di.instance<LibraryService>()
+    val service by instance<LibraryService>()
     val theLibraries = service.getAll(page, size, theSearch, theTargets)
     // TODO window.scrollTo(0.0, 0.0)
     dispatch(AppAction.SetLibraries(theLibraries))
@@ -30,7 +30,7 @@ fun fetchLibraryPage(
   }
 }
 
-fun fetchLibraryCount(
+fun AppContext.fetchLibraryCount(
   search: String? = null,
   targets: Set<String>? = null,
 ): AppThunk = { dispatch, getState, _ ->
@@ -39,7 +39,7 @@ fun fetchLibraryCount(
     val theSearch = (search ?: state.search)?.takeIf(String::isNotEmpty)
     val theTargets = (targets ?: state.targets)?.takeIf(Set<String>::isNotEmpty)
 
-    val service by di.instance<LibraryService>()
+    val service by instance<LibraryService>()
     val theCount = service.getCount(theSearch, theTargets).count
 
     dispatch(AppAction.SetCount(theCount))

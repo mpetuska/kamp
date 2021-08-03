@@ -11,7 +11,7 @@ kotlin {
     binaries.executable()
     browser {
       distribution {
-        directory = buildDir.resolve("dist/WEB-INF")
+        directory = buildDir.resolve("dist/js/WEB-INF")
       }
       commonWebpackConfig {
         cssSupport.enabled = true
@@ -32,7 +32,6 @@ kotlin {
         implementation(project(":app:common"))
         implementation("org.reduxkotlin:redux-kotlin-threadsafe:_")
         implementation("org.reduxkotlin:redux-kotlin-thunk:_")
-//        implementation("io.ktor:ktor-client-cio:_")
         implementation("io.ktor:ktor-client-auth:_")
         implementation("io.ktor:ktor-client-serialization:_")
       }

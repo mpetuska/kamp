@@ -44,6 +44,7 @@ tasks {
     )
   }
   jar {
+    duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.WARN
     val classpath = configurations.runtimeClasspath.get().files.map { if (it.isDirectory) it else zipTree(it) }
     duplicatesStrategy = DuplicatesStrategy.WARN
     from(classpath) {

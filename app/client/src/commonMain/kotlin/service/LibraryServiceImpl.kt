@@ -1,6 +1,6 @@
 package service
 
-import app.client.util.toApi
+import app.client.util.UrlUtils
 import domain.KotlinMPPLibrary
 import domain.LibraryCount
 import domain.PagedResponse
@@ -8,7 +8,8 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import service.LibraryService.Companion.PATH
 
-class LibraryServiceImpl(private val client: HttpClient) : LibraryService {
+class LibraryServiceImpl(private val client: HttpClient, private val urlUtils: UrlUtils) : LibraryService {
+  private fun String.toApiUrl() = with(urlUtils) { toApiUrl() }
   override suspend fun getAll(
     page: Int,
     size: Int,
@@ -19,7 +20,7 @@ class LibraryServiceImpl(private val client: HttpClient) : LibraryService {
     val searchQuery = search?.let { "search=$it" } ?: ""
     val targetsQuery = targets?.joinToString(prefix = "target=", separator = "&target=") ?: ""
 
-    return client.get("${PATH}${buildQuery(pagination, searchQuery, targetsQuery)}".toApi())
+    return client.get("${PATH}${buildQuery(pagination, searchQuery, targetsQuery)}".toApiUrl())
   }
 
   override suspend fun create(library: KotlinMPPLibrary) {
@@ -30,7 +31,7 @@ class LibraryServiceImpl(private val client: HttpClient) : LibraryService {
     val searchQuery = search?.let { "search=$it" }
     val targetsQuery = targets?.joinToString(prefix = "target=", separator = "&target=")
 
-    return client.get("$PATH/count${buildQuery(searchQuery, targetsQuery)}".toApi())
+    return client.get("$PATH/count${buildQuery(searchQuery, targetsQuery)}".toApiUrl())
   }
 
   private fun buildQuery(vararg query: String?): String {

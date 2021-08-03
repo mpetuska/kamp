@@ -16,16 +16,15 @@ import service.LibraryService
 import service.LibraryServiceImpl
 import util.DIModule
 
-private val services by DIModule {
-  bind<LibraryService>() with provider { LibraryServiceImpl(instance()) }
+private fun loadServices(): DI.Module {
+  val services by DIModule {
+    bind<LibraryService>() with provider { LibraryServiceImpl(instance(), instance()) }
+  }
+  return services
 }
 
-val di = DI {
-  bind {
-    provider {
-      Json {}
-    }
-  }
+fun loadDI(env: AppEnv) = DI {
+  bind<Json>() with provider { Json {} }
   bind<HttpClient>() with singleton {
     HttpClient {
       install(JsonFeature) {
@@ -36,5 +35,6 @@ val di = DI {
       }
     }
   }
-  import(services)
+  bind<AppEnv>() with instance(env)
+  import(loadServices())
 }

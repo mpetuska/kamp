@@ -3,14 +3,13 @@ package dev.petuska.kmdc.button
 import androidx.compose.runtime.Composable
 import dev.petuska.kmdc.MDCDsl
 import org.jetbrains.compose.web.attributes.AttrsBuilder
-import org.jetbrains.compose.web.dom.ElementScope
 import org.jetbrains.compose.web.dom.I
 import org.jetbrains.compose.web.dom.Text
 import org.w3c.dom.HTMLElement
 
 @MDCDsl
 @Composable
-inline fun ElementScope<*>.MDCButtonIcon(
+inline fun MDCButtonScope.MDCButtonIcon(
   icon: String,
   crossinline attrs: AttrsBuilder<HTMLElement>.() -> Unit = {},
 ) {

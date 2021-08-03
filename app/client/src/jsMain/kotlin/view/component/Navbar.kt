@@ -1,7 +1,7 @@
 package app.client.view.component
 
 import androidx.compose.runtime.Composable
-import app.client.store.AppStore
+import app.client.AppContext
 import app.client.view.style.AppStyle
 import org.jetbrains.compose.web.attributes.AttrsBuilder
 import org.jetbrains.compose.web.attributes.href
@@ -28,7 +28,7 @@ import org.w3c.dom.HTMLImageElement
 object NavbarStyle : StyleSheet(AppStyle)
 
 @Composable
-fun AppStore.Navbar() {
+fun AppContext.Navbar() {
   Nav(
     attrs = {
       classes(

@@ -33,28 +33,6 @@ provider "cloudflare" {
   // export CLOUDFLARE_API_TOKEN=xxx
 }
 
-resource "cloudflare_zone" "kamp" {
-  zone = "kamp.ml"
-}
-
-resource "cloudflare_record" "apex" {
-  zone_id = cloudflare_zone.kamp.id
-  name    = "kamp.ml"
-  value   = "www.kamp.ml"
-  type    = "CNAME"
-  proxied = true
-  ttl     = 1
-}
-
-resource "cloudflare_record" "www" {
-  zone_id = cloudflare_zone.kamp.id
-  name    = "www"
-  value   = "gentle-mud-0876db203.azurestaticapps.net"
-  type    = "CNAME"
-  proxied = false
-  ttl     = 1
-}
-
 resource "mongodbatlas_project" "kamp" {
   name   = "kamp"
   org_id = "60533df97f4d234d9e691ce6"
@@ -94,7 +72,7 @@ resource "mongodbatlas_database_user" "reader" {
 }
 
 resource "azurerm_resource_group" "kamp" {
-  location = "westeurope"
+  location = "West Europe"
   name     = "kamp"
 }
 
@@ -103,6 +81,36 @@ resource "azurerm_application_insights" "kamp" {
   location            = azurerm_resource_group.kamp.location
   resource_group_name = azurerm_resource_group.kamp.name
   application_type    = "java"
+}
+
+resource "azurerm_static_site" "kamp" {
+  name                = azurerm_resource_group.kamp.name
+  resource_group_name = azurerm_resource_group.kamp.name
+  location            = azurerm_resource_group.kamp.location
+}
+
+data "cloudflare_zones" "petuska_dev" {
+  filter {
+    name        = "petuska.dev"
+  }
+}
+
+resource "cloudflare_record" "www" {
+  zone_id = data.cloudflare_zones.petuska_dev.zones[0].id
+  name    = "www.kamp"
+  value   = azurerm_static_site.kamp.default_host_name
+  type    = "CNAME"
+  proxied = false
+  ttl     = 1
+}
+
+resource "cloudflare_record" "root" {
+  zone_id = data.cloudflare_zones.petuska_dev.zones[0].id
+  name    = "kamp"
+  value   = "www.kamp.petuska.dev"
+  type    = "CNAME"
+  proxied = true
+  ttl     = 1
 }
 
 resource "azurerm_app_service_plan" "kamp" {
@@ -128,10 +136,10 @@ locals {
 }
 
 resource "azurerm_app_service" "kamp" {
+  name                = azurerm_app_service_plan.kamp.name
+  location            = azurerm_app_service_plan.kamp.location
   resource_group_name = azurerm_app_service_plan.kamp.resource_group_name
   app_service_plan_id = azurerm_app_service_plan.kamp.id
-  location            = azurerm_app_service_plan.kamp.location
-  name                = azurerm_app_service_plan.kamp.name
   https_only          = true
 
   site_config {
