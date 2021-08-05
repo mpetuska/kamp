@@ -1,3 +1,5 @@
+import de.fayard.refreshVersions.core.versionFor
+
 plugins {
   kotlin("multiplatform")
   id("org.jetbrains.compose")
@@ -39,6 +41,7 @@ kotlin {
     named("jsMain") {
       dependencies {
         implementation(project(":app:client:mdc"))
+        implementation(npm("@fortawesome/fontawesome-free", versionFor("version.npm.fontawesome")))
       }
     }
     named("jvmMain") {

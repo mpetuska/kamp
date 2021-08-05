@@ -20,7 +20,6 @@ kotlin {
   sourceSets.all {
     languageSettings.apply {
       useExperimentalAnnotation("kotlinx.coroutines.ExperimentalCoroutinesApi")
-      useExperimentalAnnotation("io.ktor.util.KtorExperimentalAPI")
       useExperimentalAnnotation("kotlin.time.ExperimentalTime")
       useExperimentalAnnotation("kotlinx.coroutines.FlowPreview")
       useExperimentalAnnotation("kotlinx.cli.ExperimentalCli")
@@ -44,13 +43,11 @@ tasks {
     )
   }
   jar {
-    duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.WARN
+    duplicatesStrategy = DuplicatesStrategy.WARN
     val classpath = configurations.runtimeClasspath.get().files.map { if (it.isDirectory) it else zipTree(it) }
     duplicatesStrategy = DuplicatesStrategy.WARN
     from(classpath) {
-      exclude("META-INF/*.SF")
-      exclude("META-INF/*.DSA")
-      exclude("META-INF/*.RSA")
+      exclude("META-INF/**")
     }
 
     manifest {

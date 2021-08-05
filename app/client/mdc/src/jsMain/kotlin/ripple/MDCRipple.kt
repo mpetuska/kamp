@@ -20,15 +20,17 @@ internal external object MDCRippleModule {
 }
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v11.0.0/packages/mdc-ripple)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-ripple)
  */
 @MDCDsl
 @Composable
-fun ElementScope<*>.MDCRipple(isUnbounded: Boolean = false) = DomSideEffect {
-  MDCRippleModule.MDCRipple.attachTo(
-    element = it,
-    opts = jsObject {
-      this.isUnbounded = isUnbounded
-    }
-  )
+fun ElementScope<*>.MDCRipple(isUnbounded: Boolean = false) {
+  DomSideEffect {
+    MDCRippleModule.MDCRipple.attachTo(
+      element = it,
+      opts = jsObject {
+        this.isUnbounded = isUnbounded
+      }
+    )
+  }
 }

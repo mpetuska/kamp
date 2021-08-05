@@ -1,3 +1,5 @@
+import de.fayard.refreshVersions.core.versionFor
+
 plugins {
   kotlin("multiplatform")
   id("org.jetbrains.compose")
@@ -11,10 +13,13 @@ kotlin {
   sourceSets {
     named("jsMain") {
       dependencies {
-        val mdcVersion = "11.0.0"
+        val mdcVersion = versionFor("version.npm.material-components-web")
         api(npm("@material/ripple", mdcVersion))
         api(npm("@material/button", mdcVersion))
         api(npm("@material/icon-button", mdcVersion))
+        api(npm("@material/top-app-bar", mdcVersion))
+        api(npm("@material/chips", mdcVersion))
+        api(npm("@material/card", mdcVersion))
         api(compose.web.core)
         api(compose.runtime)
       }

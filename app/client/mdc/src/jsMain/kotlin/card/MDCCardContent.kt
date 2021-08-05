@@ -1,0 +1,24 @@
+package dev.petuska.kmdc.card
+
+import androidx.compose.runtime.Composable
+import dev.petuska.kmdc.MDCDsl
+import org.jetbrains.compose.web.dom.AttrBuilderContext
+import org.jetbrains.compose.web.dom.ContentBuilder
+import org.jetbrains.compose.web.dom.Div
+import org.w3c.dom.HTMLDivElement
+
+@MDCDsl
+@Composable
+fun MDCCardScope.MDCCardContent(
+  attrs: AttrBuilderContext<HTMLDivElement>? = null,
+  content: ContentBuilder<HTMLDivElement>? = null
+) {
+  Div(
+    attrs = {
+      classes("mdc-card__content")
+      attrs?.invoke(this)
+    },
+  ) {
+    content?.invoke(this)
+  }
+}

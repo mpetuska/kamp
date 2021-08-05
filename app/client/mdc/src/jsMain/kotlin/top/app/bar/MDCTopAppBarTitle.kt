@@ -1,4 +1,4 @@
-package dev.petuska.kmdc.button
+package dev.petuska.kmdc.top.app.bar
 
 import androidx.compose.runtime.Composable
 import dev.petuska.kmdc.MDCDsl
@@ -10,13 +10,13 @@ import org.w3c.dom.HTMLSpanElement
 
 @MDCDsl
 @Composable
-fun MDCButtonScope.MDCButtonLabel(
+fun MDCTopAppBarSectionScope.MDCTopAppBarTitle(
   attrs: AttrBuilderContext<HTMLSpanElement>? = null,
-  content: ContentBuilder<HTMLSpanElement>? = null,
+  content: ContentBuilder<HTMLSpanElement>? = null
 ) {
   Span(
     attrs = {
-      classes("mdc-button__label")
+      classes("mdc-top-app-bar__title")
       attrs?.invoke(this)
     },
     content = content
@@ -25,11 +25,11 @@ fun MDCButtonScope.MDCButtonLabel(
 
 @MDCDsl
 @Composable
-fun MDCButtonScope.MDCButtonLabel(
+fun MDCTopAppBarSectionScope.MDCTopAppBarTitle(
   text: String,
   attrs: AttrBuilderContext<HTMLSpanElement>? = null,
 ) {
-  MDCButtonLabel(attrs) {
+  MDCTopAppBarTitle(attrs = attrs) {
     Text(text)
   }
 }

@@ -1,3 +1,5 @@
+import de.fayard.refreshVersions.core.versionFor
+
 plugins {
   kotlin("multiplatform") apply false
   id("com.github.jakemarsden.git-hooks")
@@ -26,7 +28,7 @@ allprojects {
   }
 
   ktlint {
-    version by project.properties["ktlint.version"].toString()
+    version by versionFor("version.com.pinterest..ktlint")
     additionalEditorconfigFile.set(rootDir.resolve(".editorconfig"))
   }
 

@@ -2,9 +2,11 @@ package dev.petuska.kmdc
 
 import androidx.compose.runtime.Composable
 
-internal external fun require(module: String): dynamic
+@JsName("require")
+external fun requireJsModule(module: String): dynamic
 
 @DslMarker
 annotation class MDCDsl
 
-typealias ComposableBuilder<T> = @Composable T.() -> Unit
+typealias Builder<T> = T.() -> Unit
+typealias ComposableBuilder<T> = @Composable Builder<T>

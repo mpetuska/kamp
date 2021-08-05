@@ -1,0 +1,6 @@
+org.reduxkotlin:redux-kotlin(-*)
+                ^^^^^^^^^^^^
+org.kodein.di:kodein-di(-*)
+              ^^^^^^
+org.litote.kmongo:kmongo(-*)
+                  ^^^^^^

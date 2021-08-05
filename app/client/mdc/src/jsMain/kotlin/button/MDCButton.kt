@@ -1,16 +1,18 @@
 package dev.petuska.kmdc.button
 
 import androidx.compose.runtime.Composable
+import dev.petuska.kmdc.Builder
 import dev.petuska.kmdc.ComposableBuilder
 import dev.petuska.kmdc.MDCDsl
-import org.jetbrains.compose.web.attributes.AttrsBuilder
+import dev.petuska.kmdc.ripple.MDCRipple
+import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.Button
 import org.jetbrains.compose.web.dom.ElementScope
+import org.jetbrains.compose.web.dom.Text
 import org.w3c.dom.HTMLButtonElement
 
-@PublishedApi
 @JsModule("@material/button/dist/mdc.button.css")
-internal external val MDCButtonStyle: dynamic
+private external val MDCButtonStyle: dynamic
 
 data class MDCButtonOpts(
   var type: Type = Type.Text,
@@ -28,22 +30,36 @@ data class MDCButtonOpts(
 class MDCButtonScope(scope: ElementScope<HTMLButtonElement>) : ElementScope<HTMLButtonElement> by scope
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v11.0.0/packages/mdc-button)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-button)
  */
 @MDCDsl
 @Composable
-inline fun MDCButton(
-  opts: MDCButtonOpts.() -> Unit = {},
-  crossinline attrs: AttrsBuilder<HTMLButtonElement>.() -> Unit = {},
-  noinline content: ComposableBuilder<MDCButtonScope>? = null
+fun MDCButton(
+  opts: Builder<MDCButtonOpts>? = null,
+  attrs: AttrBuilderContext<HTMLButtonElement>? = null,
+  content: ComposableBuilder<MDCButtonScope>? = null
 ) {
   MDCButtonStyle
-  val options = MDCButtonOpts().apply(opts)
+  val options = MDCButtonOpts().apply { opts?.invoke(this) }
   Button(
     attrs = {
       classes("mdc-button", *options.type.classes, *options.icon.classes)
-      attrs()
-    },
-    content?.let { { MDCButtonScope(this).it() } }
-  )
+      attrs?.invoke(this)
+    }
+  ) {
+    MDCRipple()
+    content?.let { MDCButtonScope(this).it() }
+  }
+}
+
+@MDCDsl
+@Composable
+fun MDCButton(
+  text: String,
+  opts: Builder<MDCButtonOpts>? = null,
+  attrs: AttrBuilderContext<HTMLButtonElement>? = null,
+) {
+  MDCButton(opts, attrs) {
+    Text(text)
+  }
 }

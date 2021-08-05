@@ -12,6 +12,10 @@ plugins {
   id("de.fayard.refreshVersions")
 }
 
+refreshVersions {
+  extraArtifactVersionKeyRules(file("refreshVersions.rules"))
+}
+
 enableFeaturePreview("VERSION_CATALOGS")
 
 rootProject.name = "kamp"
