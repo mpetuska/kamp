@@ -20,6 +20,7 @@ kotlin {
         api(npm("@material/top-app-bar", mdcVersion))
         api(npm("@material/chips", mdcVersion))
         api(npm("@material/card", mdcVersion))
+        api(npm("@material/typography", mdcVersion))
         api(compose.web.core)
         api(compose.runtime)
       }

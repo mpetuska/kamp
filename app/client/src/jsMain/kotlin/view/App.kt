@@ -7,6 +7,7 @@ import app.client.store.action.AppAction
 import app.client.util.FABIcon
 import app.client.util.select
 import app.client.view.component.FlexColumn
+import app.client.view.component.FlexRow
 import app.client.view.component.Navbar
 import dev.petuska.kmdc.button.MDCButton
 import dev.petuska.kmdc.button.MDCButtonIcon
@@ -20,10 +21,15 @@ import dev.petuska.kmdc.card.MDCCardActionIconButton
 import dev.petuska.kmdc.card.MDCCardActionIconLink
 import dev.petuska.kmdc.card.MDCCardActionIcons
 import dev.petuska.kmdc.card.MDCCardActions
-import dev.petuska.kmdc.card.MDCCardOpts
+import dev.petuska.kmdc.card.MDCCardMedia
+import dev.petuska.kmdc.card.MDCCardMediaContent
+import dev.petuska.kmdc.card.MDCCardMediaOpts
+import dev.petuska.kmdc.card.MDCCardPrimaryAction
 import dev.petuska.kmdc.icon.button.MDCIconButton
-import dev.petuska.kmdc.top.app.bar.MDCTopAppBarMain
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarOpts
+import dev.petuska.kmdc.typography.MDCH1
+import dev.petuska.kmdc.typography.MDCTypography
+import org.jetbrains.compose.web.css.backgroundImage
 import org.jetbrains.compose.web.css.padding
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.dom.Button
@@ -34,14 +40,16 @@ import org.jetbrains.compose.web.dom.Text
 
 @Composable
 fun AppContext.App() {
-  val navbarType = MDCTopAppBarOpts.Type.Fixed
-  Navbar(navbarType)
-  MDCTopAppBarMain(navbarType) {
+  MDCTypography()
+  Navbar(MDCTopAppBarOpts.Type.Fixed) {
+    MDCButtonOpts.Type.values().forEach {
+      MDCButton({ type = it }) { Text(it.name) }
+    }
     FlexColumn {
       val count by select { count }
       MDCButton(
         opts = {
-          type = MDCButtonOpts.Type.Contained
+          type = MDCButtonOpts.Type.Raised
           icon = MDCButtonOpts.MDCButtonIconType.Trailing
         }
       ) {
@@ -52,32 +60,28 @@ fun AppContext.App() {
         }
       }
       Div(attrs = { style { padding(25.px) } }) {
-      Button(
-        attrs = {
-          onClick { dispatch(AppAction.DecrementCount) }
+        Button(
+          attrs = {
+            onClick { dispatch(AppAction.DecrementCount) }
+          }
+        ) {
+          Text("-")
         }
-      ) {
-        Text("-")
-      }
-      Span(attrs = { style { padding(15.px) } }) {
-      Text("$count")
-    }
-      Button(
-        attrs = {
-          onClick { dispatch(AppAction.IncrementCount) }
+        Span(attrs = { style { padding(15.px) } }) {
+          Text("$count")
         }
-      ) {
-        Text("+")
+        Button(
+          attrs = {
+            onClick { dispatch(AppAction.IncrementCount) }
+          }
+        ) {
+          Text("+")
+        }
       }
-    }
-
-      MDCCard {
-        Text("Hi")
+      FlexRow {
+        SampleCard()
+        SampleCard()
       }
-      MDCCard({ this.type = MDCCardOpts.Type.Outlined }) {
-      Text("Hi too")
-    }
-      SampleCard()
 
       repeat(50) {
         MDCIconButton {
@@ -91,11 +95,18 @@ fun AppContext.App() {
 @Composable
 fun SampleCard() {
   MDCCard {
-    // MDCCardPrimaryAction {
-    //   MDCCardMedia({ type = MDCCardMediaOpts.Type.Square }) {
-    //     MDCCardMediaContent { Text("Title") }
-    //   }
-    // }
+    MDCCardPrimaryAction {
+      MDCCardMedia(
+        opts = { type = MDCCardMediaOpts.Type.Cinema },
+        attrs = {
+          style {
+            backgroundImage("url('http://www.wallpapers13.com/wp-content/uploads/2016/01/Peaceful-spring-sunset-2560x1600-wide-wallpapers-1920x1440.jpg')")
+          }
+        }
+      ) {
+        MDCCardMediaContent { MDCH1("Title 1") }
+      }
+    }
     MDCCardActions {
       MDCCardActionButtons {
         MDCCardActionButton {
@@ -107,11 +118,11 @@ fun SampleCard() {
       }
       MDCCardActionIcons {
         MDCCardActionIconButton(attrs = { classes("material-icons") }) {
-        Text("star")
-      }
+          Text("star")
+        }
         MDCCardActionIconLink(attrs = { classes("material-icons") }) {
-        Text("star")
-      }
+          Text("star")
+        }
       }
     }
   }

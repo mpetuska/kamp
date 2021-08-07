@@ -56,9 +56,11 @@ fun MDCIconButton(
       MDCIconButtonModule.MDCIconButtonToggle.attachTo(it)
       MDCRippleModule.MDCRipple.attachTo(it)
     }
-    Div(attrs = {
-      classes("mdc-icon-button__ripple")
-    })
+    Div(
+      attrs = {
+        classes("mdc-icon-button__ripple")
+      }
+    )
     content?.let { MDCIconButtonScope(this).it() }
   }
 }
@@ -82,9 +84,11 @@ fun MDCIconLink(
       MDCIconButtonModule.MDCIconButtonToggle.attachTo(it)
       MDCRippleModule.MDCRipple.attachTo(it)
     }
-    Div(attrs = {
-      classes("mdc-icon-button__ripple")
-    })
+    Div(
+      attrs = {
+        classes("mdc-icon-button__ripple")
+      }
+    )
     content?.let { MDCIconLinkScope(this).it() }
   }
 }

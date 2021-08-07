@@ -2,7 +2,6 @@ package dev.petuska.kmdc.card
 
 import androidx.compose.runtime.Composable
 import dev.petuska.kmdc.MDCDsl
-import dev.petuska.kmdc.ripple.MDCRipple
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.ContentBuilder
 import org.jetbrains.compose.web.dom.Div
@@ -21,7 +20,11 @@ fun MDCCardScope.MDCCardPrimaryAction(
       attrs?.invoke(this)
     },
   ) {
-    MDCRipple()
     content?.invoke(this)
+    Div(
+      attrs = {
+        classes("mdc-card__ripple")
+      }
+    )
   }
 }

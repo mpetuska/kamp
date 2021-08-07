@@ -7,6 +7,7 @@ import dev.petuska.kmdc.MDCDsl
 import dev.petuska.kmdc.ripple.MDCRipple
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.Button
+import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.ElementScope
 import org.jetbrains.compose.web.dom.Text
 import org.w3c.dom.HTMLButtonElement
@@ -19,7 +20,7 @@ data class MDCButtonOpts(
   var icon: MDCButtonIconType = MDCButtonIconType.None
 ) {
   enum class Type(vararg val classes: String) {
-    Text, Outline("mdc-button--outline"), Contained("mdc-button--raised"), ContainedUnelevated("mdc-button--unelevated")
+    Text, Outline("mdc-button--outline"), Raised("mdc-button--raised"), Unelevated("mdc-button--unelevated")
   }
 
   enum class MDCButtonIconType(vararg val classes: String) {
@@ -47,6 +48,11 @@ fun MDCButton(
       attrs?.invoke(this)
     }
   ) {
+    Div(
+      attrs = {
+        classes("mdc-button__ripple")
+      }
+    )
     MDCRipple()
     content?.let { MDCButtonScope(this).it() }
   }
