@@ -21,6 +21,7 @@ kotlin {
         api(npm("@material/chips", mdcVersion))
         api(npm("@material/card", mdcVersion))
         api(npm("@material/typography", mdcVersion))
+        api(npm("@material/layout-grid", mdcVersion))
         api(compose.web.core)
         api(compose.runtime)
       }

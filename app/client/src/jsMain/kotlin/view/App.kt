@@ -24,6 +24,9 @@ import dev.petuska.kmdc.card.MDCCardMediaContent
 import dev.petuska.kmdc.card.MDCCardMediaOpts
 import dev.petuska.kmdc.card.MDCCardPrimaryAction
 import dev.petuska.kmdc.icon.button.MDCIconButton
+import dev.petuska.kmdc.layout.grid.MDCLayoutGrid
+import dev.petuska.kmdc.layout.grid.MDCLayoutGridCell
+import dev.petuska.kmdc.layout.grid.MDCLayoutGridCells
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarContext
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarContextOpts
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarMain
@@ -43,9 +46,16 @@ fun AppContext.App() {
     Navbar()
     MDCTopAppBarMain {
       MDCTypography()
-      MDCButtonOpts.Type.values().forEach {
-        MDCButton({ type = it }) { Text(it.name) }
+      MDCLayoutGrid {
+        MDCLayoutGridCells {
+          MDCButtonOpts.Type.values().forEach {
+            MDCLayoutGridCell {
+              MDCButton({ type = it }) { Text(it.name) }
+            }
+          }
+        }
       }
+
       FlexColumn {
         val count by select { count }
         Div(attrs = { style { padding(25.px) } }) {
@@ -72,9 +82,15 @@ fun AppContext.App() {
           SampleCard()
         }
 
-        repeat(50) {
-          MDCIconButton {
-            FABIcon("android")
+        MDCLayoutGrid {
+          MDCLayoutGridCells {
+            repeat(50) {
+              MDCLayoutGridCell {
+                MDCIconButton {
+                  FABIcon("android")
+                }
+              }
+            }
           }
         }
       }

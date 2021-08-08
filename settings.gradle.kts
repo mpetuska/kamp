@@ -25,5 +25,5 @@ include(
   ":app:common",
   ":app:server",
   ":app:client",
-  ":app:client:mdc",
+  ":app:client:kmdc",
 )
