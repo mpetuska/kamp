@@ -7,7 +7,7 @@ import org.jetbrains.compose.web.dom.ElementScope
 import org.w3c.dom.Element
 
 @JsModule("@material/ripple")
-internal external object MDCRippleModule {
+private external object MDCRippleModule {
   interface MDCRippleAttachOpts {
     var isUnbounded: Boolean?
   }

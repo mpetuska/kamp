@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import dev.petuska.kmdc.Builder
 import dev.petuska.kmdc.ComposableBuilder
 import dev.petuska.kmdc.MDCDsl
-import dev.petuska.kmdc.ripple.MDCRippleModule
+import dev.petuska.kmdc.ripple.MDCRipple
 import org.jetbrains.compose.web.dom.A
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.Button
@@ -54,8 +54,8 @@ fun MDCIconButton(
   ) {
     DomSideEffect {
       MDCIconButtonModule.MDCIconButtonToggle.attachTo(it)
-      MDCRippleModule.MDCRipple.attachTo(it)
     }
+    MDCRipple()
     Div(
       attrs = {
         classes("mdc-icon-button__ripple")
@@ -65,6 +65,9 @@ fun MDCIconButton(
   }
 }
 
+/**
+ * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-icon-button)
+ */
 @MDCDsl
 @Composable
 fun MDCIconLink(
@@ -82,8 +85,8 @@ fun MDCIconLink(
   ) {
     DomSideEffect {
       MDCIconButtonModule.MDCIconButtonToggle.attachTo(it)
-      MDCRippleModule.MDCRipple.attachTo(it)
     }
+    MDCRipple()
     Div(
       attrs = {
         classes("mdc-icon-button__ripple")

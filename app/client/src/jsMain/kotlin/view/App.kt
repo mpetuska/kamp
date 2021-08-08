@@ -10,10 +10,8 @@ import app.client.view.component.FlexColumn
 import app.client.view.component.FlexRow
 import app.client.view.component.Navbar
 import dev.petuska.kmdc.button.MDCButton
-import dev.petuska.kmdc.button.MDCButtonIcon
 import dev.petuska.kmdc.button.MDCButtonLabel
 import dev.petuska.kmdc.button.MDCButtonOpts
-import dev.petuska.kmdc.button.MDCButtonRipple
 import dev.petuska.kmdc.card.MDCCard
 import dev.petuska.kmdc.card.MDCCardActionButton
 import dev.petuska.kmdc.card.MDCCardActionButtons
@@ -26,7 +24,9 @@ import dev.petuska.kmdc.card.MDCCardMediaContent
 import dev.petuska.kmdc.card.MDCCardMediaOpts
 import dev.petuska.kmdc.card.MDCCardPrimaryAction
 import dev.petuska.kmdc.icon.button.MDCIconButton
-import dev.petuska.kmdc.top.app.bar.MDCTopAppBarOpts
+import dev.petuska.kmdc.top.app.bar.MDCTopAppBarContext
+import dev.petuska.kmdc.top.app.bar.MDCTopAppBarContextOpts
+import dev.petuska.kmdc.top.app.bar.MDCTopAppBarMain
 import dev.petuska.kmdc.typography.MDCH1
 import dev.petuska.kmdc.typography.MDCTypography
 import org.jetbrains.compose.web.css.backgroundImage
@@ -34,58 +34,48 @@ import org.jetbrains.compose.web.css.padding
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.dom.Button
 import org.jetbrains.compose.web.dom.Div
-import org.jetbrains.compose.web.dom.I
 import org.jetbrains.compose.web.dom.Span
 import org.jetbrains.compose.web.dom.Text
 
 @Composable
 fun AppContext.App() {
-  MDCTypography()
-  Navbar(MDCTopAppBarOpts.Type.Fixed) {
-    MDCButtonOpts.Type.values().forEach {
-      MDCButton({ type = it }) { Text(it.name) }
-    }
-    FlexColumn {
-      val count by select { count }
-      MDCButton(
-        opts = {
-          type = MDCButtonOpts.Type.Raised
-          icon = MDCButtonOpts.MDCButtonIconType.Trailing
-        }
-      ) {
-        MDCButtonRipple()
-        MDCButtonLabel("Contained")
-        MDCButtonIcon {
-          I(attrs = { classes("fas", "fa-star") })
-        }
+  MDCTopAppBarContext({ type = MDCTopAppBarContextOpts.Type.Fixed }) {
+    Navbar()
+    MDCTopAppBarMain {
+      MDCTypography()
+      MDCButtonOpts.Type.values().forEach {
+        MDCButton({ type = it }) { Text(it.name) }
       }
-      Div(attrs = { style { padding(25.px) } }) {
-        Button(
-          attrs = {
-            onClick { dispatch(AppAction.DecrementCount) }
+      FlexColumn {
+        val count by select { count }
+        Div(attrs = { style { padding(25.px) } }) {
+          Button(
+            attrs = {
+              onClick { dispatch(AppAction.DecrementCount) }
+            }
+          ) {
+            Text("-")
           }
-        ) {
-          Text("-")
-        }
-        Span(attrs = { style { padding(15.px) } }) {
-          Text("$count")
-        }
-        Button(
-          attrs = {
-            onClick { dispatch(AppAction.IncrementCount) }
+          Span(attrs = { style { padding(15.px) } }) {
+            Text("$count")
           }
-        ) {
-          Text("+")
+          Button(
+            attrs = {
+              onClick { dispatch(AppAction.IncrementCount) }
+            }
+          ) {
+            Text("+")
+          }
         }
-      }
-      FlexRow {
-        SampleCard()
-        SampleCard()
-      }
+        FlexRow {
+          SampleCard()
+          SampleCard()
+        }
 
-      repeat(50) {
-        MDCIconButton {
-          FABIcon("android")
+        repeat(50) {
+          MDCIconButton {
+            FABIcon("android")
+          }
         }
       }
     }

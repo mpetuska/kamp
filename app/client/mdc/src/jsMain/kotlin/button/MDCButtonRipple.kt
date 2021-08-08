@@ -8,6 +8,9 @@ import org.jetbrains.compose.web.dom.ContentBuilder
 import org.jetbrains.compose.web.dom.Span
 import org.w3c.dom.HTMLSpanElement
 
+/**
+ * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-button)
+ */
 @MDCDsl
 @Composable
 fun MDCButtonScope.MDCButtonRipple(

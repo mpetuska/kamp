@@ -1,18 +1,17 @@
 package app.client.view.component
 
 import androidx.compose.runtime.Composable
-import app.client.AppContext
 import app.client.util.FABIcon
 import app.client.view.style.AppStyle
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBar
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarActionButton
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarActionLink
-import dev.petuska.kmdc.top.app.bar.MDCTopAppBarMain
-import dev.petuska.kmdc.top.app.bar.MDCTopAppBarOpts
+import dev.petuska.kmdc.top.app.bar.MDCTopAppBarContextScope
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarRow
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarSection
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarSectionOpts
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarTitle
+import dev.petuska.kmdc.typography.MDCTypography
 import kotlinx.browser.window
 import org.jetbrains.compose.web.attributes.ATarget
 import org.jetbrains.compose.web.attributes.href
@@ -28,14 +27,14 @@ import org.jetbrains.compose.web.css.left
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.right
+import org.jetbrains.compose.web.css.selectors.CSSSelector
+import org.jetbrains.compose.web.css.selectors.child
 import org.jetbrains.compose.web.css.selectors.hover
 import org.jetbrains.compose.web.css.textDecoration
 import org.jetbrains.compose.web.css.top
 import org.jetbrains.compose.web.css.width
-import org.jetbrains.compose.web.dom.ContentBuilder
 import org.jetbrains.compose.web.dom.Img
 import org.jetbrains.compose.web.dom.Text
-import org.w3c.dom.HTMLElement
 
 object NavbarStyle : StyleSheet(AppStyle) {
   val container by style {
@@ -45,12 +44,14 @@ object NavbarStyle : StyleSheet(AppStyle) {
   }
   val brand by style {
     cursor("pointer")
+    hover(self) style {
+      child(self, CSSSelector.Universal) style {
+        textDecoration("none")
+      }
+    }
   }
   val title by style {
     textDecoration("underline")
-    hover(self) style {
-      textDecoration("none")
-    }
   }
   val logo by style {
     width(3.cssRem)
@@ -61,13 +62,13 @@ object NavbarStyle : StyleSheet(AppStyle) {
 }
 
 @Composable
-fun AppContext.Navbar(type: MDCTopAppBarOpts.Type, mainContent: ContentBuilder<HTMLElement>? = null) {
+fun MDCTopAppBarContextScope.Navbar() {
   MDCTopAppBar(
-    opts = { this.type = type },
     attrs = {
       classes(NavbarStyle.container)
     }
   ) {
+    MDCTypography()
     MDCTopAppBarRow {
       MDCTopAppBarSection(
         attrs = {
@@ -98,7 +99,6 @@ fun AppContext.Navbar(type: MDCTopAppBarOpts.Type, mainContent: ContentBuilder<H
       }
     }
   }
-  MDCTopAppBarMain(type, content = mainContent)
 }
 
 @Composable

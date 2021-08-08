@@ -7,6 +7,9 @@ import org.jetbrains.compose.web.dom.ContentBuilder
 import org.jetbrains.compose.web.dom.Div
 import org.w3c.dom.HTMLDivElement
 
+/**
+ * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-card)
+ */
 @MDCDsl
 @Composable
 fun MDCCardScope.MDCCardContent(

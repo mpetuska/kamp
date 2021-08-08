@@ -20,7 +20,7 @@ data class MDCButtonOpts(
   var icon: MDCButtonIconType = MDCButtonIconType.None
 ) {
   enum class Type(vararg val classes: String) {
-    Text, Outline("mdc-button--outline"), Raised("mdc-button--raised"), Unelevated("mdc-button--unelevated")
+    Text, Outlined("mdc-button--outlined"), Raised("mdc-button--raised"), Unelevated("mdc-button--unelevated")
   }
 
   enum class MDCButtonIconType(vararg val classes: String) {
@@ -58,6 +58,9 @@ fun MDCButton(
   }
 }
 
+/**
+ * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-button)
+ */
 @MDCDsl
 @Composable
 fun MDCButton(

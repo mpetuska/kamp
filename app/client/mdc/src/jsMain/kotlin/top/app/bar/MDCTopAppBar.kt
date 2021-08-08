@@ -5,8 +5,10 @@ import dev.petuska.kmdc.Builder
 import dev.petuska.kmdc.ComposableBuilder
 import dev.petuska.kmdc.MDCDsl
 import org.jetbrains.compose.web.dom.AttrBuilderContext
+import org.jetbrains.compose.web.dom.ContentBuilder
 import org.jetbrains.compose.web.dom.ElementScope
 import org.jetbrains.compose.web.dom.Header
+import org.jetbrains.compose.web.dom.Main
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
 
@@ -22,7 +24,7 @@ private external object MDCTopAppBarModule {
   }
 }
 
-data class MDCTopAppBarOpts(
+data class MDCTopAppBarContextOpts(
   var type: Type = Type.Standard
 ) {
   enum class Type(val mainAdjustClass: String, vararg val classes: String) {
@@ -35,7 +37,10 @@ data class MDCTopAppBarOpts(
   }
 }
 
-class MDCTopAppBarScope(scope: ElementScope<HTMLElement>) : ElementScope<HTMLElement> by scope
+class MDCTopAppBarContextScope(val type: MDCTopAppBarContextOpts.Type)
+
+class MDCTopAppBarScope(scope: ElementScope<HTMLElement>) :
+  ElementScope<HTMLElement> by scope
 
 /**
  * If using this [MDCTopAppBar] component, all the page content must be placed into [MDCTopAppBarMain] container.
@@ -44,16 +49,27 @@ class MDCTopAppBarScope(scope: ElementScope<HTMLElement>) : ElementScope<HTMLEle
  */
 @MDCDsl
 @Composable
-fun MDCTopAppBar(
-  opts: Builder<MDCTopAppBarOpts>? = null,
+fun MDCTopAppBarContext(
+  opts: Builder<MDCTopAppBarContextOpts>? = null,
+  content: ComposableBuilder<MDCTopAppBarContextScope>? = null
+) {
+  MDCTopAppBarStyle
+  val options = MDCTopAppBarContextOpts().apply { opts?.invoke(this) }
+  content?.let { MDCTopAppBarContextScope(options.type).it() }
+}
+
+/**
+ * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-top-app-bar)
+ */
+@MDCDsl
+@Composable
+fun MDCTopAppBarContextScope.MDCTopAppBar(
   attrs: AttrBuilderContext<HTMLElement>? = null,
   content: ComposableBuilder<MDCTopAppBarScope>? = null
 ) {
-  MDCTopAppBarStyle
-  val options = MDCTopAppBarOpts().apply { opts?.invoke(this) }
   Header(
     attrs = {
-      classes("mdc-top-app-bar", *options.type.classes)
+      classes("mdc-top-app-bar", *type.classes)
       attrs?.invoke(this)
     },
   ) {
@@ -62,4 +78,22 @@ fun MDCTopAppBar(
     }
     content?.let { MDCTopAppBarScope(this).it() }
   }
+}
+
+/**
+ * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-top-app-bar)
+ */
+@MDCDsl
+@Composable
+fun MDCTopAppBarContextScope.MDCTopAppBarMain(
+  attrs: AttrBuilderContext<HTMLElement>? = null,
+  content: ContentBuilder<HTMLElement>? = null
+) {
+  Main(
+    attrs = {
+      classes(type.mainAdjustClass)
+      attrs?.invoke(this)
+    },
+    content = content
+  )
 }

@@ -26,6 +26,9 @@ data class MDCCardActionsOpts(var type: Type = Type.Normal) {
 
 class MDCCardActionsScope(scope: ElementScope<HTMLDivElement>) : ElementScope<HTMLDivElement> by scope
 
+/**
+ * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-card)
+ */
 @MDCDsl
 @Composable
 fun MDCCardScope.MDCCardActions(
@@ -43,6 +46,9 @@ fun MDCCardScope.MDCCardActions(
   )
 }
 
+/**
+ * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-card)
+ */
 @MDCDsl
 @Composable
 fun MDCCardActionsScope.MDCCardActionButtons(
@@ -58,6 +64,9 @@ fun MDCCardActionsScope.MDCCardActionButtons(
   )
 }
 
+/**
+ * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-card)
+ */
 @MDCDsl
 @Composable
 fun MDCCardActionsScope.MDCCardActionButton(
@@ -73,6 +82,9 @@ fun MDCCardActionsScope.MDCCardActionButton(
   )
 }
 
+/**
+ * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-card)
+ */
 @MDCDsl
 @Composable
 fun MDCCardActionsScope.MDCCardActionIcons(
@@ -88,6 +100,9 @@ fun MDCCardActionsScope.MDCCardActionIcons(
   )
 }
 
+/**
+ * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-card)
+ */
 @MDCDsl
 @Composable
 fun MDCCardActionsScope.MDCCardActionIconButton(
@@ -103,6 +118,9 @@ fun MDCCardActionsScope.MDCCardActionIconButton(
   )
 }
 
+/**
+ * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-card)
+ */
 @MDCDsl
 @Composable
 fun MDCCardActionsScope.MDCCardActionIconLink(

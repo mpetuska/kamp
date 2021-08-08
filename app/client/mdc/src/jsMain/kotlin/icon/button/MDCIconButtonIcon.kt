@@ -29,6 +29,9 @@ private fun render(
   )
 }
 
+/**
+ * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-icon-button)
+ */
 @MDCDsl
 @Composable
 fun MDCIconButtonScope.MDCIconButtonIcon(
@@ -37,6 +40,9 @@ fun MDCIconButtonScope.MDCIconButtonIcon(
   content: ContentBuilder<HTMLElement>? = null,
 ) = render(opts, attrs, content)
 
+/**
+ * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-icon-button)
+ */
 @MDCDsl
 @Composable
 fun MDCIconLinkScope.MDCIconButtonIcon(

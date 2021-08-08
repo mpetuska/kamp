@@ -41,6 +41,10 @@ kotlin {
     named("jsMain") {
       dependencies {
         implementation(project(":app:client:mdc"))
+        implementation(npm("@fortawesome/fontawesome-svg-core", versionFor("version.npm.fontawesome.core")))
+        implementation(npm("@fortawesome/free-solid-svg-icons", versionFor("version.npm.fontawesome")))
+        implementation(npm("@fortawesome/free-regular-svg-icons", versionFor("version.npm.fontawesome")))
+        implementation(npm("@fortawesome/free-brands-svg-icons", versionFor("version.npm.fontawesome")))
         implementation(npm("@fortawesome/fontawesome-free", versionFor("version.npm.fontawesome")))
       }
     }
