@@ -6,6 +6,7 @@ plugins {
 }
 
 kotlin {
+  explicitApi()
   js {
     useCommonJs()
     browser()
@@ -22,6 +23,7 @@ kotlin {
         api(npm("@material/card", mdcVersion))
         api(npm("@material/typography", mdcVersion))
         api(npm("@material/layout-grid", mdcVersion))
+        api(npm("@material/drawer", mdcVersion))
         api(compose.web.core)
         api(compose.runtime)
       }

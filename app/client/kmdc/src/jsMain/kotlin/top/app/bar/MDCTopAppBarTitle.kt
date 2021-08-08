@@ -13,7 +13,7 @@ import org.w3c.dom.HTMLSpanElement
  */
 @MDCDsl
 @Composable
-fun MDCTopAppBarSectionScope.MDCTopAppBarTitle(
+public fun MDCTopAppBarSectionScope.MDCTopAppBarTitle(
   attrs: AttrBuilderContext<HTMLSpanElement>? = null,
   content: ContentBuilder<HTMLSpanElement>? = null
 ) {
@@ -31,7 +31,7 @@ fun MDCTopAppBarSectionScope.MDCTopAppBarTitle(
  */
 @MDCDsl
 @Composable
-fun MDCTopAppBarSectionScope.MDCTopAppBarTitle(
+public fun MDCTopAppBarSectionScope.MDCTopAppBarTitle(
   text: String,
   attrs: AttrBuilderContext<HTMLSpanElement>? = null,
 ) {

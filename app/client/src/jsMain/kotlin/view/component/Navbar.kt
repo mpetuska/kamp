@@ -1,17 +1,21 @@
 package app.client.view.component
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import app.client.AppContext
+import app.client.store.action.AppAction
 import app.client.util.FABIcon
+import app.client.util.select
 import app.client.view.style.AppStyle
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBar
-import dev.petuska.kmdc.top.app.bar.MDCTopAppBarActionButton
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarActionLink
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarContextScope
+import dev.petuska.kmdc.top.app.bar.MDCTopAppBarNavigationButton
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarRow
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarSection
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarSectionOpts
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarTitle
-import dev.petuska.kmdc.typography.MDCTypography
+import dev.petuska.kmdc.typography.mdcTypography
 import kotlinx.browser.window
 import org.jetbrains.compose.web.attributes.ATarget
 import org.jetbrains.compose.web.attributes.href
@@ -62,15 +66,27 @@ object NavbarStyle : StyleSheet(AppStyle) {
 }
 
 @Composable
-fun MDCTopAppBarContextScope.Navbar() {
-  MDCTopAppBar(
+fun AppContext.Navbar(scope: MDCTopAppBarContextScope) {
+  val drawerOpen by select { drawerOpen }
+  scope.MDCTopAppBar(
     attrs = {
       classes(NavbarStyle.container)
+      mdcTypography()
     }
   ) {
-    MDCTypography()
     MDCTopAppBarRow {
+      MDCTopAppBarSection(opts = { align = MDCTopAppBarSectionOpts.Align.Start }) {
+        MDCTopAppBarNavigationButton(attrs = {
+          classes("material-icons")
+          onClick {
+            dispatch(AppAction.ToggleDrawer)
+          }
+        }) {
+          Text(if (drawerOpen) "close" else "search")
+        }
+      }
       MDCTopAppBarSection(
+        opts = { align = MDCTopAppBarSectionOpts.Align.Start },
         attrs = {
           onClick {
             window.location.href = "#"
@@ -81,10 +97,8 @@ fun MDCTopAppBarContextScope.Navbar() {
         KampIcon()
         MDCTopAppBarTitle("KAMP", attrs = { classes(NavbarStyle.title) })
       }
-      MDCTopAppBarSection {
-        CountBadge()
-      }
       MDCTopAppBarSection(opts = { align = MDCTopAppBarSectionOpts.Align.End }) {
+        CountBadge()
         MDCTopAppBarActionLink(
           attrs = {
             href("https://github.com/mpetuska/kamp")
@@ -93,9 +107,6 @@ fun MDCTopAppBarContextScope.Navbar() {
         ) {
           FABIcon("github")
         }
-        MDCTopAppBarActionButton(attrs = { classes("material-icons") }) {
-          Text("search")
-        }
       }
     }
   }
@@ -103,7 +114,7 @@ fun MDCTopAppBarContextScope.Navbar() {
 
 @Composable
 private fun CountBadge() {
-  Text("TODO: count badge")
+  Text("TODO")
 }
 
 @Composable

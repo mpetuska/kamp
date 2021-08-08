@@ -13,7 +13,7 @@ import org.w3c.dom.HTMLSpanElement
  */
 @MDCDsl
 @Composable
-fun MDCButtonScope.MDCButtonLabel(
+public fun MDCButtonScope.MDCButtonLabel(
   attrs: AttrBuilderContext<HTMLSpanElement>? = null,
   content: ContentBuilder<HTMLSpanElement>? = null,
 ) {
@@ -31,7 +31,7 @@ fun MDCButtonScope.MDCButtonLabel(
  */
 @MDCDsl
 @Composable
-fun MDCButtonScope.MDCButtonLabel(
+public fun MDCButtonScope.MDCButtonLabel(
   text: String,
   attrs: AttrBuilderContext<HTMLSpanElement>? = null,
 ) {

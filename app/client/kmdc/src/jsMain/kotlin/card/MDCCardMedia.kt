@@ -10,22 +10,22 @@ import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.ElementScope
 import org.w3c.dom.HTMLDivElement
 
-data class MDCCardMediaOpts(var type: Type = Type.Free) {
-  enum class Type(vararg val classes: String) {
+public data class MDCCardMediaOpts(var type: Type = Type.Free) {
+  public enum class Type(public vararg val classes: String) {
     Free,
     Square("mdc-card__media--square"),
     Cinema("mdc-card__media--16-9")
   }
 }
 
-class MDCCardMediaScope(scope: ElementScope<HTMLDivElement>) : ElementScope<HTMLDivElement> by scope
+public class MDCCardMediaScope(scope: ElementScope<HTMLDivElement>) : ElementScope<HTMLDivElement> by scope
 
 /**
  * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-card)
  */
 @MDCDsl
 @Composable
-fun MDCCardScope.MDCCardMedia(
+public fun MDCCardScope.MDCCardMedia(
   opts: Builder<MDCCardMediaOpts>? = null,
   attrs: AttrBuilderContext<HTMLDivElement>? = null,
   content: ComposableBuilder<MDCCardMediaScope>? = null
@@ -46,7 +46,7 @@ fun MDCCardScope.MDCCardMedia(
  */
 @MDCDsl
 @Composable
-fun MDCCardMediaScope.MDCCardMediaContent(
+public fun MDCCardMediaScope.MDCCardMediaContent(
   attrs: AttrBuilderContext<HTMLDivElement>? = null,
   content: ContentBuilder<HTMLDivElement>? = null
 ) {

@@ -17,21 +17,21 @@ import org.w3c.dom.HTMLAnchorElement
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLDivElement
 
-data class MDCCardActionsOpts(var type: Type = Type.Normal) {
-  enum class Type(vararg val classes: String) {
+public data class MDCCardActionsOpts(var type: Type = Type.Normal) {
+  public enum class Type(public vararg val classes: String) {
     Normal,
     FullBleed("mdc-card__actions--full-bleed")
   }
 }
 
-class MDCCardActionsScope(scope: ElementScope<HTMLDivElement>) : ElementScope<HTMLDivElement> by scope
+public class MDCCardActionsScope(scope: ElementScope<HTMLDivElement>) : ElementScope<HTMLDivElement> by scope
 
 /**
  * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-card)
  */
 @MDCDsl
 @Composable
-fun MDCCardScope.MDCCardActions(
+public fun MDCCardScope.MDCCardActions(
   opts: Builder<MDCCardActionsOpts>? = null,
   attrs: AttrBuilderContext<HTMLDivElement>? = null,
   content: ComposableBuilder<MDCCardActionsScope>? = null
@@ -51,7 +51,7 @@ fun MDCCardScope.MDCCardActions(
  */
 @MDCDsl
 @Composable
-fun MDCCardActionsScope.MDCCardActionButtons(
+public fun MDCCardActionsScope.MDCCardActionButtons(
   attrs: AttrBuilderContext<HTMLDivElement>? = null,
   content: ComposableBuilder<MDCCardActionsScope>? = null
 ) {
@@ -69,7 +69,7 @@ fun MDCCardActionsScope.MDCCardActionButtons(
  */
 @MDCDsl
 @Composable
-fun MDCCardActionsScope.MDCCardActionButton(
+public fun MDCCardActionsScope.MDCCardActionButton(
   attrs: AttrBuilderContext<HTMLButtonElement>? = null,
   content: ComposableBuilder<MDCButtonScope>? = null
 ) {
@@ -87,7 +87,7 @@ fun MDCCardActionsScope.MDCCardActionButton(
  */
 @MDCDsl
 @Composable
-fun MDCCardActionsScope.MDCCardActionIcons(
+public fun MDCCardActionsScope.MDCCardActionIcons(
   attrs: AttrBuilderContext<HTMLDivElement>? = null,
   content: ComposableBuilder<MDCCardActionsScope>? = null
 ) {
@@ -105,7 +105,7 @@ fun MDCCardActionsScope.MDCCardActionIcons(
  */
 @MDCDsl
 @Composable
-fun MDCCardActionsScope.MDCCardActionIconButton(
+public fun MDCCardActionsScope.MDCCardActionIconButton(
   attrs: AttrBuilderContext<HTMLButtonElement>? = null,
   content: ComposableBuilder<MDCIconButtonScope>? = null
 ) {
@@ -123,7 +123,7 @@ fun MDCCardActionsScope.MDCCardActionIconButton(
  */
 @MDCDsl
 @Composable
-fun MDCCardActionsScope.MDCCardActionIconLink(
+public fun MDCCardActionsScope.MDCCardActionIconLink(
   attrs: AttrBuilderContext<HTMLAnchorElement>? = null,
   content: ComposableBuilder<MDCIconLinkScope>? = null
 ) {

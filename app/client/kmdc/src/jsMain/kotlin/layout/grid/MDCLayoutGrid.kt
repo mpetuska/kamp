@@ -12,31 +12,31 @@ import org.w3c.dom.HTMLDivElement
 @JsModule("@material/layout-grid/dist/mdc.layout-grid.css")
 private external val MDCLayoutGridCSS: dynamic
 
-data class MDCLayoutGridOpts(
-  val columnWidth: ColumnWidth = ColumnWidth.Default,
-  val align: Align = Align.Center,
+public data class MDCLayoutGridOpts(
+  var columnWidth: ColumnWidth = ColumnWidth.Default,
+  var align: Align = Align.Center,
 ) {
-  enum class ColumnWidth(vararg val classes: String) {
+  public enum class ColumnWidth(public vararg val classes: String) {
     Default,
     Fixed("mdc-layout-grid--fixed-column-width")
   }
 
-  enum class Align(vararg val classes: String) {
+  public enum class Align(public vararg val classes: String) {
     Left("mdc-layout-grid--align-left"),
     Right("mdc-layout-grid--align-right"),
     Center
   }
 }
 
-open class MDCLayoutGridScope(scope: ElementScope<HTMLDivElement>) : ElementScope<HTMLDivElement> by scope
-class MDCLayoutGridCellsScope(scope: ElementScope<HTMLDivElement>) : MDCLayoutGridScope(scope)
+public open class MDCLayoutGridScope(scope: ElementScope<HTMLDivElement>) : ElementScope<HTMLDivElement> by scope
+public class MDCLayoutGridCellsScope(scope: ElementScope<HTMLDivElement>) : MDCLayoutGridScope(scope)
 
 /**
  * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-layout-grid)
  */
 @MDCDsl
 @Composable
-fun MDCLayoutGrid(
+public fun MDCLayoutGrid(
   opts: Builder<MDCLayoutGridOpts>? = null,
   attrs: AttrBuilderContext<HTMLDivElement>? = null,
   content: ComposableBuilder<MDCLayoutGridScope>? = null
@@ -57,7 +57,7 @@ fun MDCLayoutGrid(
  */
 @MDCDsl
 @Composable
-fun MDCLayoutGridScope.MDCLayoutGridCells(
+public fun MDCLayoutGridScope.MDCLayoutGridCells(
   attrs: AttrBuilderContext<HTMLDivElement>? = null,
   content: ComposableBuilder<MDCLayoutGridCellsScope>? = null
 ) {

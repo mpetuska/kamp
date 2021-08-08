@@ -15,5 +15,7 @@ fun loadReducer() = reducerForActionType<AppState, AppAction> { state, action ->
     is AppAction.SetSearch -> state.copy(search = action.search)
     is AppAction.SetTargets -> state.copy(targets = action.targets)
     is AppAction.SetCount -> state.copy(count = action.count)
+    is AppAction.ToggleDrawer -> state.copy(drawerOpen = !state.drawerOpen)
+    is AppAction.SetDrawer -> state.copy(drawerOpen = action.isOpen)
   }
 }

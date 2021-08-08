@@ -22,7 +22,7 @@ Here's a tracker list of currently completed *material-components-web* modules (
 - [ ] mdc-density
 - [ ] mdc-dialog
 - [ ] mdc-dom
-- [ ] mdc-drawer
+- [x] mdc-drawer
 - [ ] mdc-elevation
 - [ ] mdc-fab
 - [ ] mdc-feature-targeting

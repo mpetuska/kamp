@@ -12,7 +12,7 @@ import org.w3c.dom.HTMLDivElement
  */
 @MDCDsl
 @Composable
-fun MDCCardScope.MDCCardContent(
+public fun MDCCardScope.MDCCardContent(
   attrs: AttrBuilderContext<HTMLDivElement>? = null,
   content: ContentBuilder<HTMLDivElement>? = null
 ) {

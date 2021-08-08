@@ -1,12 +1,28 @@
 package dev.petuska.kmdc
 
 import androidx.compose.runtime.Composable
+import org.w3c.dom.Element
 
 @JsName("require")
-external fun requireJsModule(module: String): dynamic
+public external fun requireJsModule(module: String): dynamic
 
 @DslMarker
-annotation class MDCDsl
+public annotation class MDCDsl
 
-typealias Builder<T> = T.() -> Unit
-typealias ComposableBuilder<T> = @Composable Builder<T>
+@DslMarker
+public annotation class MDCAttrsDsl
+
+public typealias Builder<T> = T.() -> Unit
+public typealias ComposableBuilder<T> = @Composable Builder<T>
+
+public data class Wrapper<T>(val value: T)
+
+public fun <T> T.wrap(): Wrapper<T> = Wrapper(this)
+
+internal var Element.mdc: dynamic
+  get() = asDynamic().mdc
+  set(value) {
+    asDynamic().mdc = value
+  }
+
+internal fun <T> Element.mdc(): T = mdc.unsafeCast<T>()

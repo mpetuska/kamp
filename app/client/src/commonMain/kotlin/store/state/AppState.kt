@@ -10,4 +10,5 @@ data class AppState(
   val libraries: PagedResponse<KotlinMPPLibrary>? = null,
   val search: String? = null,
   val targets: Set<String>? = null,
+  val drawerOpen: Boolean = false,
 )

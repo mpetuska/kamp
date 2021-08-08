@@ -9,7 +9,7 @@ import org.w3c.dom.Element
 private external val MDCChipsCSS: dynamic
 
 @JsModule("@material/chips")
-internal external object MDCChipsModule {
+private external object MDCChipsModule {
   class MDCChipSet(element: Element) {
     companion object {
       fun attachTo(element: Element)
@@ -22,9 +22,6 @@ internal external object MDCChipsModule {
  */
 @MDCDsl
 @Composable
-fun ElementScope<*>.MDCChipSet() {
+public fun ElementScope<*>.MDCChipSet() {
   MDCChipsCSS
-  DomSideEffect {
-    TODO()
-  }
 }

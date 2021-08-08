@@ -1,8 +1,10 @@
 package dev.petuska.kmdc.button
 
 import androidx.compose.runtime.Composable
+import dev.petuska.kmdc.Builder
 import dev.petuska.kmdc.MDCDsl
 import dev.petuska.kmdc.ripple.MDCRipple
+import dev.petuska.kmdc.ripple.MDCRippleOpts
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.ContentBuilder
 import org.jetbrains.compose.web.dom.Span
@@ -13,8 +15,8 @@ import org.w3c.dom.HTMLSpanElement
  */
 @MDCDsl
 @Composable
-fun MDCButtonScope.MDCButtonRipple(
-  isUnbounded: Boolean = false,
+public fun MDCButtonScope.MDCButtonRipple(
+  opts: Builder<MDCRippleOpts>? = null,
   attrs: AttrBuilderContext<HTMLSpanElement>? = null,
   content: ContentBuilder<HTMLSpanElement>? = null,
 ) {
@@ -25,5 +27,5 @@ fun MDCButtonScope.MDCButtonRipple(
     },
     content = content
   )
-  MDCRipple(isUnbounded)
+  MDCRipple(opts)
 }

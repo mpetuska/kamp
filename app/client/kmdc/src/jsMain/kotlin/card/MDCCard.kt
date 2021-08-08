@@ -12,21 +12,21 @@ import org.w3c.dom.HTMLDivElement
 @JsModule("@material/card/dist/mdc.card.css")
 private external val MDCCardCSS: dynamic
 
-data class MDCCardOpts(var type: Type = Type.Elevated) {
-  enum class Type(vararg val classes: String) {
+public data class MDCCardOpts(var type: Type = Type.Elevated) {
+  public enum class Type(public vararg val classes: String) {
     Elevated,
     Outlined("mdc-card--outlined")
   }
 }
 
-class MDCCardScope(scope: ElementScope<HTMLDivElement>) : ElementScope<HTMLDivElement> by scope
+public class MDCCardScope(scope: ElementScope<HTMLDivElement>) : ElementScope<HTMLDivElement> by scope
 
 /**
  * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-card)
  */
 @MDCDsl
 @Composable
-fun MDCCard(
+public fun MDCCard(
   opts: Builder<MDCCardOpts>? = null,
   attrs: AttrBuilderContext<HTMLDivElement>? = null,
   content: ComposableBuilder<MDCCardScope>? = null

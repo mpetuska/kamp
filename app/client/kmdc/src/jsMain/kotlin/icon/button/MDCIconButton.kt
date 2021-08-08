@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import dev.petuska.kmdc.Builder
 import dev.petuska.kmdc.ComposableBuilder
 import dev.petuska.kmdc.MDCDsl
+import dev.petuska.kmdc.mdc
 import dev.petuska.kmdc.ripple.MDCRipple
 import org.jetbrains.compose.web.dom.A
 import org.jetbrains.compose.web.dom.AttrBuilderContext
@@ -26,20 +27,18 @@ private external object MDCIconButtonModule {
   }
 }
 
-data class MDCIconButtonOpts(
-  var on: Boolean = false,
-)
+public data class MDCIconButtonOpts(var on: Boolean = false)
 
-class MDCIconButtonScope(scope: ElementScope<HTMLButtonElement>) : ElementScope<HTMLButtonElement> by scope
+public class MDCIconButtonScope(scope: ElementScope<HTMLButtonElement>) : ElementScope<HTMLButtonElement> by scope
 
-class MDCIconLinkScope(scope: ElementScope<HTMLAnchorElement>) : ElementScope<HTMLAnchorElement> by scope
+public class MDCIconLinkScope(scope: ElementScope<HTMLAnchorElement>) : ElementScope<HTMLAnchorElement> by scope
 
 /**
  * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-icon-button)
  */
 @MDCDsl
 @Composable
-fun MDCIconButton(
+public fun MDCIconButton(
   opts: Builder<MDCIconButtonOpts>? = null,
   attrs: AttrBuilderContext<HTMLButtonElement>? = null,
   content: ComposableBuilder<MDCIconButtonScope>? = null
@@ -52,8 +51,8 @@ fun MDCIconButton(
       attrs?.invoke(this)
     },
   ) {
-    DomSideEffect {
-      MDCIconButtonModule.MDCIconButtonToggle.attachTo(it)
+    DomSideEffect(null) {
+      it.mdc = MDCIconButtonModule.MDCIconButtonToggle.attachTo(it)
     }
     MDCRipple()
     Div(
@@ -70,7 +69,7 @@ fun MDCIconButton(
  */
 @MDCDsl
 @Composable
-fun MDCIconLink(
+public fun MDCIconLink(
   opts: Builder<MDCIconButtonOpts>? = null,
   attrs: AttrBuilderContext<HTMLAnchorElement>? = null,
   content: ComposableBuilder<MDCIconLinkScope>? = null
@@ -83,8 +82,8 @@ fun MDCIconLink(
       attrs?.invoke(this)
     },
   ) {
-    DomSideEffect {
-      MDCIconButtonModule.MDCIconButtonToggle.attachTo(it)
+    DomSideEffect(null) {
+      it.mdc = MDCIconButtonModule.MDCIconButtonToggle.attachTo(it)
     }
     MDCRipple()
     Div(

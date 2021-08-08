@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import dev.petuska.kmdc.Builder
 import dev.petuska.kmdc.ComposableBuilder
 import dev.petuska.kmdc.MDCDsl
+import dev.petuska.kmdc.mdc
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.ContentBuilder
 import org.jetbrains.compose.web.dom.ElementScope
@@ -24,11 +25,11 @@ private external object MDCTopAppBarModule {
   }
 }
 
-data class MDCTopAppBarContextOpts(
-  var type: Type = Type.Standard
+public data class MDCTopAppBarContextOpts(
+  var type: Type = Type.Default,
 ) {
-  enum class Type(val mainAdjustClass: String, vararg val classes: String) {
-    Standard("mdc-top-app-bar--fixed-adjust"),
+  public enum class Type(public val mainAdjustClass: String, public vararg val classes: String) {
+    Default("mdc-top-app-bar--fixed-adjust"),
     Short("mdc-top-app-bar--short-fixed-adjust", "mdc-top-app-bar--short"),
     ShortCollapsed("mdc-top-app-bar--short-fixed-adjust", "mdc-top-app-bar--short", "mdc-top-app-bar--short-collapsed"),
     Fixed("mdc-top-app-bar--fixed-adjust", "mdc-top-app-bar--fixed"),
@@ -37,9 +38,9 @@ data class MDCTopAppBarContextOpts(
   }
 }
 
-class MDCTopAppBarContextScope(val type: MDCTopAppBarContextOpts.Type)
+public class MDCTopAppBarContextScope(public val type: MDCTopAppBarContextOpts.Type)
 
-class MDCTopAppBarScope(scope: ElementScope<HTMLElement>) :
+public class MDCTopAppBarScope(scope: ElementScope<HTMLElement>) :
   ElementScope<HTMLElement> by scope
 
 /**
@@ -49,7 +50,7 @@ class MDCTopAppBarScope(scope: ElementScope<HTMLElement>) :
  */
 @MDCDsl
 @Composable
-fun MDCTopAppBarContext(
+public fun MDCTopAppBarContext(
   opts: Builder<MDCTopAppBarContextOpts>? = null,
   content: ComposableBuilder<MDCTopAppBarContextScope>? = null
 ) {
@@ -63,7 +64,7 @@ fun MDCTopAppBarContext(
  */
 @MDCDsl
 @Composable
-fun MDCTopAppBarContextScope.MDCTopAppBar(
+public fun MDCTopAppBarContextScope.MDCTopAppBar(
   attrs: AttrBuilderContext<HTMLElement>? = null,
   content: ComposableBuilder<MDCTopAppBarScope>? = null
 ) {
@@ -73,8 +74,8 @@ fun MDCTopAppBarContextScope.MDCTopAppBar(
       attrs?.invoke(this)
     },
   ) {
-    DomSideEffect {
-      MDCTopAppBarModule.MDCTopAppBar.attachTo(it)
+    DomSideEffect(null) {
+      it.mdc = MDCTopAppBarModule.MDCTopAppBar.attachTo(it)
     }
     content?.let { MDCTopAppBarScope(this).it() }
   }
@@ -85,7 +86,7 @@ fun MDCTopAppBarContextScope.MDCTopAppBar(
  */
 @MDCDsl
 @Composable
-fun MDCTopAppBarContextScope.MDCTopAppBarMain(
+public fun MDCTopAppBarContextScope.MDCTopAppBarMain(
   attrs: AttrBuilderContext<HTMLElement>? = null,
   content: ContentBuilder<HTMLElement>? = null
 ) {

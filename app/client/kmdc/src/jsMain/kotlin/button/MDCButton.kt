@@ -15,27 +15,27 @@ import org.w3c.dom.HTMLButtonElement
 @JsModule("@material/button/dist/mdc.button.css")
 private external val MDCButtonStyle: dynamic
 
-data class MDCButtonOpts(
+public data class MDCButtonOpts(
   var type: Type = Type.Text,
   var icon: MDCButtonIconType = MDCButtonIconType.None
 ) {
-  enum class Type(vararg val classes: String) {
+  public enum class Type(public vararg val classes: String) {
     Text, Outlined("mdc-button--outlined"), Raised("mdc-button--raised"), Unelevated("mdc-button--unelevated")
   }
 
-  enum class MDCButtonIconType(vararg val classes: String) {
+  public enum class MDCButtonIconType(public vararg val classes: String) {
     None, Leading("mdc-button--icon-leading"), Trailing("mdc-button--icon-trailing")
   }
 }
 
-class MDCButtonScope(scope: ElementScope<HTMLButtonElement>) : ElementScope<HTMLButtonElement> by scope
+public class MDCButtonScope(scope: ElementScope<HTMLButtonElement>) : ElementScope<HTMLButtonElement> by scope
 
 /**
  * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-button)
  */
 @MDCDsl
 @Composable
-fun MDCButton(
+public fun MDCButton(
   opts: Builder<MDCButtonOpts>? = null,
   attrs: AttrBuilderContext<HTMLButtonElement>? = null,
   content: ComposableBuilder<MDCButtonScope>? = null
@@ -63,7 +63,7 @@ fun MDCButton(
  */
 @MDCDsl
 @Composable
-fun MDCButton(
+public fun MDCButton(
   text: String,
   opts: Builder<MDCButtonOpts>? = null,
   attrs: AttrBuilderContext<HTMLButtonElement>? = null,

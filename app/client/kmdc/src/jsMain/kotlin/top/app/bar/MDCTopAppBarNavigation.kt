@@ -16,7 +16,7 @@ import org.w3c.dom.HTMLButtonElement
  */
 @MDCDsl
 @Composable
-fun MDCTopAppBarSectionScope.MDCTopAppBarNavigationButton(
+public fun MDCTopAppBarSectionScope.MDCTopAppBarNavigationButton(
   opts: Builder<MDCIconButtonOpts>? = null,
   attrs: AttrBuilderContext<HTMLButtonElement>? = null,
   content: ContentBuilder<HTMLButtonElement>? = null,
@@ -36,7 +36,7 @@ fun MDCTopAppBarSectionScope.MDCTopAppBarNavigationButton(
  */
 @MDCDsl
 @Composable
-fun MDCTopAppBarSectionScope.MDCTopAppBarNavigationLink(
+public fun MDCTopAppBarSectionScope.MDCTopAppBarNavigationLink(
   opts: Builder<MDCIconButtonOpts>? = null,
   attrs: AttrBuilderContext<HTMLAnchorElement>? = null,
   content: ContentBuilder<HTMLAnchorElement>? = null,

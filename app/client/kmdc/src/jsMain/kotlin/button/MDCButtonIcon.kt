@@ -8,11 +8,11 @@ import org.jetbrains.compose.web.dom.I
 import org.w3c.dom.HTMLElement
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-button)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-button#icon)
  */
 @MDCDsl
 @Composable
-fun MDCButtonScope.MDCButtonIcon(
+public fun MDCButtonScope.MDCButtonIcon(
   attrs: AttrBuilderContext<HTMLElement>? = null,
   content: ContentBuilder<HTMLElement>? = null,
 ) {

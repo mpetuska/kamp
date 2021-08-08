@@ -8,14 +8,14 @@ import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.Div
 import org.w3c.dom.HTMLDivElement
 
-data class MDCLayoutGridCellOpts(
-  val span: UInt? = null,
-  val spanMap: SpanMap? = null,
-  val order: UInt? = null,
-  val align: Align = Align.Stretch,
+public data class MDCLayoutGridCellOpts(
+  var span: UInt? = null,
+  var spanMap: SpanMap? = null,
+  var order: UInt? = null,
+  var align: Align = Align.Stretch,
 ) {
-  data class SpanMap(val desktop: UInt, val tablet: UInt, val phone: UInt)
-  enum class Align(vararg val classes: String) {
+  public data class SpanMap(val desktop: UInt, val tablet: UInt, val phone: UInt)
+  public enum class Align(public vararg val classes: String) {
     Stretch,
     Top("mdc-layout-grid__cell--align-top"),
     Middle("mdc-layout-grid__cell--align-middle"),
@@ -28,7 +28,7 @@ data class MDCLayoutGridCellOpts(
  */
 @MDCDsl
 @Composable
-fun MDCLayoutGridCellsScope.MDCLayoutGridCell(
+public fun MDCLayoutGridCellsScope.MDCLayoutGridCell(
   opts: Builder<MDCLayoutGridCellOpts>? = null,
   attrs: AttrBuilderContext<HTMLDivElement>? = null,
   content: ComposableBuilder<MDCLayoutGridScope>? = null

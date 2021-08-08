@@ -9,13 +9,13 @@ import org.jetbrains.compose.web.dom.ElementScope
 import org.jetbrains.compose.web.dom.Section
 import org.w3c.dom.HTMLElement
 
-class MDCTopAppBarSectionScope(scope: ElementScope<HTMLElement>) : ElementScope<HTMLElement> by scope
+public class MDCTopAppBarSectionScope(scope: ElementScope<HTMLElement>) : ElementScope<HTMLElement> by scope
 
-data class MDCTopAppBarSectionOpts(
+public data class MDCTopAppBarSectionOpts(
   var align: Align = Align.Start,
   var role: String? = null,
 ) {
-  enum class Align(vararg val classes: String) {
+  public enum class Align(public vararg val classes: String) {
     Start("mdc-top-app-bar__section--align-start"),
     End("mdc-top-app-bar__section--align-end"),
   }
@@ -26,7 +26,7 @@ data class MDCTopAppBarSectionOpts(
  */
 @MDCDsl
 @Composable
-fun MDCTopAppBarRowScope.MDCTopAppBarSection(
+public fun MDCTopAppBarRowScope.MDCTopAppBarSection(
   opts: Builder<MDCTopAppBarSectionOpts>? = null,
   attrs: AttrBuilderContext<HTMLElement>? = null,
   content: ComposableBuilder<MDCTopAppBarSectionScope>? = null
