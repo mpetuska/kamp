@@ -1,4 +1,5 @@
 import de.fayard.refreshVersions.core.versionFor
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
   kotlin("multiplatform") apply false
@@ -41,7 +42,7 @@ allprojects {
     withType<Test> {
       useJUnitPlatform()
     }
-    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    withType<KotlinCompile> {
       kotlinOptions {
         jvmTarget = "${project.properties["org.gradle.project.targetCompatibility"]}"
       }

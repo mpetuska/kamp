@@ -42,8 +42,8 @@ fun AppContext.Drawer() {
     }
   ) {
     MDCDrawerHeader {
-      MDCDrawerTitle { Text("Library Search") }
-      MDCDrawerSubtitle { Text("Find and filter libraries by supported targets") }
+      MDCDrawerTitle("Library Search")
+      MDCDrawerSubtitle("Find and filter libraries by supported targets")
     }
     MDCDrawerContent {
       MDCLayoutGrid {

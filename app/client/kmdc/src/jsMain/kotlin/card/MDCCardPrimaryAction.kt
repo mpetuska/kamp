@@ -5,6 +5,7 @@ import dev.petuska.kmdc.MDCDsl
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.ContentBuilder
 import org.jetbrains.compose.web.dom.Div
+import org.jetbrains.compose.web.dom.Span
 import org.w3c.dom.HTMLDivElement
 
 /**
@@ -24,10 +25,6 @@ public fun MDCCardScope.MDCCardPrimaryAction(
     },
   ) {
     content?.invoke(this)
-    Div(
-      attrs = {
-        classes("mdc-card__ripple")
-      }
-    )
+    Span(attrs = { classes("mdc-card__ripple") })
   }
 }

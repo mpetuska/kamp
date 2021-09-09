@@ -9,8 +9,8 @@ import dev.petuska.kmdc.ripple.MDCRipple
 import org.jetbrains.compose.web.dom.A
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.Button
-import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.ElementScope
+import org.jetbrains.compose.web.dom.Span
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLAnchorElement
 import org.w3c.dom.HTMLButtonElement
@@ -51,15 +51,11 @@ public fun MDCIconButton(
       attrs?.invoke(this)
     },
   ) {
-    DomSideEffect(null) {
+    DomSideEffect {
       it.mdc = MDCIconButtonModule.MDCIconButtonToggle.attachTo(it)
     }
     MDCRipple()
-    Div(
-      attrs = {
-        classes("mdc-icon-button__ripple")
-      }
-    )
+    Span(attrs = { classes("mdc-icon-button__ripple") })
     content?.let { MDCIconButtonScope(this).it() }
   }
 }
@@ -82,15 +78,11 @@ public fun MDCIconLink(
       attrs?.invoke(this)
     },
   ) {
-    DomSideEffect(null) {
+    DomSideEffect {
       it.mdc = MDCIconButtonModule.MDCIconButtonToggle.attachTo(it)
     }
     MDCRipple()
-    Div(
-      attrs = {
-        classes("mdc-icon-button__ripple")
-      }
-    )
+    Span(attrs = { classes("mdc-icon-button__ripple") })
     content?.let { MDCIconLinkScope(this).it() }
   }
 }

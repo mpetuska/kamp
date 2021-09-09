@@ -7,8 +7,8 @@ import dev.petuska.kmdc.MDCDsl
 import dev.petuska.kmdc.ripple.MDCRipple
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.Button
-import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.ElementScope
+import org.jetbrains.compose.web.dom.Span
 import org.jetbrains.compose.web.dom.Text
 import org.w3c.dom.HTMLButtonElement
 
@@ -48,11 +48,7 @@ public fun MDCButton(
       attrs?.invoke(this)
     }
   ) {
-    Div(
-      attrs = {
-        classes("mdc-button__ripple")
-      }
-    )
+    Span(attrs = { classes("mdc-button__ripple") })
     MDCRipple()
     content?.let { MDCButtonScope(this).it() }
   }

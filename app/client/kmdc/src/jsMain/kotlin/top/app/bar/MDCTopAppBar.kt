@@ -74,7 +74,7 @@ public fun MDCTopAppBarContextScope.MDCTopAppBar(
       attrs?.invoke(this)
     },
   ) {
-    DomSideEffect(null) {
+    DomSideEffect {
       it.mdc = MDCTopAppBarModule.MDCTopAppBar.attachTo(it)
     }
     content?.let { MDCTopAppBarScope(this).it() }

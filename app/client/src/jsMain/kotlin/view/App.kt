@@ -27,6 +27,9 @@ import dev.petuska.kmdc.top.app.bar.MDCTopAppBarMain
 import dev.petuska.kmdc.typography.MDCH1
 import dev.petuska.kmdc.typography.mdcTypography
 import org.jetbrains.compose.web.css.backgroundImage
+import org.jetbrains.compose.web.css.percent
+import org.jetbrains.compose.web.css.width
+import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.Text
 
 @Composable
@@ -39,11 +42,18 @@ fun AppContext.App() {
         mdcTypography()
       }
     ) {
+      Div {
+        MDCButton({ type = MDCButtonOpts.Type.Outlined }, attrs = { style { width(100.percent) } }) {
+          MDCButtonLabel("Wide")
+        }
+      }
       MDCLayoutGrid {
         MDCLayoutGridCells {
           MDCButtonOpts.Type.values().forEach {
             MDCLayoutGridCell {
-              MDCButton({ type = it }) { Text(it.name) }
+              MDCButton({ type = it }) {
+                MDCButtonLabel(it.name)
+              }
             }
           }
         }

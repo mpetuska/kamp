@@ -24,7 +24,7 @@ private fun loadServices(): DI.Module {
 }
 
 fun loadDI(env: AppEnv) = DI {
-  bind<Json>() with provider { Json {} }
+  bind<Json>() with provider { Json }
   bind<HttpClient>() with singleton {
     HttpClient {
       install(JsonFeature) {

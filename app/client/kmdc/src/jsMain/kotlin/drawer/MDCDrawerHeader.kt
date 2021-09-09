@@ -9,6 +9,7 @@ import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.ElementScope
 import org.jetbrains.compose.web.dom.H3
 import org.jetbrains.compose.web.dom.H6
+import org.jetbrains.compose.web.dom.Text
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLHeadingElement
 
@@ -21,7 +22,7 @@ public class MDCDrawerHeaderScope(scope: ElementScope<HTMLDivElement>) : Element
 @Composable
 public fun MDCDrawerScope.MDCDrawerHeader(
   attrs: AttrBuilderContext<HTMLDivElement>? = null,
-  content: ComposableBuilder<MDCDrawerHeaderScope>? = null
+  content: ComposableBuilder<MDCDrawerHeaderScope>? = null,
 ) {
   Div(
     attrs = {
@@ -31,6 +32,16 @@ public fun MDCDrawerScope.MDCDrawerHeader(
     content = content?.let { { MDCDrawerHeaderScope(this).it() } },
   )
 }
+
+/**
+ * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-drawer)
+ */
+@MDCDsl
+@Composable
+public fun MDCDrawerScope.MDCDrawerHeader(
+  text: String,
+  attrs: AttrBuilderContext<HTMLDivElement>? = null,
+): Unit = MDCDrawerHeader(attrs) { Text(text) }
 
 /**
  * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-drawer)
@@ -55,6 +66,16 @@ public fun MDCDrawerScope.MDCDrawerTitle(
  */
 @MDCDsl
 @Composable
+public fun MDCDrawerScope.MDCDrawerTitle(
+  text: String,
+  attrs: AttrBuilderContext<HTMLHeadingElement>? = null,
+): Unit = MDCDrawerTitle(attrs) { Text(text) }
+
+/**
+ * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-drawer)
+ */
+@MDCDsl
+@Composable
 public fun MDCDrawerScope.MDCDrawerSubtitle(
   attrs: AttrBuilderContext<HTMLHeadingElement>? = null,
   content: ContentBuilder<HTMLHeadingElement>? = null
@@ -67,3 +88,13 @@ public fun MDCDrawerScope.MDCDrawerSubtitle(
     content = content,
   )
 }
+
+/**
+ * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-drawer)
+ */
+@MDCDsl
+@Composable
+public fun MDCDrawerScope.MDCDrawerSubtitle(
+  text: String,
+  attrs: AttrBuilderContext<HTMLHeadingElement>? = null,
+): Unit = MDCDrawerSubtitle(attrs) { Text(text) }

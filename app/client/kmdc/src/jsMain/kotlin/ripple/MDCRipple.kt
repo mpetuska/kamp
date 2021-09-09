@@ -31,7 +31,7 @@ public fun ElementScope<*>.MDCRipple(
   opts: Builder<MDCRippleOpts>? = null
 ) {
   val options = MDCRippleOpts().apply { opts?.invoke(this) }
-  DomSideEffect(null) {
+  DomSideEffect {
     MDCRippleModule.MDCRipple.attachTo(
       element = it,
       opts = jsObject {

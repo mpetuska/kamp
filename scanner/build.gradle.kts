@@ -6,23 +6,22 @@ plugins {
 kotlin {
   dependencies {
     implementation(project(":shared"))
+    implementation(kotlin("reflect"))
     implementation("io.ktor:ktor-client-cio:_")
     implementation("io.ktor:ktor-client-auth:_")
     implementation("io.ktor:ktor-client-serialization:_")
     implementation("org.kodein.di:kodein-di:_")
     implementation("org.jsoup:jsoup:_")
     implementation("ch.qos.logback:logback-classic:_")
-    implementation(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx:kotlinx-cli:_")
 
     testImplementation("io.kotest:kotest-runner-junit5:_")
   }
   sourceSets.all {
     languageSettings.apply {
-      useExperimentalAnnotation("kotlinx.coroutines.ExperimentalCoroutinesApi")
-      useExperimentalAnnotation("kotlin.time.ExperimentalTime")
-      useExperimentalAnnotation("kotlinx.coroutines.FlowPreview")
-      useExperimentalAnnotation("kotlinx.cli.ExperimentalCli")
+      optIn("kotlinx.serialization.ExperimentalSerializationApi")
+      optIn("kotlin.time.ExperimentalTime")
+      optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
     }
   }
 }
@@ -33,9 +32,9 @@ tasks {
   val compileKotlin by getting
   val processResources by getting
   create<JavaExec>("run") {
-    group = "run"
-    main = mainClassName
     dependsOn(compileKotlin, processResources)
+    group = "run"
+    mainClass by mainClassName
     classpath = files(
       configurations.runtimeClasspath,
       compileKotlin.outputs,
@@ -56,7 +55,7 @@ tasks {
         "Built-By" to System.getProperty("user.name"),
         "Build-Jdk" to System.getProperty("java.version"),
         "Implementation-Version" to project.version,
-        "Created-By" to "Gradle v${org.gradle.util.GradleVersion.current()}",
+        "Created-By" to "Gradle v${GradleVersion.current()}",
         "Created-From" to Git.headCommitHash
       )
     }
