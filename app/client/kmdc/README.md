@@ -8,7 +8,6 @@ except for few places where slight adjustments are made to make it more fluid fo
 ## Progress
 
 Here's a tracker list of currently completed *material-components-web* modules (6/43):
-
 - [ ] mdc-animation
 - [ ] mdc-auto-init
 - [ ] mdc-banner
@@ -32,7 +31,7 @@ Here's a tracker list of currently completed *material-components-web* modules (
 - [ ] mdc-image-list
 - [x] mdc-layout-grid
 - [ ] mdc-line-ripple
-- [ ] mdc-linear-progress
+- [x] mdc-linear-progress
 - [ ] mdc-list
 - [ ] mdc-menu-surface
 - [ ] mdc-menu

@@ -11,4 +11,6 @@ data class AppState(
   val search: String? = null,
   val targets: Set<String>? = null,
   val drawerOpen: Boolean = false,
+  val progress: Number? = null,
+  val loading: Boolean = false,
 )

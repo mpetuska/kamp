@@ -2,6 +2,7 @@ package app.client.view
 
 import androidx.compose.runtime.Composable
 import app.client.AppContext
+import app.client.store.action.AppAction
 import app.client.view.component.Drawer
 import app.client.view.component.Navbar
 import dev.petuska.kmdc.button.MDCButton
@@ -42,8 +43,25 @@ fun AppContext.App() {
         mdcTypography()
       }
     ) {
+
       Div {
-        MDCButton({ type = MDCButtonOpts.Type.Outlined }, attrs = { style { width(100.percent) } }) {
+        MDCButton({ type = MDCButtonOpts.Type.Outlined }, attrs = {
+          onClick {
+            when {
+              it.altKey -> {
+                dispatch(AppAction.SetLoading(false))
+              }
+              it.ctrlKey -> {
+              }
+              it.shiftKey -> {
+              }
+              else -> {
+                dispatch(AppAction.SetLoading(true))
+              }
+            }
+          }
+          style { width(100.percent) }
+        }) {
           MDCButtonLabel("Wide")
         }
       }

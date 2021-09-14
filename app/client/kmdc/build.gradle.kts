@@ -24,6 +24,7 @@ kotlin {
         api(npm("@material/typography", mdcVersion))
         api(npm("@material/layout-grid", mdcVersion))
         api(npm("@material/drawer", mdcVersion))
+        api(npm("@material/linear-progress", mdcVersion))
         api(compose.web.core)
         api(compose.runtime)
       }

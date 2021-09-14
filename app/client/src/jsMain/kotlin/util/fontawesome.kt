@@ -39,7 +39,7 @@ private external object FABrands {
 }
 
 private val FAInitializer by lazy {
-  FACore.library.add(FABrands.faGithub)
+  FACore.library.add(FABrands.fab, FABrands.faGithub)
 
   FACore.dom.watch()
 }
