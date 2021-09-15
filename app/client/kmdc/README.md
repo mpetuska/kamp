@@ -50,7 +50,7 @@ Here's a tracker list of currently completed *material-components-web* modules (
 - [ ] mdc-tab-indicator
 - [ ] mdc-tab-scroller
 - [ ] mdc-tab
-- [ ] mdc-textfield
+- [x] mdc-textfield
 - [ ] mdc-tooltip
 - [x] mdc-top-app-bar
 - [ ] mdc-touch-target
