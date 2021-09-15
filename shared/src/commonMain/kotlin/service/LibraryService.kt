@@ -12,6 +12,7 @@ interface LibraryService {
     size: Int,
     search: String?,
     targets: Set<String>?,
+    onProgress: (suspend (current: Long, total: Long) -> Unit)? = null
   ): PagedResponse<KotlinMPPLibrary>
 
   suspend fun create(library: KotlinMPPLibrary)

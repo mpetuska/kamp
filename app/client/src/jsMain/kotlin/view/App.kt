@@ -45,40 +45,31 @@ fun AppContext.App() {
     ) {
 
       Div {
-        MDCButton({ type = MDCButtonOpts.Type.Outlined }, attrs = {
-          onClick {
-            when {
-              it.altKey -> {
-                dispatch(AppAction.SetLoading(false))
-              }
-              it.ctrlKey -> {
-              }
-              it.shiftKey -> {
-              }
-              else -> {
-                dispatch(AppAction.SetLoading(true))
+        MDCButton(
+          text = "Action!",
+          opts = { type = MDCButtonOpts.Type.Outlined },
+          attrs = {
+            onClick {
+              when {
+                it.altKey -> {
+                  dispatch(AppAction.SetLoading(false))
+                }
+                it.ctrlKey -> {
+                }
+                it.shiftKey -> {
+                }
+                else -> {
+                  dispatch(AppAction.SetLoading(true))
+                }
               }
             }
+            style { width(100.percent) }
           }
-          style { width(100.percent) }
-        }) {
-          MDCButtonLabel("Wide")
-        }
+        )
       }
       MDCLayoutGrid {
         MDCLayoutGridCells {
-          MDCButtonOpts.Type.values().forEach {
-            MDCLayoutGridCell {
-              MDCButton({ type = it }) {
-                MDCButtonLabel(it.name)
-              }
-            }
-          }
-        }
-      }
-      MDCLayoutGrid {
-        MDCLayoutGridCells {
-          repeat(50) {
+          repeat(12) {
             MDCLayoutGridCell {
               SampleCard()
             }

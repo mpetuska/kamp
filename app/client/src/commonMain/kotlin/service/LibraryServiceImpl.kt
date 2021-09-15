@@ -5,6 +5,7 @@ import domain.KotlinMPPLibrary
 import domain.LibraryCount
 import domain.PagedResponse
 import io.ktor.client.HttpClient
+import io.ktor.client.features.onDownload
 import io.ktor.client.request.get
 import service.LibraryService.Companion.PATH
 
@@ -15,12 +16,15 @@ class LibraryServiceImpl(private val client: HttpClient, private val urlUtils: U
     size: Int,
     search: String?,
     targets: Set<String>?,
+    onProgress: (suspend (current: Long, total: Long) -> Unit)?,
   ): PagedResponse<KotlinMPPLibrary> {
     val pagination = "page=$page&size=$size"
     val searchQuery = search?.let { "search=$it" } ?: ""
     val targetsQuery = targets?.joinToString(prefix = "target=", separator = "&target=") ?: ""
 
-    return client.get("${PATH}${buildQuery(pagination, searchQuery, targetsQuery)}".toApiUrl())
+    return client.get("${PATH}${buildQuery(pagination, searchQuery, targetsQuery)}".toApiUrl()) {
+      onProgress?.let { onDownload(it) }
+    }
   }
 
   override suspend fun create(library: KotlinMPPLibrary) {

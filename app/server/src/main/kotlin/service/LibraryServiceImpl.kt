@@ -62,6 +62,7 @@ class LibraryServiceImpl(
     size: Int,
     search: String?,
     targets: Set<String>?,
+    onProgress: (suspend (current: Long, total: Long) -> Unit)?,
   ): PagedResponse<KotlinMPPLibrary> {
     val (query, projection) = buildQuery(search, targets)
 

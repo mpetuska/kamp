@@ -16,6 +16,9 @@ fun loadReducer() = reducerForActionType<AppState, AppAction> { state, action ->
 
     is AppAction.ToggleDrawer -> state.copy(drawerOpen = !state.drawerOpen)
     is AppAction.SetDrawer -> state.copy(drawerOpen = action.isOpen)
-    is AppAction.SetLoading -> state.copy(progress = action.progress, loading = action.loading)
+    is AppAction.SetLoading -> state.copy(
+      loading = action.loading,
+      progress = action.progress.takeIf { action.loading },
+    )
   }
 }
