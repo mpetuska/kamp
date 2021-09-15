@@ -12,7 +12,10 @@ import io.ktor.features.Compression
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
 import io.ktor.features.StatusPages
+import io.ktor.http.ContentType
 import io.ktor.serialization.json
+import io.ktor.serialization.serialization
+import kotlinx.serialization.cbor.Cbor
 import org.slf4j.event.Level
 
 fun Application.features() {
@@ -21,6 +24,7 @@ fun Application.features() {
   }
   install(ContentNegotiation) {
     json()
+    serialization(ContentType.Application.Cbor, Cbor.Default)
   }
   install(Compression)
   install(DefaultHeaders)

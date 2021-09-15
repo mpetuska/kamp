@@ -12,6 +12,7 @@ kotlin {
         implementation("io.ktor:ktor-server-cio:_")
         implementation("io.ktor:ktor-serialization:_")
         implementation("io.ktor:ktor-auth:_")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-cbor:_")
         implementation("ch.qos.logback:logback-classic:_")
         implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:_")
         implementation("com.microsoft.azure:applicationinsights-web-auto:_")
@@ -21,6 +22,11 @@ kotlin {
     test {
       dependencies {
         implementation("io.kotest:kotest-runner-junit5:_")
+      }
+    }
+    all {
+      languageSettings {
+        optIn("kotlinx.serialization.ExperimentalSerializationApi")
       }
     }
   }
