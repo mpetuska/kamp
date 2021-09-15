@@ -1,5 +1,6 @@
 package app.client.config
 
+import app.client.util.UrlUtils
 import io.ktor.client.HttpClient
 import io.ktor.client.features.defaultRequest
 import io.ktor.client.features.json.JsonFeature
@@ -36,5 +37,6 @@ fun loadDI(env: AppEnv) = DI {
     }
   }
   bind<AppEnv>() with instance(env)
+  bind<UrlUtils>() with singleton { UrlUtils(instance()) }
   import(loadServices())
 }

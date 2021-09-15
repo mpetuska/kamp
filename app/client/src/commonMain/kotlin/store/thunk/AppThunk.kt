@@ -4,7 +4,6 @@ import app.client.AppContext
 import app.client.store.action.AppAction
 import app.client.store.state.AppState
 import app.client.util.suspending
-import kotlinx.coroutines.delay
 import org.kodein.di.instance
 import org.reduxkotlin.Thunk
 import service.LibraryService
@@ -24,13 +23,12 @@ fun AppContext.fetchLibraryPage(
 
     val service by instance<LibraryService>()
     dispatch(AppAction.SetLoading(true))
-    // val theLibraries = service.getAll(page, size, theSearch, theTargets)
-    delay(5 * 1000L)
-    // TODO window.scrollTo(0.0, 0.0)
-    // dispatch(AppAction.SetLibraries(theLibraries))
-    dispatch(AppAction.SetLibraries(state.libraries))
+    val theLibraries = service.getAll(page, size, theSearch, theTargets) { current, total ->
+      dispatch(AppAction.SetLoading(true, total.toDouble() / current))
+    }
     dispatch(AppAction.SetSearch(theSearch))
     dispatch(AppAction.SetTargets(theTargets))
+    dispatch(AppAction.SetLibraries(theLibraries))
     dispatch(AppAction.SetLoading(false))
   }
 }
