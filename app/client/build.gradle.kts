@@ -36,6 +36,7 @@ kotlin {
         implementation("org.reduxkotlin:redux-kotlin-thunk:_")
         implementation("io.ktor:ktor-client-auth:_")
         implementation("io.ktor:ktor-client-serialization:_")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-cbor:_")
       }
     }
     named("jsMain") {
@@ -50,6 +51,11 @@ kotlin {
     }
     named("jvmMain") {
       dependencies {
+      }
+    }
+    all {
+      languageSettings {
+        optIn("kotlinx.serialization.ExperimentalSerializationApi")
       }
     }
   }

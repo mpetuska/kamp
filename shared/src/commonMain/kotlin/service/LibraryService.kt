@@ -18,6 +18,6 @@ interface LibraryService {
   suspend fun create(library: KotlinMPPLibrary)
 
   companion object {
-    const val PATH = "/libraries"
+    const val PATH = "/api/libraries"
   }
 }

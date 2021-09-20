@@ -11,6 +11,7 @@ import service.LibraryService.Companion.PATH
 
 class LibraryServiceImpl(private val client: HttpClient, private val urlUtils: UrlUtils) : LibraryService {
   private fun String.toApiUrl() = with(urlUtils) { toApiUrl() }
+
   override suspend fun getAll(
     page: Int,
     size: Int,
@@ -23,7 +24,7 @@ class LibraryServiceImpl(private val client: HttpClient, private val urlUtils: U
     val targetsQuery = targets?.joinToString(prefix = "target=", separator = "&target=") ?: ""
 
     return client.get("${PATH}${buildQuery(pagination, searchQuery, targetsQuery)}".toApiUrl()) {
-      onProgress?.let { onDownload(it) }
+      onDownload(onProgress)
     }
   }
 

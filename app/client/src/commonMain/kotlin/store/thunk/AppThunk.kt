@@ -23,14 +23,12 @@ fun AppContext.fetchLibraryPage(
 
     val service by instance<LibraryService>()
     dispatch(AppAction.SetLoading(true))
-    dispatch(AppAction.SetLibraries(null))
     val theLibraries = service.getAll(page, size, theSearch, theTargets) { current, total ->
-      dispatch(AppAction.SetLoading(true, total / current))
+      dispatch(AppAction.SetLoading(true, total.toDouble() / current))
     }
-    dispatch(AppAction.SetLibraries(theLibraries))
-    dispatch(AppAction.SetLibraries(state.libraries))
     dispatch(AppAction.SetSearch(theSearch))
     dispatch(AppAction.SetTargets(theTargets))
+    dispatch(AppAction.SetLibraries(theLibraries))
     dispatch(AppAction.SetLoading(false))
   }
 }

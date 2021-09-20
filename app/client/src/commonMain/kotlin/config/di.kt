@@ -1,9 +1,12 @@
 package app.client.config
 
+import app.client.util.CborFeature
+import app.client.util.UrlUtils
 import io.ktor.client.HttpClient
 import io.ktor.client.features.defaultRequest
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
+import io.ktor.client.request.accept
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.serialization.json.Json
@@ -30,11 +33,14 @@ fun loadDI(env: AppEnv) = DI {
       install(JsonFeature) {
         serializer = KotlinxSerializer(instance())
       }
+      install(CborFeature)
       defaultRequest {
-        contentType(ContentType.Application.Json)
+        accept(ContentType.Application.Cbor)
+        contentType(ContentType.Application.Cbor)
       }
     }
   }
   bind<AppEnv>() with instance(env)
+  bind<UrlUtils>() with singleton { UrlUtils(instance()) }
   import(loadServices())
 }
