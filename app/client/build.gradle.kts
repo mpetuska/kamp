@@ -20,7 +20,8 @@ kotlin {
         outputFileName = jsOutputFile
         devServer = devServer?.copy(
           port = 3000,
-          proxy = mutableMapOf("/api/*" to "http://localhost:8080"),
+          // proxy = mutableMapOf("/api/*" to "http://localhost:8080"),
+          proxy = mutableMapOf("/api/*" to "https://kamp.azurewebsites.net"),
           open = false
         )
       }

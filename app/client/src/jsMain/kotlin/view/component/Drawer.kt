@@ -22,7 +22,7 @@ import dev.petuska.kmdc.layout.grid.MDCLayoutGrid
 import dev.petuska.kmdc.layout.grid.MDCLayoutGridCell
 import dev.petuska.kmdc.layout.grid.MDCLayoutGridCells
 import dev.petuska.kmdc.textfield.MDCTextField
-import dev.petuska.kmdc.textfield.MDCTextFieldOpts
+import dev.petuska.kmdc.textfield.MDCTextFieldCommonOpts
 import dev.petuska.kmdc.typography.MDCOverline
 import dev.petuska.kmdc.typography.mdcTypography
 import org.jetbrains.compose.web.dom.Text
@@ -71,7 +71,7 @@ fun AppContext.Drawer() {
             MDCTextField(
               opts = {
                 label = "Search by text"
-                type = MDCTextFieldOpts.Type.Outlined
+                type = MDCTextFieldCommonOpts.Type.Outlined
               },
               attrs = {
                 onKeyDown {

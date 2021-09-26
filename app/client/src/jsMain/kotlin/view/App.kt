@@ -22,6 +22,8 @@ import dev.petuska.kmdc.card.MDCCardPrimaryAction
 import dev.petuska.kmdc.layout.grid.MDCLayoutGrid
 import dev.petuska.kmdc.layout.grid.MDCLayoutGridCell
 import dev.petuska.kmdc.layout.grid.MDCLayoutGridCells
+import dev.petuska.kmdc.textfield.MDCTextArea
+import dev.petuska.kmdc.textfield.MDCTextFieldCommonOpts
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarContext
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarContextOpts
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarMain
@@ -44,6 +46,16 @@ fun AppContext.App() {
       }
     ) {
 
+      MDCTextArea({
+        rows = 3u
+        columns = 3u
+        this.type = MDCTextFieldCommonOpts.Type.Outlined
+        this.label = "label"
+        this.helperText = "helper"
+        this.maxLength = 10u
+      }) {
+        onInput { println(it.value) }
+      }
       Div {
         MDCButton(
           text = "Action!",

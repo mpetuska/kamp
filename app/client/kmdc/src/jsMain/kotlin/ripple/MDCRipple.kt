@@ -8,14 +8,14 @@ import org.jetbrains.compose.web.dom.ElementScope
 import org.w3c.dom.Element
 
 @JsModule("@material/ripple")
-internal external object MDCRippleModule {
-  interface MDCRippleAttachOpts {
-    var isUnbounded: Boolean?
+public external object MDCRippleModule {
+  public interface MDCRippleAttachOpts {
+    public var isUnbounded: Boolean?
   }
 
-  class MDCRipple(element: Element, opts: MDCRippleAttachOpts = definedExternally) {
-    companion object {
-      fun attachTo(element: Element, opts: MDCRippleAttachOpts = definedExternally)
+  public class MDCRipple(element: Element, opts: MDCRippleAttachOpts = definedExternally) {
+    public companion object {
+      public fun attachTo(element: Element, opts: MDCRippleAttachOpts = definedExternally)
     }
   }
 }
