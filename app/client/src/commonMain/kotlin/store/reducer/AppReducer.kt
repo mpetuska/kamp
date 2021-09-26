@@ -20,5 +20,7 @@ fun loadReducer() = reducerForActionType<AppState, AppAction> { state, action ->
       loading = action.loading,
       progress = action.progress.takeIf { action.loading },
     )
+    is AppAction.AddTarget -> state.copy(targets = (state.targets ?: setOf()) + action.target)
+    is AppAction.RemoveTarget -> state.copy(targets = (state.targets ?: setOf()) - action.target)
   }
 }

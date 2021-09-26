@@ -45,7 +45,6 @@ fun AppContext.App() {
         mdcTypography()
       }
     ) {
-
       MDCTextArea({
         rows = 3u
         columns = 3u

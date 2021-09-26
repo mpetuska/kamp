@@ -72,7 +72,7 @@ public fun MDCDrawer(
       it.mdc = MDCDrawerModule.MDCDrawer.attachTo(element = it)
     }
     DomSideEffect(options.isOpen) {
-      it.mdc<MDCDrawerModule.MDCDrawer>().open = options.isOpen
+      it.mdc<MDCDrawerModule.MDCDrawer> { open = options.isOpen }
     }
     content?.let { MDCDrawerScope(this).it() }
   }

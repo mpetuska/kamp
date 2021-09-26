@@ -67,25 +67,25 @@ public fun MDCLinearProgress(
       it.mdc = MDCLinearProgressModule.MDCLinearProgress.attachTo(it)
     }
     DomSideEffect(options.indeterminate) {
-      it.mdc<MDCLinearProgressModule.MDCLinearProgress>().determinate = !options.indeterminate
+      it.mdc<MDCLinearProgressModule.MDCLinearProgress> { determinate = !options.indeterminate }
     }
     DomSideEffect(options.closed) {
-      it.mdc<MDCLinearProgressModule.MDCLinearProgress>().let { mdc ->
+      it.mdc<MDCLinearProgressModule.MDCLinearProgress> {
         if (options.closed) {
-          mdc.close()
+          close()
         } else {
-          mdc.open()
+          open()
         }
       }
     }
     DomSideEffect(options.progress) {
       options.progress?.let { number ->
-        it.mdc<MDCLinearProgressModule.MDCLinearProgress>().progress = number
+        it.mdc<MDCLinearProgressModule.MDCLinearProgress> { progress = number }
       }
     }
     DomSideEffect(options.buffer) {
       options.buffer?.let { number ->
-        it.mdc<MDCLinearProgressModule.MDCLinearProgress>().buffer = number
+        it.mdc<MDCLinearProgressModule.MDCLinearProgress> { buffer = number }
       }
     }
     Div({ classes("mdc-linear-progress__buffer") }) {

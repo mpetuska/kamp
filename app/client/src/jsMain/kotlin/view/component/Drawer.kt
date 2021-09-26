@@ -11,6 +11,7 @@ import dev.petuska.kmdc.button.MDCButton
 import dev.petuska.kmdc.button.MDCButtonIcon
 import dev.petuska.kmdc.button.MDCButtonLabel
 import dev.petuska.kmdc.button.MDCButtonOpts
+import dev.petuska.kmdc.checkbox.MDCCheckbox
 import dev.petuska.kmdc.drawer.MDCDrawer
 import dev.petuska.kmdc.drawer.MDCDrawerContent
 import dev.petuska.kmdc.drawer.MDCDrawerHeader
@@ -18,6 +19,7 @@ import dev.petuska.kmdc.drawer.MDCDrawerOpts
 import dev.petuska.kmdc.drawer.MDCDrawerScrim
 import dev.petuska.kmdc.drawer.MDCDrawerSubtitle
 import dev.petuska.kmdc.drawer.MDCDrawerTitle
+import dev.petuska.kmdc.form.field.MDCFormField
 import dev.petuska.kmdc.layout.grid.MDCLayoutGrid
 import dev.petuska.kmdc.layout.grid.MDCLayoutGridCell
 import dev.petuska.kmdc.layout.grid.MDCLayoutGridCells
@@ -25,6 +27,7 @@ import dev.petuska.kmdc.textfield.MDCTextField
 import dev.petuska.kmdc.textfield.MDCTextFieldCommonOpts
 import dev.petuska.kmdc.typography.MDCOverline
 import dev.petuska.kmdc.typography.mdcTypography
+import domain.KotlinTarget
 import org.jetbrains.compose.web.dom.Text
 
 @Composable
@@ -84,6 +87,7 @@ fun AppContext.Drawer() {
           }
           MDCLayoutGridCell({ span = 10u }) {
             MDCOverline("Filter by targets")
+            KotlinTargetGroup(KotlinTarget.JS.category, listOf("ir", "legacy"))
           }
           MDCLayoutGridCell({ span = 10u }) {
             MDCButton(
@@ -103,4 +107,17 @@ fun AppContext.Drawer() {
     }
   }
   MDCDrawerScrim()
+}
+
+@Composable
+private fun AppContext.KotlinTargetGroup(category: String, platforms: Collection<String>) {
+  platforms.forEach { platform ->
+    MDCFormField {
+      MDCCheckbox(opts = { label = platform }, attrs = {
+        onChange {
+          dispatch(AppAction.AddTarget("$it"))
+        }
+      })
+    }
+  }
 }

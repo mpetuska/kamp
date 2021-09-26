@@ -25,4 +25,4 @@ internal var Element.mdc: dynamic
     asDynamic().mdc = value
   }
 
-internal fun <T> Element.mdc(): T = mdc.unsafeCast<T>()
+internal fun <T> Element.mdc(action: Builder<T>? = null): T? = mdc.unsafeCast<T?>()?.also { action?.invoke(it) }

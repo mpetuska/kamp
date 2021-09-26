@@ -26,6 +26,8 @@ kotlin {
         api(npm("@material/drawer", mdcVersion))
         api(npm("@material/linear-progress", mdcVersion))
         api(npm("@material/textfield", mdcVersion))
+        api(npm("@material/checkbox", mdcVersion))
+        api(npm("@material/form-field", mdcVersion))
         api(compose.web.core)
         api(compose.runtime)
       }

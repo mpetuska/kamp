@@ -14,7 +14,7 @@ Here's a tracker list of currently completed *material-components-web* modules (
 - [ ] mdc-base
 - [x] mdc-button
 - [x] mdc-card
-- [ ] mdc-checkbox
+- [x] mdc-checkbox
 - [ ] mdc-chips
 - [ ] mdc-circular-progress
 - [ ] mdc-data-table
@@ -26,7 +26,7 @@ Here's a tracker list of currently completed *material-components-web* modules (
 - [ ] mdc-fab
 - [ ] mdc-feature-targeting
 - [ ] mdc-floating-label
-- [ ] mdc-form-field
+- [x] mdc-form-field
 - [x] mdc-icon-button
 - [ ] mdc-image-list
 - [x] mdc-layout-grid
