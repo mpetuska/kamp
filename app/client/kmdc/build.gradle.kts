@@ -28,6 +28,7 @@ kotlin {
         api(npm("@material/textfield", mdcVersion))
         api(npm("@material/checkbox", mdcVersion))
         api(npm("@material/form-field", mdcVersion))
+        api(npm("@material/list", mdcVersion))
         api(compose.web.core)
         api(compose.runtime)
       }

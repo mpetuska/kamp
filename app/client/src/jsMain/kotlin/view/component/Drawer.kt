@@ -2,16 +2,9 @@ package app.client.view.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import app.client.AppContext
 import app.client.store.action.AppAction
-import app.client.store.thunk.fetchLibraryPage
 import app.client.util.select
-import dev.petuska.kmdc.button.MDCButton
-import dev.petuska.kmdc.button.MDCButtonIcon
-import dev.petuska.kmdc.button.MDCButtonLabel
-import dev.petuska.kmdc.button.MDCButtonOpts
-import dev.petuska.kmdc.checkbox.MDCCheckbox
 import dev.petuska.kmdc.drawer.MDCDrawer
 import dev.petuska.kmdc.drawer.MDCDrawerContent
 import dev.petuska.kmdc.drawer.MDCDrawerHeader
@@ -19,35 +12,16 @@ import dev.petuska.kmdc.drawer.MDCDrawerOpts
 import dev.petuska.kmdc.drawer.MDCDrawerScrim
 import dev.petuska.kmdc.drawer.MDCDrawerSubtitle
 import dev.petuska.kmdc.drawer.MDCDrawerTitle
-import dev.petuska.kmdc.form.field.MDCFormField
-import dev.petuska.kmdc.layout.grid.MDCLayoutGrid
-import dev.petuska.kmdc.layout.grid.MDCLayoutGridCell
-import dev.petuska.kmdc.layout.grid.MDCLayoutGridCells
-import dev.petuska.kmdc.textfield.MDCTextField
-import dev.petuska.kmdc.textfield.MDCTextFieldCommonOpts
-import dev.petuska.kmdc.typography.MDCOverline
+import dev.petuska.kmdc.list.MDCList
+import dev.petuska.kmdc.list.MDCListItem
+import dev.petuska.kmdc.list.MDCListItemText
+import dev.petuska.kmdc.list.MDCListModule
 import dev.petuska.kmdc.typography.mdcTypography
-import domain.KotlinTarget
-import org.jetbrains.compose.web.dom.Text
 
 @Composable
 fun AppContext.Drawer() {
   val open by select { drawerOpen }
-  val search by select { search }
-  val targets by select { targets }
 
-  val submit = remember {
-    {
-      dispatch(AppAction.SetDrawer(false))
-      dispatch(
-        fetchLibraryPage(
-          page = 1,
-          search = search,
-          targets = targets,
-        )
-      )
-    }
-  }
   MDCDrawer(
     opts = {
       type = MDCDrawerOpts.Type.Modal
@@ -64,60 +38,36 @@ fun AppContext.Drawer() {
     }
   ) {
     MDCDrawerHeader {
-      MDCDrawerTitle("Library Search")
-      MDCDrawerSubtitle("Find and filter libraries by supported targets")
+      MDCDrawerTitle("Navigation Menu")
+      MDCDrawerSubtitle("Find your stuff")
     }
     MDCDrawerContent {
-      MDCLayoutGrid {
-        MDCLayoutGridCells {
-          MDCLayoutGridCell({ span = 10u }) {
-            MDCTextField(
-              opts = {
-                label = "Search by text"
-                type = MDCTextFieldCommonOpts.Type.Outlined
-              },
-              attrs = {
-                onKeyDown {
-                  if (it.key == "Enter") submit()
-                }
-                onInput { dispatch(AppAction.SetSearch(it.value.takeIf(String::isNotBlank))) }
-                value(search ?: "")
-              }
-            )
-          }
-          MDCLayoutGridCell({ span = 10u }) {
-            MDCOverline("Filter by targets")
-            KotlinTargetGroup(KotlinTarget.JS.category, listOf("ir", "legacy"))
-          }
-          MDCLayoutGridCell({ span = 10u }) {
-            MDCButton(
-              opts = {
-                type = MDCButtonOpts.Type.Raised
-              },
-              attrs = {
-                onClick { submit() }
-              }
-            ) {
-              MDCButtonIcon(attrs = { classes("material-icons") }) { Text("search") }
-              MDCButtonLabel("Search")
-            }
-          }
-        }
-      }
+      PageList("Search", "Home", "Search", "Random")
     }
   }
   MDCDrawerScrim()
 }
 
 @Composable
-private fun AppContext.KotlinTargetGroup(category: String, platforms: Collection<String>) {
-  platforms.forEach { platform ->
-    MDCFormField {
-      MDCCheckbox(opts = { label = platform }, attrs = {
-        onChange {
-          dispatch(AppAction.AddTarget("$it"))
+private fun AppContext.PageList(current: String, vararg pages: String) {
+  MDCList(attrs = {
+    addEventListener("MDCList:action") {
+      val nextPage = it.nativeEvent.unsafeCast<MDCListModule.MDCListActionEvent>().detail.index
+      dispatch(AppAction.SetDrawer(false))
+      println("Next Page: ${pages[nextPage]}")
+    }
+  }) {
+    pages.forEachIndexed { i, page ->
+      MDCListItem(
+        opts = {
+          selected = page == current
+        },
+        attrs = {
+          tabIndex(i)
         }
-      })
+      ) {
+        MDCListItemText(page)
+      }
     }
   }
 }

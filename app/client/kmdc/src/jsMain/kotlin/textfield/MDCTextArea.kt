@@ -27,7 +27,7 @@ public class MDCTextAreaOpts(
 ) : MDCTextFieldCommonOpts(type, disabled, label, helperText, maxLength)
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-textfield)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-textfield)
  */
 @MDCDsl
 @Composable

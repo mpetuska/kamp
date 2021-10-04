@@ -34,7 +34,7 @@ public enum class MDCTypographyStyle(public val style: String) {
 }
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-typography)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-typography)
  */
 @MDCAttrsDsl
 public fun AttrsBuilder<*>.mdcTypography() {
@@ -42,7 +42,7 @@ public fun AttrsBuilder<*>.mdcTypography() {
 }
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-typography)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-typography)
  */
 @MDCDsl
 @Composable
@@ -70,91 +70,91 @@ public fun MDCText(
 }
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-typography)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-typography)
  */
 @MDCDsl
 @Composable
 public fun MDCH1(text: String): Unit = MDCText(MDCTypographyStyle.Headline1, text)
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-typography)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-typography)
  */
 @MDCDsl
 @Composable
 public fun MDCH2(text: String): Unit = MDCText(MDCTypographyStyle.Headline2, text)
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-typography)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-typography)
  */
 @MDCDsl
 @Composable
 public fun MDCH3(text: String): Unit = MDCText(MDCTypographyStyle.Headline3, text)
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-typography)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-typography)
  */
 @MDCDsl
 @Composable
 public fun MDCH4(text: String): Unit = MDCText(MDCTypographyStyle.Headline4, text)
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-typography)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-typography)
  */
 @MDCDsl
 @Composable
 public fun MDCH5(text: String): Unit = MDCText(MDCTypographyStyle.Headline5, text)
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-typography)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-typography)
  */
 @MDCDsl
 @Composable
 public fun MDCH6(text: String): Unit = MDCText(MDCTypographyStyle.Headline6, text)
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-typography)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-typography)
  */
 @MDCDsl
 @Composable
 public fun MDCSubtitle1(text: String): Unit = MDCText(MDCTypographyStyle.Subtitle1, text)
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-typography)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-typography)
  */
 @MDCDsl
 @Composable
 public fun MDCSubtitle2(text: String): Unit = MDCText(MDCTypographyStyle.Subtitle2, text)
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-typography)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-typography)
  */
 @MDCDsl
 @Composable
 public fun MDCBody1(text: String): Unit = MDCText(MDCTypographyStyle.Body1, text)
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-typography)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-typography)
  */
 @MDCDsl
 @Composable
 public fun MDCBody2(text: String): Unit = MDCText(MDCTypographyStyle.Body2, text)
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-typography)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-typography)
  */
 @MDCDsl
 @Composable
 public fun MDCCaption(text: String): Unit = MDCText(MDCTypographyStyle.Caption, text)
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-typography)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-typography)
  */
 @MDCDsl
 @Composable
 public fun MDCButtonText(text: String): Unit = MDCText(MDCTypographyStyle.Button, text)
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-typography)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-typography)
  */
 @MDCDsl
 @Composable

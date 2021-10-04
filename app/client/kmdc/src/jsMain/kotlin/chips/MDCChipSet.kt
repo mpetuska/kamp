@@ -18,7 +18,7 @@ private external object MDCChipsModule {
 }
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-chips)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-chips)
  */
 @MDCDsl
 @Composable

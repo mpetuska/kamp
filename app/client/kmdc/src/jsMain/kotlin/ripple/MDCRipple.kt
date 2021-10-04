@@ -23,7 +23,7 @@ public external object MDCRippleModule {
 public data class MDCRippleOpts(var isUnbounded: Boolean = false)
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-ripple)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-ripple)
  */
 @MDCDsl
 @Composable

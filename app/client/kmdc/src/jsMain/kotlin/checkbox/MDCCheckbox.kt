@@ -47,7 +47,7 @@ public data class MDCCheckboxOpts(
 )
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-checkbox)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-checkbox)
  */
 @MDCDsl
 @Composable
@@ -59,7 +59,7 @@ public fun MDCCheckbox(
 }
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-checkbox)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-checkbox)
  */
 @MDCDsl
 @Composable
@@ -95,7 +95,6 @@ private fun MDCCheckboxBody(
       domSideEffect?.invoke(this, it, mdc)
     }
     DomSideEffect(options.indeterminate) {
-      println(options.indeterminate)
       it.mdc<MDCCheckboxModule.MDCCheckbox> { indeterminate = options.indeterminate }
     }
     Input(type = InputType.Checkbox, attrs = {

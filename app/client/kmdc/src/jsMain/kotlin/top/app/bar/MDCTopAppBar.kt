@@ -1,6 +1,9 @@
 package dev.petuska.kmdc.top.app.bar
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.compositionLocalOf
 import dev.petuska.kmdc.Builder
 import dev.petuska.kmdc.ComposableBuilder
 import dev.petuska.kmdc.MDCDsl
@@ -38,7 +41,10 @@ public data class MDCTopAppBarContextOpts(
   }
 }
 
-public class MDCTopAppBarContextScope(public val type: MDCTopAppBarContextOpts.Type)
+public val MDCTopAppBarType: ProvidableCompositionLocal<MDCTopAppBarContextOpts.Type> =
+  compositionLocalOf { MDCTopAppBarContextOpts.Type.Default }
+
+public class MDCTopAppBarContextScope
 
 public class MDCTopAppBarScope(scope: ElementScope<HTMLElement>) :
   ElementScope<HTMLElement> by scope
@@ -46,7 +52,7 @@ public class MDCTopAppBarScope(scope: ElementScope<HTMLElement>) :
 /**
  * If using this [MDCTopAppBar] component, all the page content must be placed into [MDCTopAppBarMain] container.
  *
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-top-app-bar)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-top-app-bar)
  */
 @MDCDsl
 @Composable
@@ -56,11 +62,13 @@ public fun MDCTopAppBarContext(
 ) {
   MDCTopAppBarStyle
   val options = MDCTopAppBarContextOpts().apply { opts?.invoke(this) }
-  content?.let { MDCTopAppBarContextScope(options.type).it() }
+  CompositionLocalProvider(MDCTopAppBarType provides options.type) {
+    content?.let { MDCTopAppBarContextScope().it() }
+  }
 }
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-top-app-bar)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-top-app-bar)
  */
 @MDCDsl
 @Composable
@@ -68,6 +76,7 @@ public fun MDCTopAppBarContextScope.MDCTopAppBar(
   attrs: AttrBuilderContext<HTMLElement>? = null,
   content: ComposableBuilder<MDCTopAppBarScope>? = null
 ) {
+  val type = MDCTopAppBarType.current
   Header(
     attrs = {
       classes("mdc-top-app-bar", *type.classes)
@@ -82,7 +91,7 @@ public fun MDCTopAppBarContextScope.MDCTopAppBar(
 }
 
 /**
- * [JS API](https://github.com/material-components/material-components-web/tree/v12.0.0/packages/mdc-top-app-bar)
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-top-app-bar)
  */
 @MDCDsl
 @Composable
@@ -90,6 +99,7 @@ public fun MDCTopAppBarContextScope.MDCTopAppBarMain(
   attrs: AttrBuilderContext<HTMLElement>? = null,
   content: ContentBuilder<HTMLElement>? = null
 ) {
+  val type = MDCTopAppBarType.current
   Main(
     attrs = {
       classes(type.mainAdjustClass)

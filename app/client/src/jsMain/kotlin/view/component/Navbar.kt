@@ -86,7 +86,7 @@ fun AppContext.Navbar(scope: MDCTopAppBarContextScope) {
             dispatch(AppAction.ToggleDrawer)
           }
         }) {
-          Text(if (drawerOpen) "close" else "search")
+          Text(if (drawerOpen) "close" else "menu")
         }
         MDCTopAppBarTitle("KAMP")
         // KampIcon()
