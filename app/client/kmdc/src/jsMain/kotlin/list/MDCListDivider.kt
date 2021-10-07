@@ -26,7 +26,7 @@ public class MDCListDividerOpts(
  */
 @MDCDsl
 @Composable
-public fun MDCListScope.MDCListDivider(
+public fun MDCListScope<*>.MDCListDivider(
   opts: Builder<MDCListDividerOpts>? = null,
   attrs: Builder<AttrsBuilder<HTMLLIElement>>? = null,
   content: ContentBuilder<HTMLLIElement>? = null,

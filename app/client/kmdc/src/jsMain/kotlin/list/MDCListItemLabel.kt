@@ -21,7 +21,7 @@ public class MDCListItemLabelScope(scope: ElementScope<HTMLLabelElement>) : Elem
  */
 @MDCDsl
 @Composable
-public fun MDCListItemScope.MDCListItemLabel(
+public fun MDCListItemScope<*>.MDCListItemLabel(
   attrs: Builder<AttrsBuilder<HTMLLabelElement>>? = null,
   content: ComposableBuilder<MDCListItemLabelScope>? = null,
 ) {
@@ -36,7 +36,7 @@ public fun MDCListItemScope.MDCListItemLabel(
  */
 @MDCDsl
 @Composable
-public fun MDCListItemScope.MDCListItemLabel(
+public fun MDCListItemScope<*>.MDCListItemLabel(
   text: String,
   forId: String,
   attrs: Builder<AttrsBuilder<HTMLLabelElement>>? = null,

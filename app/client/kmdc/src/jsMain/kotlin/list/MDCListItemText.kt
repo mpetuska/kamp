@@ -18,7 +18,7 @@ public class MDCListItemTextScope(scope: ElementScope<HTMLSpanElement>) : Elemen
  */
 @MDCDsl
 @Composable
-public fun MDCListItemScope.MDCListItemText(
+public fun MDCListItemScope<*>.MDCListItemText(
   attrs: Builder<AttrsBuilder<HTMLSpanElement>>? = null,
   content: ComposableBuilder<MDCListItemTextScope>? = null,
 ) {
@@ -33,7 +33,7 @@ public fun MDCListItemScope.MDCListItemText(
  */
 @MDCDsl
 @Composable
-public fun MDCListItemScope.MDCListItemText(
+public fun MDCListItemScope<*>.MDCListItemText(
   text: String,
   attrs: Builder<AttrsBuilder<HTMLSpanElement>>? = null,
 ) {

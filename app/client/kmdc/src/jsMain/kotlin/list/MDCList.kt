@@ -7,8 +7,10 @@ import dev.petuska.kmdc.MDCDsl
 import dev.petuska.kmdc.mdc
 import org.jetbrains.compose.web.attributes.AttrsBuilder
 import org.jetbrains.compose.web.dom.ElementScope
+import org.jetbrains.compose.web.dom.Nav
 import org.jetbrains.compose.web.dom.Ul
 import org.w3c.dom.Element
+import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLUListElement
 import org.w3c.dom.events.Event
 
@@ -70,7 +72,7 @@ public data class MDCListOpts(
   }
 }
 
-public class MDCListScope(scope: ElementScope<HTMLUListElement>) : ElementScope<HTMLUListElement> by scope
+public class MDCListScope<T : HTMLElement>(scope: ElementScope<T>) : ElementScope<T> by scope
 
 /**
  * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-deprecated-list)
@@ -84,14 +86,48 @@ public class MDCListScope(scope: ElementScope<HTMLUListElement>) : ElementScope<
 public fun MDCList(
   opts: Builder<MDCListOpts>? = null,
   attrs: Builder<AttrsBuilder<HTMLUListElement>>? = null,
-  content: ComposableBuilder<MDCListScope>? = null,
+  content: ComposableBuilder<MDCListScope<HTMLUListElement>>? = null,
 ) {
   MDCListStyle
   val options = MDCListOpts().apply { opts?.invoke(this) }
 
   Ul(attrs = {
     classes("mdc-deprecated-list", *options.size.classes, *options.type.classes)
-    if(options.singleSelection) attr("role", "listbox")
+    if (options.singleSelection) attr("role", "listbox")
+    attrs?.invoke(this)
+  }) {
+    DomSideEffect {
+      val mdc = MDCListModule.MDCList.attachTo(it)
+      mdc.singleSelection = options.singleSelection
+      it.mdc = mdc
+    }
+    DomSideEffect(options.singleSelection) {
+      it.mdc<MDCListModule.MDCList> { singleSelection = options.singleSelection }
+    }
+    content?.let { MDCListScope(this).it() }
+  }
+}
+
+/**
+ * [JS API](https://github.com/material-components/material-components-web/tree/v13.0.0/packages/mdc-deprecated-list)
+ */
+@MDCDsl
+@Composable
+@Deprecated(
+  "Based on already deprecated MDC List. New implementation is still in the works.",
+  level = DeprecationLevel.WARNING
+)
+public fun MDCNavList(
+  opts: Builder<MDCListOpts>? = null,
+  attrs: Builder<AttrsBuilder<HTMLElement>>? = null,
+  content: ComposableBuilder<MDCListScope<HTMLElement>>? = null,
+) {
+  MDCListStyle
+  val options = MDCListOpts().apply { opts?.invoke(this) }
+
+  Nav(attrs = {
+    classes("mdc-deprecated-list", *options.size.classes, *options.type.classes)
+    if (options.singleSelection) attr("role", "listbox")
     attrs?.invoke(this)
   }) {
     DomSideEffect {

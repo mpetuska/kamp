@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import app.client.AppContext
 import app.client.store.action.AppAction
 import app.client.store.state.Page
+import app.client.view.component.PageList
 import app.client.view.page.search.SearchPage
 import app.softwork.routingcompose.HashRouter
 import dev.petuska.kmdc.typography.MDCBody1
@@ -15,6 +16,7 @@ fun AppContext.AppRoutes() {
       noMatch {
         dispatch(AppAction.SetPage(Page.Home))
         MDCBody1("Home")
+        PageList(*Page.values())
       }
     }
     route(Page.Search.route) {

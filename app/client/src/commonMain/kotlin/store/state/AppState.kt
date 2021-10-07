@@ -6,7 +6,7 @@ import domain.PagedResponse
 
 data class AppState(
   val env: AppEnv,
-  val page:Page = Page.Home,
+  val page: Page = Page.Home,
   val count: Long? = null,
   val libraries: PagedResponse<KotlinMPPLibrary>? = null,
   val search: String? = null,

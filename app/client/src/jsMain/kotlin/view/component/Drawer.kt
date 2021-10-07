@@ -13,12 +13,11 @@ import dev.petuska.kmdc.drawer.MDCDrawerOpts
 import dev.petuska.kmdc.drawer.MDCDrawerScrim
 import dev.petuska.kmdc.drawer.MDCDrawerSubtitle
 import dev.petuska.kmdc.drawer.MDCDrawerTitle
-import dev.petuska.kmdc.list.MDCList
 import dev.petuska.kmdc.list.MDCListItem
 import dev.petuska.kmdc.list.MDCListItemText
-import dev.petuska.kmdc.list.MDCListModule
+import dev.petuska.kmdc.list.MDCNavList
 import dev.petuska.kmdc.typography.mdcTypography
-import kotlinx.browser.window
+import org.jetbrains.compose.web.attributes.href
 
 @Composable
 fun AppContext.Drawer() {
@@ -51,19 +50,18 @@ fun AppContext.Drawer() {
 }
 
 @Composable
-private fun AppContext.PageList(vararg pages: Page) {
+fun AppContext.PageList(vararg pages: Page) {
   val current by select { page }
-  MDCList(
+  MDCNavList(
     opts = { singleSelection = true },
     attrs = {
       addEventListener("MDCList:action") {
-        val nextPage = it.nativeEvent.unsafeCast<MDCListModule.MDCListActionEvent>().detail.index
         dispatch(AppAction.SetDrawer(false))
-        window.location.hash = pages[nextPage].route
       }
-    }) {
+    }
+  ) {
     pages.forEach { page ->
-      MDCListItem({ activated = page == current }) {
+      MDCListItem({ activated = page == current }, { href("#${page.route}") }) {
         MDCListItemText(page.name)
       }
     }
