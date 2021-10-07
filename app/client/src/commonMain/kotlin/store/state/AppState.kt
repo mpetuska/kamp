@@ -6,6 +6,7 @@ import domain.PagedResponse
 
 data class AppState(
   val env: AppEnv,
+  val page:Page = Page.Home,
   val count: Long? = null,
   val libraries: PagedResponse<KotlinMPPLibrary>? = null,
   val search: String? = null,
@@ -14,3 +15,12 @@ data class AppState(
   val progress: Number? = null,
   val loading: Boolean = false,
 )
+
+enum class Page {
+  Home, Search, Statistics, Random;
+
+  val route: String = name.lowercase()
+  override fun toString(): String {
+    return route
+  }
+}

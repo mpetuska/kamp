@@ -91,6 +91,7 @@ public fun MDCList(
 
   Ul(attrs = {
     classes("mdc-deprecated-list", *options.size.classes, *options.type.classes)
+    if(options.singleSelection) attr("role", "listbox")
     attrs?.invoke(this)
   }) {
     DomSideEffect {

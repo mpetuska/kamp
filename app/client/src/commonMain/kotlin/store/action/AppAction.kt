@@ -1,5 +1,6 @@
 package app.client.store.action
 
+import app.client.store.state.Page
 import domain.KotlinMPPLibrary
 import domain.PagedResponse
 
@@ -13,4 +14,5 @@ sealed class AppAction {
   data class RemoveTarget(val target: String) : AppAction()
   data class SetCount(val count: Long?) : AppAction()
   data class SetLoading(val loading: Boolean, val progress: Number? = null) : AppAction()
+  data class SetPage(val page: Page) : AppAction()
 }

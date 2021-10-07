@@ -36,7 +36,8 @@ public fun MDCListScope.MDCListItem(
     classes("mdc-deprecated-list-item")
     if (options.disabled) classes("mdc-deprecated-list-item--disabled")
     if (options.selected) classes("mdc-deprecated-list-item--selected")
-    if (options.selected) classes("mdc-deprecated-list-item--selected")
+    if (options.activated) classes("mdc-deprecated-list-item--activated")
+    if (options.selected || options.activated) tabIndex(0)
     attrs?.invoke(this)
   }) {
     Span(attrs = { classes("mdc-deprecated-list-item__ripple") }) {
