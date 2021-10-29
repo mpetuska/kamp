@@ -1,4 +1,4 @@
-package app.client.config
+package dev.petuska.kamp.client.config
 
 @Suppress("PropertyName")
 interface AppEnv {

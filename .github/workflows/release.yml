@@ -47,14 +47,14 @@ jobs:
           tag_with_sha: true
           add_git_labels: true
           tags: latest
-      - name: Build Scanner Docker image & push to GitHub Packages
+      - name: Build CLI Docker image & push to GitHub Packages
         uses: docker/build-push-action@v1
         with:
-          path: scanner
+          path: app/cli/
           username: ${{ github.actor }}
           password: ${{ github.token }}
           registry: docker.pkg.github.com
-          repository: mpetuska/kamp/scanner
+          repository: mpetuska/kamp/cli
           tag_with_ref: true
           tag_with_sha: true
           add_git_labels: true

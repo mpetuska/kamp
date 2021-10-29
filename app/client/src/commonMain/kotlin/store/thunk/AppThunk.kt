@@ -1,16 +1,14 @@
-package app.client.store.thunk
+package dev.petuska.kamp.client.store.thunk
 
-import app.client.AppContext
-import app.client.store.action.AppAction
-import app.client.store.state.AppState
-import app.client.util.suspending
-import org.kodein.di.instance
+import dev.petuska.kamp.client.store.action.AppAction
+import dev.petuska.kamp.client.store.state.AppState
+import dev.petuska.kamp.client.util.suspending
+import dev.petuska.kamp.core.service.LibraryService
 import org.reduxkotlin.Thunk
-import service.LibraryService
 
 typealias AppThunk = Thunk<AppState>
 
-fun AppContext.fetchLibraryPage(
+fun LibraryService.fetchLibraryPage(
   page: Int,
   size: Int = 12,
   search: String? = null,
@@ -21,9 +19,8 @@ fun AppContext.fetchLibraryPage(
     val theSearch = (search ?: state.search)?.takeIf(String::isNotEmpty)
     val theTargets = (targets ?: state.targets)?.takeIf(Set<String>::isNotEmpty)
 
-    val service by instance<LibraryService>()
     dispatch(AppAction.SetLoading(true))
-    val theLibraries = service.getAll(page, size, theSearch, theTargets) { current, total ->
+    val theLibraries = getAll(page, size, theSearch, theTargets) { current, total ->
       dispatch(AppAction.SetLoading(true, total.toDouble() / current))
     }
     dispatch(AppAction.SetSearch(theSearch))
@@ -33,7 +30,7 @@ fun AppContext.fetchLibraryPage(
   }
 }
 
-fun AppContext.fetchLibraryCount(
+fun LibraryService.fetchLibraryCount(
   search: String? = null,
   targets: Set<String>? = null,
 ): AppThunk = { dispatch, getState, _ ->
@@ -42,8 +39,7 @@ fun AppContext.fetchLibraryCount(
     val theSearch = (search ?: state.search)?.takeIf(String::isNotEmpty)
     val theTargets = (targets ?: state.targets)?.takeIf(Set<String>::isNotEmpty)
 
-    val service by instance<LibraryService>()
-    val theCount = service.getCount(theSearch, theTargets).count
+    val theCount = getCount(theSearch, theTargets).count
 
     dispatch(AppAction.SetCount(theCount))
     dispatch(AppAction.SetSearch(theSearch))

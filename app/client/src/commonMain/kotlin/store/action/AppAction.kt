@@ -1,8 +1,8 @@
-package app.client.store.action
+package dev.petuska.kamp.client.store.action
 
-import app.client.store.state.Page
-import domain.KotlinMPPLibrary
-import domain.PagedResponse
+import dev.petuska.kamp.client.store.state.Page
+import dev.petuska.kamp.core.domain.KotlinMPPLibrary
+import dev.petuska.kamp.core.domain.PagedResponse
 
 sealed class AppAction {
   object ToggleDrawer : AppAction()

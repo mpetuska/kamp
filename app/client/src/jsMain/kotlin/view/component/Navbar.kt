@@ -1,12 +1,12 @@
-package app.client.view.component
+package dev.petuska.kamp.client.view.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import app.client.AppContext
-import app.client.store.action.AppAction
-import app.client.util.FABIcon
-import app.client.util.select
-import app.client.view.style.AppStyle
+import dev.petuska.kamp.client.store.AppStore
+import dev.petuska.kamp.client.store.action.AppAction
+import dev.petuska.kamp.client.util.FABIcon
+import dev.petuska.kamp.client.util.select
+import dev.petuska.kamp.client.view.style.AppStyle
 import dev.petuska.kmdc.linear.progress.MDCLinearProgress
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBar
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarActionLink
@@ -41,6 +41,7 @@ import org.jetbrains.compose.web.css.top
 import org.jetbrains.compose.web.css.width
 import org.jetbrains.compose.web.dom.Img
 import org.jetbrains.compose.web.dom.Text
+import org.kodein.di.compose.rememberInstance
 
 object NavbarStyle : StyleSheet(AppStyle) {
   val container by style {
@@ -70,9 +71,10 @@ object NavbarStyle : StyleSheet(AppStyle) {
 }
 
 @Composable
-fun AppContext.Navbar(scope: MDCTopAppBarContextScope) {
+fun MDCTopAppBarContextScope.Navbar() {
+  val store by rememberInstance<AppStore>()
   val drawerOpen by select { drawerOpen }
-  scope.MDCTopAppBar(
+  MDCTopAppBar(
     attrs = {
       classes(NavbarStyle.container)
       mdcTypography()
@@ -83,7 +85,7 @@ fun AppContext.Navbar(scope: MDCTopAppBarContextScope) {
         MDCTopAppBarNavigationButton(attrs = {
           classes("material-icons")
           onClick {
-            dispatch(AppAction.ToggleDrawer)
+            store.dispatch(AppAction.ToggleDrawer)
           }
         }) {
           Text(if (drawerOpen) "close" else "menu")
@@ -115,7 +117,7 @@ fun AppContext.Navbar(scope: MDCTopAppBarContextScope) {
 }
 
 @Composable
-private fun AppContext.ProgressBar() {
+private fun ProgressBar() {
   val loading by select { loading }
   val progress by select { progress }
   MDCLinearProgress(

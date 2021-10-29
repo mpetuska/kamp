@@ -1,13 +1,14 @@
-package app.client
+package dev.petuska.kamp.client
 
-import app.client.view.App
-import app.client.view.style.AppStyle
+import dev.petuska.kamp.client.view.App
+import dev.petuska.kamp.client.view.KampApp
+import dev.petuska.kamp.client.view.style.AppStyle
 import org.jetbrains.compose.web.css.Style
 import org.jetbrains.compose.web.renderComposable
 
 actual suspend fun AppContext.start() {
   renderComposable(rootElementId = "root") {
     Style(AppStyle)
-    App()
+    KampApp(di) { App() }
   }
 }

@@ -1,6 +1,6 @@
-package app.server.util
+package dev.petuska.kamp.server.util
 
-import util.Env
+import dev.petuska.kamp.core.util.Env
 
 object PrivateEnv : Env() {
   val MONGO_STRING by EnvDelegate { it ?: "mongodb://localhost:27017" }

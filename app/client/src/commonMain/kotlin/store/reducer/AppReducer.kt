@@ -1,7 +1,7 @@
-package app.client.store.reducer
+package dev.petuska.kamp.client.store.reducer
 
-import app.client.store.action.AppAction
-import app.client.store.state.AppState
+import dev.petuska.kamp.client.store.action.AppAction
+import dev.petuska.kamp.client.store.state.AppState
 import org.reduxkotlin.ReducerForActionType
 import org.reduxkotlin.reducerForActionType
 

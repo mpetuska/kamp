@@ -1,4 +1,4 @@
-package app.client.view.component
+package dev.petuska.kamp.client.view.component
 
 import androidx.compose.runtime.Composable
 import dev.petuska.kmdc.Builder

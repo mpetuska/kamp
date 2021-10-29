@@ -11,5 +11,6 @@ libs/
 build
 .terraform/
 *.tfvars
+nohup.out
 graalvm-ce-*.tar.gz
 app/client/externals

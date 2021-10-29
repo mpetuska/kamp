@@ -1,6 +1,6 @@
-package app.server.config
+package dev.petuska.kamp.server.config
 
-import app.server.util.PrivateEnv
+import dev.petuska.kamp.server.util.PrivateEnv
 import io.ktor.application.Application
 import io.ktor.application.install
 import io.ktor.auth.Authentication
@@ -19,9 +19,7 @@ import kotlinx.serialization.cbor.Cbor
 import org.slf4j.event.Level
 
 fun Application.features() {
-  install(CallLogging) {
-    level = Level.INFO
-  }
+  install(CallLogging) { level = Level.INFO }
   install(ContentNegotiation) {
     json()
     serialization(ContentType.Application.Cbor, Cbor.Default)
@@ -33,7 +31,8 @@ fun Application.features() {
   install(Authentication) {
     basic {
       validate { credentials ->
-        if (credentials.name == PrivateEnv.ADMIN_USER && credentials.password == PrivateEnv.ADMIN_PASSWORD) {
+        if (credentials.name == PrivateEnv.ADMIN_USER &&
+            credentials.password == PrivateEnv.ADMIN_PASSWORD) {
           UserIdPrincipal(credentials.name)
         } else {
           null

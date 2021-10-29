@@ -1,9 +1,9 @@
-package app.server
+package dev.petuska.kamp.server
 
-import app.server.config.diConfig
-import app.server.config.features
-import app.server.config.routing
-import app.server.util.PublicEnv
+import dev.petuska.kamp.server.config.diConfig
+import dev.petuska.kamp.server.config.features
+import dev.petuska.kamp.server.config.routing
+import dev.petuska.kamp.server.util.PublicEnv
 import io.ktor.application.Application
 import io.ktor.application.log
 import io.ktor.server.cio.EngineMain

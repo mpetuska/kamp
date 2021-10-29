@@ -1,7 +1,12 @@
-package app.client.config
+package dev.petuska.kamp.client.config
 
-import app.client.util.CborFeature
-import app.client.util.UrlUtils
+import dev.petuska.kamp.client.store.AppStore
+import dev.petuska.kamp.client.store.state.AppState
+import dev.petuska.kamp.client.util.CborFeature
+import dev.petuska.kamp.client.util.UrlUtils
+import dev.petuska.kamp.core.service.LibraryService
+import dev.petuska.kamp.core.service.LibraryServiceImpl
+import dev.petuska.kamp.core.util.DIModule
 import io.ktor.client.HttpClient
 import io.ktor.client.features.defaultRequest
 import io.ktor.client.features.json.JsonFeature
@@ -15,9 +20,7 @@ import org.kodein.di.bind
 import org.kodein.di.instance
 import org.kodein.di.provider
 import org.kodein.di.singleton
-import service.LibraryService
-import service.LibraryServiceImpl
-import util.DIModule
+import org.reduxkotlin.Store
 
 private fun loadServices(): DI.Module {
   val services by DIModule {
@@ -26,7 +29,7 @@ private fun loadServices(): DI.Module {
   return services
 }
 
-fun loadDI(env: AppEnv) = DI {
+fun loadDI(env: AppEnv, store: Store<AppState>) = DI {
   bind<Json>() with provider { Json }
   bind<HttpClient>() with singleton {
     HttpClient {
@@ -41,6 +44,7 @@ fun loadDI(env: AppEnv) = DI {
     }
   }
   bind<AppEnv>() with instance(env)
+  bind<AppStore>() with instance(store)
   bind<UrlUtils>() with singleton { UrlUtils(instance()) }
   import(loadServices())
 }

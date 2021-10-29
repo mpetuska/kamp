@@ -1,8 +1,8 @@
-package app.client.store.state
+package dev.petuska.kamp.client.store.state
 
-import app.client.config.AppEnv
-import domain.KotlinMPPLibrary
-import domain.PagedResponse
+import dev.petuska.kamp.client.config.AppEnv
+import dev.petuska.kamp.core.domain.KotlinMPPLibrary
+import dev.petuska.kamp.core.domain.PagedResponse
 
 data class AppState(
   val env: AppEnv,

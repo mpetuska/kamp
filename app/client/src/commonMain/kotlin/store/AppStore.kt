@@ -1,8 +1,8 @@
-package app.client.store
+package dev.petuska.kamp.client.store
 
-import app.client.config.AppEnv
-import app.client.store.reducer.loadReducer
-import app.client.store.state.AppState
+import dev.petuska.kamp.client.config.AppEnv
+import dev.petuska.kamp.client.store.reducer.loadReducer
+import dev.petuska.kamp.client.store.state.AppState
 import org.reduxkotlin.Store
 import org.reduxkotlin.applyMiddleware
 import org.reduxkotlin.createStore

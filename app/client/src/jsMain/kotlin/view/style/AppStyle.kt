@@ -1,4 +1,4 @@
-package app.client.view.style
+package dev.petuska.kamp.client.view.style
 
 import org.jetbrains.compose.web.css.AlignItems
 import org.jetbrains.compose.web.css.DisplayStyle

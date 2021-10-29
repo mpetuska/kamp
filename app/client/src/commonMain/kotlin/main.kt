@@ -1,10 +1,10 @@
-package app.client
+package dev.petuska.kamp.client
 
-import app.client.config.AppEnv
-import app.client.config.loadDI
-import app.client.config.loadEnv
-import app.client.store.AppStore
-import app.client.store.loadStore
+import dev.petuska.kamp.client.config.AppEnv
+import dev.petuska.kamp.client.config.loadDI
+import dev.petuska.kamp.client.config.loadEnv
+import dev.petuska.kamp.client.store.AppStore
+import dev.petuska.kamp.client.store.loadStore
 import org.kodein.di.DI
 
 data class AppContext(
@@ -19,8 +19,8 @@ expect suspend fun AppContext.start()
 suspend fun main(vararg args: String) {
   val argsSet = args.toSet()
   val env = loadEnv(argsSet)
-  val di = loadDI(env)
   val store = loadStore(env)
+  val di = loadDI(env, store)
   AppContext(
     args = argsSet,
     env = env,

@@ -13,17 +13,15 @@ plugins {
 }
 
 refreshVersions {
-  extraArtifactVersionKeyRules(file("refreshVersions.rules"))
+  extraArtifactVersionKeyRules(file("versions.rules"))
 }
-
-enableFeaturePreview("VERSION_CATALOGS")
 
 rootProject.name = "kamp"
 include(
-  ":shared",
-  ":scanner",
-  ":app:common",
+  ":lib:core",
+  ":lib:kmdc",
+  ":lib:fullstack",
+  ":app:cli",
   ":app:server",
   ":app:client",
-  ":app:client:kmdc",
 )

@@ -1,4 +1,4 @@
-package app.client.util
+package dev.petuska.kamp.client.util
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

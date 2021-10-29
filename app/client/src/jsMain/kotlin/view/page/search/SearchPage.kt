@@ -1,8 +1,7 @@
-package app.client.view.page.search
+package dev.petuska.kamp.client.view.page.search
 
 import androidx.compose.runtime.Composable
-import app.client.AppContext
-import app.client.view.style.AppStyle
+import dev.petuska.kamp.client.view.style.AppStyle
 import dev.petuska.kmdc.button.MDCButtonLabel
 import dev.petuska.kmdc.card.MDCCard
 import dev.petuska.kmdc.card.MDCCardActionButton
@@ -25,7 +24,7 @@ import org.jetbrains.compose.web.css.backgroundImage
 import org.jetbrains.compose.web.dom.Text
 
 @Composable
-fun AppContext.SearchPage() {
+fun SearchPage() {
   MDCLayoutGrid {
     MDCLayoutGridCells {
       MDCLayoutGridCell({ span = 12u }, { classes(AppStyle.centered) }) {

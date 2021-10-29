@@ -1,11 +1,11 @@
-package app.client.view.component
+package dev.petuska.kamp.client.view.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import app.client.AppContext
-import app.client.store.action.AppAction
-import app.client.store.state.Page
-import app.client.util.select
+import dev.petuska.kamp.client.store.AppStore
+import dev.petuska.kamp.client.store.action.AppAction
+import dev.petuska.kamp.client.store.state.Page
+import dev.petuska.kamp.client.util.select
 import dev.petuska.kmdc.drawer.MDCDrawer
 import dev.petuska.kmdc.drawer.MDCDrawerContent
 import dev.petuska.kmdc.drawer.MDCDrawerHeader
@@ -18,10 +18,12 @@ import dev.petuska.kmdc.list.MDCListItemText
 import dev.petuska.kmdc.list.MDCNavList
 import dev.petuska.kmdc.typography.mdcTypography
 import org.jetbrains.compose.web.attributes.href
+import org.kodein.di.compose.rememberInstance
 
 @Composable
-fun AppContext.Drawer() {
+fun Drawer() {
   val open by select { drawerOpen }
+  val store by rememberInstance<AppStore>()
 
   MDCDrawer(
     opts = {
@@ -31,10 +33,10 @@ fun AppContext.Drawer() {
     attrs = {
       mdcTypography()
       addEventListener("MDCDrawer:opened") {
-        dispatch(AppAction.SetDrawer(true))
+        store.dispatch(AppAction.SetDrawer(true))
       }
       addEventListener("MDCDrawer:closed") {
-        dispatch(AppAction.SetDrawer(false))
+        store.dispatch(AppAction.SetDrawer(false))
       }
     }
   ) {
@@ -50,13 +52,14 @@ fun AppContext.Drawer() {
 }
 
 @Composable
-fun AppContext.PageList(vararg pages: Page) {
+fun PageList(vararg pages: Page) {
   val current by select { page }
+  val store by rememberInstance<AppStore>()
   MDCNavList(
     opts = { singleSelection = true },
     attrs = {
       addEventListener("MDCList:action") {
-        dispatch(AppAction.SetDrawer(false))
+        store.dispatch(AppAction.SetDrawer(false))
       }
     }
   ) {

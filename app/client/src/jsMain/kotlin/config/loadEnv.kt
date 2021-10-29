@@ -1,4 +1,4 @@
-package app.client.config
+package dev.petuska.kamp.client.config
 
 import kotlinx.browser.window
 import kotlinx.coroutines.await

@@ -1,11 +1,12 @@
-package app.server.config
+package dev.petuska.kamp.server.config
 
-import app.server.util.PublicEnv
-import app.server.util.inject
-import app.server.util.page
-import app.server.util.pageSize
-import app.server.util.search
-import app.server.util.targets
+import dev.petuska.kamp.core.service.LibraryService
+import dev.petuska.kamp.server.util.PublicEnv
+import dev.petuska.kamp.server.util.inject
+import dev.petuska.kamp.server.util.page
+import dev.petuska.kamp.server.util.pageSize
+import dev.petuska.kamp.server.util.search
+import dev.petuska.kamp.server.util.targets
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.auth.authenticate
@@ -24,7 +25,6 @@ import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.route
 import io.ktor.routing.routing
-import service.LibraryService
 
 fun Application.routing() = routing {
   libraries()
@@ -33,31 +33,30 @@ fun Application.routing() = routing {
   staticContent()
 }
 
-private fun Route.libraries() = route(LibraryService.PATH) {
-  get {
-    val service by inject<LibraryService>()
-    call.respond(
-      service.getAll(
-        call.request.page,
-        call.request.pageSize,
-        call.request.search,
-        call.request.targets
-      )
-    )
-  }
-  get("/count") {
-    val service by inject<LibraryService>()
-    call.respond(service.getCount(call.request.search, call.request.targets))
-  }
+private fun Route.libraries() =
+    route(LibraryService.PATH) {
+      get {
+        val service by inject<LibraryService>()
+        call.respond(
+            service.getAll(
+                call.request.page,
+                call.request.pageSize,
+                call.request.search,
+                call.request.targets))
+      }
+      get("/count") {
+        val service by inject<LibraryService>()
+        call.respond(service.getCount(call.request.search, call.request.targets))
+      }
 
-  authenticate {
-    post {
-      val service by inject<LibraryService>()
-      val entity = service.create(call.receive())
-      call.respond(HttpStatusCode.Created, entity)
+      authenticate {
+        post {
+          val service by inject<LibraryService>()
+          val entity = service.create(call.receive())
+          call.respond(HttpStatusCode.Created, entity)
+        }
+      }
     }
-  }
-}
 
 private fun Routing.staticContent() = static {
   val folder = "WEB-INF"

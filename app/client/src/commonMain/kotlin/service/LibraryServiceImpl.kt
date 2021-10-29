@@ -1,13 +1,13 @@
-package service
+package dev.petuska.kamp.core.service
 
-import app.client.util.UrlUtils
-import domain.KotlinMPPLibrary
-import domain.LibraryCount
-import domain.PagedResponse
+import dev.petuska.kamp.client.util.UrlUtils
+import dev.petuska.kamp.core.domain.KotlinMPPLibrary
+import dev.petuska.kamp.core.domain.LibraryCount
+import dev.petuska.kamp.core.domain.PagedResponse
+import dev.petuska.kamp.core.service.LibraryService.Companion.PATH
 import io.ktor.client.HttpClient
 import io.ktor.client.features.onDownload
 import io.ktor.client.request.get
-import service.LibraryService.Companion.PATH
 
 class LibraryServiceImpl(private val client: HttpClient, private val urlUtils: UrlUtils) : LibraryService {
   private fun String.toApiUrl() = with(urlUtils) { toApiUrl() }

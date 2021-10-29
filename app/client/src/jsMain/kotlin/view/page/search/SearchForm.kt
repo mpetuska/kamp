@@ -1,13 +1,15 @@
-package app.client.view.page.search
+package dev.petuska.kamp.client.view.page.search
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import app.client.AppContext
-import app.client.store.action.AppAction
-import app.client.store.thunk.fetchLibraryPage
-import app.client.util.select
-import app.client.view.style.AppStyle
+import dev.petuska.kamp.client.store.AppStore
+import dev.petuska.kamp.client.store.action.AppAction
+import dev.petuska.kamp.client.store.thunk.fetchLibraryPage
+import dev.petuska.kamp.client.util.select
+import dev.petuska.kamp.client.view.style.AppStyle
+import dev.petuska.kamp.core.domain.KotlinTarget
+import dev.petuska.kamp.core.service.LibraryService
 import dev.petuska.kmdc.button.MDCButton
 import dev.petuska.kmdc.button.MDCButtonIcon
 import dev.petuska.kmdc.button.MDCButtonLabel
@@ -20,15 +22,15 @@ import dev.petuska.kmdc.layout.grid.MDCLayoutGridScope
 import dev.petuska.kmdc.textfield.MDCTextField
 import dev.petuska.kmdc.textfield.MDCTextFieldCommonOpts
 import dev.petuska.kmdc.typography.MDCOverline
-import domain.KotlinTarget
 import org.jetbrains.compose.web.dom.Text
+import org.kodein.di.compose.rememberInstance
 
 @Composable
-fun AppContext.SearchForm(mdcLayoutGridScope: MDCLayoutGridScope) {
+fun SearchForm(mdcLayoutGridScope: MDCLayoutGridScope) {
   with(mdcLayoutGridScope) {
     MDCLayoutGridCells {
       MDCLayoutGridCell({ span = 12u }) {
-        TextFilter(this)
+       TextFilter(this)
       }
       MDCLayoutGridCell({ span = 12u }) {
         TargetsFilter(this)
@@ -38,7 +40,7 @@ fun AppContext.SearchForm(mdcLayoutGridScope: MDCLayoutGridScope) {
 }
 
 @Composable
-private fun AppContext.TargetsFilter(mdcLayoutGridScope: MDCLayoutGridScope) = with(mdcLayoutGridScope) {
+private fun TargetsFilter(mdcLayoutGridScope: MDCLayoutGridScope) = with(mdcLayoutGridScope) {
   MDCLayoutGridCells {
     MDCLayoutGridCell({ span = 12u }, { classes(AppStyle.centered) }) {
       MDCOverline("Targets Filter")
@@ -60,10 +62,11 @@ private fun AppContext.TargetsFilter(mdcLayoutGridScope: MDCLayoutGridScope) = w
 }
 
 @Composable
-private fun AppContext.TargetGroup(
+private fun TargetGroup(
   category: String,
   groupTargets: Set<String>
 ) {
+  val store by rememberInstance<AppStore>()
   val selectedTargets by select { targets ?: setOf() }
   val allSelected = remember(selectedTargets) {
     selectedTargets.containsAll(groupTargets)
@@ -82,11 +85,11 @@ private fun AppContext.TargetGroup(
         onInput {
           if (it.value) {
             groupTargets.forEach { target ->
-              dispatch(AppAction.AddTarget(target))
+       store.       dispatch(AppAction.AddTarget(target))
             }
           } else {
             groupTargets.forEach { target ->
-              dispatch(AppAction.RemoveTarget(target))
+        store.      dispatch(AppAction.RemoveTarget(target))
             }
           }
         }
@@ -102,11 +105,10 @@ private fun AppContext.TargetGroup(
         attrs = {
           checked(target in selectedTargets)
           onInput {
-            println("[$target]. Selected: $selectedTargets, $allSelected, $noneSelected")
             if (it.value) {
-              dispatch(AppAction.AddTarget(target))
+        store.      dispatch(AppAction.AddTarget(target))
             } else {
-              dispatch(AppAction.RemoveTarget(target))
+       store.       dispatch(AppAction.RemoveTarget(target))
             }
           }
         }
@@ -116,14 +118,16 @@ private fun AppContext.TargetGroup(
 }
 
 @Composable
-private fun AppContext.TextFilter(mdcLayoutGridScope: MDCLayoutGridScope) = with(mdcLayoutGridScope) {
+private fun TextFilter(mdcLayoutGridScope: MDCLayoutGridScope) = with(mdcLayoutGridScope) {
+val store by rememberInstance<AppStore>()
   val search by select { search }
   val targets by select { targets }
+  val libraryService by rememberInstance<LibraryService>()
 
   val submit = remember(search, targets) {
     {
-      dispatch(
-        fetchLibraryPage(
+    store.  dispatch(
+      libraryService.fetchLibraryPage(
           page = 1,
           search = search,
           targets = targets,
@@ -142,7 +146,7 @@ private fun AppContext.TextFilter(mdcLayoutGridScope: MDCLayoutGridScope) = with
           onKeyDown {
             if (it.key == "Enter") submit()
           }
-          onInput { dispatch(AppAction.SetSearch(it.value.takeIf(String::isNotBlank))) }
+          onInput { store.dispatch(AppAction.SetSearch(it.value.takeIf(String::isNotBlank))) }
           value(search ?: "")
         }
       )

@@ -1,4 +1,4 @@
-package app.client.util
+package dev.petuska.kamp.client.util
 
 import io.ktor.client.HttpClient
 import io.ktor.client.features.HttpClientFeature
