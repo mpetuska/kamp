@@ -1,9 +1,7 @@
 package dev.petuska.kamp.core.domain
 
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
-@Serializable
 data class KotlinMPPLibrary(
   override val group: String,
   override val name: String,
@@ -35,12 +33,8 @@ data class KotlinMPPLibrary(
     scm = scm
   )
 
-  val _id: String
+  val _id: String = "$group:$name"
 
   @Transient
   val isMultiplatform: Boolean = targets.size > 1
-
-  init {
-    _id = "$group:$name"
-  }
 }

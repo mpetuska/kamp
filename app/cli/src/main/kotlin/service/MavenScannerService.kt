@@ -26,7 +26,7 @@ abstract class MavenScannerService<A : MavenArtifact> : Closeable {
       cliOptions: CLIOptions? = null,
   ): ReceiveChannel<A>
 
-  fun CoroutineScope.scanMavenArtefacts(cliOptions: CLIOptions? = null): Flow<A> =
+  private fun CoroutineScope.scanMavenArtefacts(cliOptions: CLIOptions? = null): Flow<A> =
       run {
             logger.info(
                 "Scanning from repository root and filtering by ${cliOptions?.include ?: setOf()}, explicitly excluding ${cliOptions?.exclude ?: setOf()}")
@@ -44,21 +44,19 @@ abstract class MavenScannerService<A : MavenArtifact> : Closeable {
             .mapNotNull { artefact -> client.getGradleModule(artefact)?.let { artefact to it } }
             .mapNotNull { (artefact, module) ->
               with(gradleModuleProcessor) {
-                module.supportedTargets
-                    ?.takeIf { module.isRootModule && !it.isNullOrEmpty() }
-                    ?.let {
-                      client.getMavenPom(artefact)?.let { pom ->
-                        with(pomProcessor) {
-                          KotlinMPPLibrary(
-                              targets = it,
-                              artifact = artefact,
-                              description = pom.description,
-                              website = pom.url,
-                              scm = pom.scmUrl,
-                          )
-                        }
-                      }
+                module.supportedTargets?.takeIf { module.isRootModule && it.isNotEmpty() }?.let {
+                  client.getMavenPom(artefact)?.let { pom ->
+                    with(pomProcessor) {
+                      KotlinMPPLibrary(
+                          targets = it,
+                          artifact = artefact,
+                          description = pom.description,
+                          website = pom.url,
+                          scm = pom.scmUrl,
+                      )
                     }
+                  }
+                }
               }
             }
             .collect(::send)

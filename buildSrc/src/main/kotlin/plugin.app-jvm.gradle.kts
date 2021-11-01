@@ -1,7 +1,8 @@
 plugins {
-  id("plugin.common")
   kotlin("jvm")
   kotlin("plugin.serialization")
+  id("plugin.common")
+  id("dev.petuska.klip")
 }
 
 java {
@@ -13,7 +14,11 @@ kotlin {
   sourceSets {
     test {
       dependencies {
-        implementation(kotlin("test-junit5"))
+        implementation("dev.petuska:klip:_")
+        implementation("io.kotest:kotest-runner-junit5:_")
+        implementation("io.kotest:kotest-framework-engine:_")
+        implementation("io.kotest:kotest-assertions-core:_")
+        implementation("io.kotest:kotest-property:_")
       }
     }
   }

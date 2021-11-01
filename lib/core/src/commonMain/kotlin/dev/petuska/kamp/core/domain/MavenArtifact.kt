@@ -1,6 +1,5 @@
 package dev.petuska.kamp.core.domain
 
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
 interface MavenArtifact {
@@ -20,7 +19,6 @@ interface MavenArtifact {
     get() = "$group:$name:$version"
 }
 
-@Serializable
 data class MavenArtifactImpl(
   override val group: String,
   override val name: String,
