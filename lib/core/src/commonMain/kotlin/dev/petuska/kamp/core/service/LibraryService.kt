@@ -1,6 +1,6 @@
 package dev.petuska.kamp.core.service
 
-import dev.petuska.kamp.core.domain.KotlinMPPLibrary
+import dev.petuska.kamp.core.domain.KotlinLibrary
 import dev.petuska.kamp.core.domain.LibraryCount
 import dev.petuska.kamp.core.domain.PagedResponse
 
@@ -13,9 +13,9 @@ interface LibraryService {
     search: String?,
     targets: Set<String>?,
     onProgress: (suspend (current: Long, total: Long) -> Unit)? = null
-  ): PagedResponse<KotlinMPPLibrary>
+  ): PagedResponse<KotlinLibrary>
 
-  suspend fun create(library: KotlinMPPLibrary)
+  suspend fun create(library: KotlinLibrary)
 
   companion object {
     const val PATH = "/api/libraries"

@@ -5,7 +5,7 @@ import dev.petuska.kamp.cli.domain.CLIOptions
 import dev.petuska.kamp.cli.processor.GradleModuleProcessor
 import dev.petuska.kamp.cli.processor.PomProcessor
 import dev.petuska.kamp.cli.util.supervisedLaunch
-import dev.petuska.kamp.core.domain.MavenArtifactImpl
+import dev.petuska.kamp.core.domain.SimpleMavenArtefact
 import kotlin.time.Duration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
@@ -14,13 +14,13 @@ import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.delay
 
 class MavenScannerServiceImpl(
-    override val client: MavenRepositoryClient<MavenArtifactImpl>,
+    override val client: MavenRepositoryClient<SimpleMavenArtefact>,
     override val pomProcessor: PomProcessor,
     override val gradleModuleProcessor: GradleModuleProcessor,
-) : MavenScannerService<MavenArtifactImpl>() {
+) : MavenScannerService<SimpleMavenArtefact>() {
   override fun CoroutineScope.produceArtifacts(
       cliOptions: CLIOptions?,
-  ): ReceiveChannel<MavenArtifactImpl> = produce {
+  ): ReceiveChannel<SimpleMavenArtefact> = produce {
     val pageChannel = Channel<List<MavenRepositoryClient.RepoItem>>(Channel.BUFFERED)
     supervisedLaunch {
       client

@@ -1,6 +1,6 @@
 package dev.petuska.kamp.server.config
 
-import dev.petuska.kamp.core.domain.KotlinMPPLibrary
+import dev.petuska.kamp.core.domain.KotlinLibrary
 import dev.petuska.kamp.core.service.LibraryService
 import dev.petuska.kamp.core.util.DIModule
 import dev.petuska.kamp.server.service.LibraryServiceImpl
@@ -22,11 +22,11 @@ fun Application.diConfig() = di { import(services) }
 
 private val services by DIModule {
   bind<CoroutineClient>() with singleton { createClient(PrivateEnv.MONGO_STRING).coroutine }
-  bind<CoroutineCollection<KotlinMPPLibrary>>() with
+  bind<CoroutineCollection<KotlinLibrary>>() with
       singleton {
         instance<CoroutineClient>()
             .getDatabase(PrivateEnv.MONGO_DATABASE)
-            .getCollection<KotlinMPPLibrary>("libraries")
+            .getCollection<KotlinLibrary>("libraries")
             .also {
               runBlocking {
                 it.createIndex(

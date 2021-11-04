@@ -1,7 +1,7 @@
 package dev.petuska.kamp.core.service
 
 import dev.petuska.kamp.client.util.UrlUtils
-import dev.petuska.kamp.core.domain.KotlinMPPLibrary
+import dev.petuska.kamp.core.domain.KotlinLibrary
 import dev.petuska.kamp.core.domain.LibraryCount
 import dev.petuska.kamp.core.domain.PagedResponse
 import dev.petuska.kamp.core.service.LibraryService.Companion.PATH
@@ -18,7 +18,7 @@ class LibraryServiceImpl(private val client: HttpClient, private val urlUtils: U
     search: String?,
     targets: Set<String>?,
     onProgress: (suspend (current: Long, total: Long) -> Unit)?,
-  ): PagedResponse<KotlinMPPLibrary> {
+  ): PagedResponse<KotlinLibrary> {
     val pagination = "page=$page&size=$size"
     val searchQuery = search?.let { "search=$it" } ?: ""
     val targetsQuery = targets?.joinToString(prefix = "target=", separator = "&target=") ?: ""
@@ -28,7 +28,7 @@ class LibraryServiceImpl(private val client: HttpClient, private val urlUtils: U
     }
   }
 
-  override suspend fun create(library: KotlinMPPLibrary) {
+  override suspend fun create(library: KotlinLibrary) {
     TODO("Not yet implemented")
   }
 

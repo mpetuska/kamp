@@ -6,6 +6,7 @@ import androidx.compose.runtime.remember
 import dev.petuska.kamp.client.store.AppStore
 import dev.petuska.kamp.client.store.action.AppAction
 import dev.petuska.kamp.client.store.thunk.fetchLibraryPage
+import dev.petuska.kamp.client.util.Routing
 import dev.petuska.kamp.client.util.select
 import dev.petuska.kamp.client.view.style.AppStyle
 import dev.petuska.kamp.core.domain.KotlinTarget
@@ -30,7 +31,7 @@ fun SearchForm(mdcLayoutGridScope: MDCLayoutGridScope) {
   with(mdcLayoutGridScope) {
     MDCLayoutGridCells {
       MDCLayoutGridCell({ span = 12u }) {
-       TextFilter(this)
+        TextFilter(this)
       }
       MDCLayoutGridCell({ span = 12u }) {
         TargetsFilter(this)
@@ -45,17 +46,16 @@ private fun TargetsFilter(mdcLayoutGridScope: MDCLayoutGridScope) = with(mdcLayo
     MDCLayoutGridCell({ span = 12u }, { classes(AppStyle.centered) }) {
       MDCOverline("Targets Filter")
     }
-    MDCLayoutGridCell {
-      TargetGroup("js", setOf("js:ir", "js:legacy"))
+    val targetGroups = remember {
+      mapOf(
+        KotlinTarget.Common.category to setOf(KotlinTarget.Common),
+        KotlinTarget.JVM.CATEGORY to KotlinTarget.JVM.values(),
+        KotlinTarget.JS.CATEGORY to KotlinTarget.JS.values(),
+      ) + KotlinTarget.Native.values().groupBy { it.family }.map { (k, v) -> k to v.toSet() }
     }
-    arrayOf(
-      KotlinTarget.Common(),
-      KotlinTarget.JVM.Java(),
-      KotlinTarget.JS.IR(),
-      KotlinTarget.Native("linuxX64")
-    ).forEach {
+    targetGroups.forEach { (category, targets) ->
       MDCLayoutGridCell {
-        TargetGroup(it.category, setOf(it.toString()))
+        TargetGroup(category, targets)
       }
     }
   }
@@ -64,15 +64,12 @@ private fun TargetsFilter(mdcLayoutGridScope: MDCLayoutGridScope) = with(mdcLayo
 @Composable
 private fun TargetGroup(
   category: String,
-  groupTargets: Set<String>
+  groupTargets: Set<KotlinTarget>
 ) {
   val store by rememberInstance<AppStore>()
-  val selectedTargets by select { targets ?: setOf() }
-  val allSelected = remember(selectedTargets) {
-    selectedTargets.containsAll(groupTargets)
-  }
-  val noneSelected = remember(selectedTargets) {
-    groupTargets.none { it in selectedTargets }
+  val selectedTargets by select { (targets ?: setOf()).filter { it in groupTargets } }
+  val (allSelected, noneSelected) = remember(selectedTargets) {
+    selectedTargets.containsAll(groupTargets) to groupTargets.none { it in selectedTargets }
   }
   MDCFormField {
     MDCCheckbox(
@@ -84,13 +81,9 @@ private fun TargetGroup(
         checked(allSelected)
         onInput {
           if (it.value) {
-            groupTargets.forEach { target ->
-       store.       dispatch(AppAction.AddTarget(target))
-            }
+            store.dispatch(AppAction.AddTargets(groupTargets))
           } else {
-            groupTargets.forEach { target ->
-        store.      dispatch(AppAction.RemoveTarget(target))
-            }
+            store.dispatch(AppAction.RemoveTargets(groupTargets))
           }
         }
       }
@@ -100,15 +93,15 @@ private fun TargetGroup(
     MDCFormField {
       MDCCheckbox(
         opts = {
-          label = target
+          label = target.toString()
         },
         attrs = {
           checked(target in selectedTargets)
           onInput {
             if (it.value) {
-        store.      dispatch(AppAction.AddTarget(target))
+              store.dispatch(AppAction.AddTargets(target))
             } else {
-       store.       dispatch(AppAction.RemoveTarget(target))
+              store.dispatch(AppAction.RemoveTargets(target))
             }
           }
         }
@@ -119,20 +112,21 @@ private fun TargetGroup(
 
 @Composable
 private fun TextFilter(mdcLayoutGridScope: MDCLayoutGridScope) = with(mdcLayoutGridScope) {
-val store by rememberInstance<AppStore>()
+  val store by rememberInstance<AppStore>()
   val search by select { search }
   val targets by select { targets }
   val libraryService by rememberInstance<LibraryService>()
 
-  val submit = remember(search, targets) {
+  val submit: () -> Unit = remember(search, targets) {
     {
-    store.  dispatch(
-      libraryService.fetchLibraryPage(
+      store.dispatch(
+        libraryService.fetchLibraryPage(
           page = 1,
           search = search,
           targets = targets,
         )
       )
+      Routing.setQuery(mapOf("search" to search, "target" to targets?.map { it.platform }))
     }
   }
   MDCLayoutGridCells(attrs = { classes(AppStyle.centered) }) {

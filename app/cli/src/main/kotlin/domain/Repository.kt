@@ -3,14 +3,14 @@ package dev.petuska.kamp.cli.domain
 import dev.petuska.kamp.cli.client.ArtifactoryClient
 import dev.petuska.kamp.cli.client.JBossClient
 import dev.petuska.kamp.cli.client.MavenRepositoryClient
-import dev.petuska.kamp.core.domain.MavenArtifactImpl
+import dev.petuska.kamp.core.domain.SimpleMavenArtefact
 import org.kodein.di.DirectDIAware
 import org.kodein.di.instance
 
 enum class Repository(
     val alias: String,
     val url: String,
-    val client: DirectDIAware.(url: String) -> MavenRepositoryClient<MavenArtifactImpl>,
+    val client: DirectDIAware.(url: String) -> MavenRepositoryClient<SimpleMavenArtefact>,
 ) {
   MAVEN_CENTRAL(
       "mavenCentral",

@@ -2,6 +2,7 @@ package dev.petuska.kamp.client.view.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import app.softwork.routingcompose.HashRouter
 import dev.petuska.kamp.client.store.AppStore
 import dev.petuska.kamp.client.store.action.AppAction
 import dev.petuska.kamp.client.store.state.Page
@@ -13,11 +14,12 @@ import dev.petuska.kmdc.drawer.MDCDrawerOpts
 import dev.petuska.kmdc.drawer.MDCDrawerScrim
 import dev.petuska.kmdc.drawer.MDCDrawerSubtitle
 import dev.petuska.kmdc.drawer.MDCDrawerTitle
+import dev.petuska.kmdc.list.MDCList
 import dev.petuska.kmdc.list.MDCListItem
+import dev.petuska.kmdc.list.MDCListItemGraphic
 import dev.petuska.kmdc.list.MDCListItemText
-import dev.petuska.kmdc.list.MDCNavList
 import dev.petuska.kmdc.typography.mdcTypography
-import org.jetbrains.compose.web.attributes.href
+import org.jetbrains.compose.web.dom.Text
 import org.kodein.di.compose.rememberInstance
 
 @Composable
@@ -41,7 +43,7 @@ fun Drawer() {
     }
   ) {
     MDCDrawerHeader {
-      MDCDrawerTitle("Navigation Menu")
+      MDCDrawerTitle("KAMP")
       MDCDrawerSubtitle("Find your stuff")
     }
     MDCDrawerContent {
@@ -52,19 +54,24 @@ fun Drawer() {
 }
 
 @Composable
-fun PageList(vararg pages: Page) {
+fun PageList(vararg pages: Page, selectable: Boolean = true) {
   val current by select { page }
   val store by rememberInstance<AppStore>()
-  MDCNavList(
+  MDCList(
     opts = { singleSelection = true },
     attrs = {
       addEventListener("MDCList:action") {
         store.dispatch(AppAction.SetDrawer(false))
+        HashRouter.navigate("/${pages[it.nativeEvent.asDynamic().detail.index.unsafeCast<Int>()]}")
       }
     }
   ) {
     pages.forEach { page ->
-      MDCListItem({ activated = page == current }, { href("#${page.route}") }) {
+      MDCListItem({ activated = selectable && page == current }) {
+        MDCListItemGraphic(attrs = {
+          classes("material-icons")
+          attr("aria-hidden", "true")
+        }) { Text(page.icon) }
         MDCListItemText(page.name)
       }
     }

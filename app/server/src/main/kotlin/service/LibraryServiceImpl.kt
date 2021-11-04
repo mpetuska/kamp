@@ -1,6 +1,6 @@
 package dev.petuska.kamp.server.service
 
-import dev.petuska.kamp.core.domain.KotlinMPPLibrary
+import dev.petuska.kamp.core.domain.KotlinLibrary
 import dev.petuska.kamp.core.domain.LibraryCount
 import dev.petuska.kamp.core.domain.PagedResponse
 import dev.petuska.kamp.core.service.LibraryService
@@ -18,7 +18,7 @@ import org.litote.kmongo.coroutine.CoroutineCollection
 
 class LibraryServiceImpl(
     private val call: ApplicationCall,
-    private val collection: CoroutineCollection<KotlinMPPLibrary>,
+    private val collection: CoroutineCollection<KotlinLibrary>,
 ) : LibraryService {
   private fun buildQuery(_search: String?, targets: Set<String>?): Pair<String?, String?> {
     val searchQuery =
@@ -65,7 +65,7 @@ class LibraryServiceImpl(
       search: String?,
       targets: Set<String>?,
       onProgress: (suspend (current: Long, total: Long) -> Unit)?,
-  ): PagedResponse<KotlinMPPLibrary> {
+  ): PagedResponse<KotlinLibrary> {
     val (query, projection) = buildQuery(search, targets)
 
     val dbCall = query?.let { collection.find(it) } ?: collection.find()
@@ -73,7 +73,7 @@ class LibraryServiceImpl(
       dbCall.projection(it.bson)
       dbCall.sort("""{ score: { $meta: "textScore" } }""".bson)
     }
-        ?: dbCall.ascendingSort(KotlinMPPLibrary::name)
+        ?: dbCall.ascendingSort(KotlinLibrary::name)
     dbCall.skip(size * (page - 1)).limit(size)
     val data = dbCall.toList()
     return PagedResponse(
@@ -87,7 +87,7 @@ class LibraryServiceImpl(
     return LibraryCount(collection.countDocuments(buildQuery(search, targets).first ?: "{}"))
   }
 
-  override suspend fun create(library: KotlinMPPLibrary) {
+  override suspend fun create(library: KotlinLibrary) {
     collection.save(library)
   }
 }

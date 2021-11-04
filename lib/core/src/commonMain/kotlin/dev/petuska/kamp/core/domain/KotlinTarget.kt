@@ -12,10 +12,10 @@ import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
 
 @Serializable(with = KotlinTarget.Serializer::class)
-sealed class KotlinTarget {
-  abstract val category: String
-  abstract val platform: String
-
+sealed class KotlinTarget(
+  val category: String,
+  val platform: String,
+) {
   object Serializer : KSerializer<KotlinTarget> {
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor("KotlinTarget") {
       element<String>("category")
@@ -69,42 +69,33 @@ sealed class KotlinTarget {
     fun values(): Set<KotlinTarget> = JS.values() + JVM.values() + Native.values() + Common
   }
 
-  class Unknown(override val platform: String) : KotlinTarget() {
-    override val category: String = "unknown"
-  }
+  class Unknown(platform: String) : KotlinTarget("unknown", platform)
 
-  object Common : KotlinTarget() {
-    override val category: String = "metadata"
-    override val platform: String = "common"
-  }
+  object Common : KotlinTarget("metadata", "common")
 
-  sealed class JS(override val platform: String) : KotlinTarget() {
+  sealed class JS(platform: String) : KotlinTarget(CATEGORY, platform) {
     companion object {
       const val CATEGORY = "js"
       fun values(): Set<JS> = setOf(Legacy, IR)
     }
-
-    override val category: String = CATEGORY
 
     object Legacy : JS("legacy")
 
     object IR : JS("ir")
   }
 
-  sealed class JVM(override val platform: String) : KotlinTarget() {
+  sealed class JVM(platform: String) : KotlinTarget(CATEGORY, platform) {
     companion object {
       const val CATEGORY = "jvm"
       fun values(): Set<JVM> = setOf(Java, Android)
     }
-
-    override val category: String = CATEGORY
 
     object Java : JVM("java")
 
     object Android : JVM("android")
   }
 
-  sealed class Native(override val platform: String) : KotlinTarget() {
+  sealed class Native(val family: String, platform: String) : KotlinTarget(CATEGORY, platform) {
     companion object {
       const val CATEGORY = "native"
       fun values(): Set<Native> = AndroidNative.values() +
@@ -117,13 +108,11 @@ sealed class KotlinTarget {
           Wasm32
     }
 
-    override val category: String = CATEGORY
+    object Wasm32 : Native("wasm", "wasm32")
 
-    object Wasm32 : Native("wasm32")
-
-    sealed class AndroidNative(val architecture: String) : Native("$family$architecture") {
+    sealed class AndroidNative(val architecture: String) : Native(FAMILY, "$FAMILY$architecture") {
       companion object {
-        const val family = "androidNative"
+        const val FAMILY = "androidNative"
         fun values(): Set<AndroidNative> = setOf(AndroidNativeArm32, AndroidNativeArm64)
       }
 
@@ -132,9 +121,9 @@ sealed class KotlinTarget {
       object AndroidNativeArm64 : AndroidNative("Arm64")
     }
 
-    sealed class IOS(val architecture: String) : Native("$family$architecture") {
+    sealed class IOS(val architecture: String) : Native(FAMILY, "$FAMILY$architecture") {
       companion object {
-        const val family = "ios"
+        const val FAMILY = "ios"
         fun values(): Set<IOS> = setOf(
           IOSArm32, IOSArm64, IOSX64, IOSSimulatorArm64
         )
@@ -149,9 +138,9 @@ sealed class KotlinTarget {
       object IOSSimulatorArm64 : IOS("SimulatorArm64")
     }
 
-    sealed class WatchOS(val architecture: String) : Native("$family$architecture") {
+    sealed class WatchOS(val architecture: String) : Native(FAMILY, "$FAMILY$architecture") {
       companion object {
-        const val family = "watchos"
+        const val FAMILY = "watchos"
         fun values(): Set<WatchOS> = setOf(
           WatchOSX86, WatchOSX64, WatchOSArm64, WatchOSArm32, WatchOSSimulatorArm64
         )
@@ -168,9 +157,9 @@ sealed class KotlinTarget {
       object WatchOSSimulatorArm64 : WatchOS("SimulatorArm64")
     }
 
-    sealed class TvOS(val architecture: String) : Native("$family$architecture") {
+    sealed class TvOS(val architecture: String) : Native(FAMILY, "$FAMILY$architecture") {
       companion object {
-        const val family = "tvos"
+        const val FAMILY = "tvos"
         fun values(): Set<TvOS> = setOf(
           TvOSArm64, TvOSX64, TvOSSimulatorArm64
         )
@@ -183,9 +172,9 @@ sealed class KotlinTarget {
       object TvOSSimulatorArm64 : TvOS("SimulatorArm64")
     }
 
-    sealed class MacOS(val architecture: String) : Native("$family$architecture") {
+    sealed class MacOS(val architecture: String) : Native(FAMILY, "$FAMILY$architecture") {
       companion object {
-        const val family = "macos"
+        const val FAMILY = "macos"
         fun values(): Set<MacOS> = setOf(
           MacOSArm64, MacOSX64
         )
@@ -196,9 +185,9 @@ sealed class KotlinTarget {
       object MacOSX64 : MacOS("X64")
     }
 
-    sealed class Mingw(val architecture: String) : Native("$family$architecture") {
+    sealed class Mingw(val architecture: String) : Native(FAMILY, "$FAMILY$architecture") {
       companion object {
-        const val family = "mingw"
+        const val FAMILY = "mingw"
         fun values(): Set<Mingw> = setOf(
           MingwX64, MingwX86
         )
@@ -209,9 +198,9 @@ sealed class KotlinTarget {
       object MingwX86 : Mingw("X86")
     }
 
-    sealed class Linux(val architecture: String) : Native("$family$architecture") {
+    sealed class Linux(val architecture: String) : Native(FAMILY, "$FAMILY$architecture") {
       companion object {
-        const val family = "linux"
+        const val FAMILY = "linux"
         fun values(): Set<Linux> = setOf(
           LinuxArm32Hfp, LinuxMips32, LinuxMipsel32, LinuxX64, LinuxArm64,
         )

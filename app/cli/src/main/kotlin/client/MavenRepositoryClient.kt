@@ -4,8 +4,8 @@ import dev.petuska.kamp.cli.domain.GradleModule
 import dev.petuska.kamp.cli.util.LoggerDelegate
 import dev.petuska.kamp.cli.util.asDocument
 import dev.petuska.kamp.cli.util.supervisedAsync
-import dev.petuska.kamp.core.domain.MavenArtifact
-import dev.petuska.kamp.core.domain.MavenArtifactImpl
+import dev.petuska.kamp.core.domain.MavenArtefact
+import dev.petuska.kamp.core.domain.SimpleMavenArtefact
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.util.date.GMTDate
@@ -16,7 +16,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.jsoup.nodes.Document
 
-abstract class MavenRepositoryClient<A : MavenArtifact>(
+abstract class MavenRepositoryClient<A : MavenArtefact>(
     private val defaultRepositoryRootUrl: String,
 ) : Closeable {
   protected abstract fun parsePage(page: Document): List<String>?
@@ -29,7 +29,8 @@ abstract class MavenRepositoryClient<A : MavenArtifact>(
   private val A.mavenModuleVersionUrl: String
     get() = "$mavenModuleRootUrl/$releaseVersion"
 
-  suspend fun getArtifactDetails(pathToMavenMetadata: String): MavenArtifactImpl? = coroutineScope {
+  suspend fun getArtifactDetails(pathToMavenMetadata: String): SimpleMavenArtefact? =
+      coroutineScope {
     val artifact = supervisedAsync {
       val url = "$defaultRepositoryRootUrl$pathToMavenMetadata"
       val pom = client.get<String>(url).asDocument()
@@ -47,7 +48,7 @@ abstract class MavenRepositoryClient<A : MavenArtifact>(
                   )
                   .timestamp
             }
-        MavenArtifactImpl(
+        SimpleMavenArtefact(
             group = doc.selectFirst("groupId")!!.text(),
             name = doc.selectFirst("artifactId")!!.text(),
             latestVersion = doc.selectFirst("versioning>latest")?.text()

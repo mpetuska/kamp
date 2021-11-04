@@ -2,7 +2,7 @@ package dev.petuska.kamp.core.domain
 
 import kotlinx.serialization.Transient
 
-interface MavenArtifact {
+interface MavenArtefact {
   val group: String
   val name: String
   val latestVersion: String
@@ -19,11 +19,3 @@ interface MavenArtifact {
     get() = "$group:$name:$version"
 }
 
-data class MavenArtifactImpl(
-  override val group: String,
-  override val name: String,
-  override val latestVersion: String,
-  override val releaseVersion: String?,
-  override val versions: List<String>?,
-  override val lastUpdated: Long?,
-) : MavenArtifact

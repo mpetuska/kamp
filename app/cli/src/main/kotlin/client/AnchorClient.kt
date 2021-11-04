@@ -1,9 +1,9 @@
 package dev.petuska.kamp.cli.client
 
-import dev.petuska.kamp.core.domain.MavenArtifact
+import dev.petuska.kamp.core.domain.MavenArtefact
 import org.jsoup.nodes.Document
 
-abstract class AnchorClient<T : MavenArtifact>(
+abstract class AnchorClient<T : MavenArtefact>(
     val url: String,
 ) : MavenRepositoryClient<T>(url) {
   abstract fun String.isBackLink(): Boolean

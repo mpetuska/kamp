@@ -1,8 +1,10 @@
 package dev.petuska.kamp.core.domain
 
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
-data class KotlinMPPLibrary(
+@Serializable
+data class KotlinLibrary(
   override val group: String,
   override val name: String,
   override val latestVersion: String,
@@ -13,9 +15,9 @@ data class KotlinMPPLibrary(
   val description: String?,
   val website: String?,
   val scm: String?,
-) : MavenArtifact {
+) : MavenArtefact {
   constructor(
-    artifact: MavenArtifact,
+    artifact: MavenArtefact,
     targets: Set<KotlinTarget>,
     description: String?,
     website: String?,
@@ -33,6 +35,7 @@ data class KotlinMPPLibrary(
     scm = scm
   )
 
+  @Suppress("PropertyName", "unused")
   val _id: String = "$group:$name"
 
   @Transient

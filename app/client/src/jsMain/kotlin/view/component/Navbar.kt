@@ -2,13 +2,17 @@ package dev.petuska.kamp.client.view.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import app.softwork.routingcompose.HashRouter
 import dev.petuska.kamp.client.store.AppStore
 import dev.petuska.kamp.client.store.action.AppAction
+import dev.petuska.kamp.client.store.state.Page
 import dev.petuska.kamp.client.util.FABIcon
 import dev.petuska.kamp.client.util.select
 import dev.petuska.kamp.client.view.style.AppStyle
 import dev.petuska.kmdc.linear.progress.MDCLinearProgress
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBar
+import dev.petuska.kmdc.top.app.bar.MDCTopAppBarActionButton
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarActionLink
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarContextScope
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarNavigationButton
@@ -74,6 +78,7 @@ object NavbarStyle : StyleSheet(AppStyle) {
 fun MDCTopAppBarContextScope.Navbar() {
   val store by rememberInstance<AppStore>()
   val drawerOpen by select { drawerOpen }
+  val page by select { page }
   MDCTopAppBar(
     attrs = {
       classes(NavbarStyle.container)
@@ -90,14 +95,17 @@ fun MDCTopAppBarContextScope.Navbar() {
         }) {
           Text(if (drawerOpen) "close" else "menu")
         }
-        MDCTopAppBarTitle("KAMP")
+        val title = remember(page) {
+          "KAMP" + if (page != Page.Home) " | ${page.name.uppercase()}" else ""
+        }
+        MDCTopAppBarTitle(title)
         // KampIcon()
       }
       MDCTopAppBarSection(opts = { align = MDCTopAppBarSectionOpts.Align.End }) {
         CountBadge()
-        MDCTopAppBarActionLink(attrs = {
+        MDCTopAppBarActionButton(attrs = {
           classes("material-icons")
-          href("#")
+          onClick { HashRouter.navigate("/${Page.Home}") }
         }) {
           Text("home")
         }

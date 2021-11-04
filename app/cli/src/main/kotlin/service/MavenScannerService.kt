@@ -6,8 +6,8 @@ import dev.petuska.kamp.cli.processor.GradleModuleProcessor
 import dev.petuska.kamp.cli.processor.PomProcessor
 import dev.petuska.kamp.cli.util.LoggerDelegate
 import dev.petuska.kamp.cli.util.supervisedLaunch
-import dev.petuska.kamp.core.domain.KotlinMPPLibrary
-import dev.petuska.kamp.core.domain.MavenArtifact
+import dev.petuska.kamp.core.domain.KotlinLibrary
+import dev.petuska.kamp.core.domain.MavenArtefact
 import io.ktor.utils.io.core.Closeable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.ReceiveChannel
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.receiveAsFlow
 
-abstract class MavenScannerService<A : MavenArtifact> : Closeable {
+abstract class MavenScannerService<A : MavenArtefact> : Closeable {
   protected val logger by LoggerDelegate()
   protected abstract val pomProcessor: PomProcessor
   protected abstract val gradleModuleProcessor: GradleModuleProcessor
@@ -34,7 +34,7 @@ abstract class MavenScannerService<A : MavenArtifact> : Closeable {
           }
           .receiveAsFlow()
 
-  suspend fun scanKotlinLibraries(cliOptions: CLIOptions? = null): Flow<KotlinMPPLibrary> =
+  suspend fun scanKotlinLibraries(cliOptions: CLIOptions? = null): Flow<KotlinLibrary> =
       channelFlow {
     val artefactsFlow = scanMavenArtefacts(cliOptions)
 
@@ -47,7 +47,7 @@ abstract class MavenScannerService<A : MavenArtifact> : Closeable {
                 module.supportedTargets?.takeIf { module.isRootModule && it.isNotEmpty() }?.let {
                   client.getMavenPom(artefact)?.let { pom ->
                     with(pomProcessor) {
-                      KotlinMPPLibrary(
+                      KotlinLibrary(
                           targets = it,
                           artifact = artefact,
                           description = pom.description,
