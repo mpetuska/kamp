@@ -35,7 +35,7 @@ jobs:
           - '-f q -t t'
           - '-f u -t z'
     steps:
-      - uses: docker/login-action@v1.10.0
+      - uses: docker/login-action@v1.12.0
         with:
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
