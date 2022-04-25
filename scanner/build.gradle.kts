@@ -1,28 +1,52 @@
 plugins {
-  kotlin("jvm")
+  kotlin("multiplatform")
   kotlin("plugin.serialization")
+  id("org.jlleitschuh.gradle.ktlint")
+}
+
+repositories {
+  mavenCentral()
+}
+
+tasks {
+  withType<Test> {
+    useJUnitPlatform()
+  }
+  withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+      jvmTarget = "${JavaVersion.VERSION_11}"
+    }
+  }
 }
 
 kotlin {
-  dependencies {
-    implementation(project(rootProject.path))
-    implementation("io.ktor:ktor-client-cio:_")
-    implementation("io.ktor:ktor-client-auth:_")
-    implementation("org.kodein.di:kodein-di:_")
-    implementation("org.jsoup:jsoup:_")
-    implementation("ch.qos.logback:logback-classic:_")
-    implementation(kotlin("reflect"))
-    implementation("org.jetbrains.kotlinx:kotlinx-cli:_")
-
-    testImplementation("io.kotest:kotest-runner-junit5:_")
-  }
-  sourceSets.all {
-    languageSettings.apply {
-      useExperimentalAnnotation("kotlinx.coroutines.ExperimentalCoroutinesApi")
-      useExperimentalAnnotation("io.ktor.util.KtorExperimentalAPI")
-      useExperimentalAnnotation("kotlin.time.ExperimentalTime")
-      useExperimentalAnnotation("kotlinx.coroutines.FlowPreview")
-      useExperimentalAnnotation("kotlinx.cli.ExperimentalCli")
+  jvm()
+  sourceSets {
+    named("jvmMain") {
+      dependencies {
+        implementation(project(":common"))
+        implementation("io.ktor:ktor-client-cio:_")
+        implementation("io.ktor:ktor-client-auth:_")
+        implementation("org.kodein.di:kodein-di:_")
+        implementation("org.jsoup:jsoup:_")
+        implementation("ch.qos.logback:logback-classic:_")
+        implementation(kotlin("reflect"))
+        implementation("org.jetbrains.kotlinx:kotlinx-cli:_")
+      }
+    }
+    named("jvmTest") {
+      dependencies {
+        implementation("io.kotest:kotest-runner-junit5:_")
+      }
+    }
+    all {
+      languageSettings.apply {
+        useExperimentalAnnotation("kotlinx.coroutines.ExperimentalCoroutinesApi")
+        useExperimentalAnnotation("io.ktor.util.KtorExperimentalAPI")
+        useExperimentalAnnotation("kotlin.time.ExperimentalTime")
+        useExperimentalAnnotation("kotlinx.coroutines.FlowPreview")
+        useExperimentalAnnotation("kotlinx.cli.ExperimentalCli")
+      }
     }
   }
 }
@@ -30,21 +54,21 @@ kotlin {
 val mainClassName = "scanner.IndexKt"
 
 tasks {
-  val compileKotlin by getting
-  val processResources by getting
-  create<JavaExec>("run") {
+  val compileKotlinJvm by getting
+  val jvmProcessResources by getting
+  register<JavaExec>("run") {
     group = "run"
-    main = mainClassName
-    dependsOn(compileKotlin, processResources)
+    mainClass.set(mainClassName)
+    dependsOn(compileKotlinJvm, jvmProcessResources)
     classpath = files(
-      configurations.runtimeClasspath,
-      compileKotlin.outputs,
-      processResources.outputs
+      configurations["jvmRuntimeClasspath"],
+      compileKotlinJvm.outputs,
+      jvmProcessResources.outputs
     )
   }
-  jar {
-    duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.WARN
-    val classpath = configurations.runtimeClasspath.get().files.map { if (it.isDirectory) it else zipTree(it) }
+  register("jar", Jar::class) {
+    duplicatesStrategy = DuplicatesStrategy.WARN
+    val classpath = configurations["jvmRuntimeClasspath"].files.map { if (it.isDirectory) it else zipTree(it) }
     from(classpath) {
       exclude("META-INF/*.SF")
       exclude("META-INF/*.DSA")
@@ -57,7 +81,7 @@ tasks {
         "Built-By" to System.getProperty("user.name"),
         "Build-Jdk" to System.getProperty("java.version"),
         "Implementation-Version" to project.version,
-        "Created-By" to "Gradle v${org.gradle.util.GradleVersion.current()}",
+        "Created-By" to "${GradleVersion.current()}",
         "Created-From" to Git.headCommitHash
       )
     }

@@ -33,7 +33,7 @@ abstract class MavenRepositoryClient<A : MavenArtifact>(
     val artifact = supervisedAsync {
       val url = "$defaultRepositoryRootUrl$pathToMavenMetadata"
       val pom = client.get<String>(url).asDocument()
-      val doc = pom.getElementsByTag("metadata").first()
+      val doc = pom.getElementsByTag("metadata").first() ?: return@supervisedAsync null
       try {
         val lastUpdated =
           doc.selectFirst("versioning>lastUpdated")?.text()?.let {
@@ -44,14 +44,13 @@ abstract class MavenRepositoryClient<A : MavenArtifact>(
               hours = it.substring(8 until 10).toInt(),
               minutes = it.substring(10 until 12).toInt(),
               seconds = it.substring(12 until 14).toInt(),
-            )
-              .timestamp
+            ).timestamp
           }
         MavenArtifactImpl(
-          group = doc.selectFirst("groupId").text(),
-          name = doc.selectFirst("artifactId").text(),
+          group = doc.selectFirst("groupId")?.text() ?: return@supervisedAsync null,
+          name = doc.selectFirst("artifactId")?.text() ?: return@supervisedAsync null,
           latestVersion = doc.selectFirst("versioning>latest")?.text()
-            ?: doc.selectFirst("version").text(),
+            ?: doc.selectFirst("version")?.text() ?: return@supervisedAsync null,
           releaseVersion = doc.selectFirst("versioning>release")?.text(),
           versions = doc.selectFirst("versioning>versions")?.children()?.map { v -> v.text() },
           lastUpdated = lastUpdated,

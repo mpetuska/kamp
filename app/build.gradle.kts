@@ -1,12 +1,28 @@
 plugins {
   kotlin("multiplatform")
   kotlin("plugin.serialization")
+  id("org.jlleitschuh.gradle.ktlint")
+}
+
+repositories {
+  mavenCentral()
+}
+tasks {
+  withType<Test> {
+    useJUnitPlatform()
+  }
+  withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+      jvmTarget = "${JavaVersion.VERSION_11}"
+    }
+  }
 }
 
 val mainClassName = "app.IndexKt"
 val jsOutputFile = "kamp-$version.js"
+
 kotlin {
-  jvm {}
+  jvm()
   js {
     useCommonJs()
     binaries.executable()
@@ -19,7 +35,7 @@ kotlin {
         outputFileName = jsOutputFile
         devServer = devServer?.copy(
           port = 3000,
-          proxy = mapOf("/api/*" to "http://localhost:8080"),
+          proxy = mutableMapOf("/api/*" to "http://localhost:8080"),
           open = false
         )
       }
@@ -28,7 +44,7 @@ kotlin {
   sourceSets {
     named("commonMain") {
       dependencies {
-        implementation(project(rootProject.path))
+        implementation(project(":common"))
         implementation("org.kodein.di:kodein-di:_")
         implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:_")
       }
@@ -75,7 +91,7 @@ afterEvaluate {
     val jvmProcessResources by getting
     create<JavaExec>("jvmRun") {
       group = "run"
-      main = mainClassName
+      mainClass.set(mainClassName)
       dependsOn(compileKotlinJvm, jvmProcessResources)
       classpath = files(
         configurations["jvmRuntimeClasspath"],
@@ -86,7 +102,7 @@ afterEvaluate {
     }
     named("jvmJar", Jar::class) {
       dependsOn(jsBrowserDistribution)
-      duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.WARN
+      duplicatesStrategy = DuplicatesStrategy.WARN
 
       into("WEB-INF") {
         from(jsBrowserDistribution)
