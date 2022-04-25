@@ -66,7 +66,7 @@ tasks {
       jvmProcessResources.outputs
     )
   }
-  register("jar", Jar::class) {
+  named("jvmJar", Jar::class) {
     duplicatesStrategy = DuplicatesStrategy.WARN
     val classpath = configurations["jvmRuntimeClasspath"].files.map { if (it.isDirectory) it else zipTree(it) }
     from(classpath) {
