@@ -23,7 +23,8 @@ fun LibraryService.fetchLibraryPage(
     dispatch(AppAction.SetLoading(true))
     val theLibraries =
       getAll(page, size, theSearch, theTargets?.map(KotlinTarget::platform)?.toSet()) { current, total ->
-        dispatch(AppAction.SetLoading(true, total.toDouble() / current))
+        val progress = total.toDouble() / current
+        dispatch(AppAction.SetLoading(progress > 0, progress))
       }
     dispatch(AppAction.SetSearch(theSearch))
     dispatch(AppAction.SetTargets(theTargets))

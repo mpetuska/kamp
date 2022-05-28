@@ -7,20 +7,23 @@ import dev.petuska.kamp.client.store.AppStore
 import dev.petuska.kamp.client.store.action.AppAction
 import dev.petuska.kamp.client.store.state.Page
 import dev.petuska.kamp.client.util.select
+import dev.petuska.kmdc.drawer.Content
+import dev.petuska.kmdc.drawer.Header
 import dev.petuska.kmdc.drawer.MDCDrawer
-import dev.petuska.kmdc.drawer.MDCDrawerContent
-import dev.petuska.kmdc.drawer.MDCDrawerHeader
-import dev.petuska.kmdc.drawer.MDCDrawerOpts
-import dev.petuska.kmdc.drawer.MDCDrawerScrim
-import dev.petuska.kmdc.drawer.MDCDrawerSubtitle
-import dev.petuska.kmdc.drawer.MDCDrawerTitle
+import dev.petuska.kmdc.drawer.MDCDrawerType
+import dev.petuska.kmdc.drawer.Subtitle
+import dev.petuska.kmdc.drawer.Title
+import dev.petuska.kmdc.drawer.onClosed
+import dev.petuska.kmdc.drawer.onOpened
 import dev.petuska.kmdc.list.MDCList
-import dev.petuska.kmdc.list.MDCListItem
-import dev.petuska.kmdc.list.MDCListItemGraphic
-import dev.petuska.kmdc.list.MDCListItemText
+import dev.petuska.kmdc.list.MDCListSelection
+import dev.petuska.kmdc.list.item.Graphic
+import dev.petuska.kmdc.list.item.ListItem
+import dev.petuska.kmdc.list.item.Text
+import dev.petuska.kmdc.list.onAction
 import dev.petuska.kmdc.typography.mdcTypography
-import org.jetbrains.compose.web.dom.Text
 import org.kodein.di.compose.rememberInstance
+import org.jetbrains.compose.web.dom.Text as CText
 
 @Composable
 fun Drawer() {
@@ -28,29 +31,26 @@ fun Drawer() {
   val store by rememberInstance<AppStore>()
 
   MDCDrawer(
-    opts = {
-      type = MDCDrawerOpts.Type.Modal
-      isOpen = open
-    },
+    open = open,
+    type = MDCDrawerType.Modal,
     attrs = {
       mdcTypography()
-      addEventListener("MDCDrawer:opened") {
+      onOpened {
         store.dispatch(AppAction.SetDrawer(true))
       }
-      addEventListener("MDCDrawer:closed") {
+      onClosed {
         store.dispatch(AppAction.SetDrawer(false))
       }
     }
   ) {
-    MDCDrawerHeader {
-      MDCDrawerTitle("KAMP")
-      MDCDrawerSubtitle("Find your stuff")
+    Header {
+      Title("KAMP")
+      Subtitle("Find your stuff")
     }
-    MDCDrawerContent {
+    Content {
       PageList(*Page.values())
     }
   }
-  MDCDrawerScrim()
 }
 
 @Composable
@@ -58,21 +58,21 @@ fun PageList(vararg pages: Page, selectable: Boolean = true) {
   val current by select { page }
   val store by rememberInstance<AppStore>()
   MDCList(
-    opts = { singleSelection = true },
+    selection = MDCListSelection.Single,
     attrs = {
-      addEventListener("MDCList:action") {
+      onAction {
         store.dispatch(AppAction.SetDrawer(false))
-        HashRouter.navigate("/${pages[it.nativeEvent.asDynamic().detail.index.unsafeCast<Int>()]}")
+        HashRouter.navigate("/${pages[it.detail.index]}")
       }
     }
   ) {
     pages.forEach { page ->
-      MDCListItem({ activated = selectable && page == current }) {
-        MDCListItemGraphic(attrs = {
+      ListItem(activated = selectable && page == current) {
+        Graphic(attrs = {
           classes("material-icons")
           attr("aria-hidden", "true")
-        }) { Text(page.icon) }
-        MDCListItemText(page.name)
+        }) { CText(page.icon) }
+        Text(page.name)
       }
     }
   }

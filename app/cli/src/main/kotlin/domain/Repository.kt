@@ -8,32 +8,38 @@ import org.kodein.di.DirectDIAware
 import org.kodein.di.instance
 
 enum class Repository(
-    val alias: String,
-    val url: String,
-    val client: DirectDIAware.(url: String) -> MavenRepositoryClient<SimpleMavenArtefact>,
+  val alias: String,
+  val url: String,
+  val client: DirectDIAware.(url: String) -> MavenRepositoryClient<SimpleMavenArtefact>,
 ) {
   MAVEN_CENTRAL(
-      "mavenCentral",
-      "https://repo1.maven.org/maven2",
-      { ArtifactoryClient(it, instance(), instance()) }),
+    "mavenCentral",
+    "https://repo1.maven.org/maven2",
+    { ArtifactoryClient(it, instance(), instance()) }
+  ),
   GRADLE_PLUGIN_PORTAL(
-      "gradlePluginPortal",
-      "https://plugins.gradle.org/m2",
-      { ArtifactoryClient(it, instance(), instance()) }),
+    "gradlePluginPortal",
+    "https://plugins.gradle.org/m2",
+    { ArtifactoryClient(it, instance(), instance()) }
+  ),
   SPRING(
-      "spring",
-      "https://repo.spring.io/release",
-      { ArtifactoryClient(it, instance(), instance()) }),
+    "spring",
+    "https://repo.spring.io/release",
+    { ArtifactoryClient(it, instance(), instance()) }
+  ),
   ATLASSIAN(
-      "atlassian",
-      "https://packages.atlassian.com/content/repositories/atlassian-public",
-      { ArtifactoryClient(it, instance(), instance()) }),
+    "atlassian",
+    "https://packages.atlassian.com/content/repositories/atlassian-public",
+    { ArtifactoryClient(it, instance(), instance()) }
+  ),
   J_BOSS(
-      "jBoss",
-      "https://repository.jboss.org/nexus/content/repositories/releases",
-      { JBossClient(it, instance(), instance()) }),
+    "jBoss",
+    "https://repository.jboss.org/nexus/content/repositories/releases",
+    { JBossClient(it, instance(), instance()) }
+  ),
   HORTON_WORKS(
-      "hortonWorks",
-      "https://repo.hortonworks.com/content/repositories/releases",
-      { JBossClient(it, instance(), instance()) }),
+    "hortonWorks",
+    "https://repo.hortonworks.com/content/repositories/releases",
+    { JBossClient(it, instance(), instance()) }
+  ),
 }

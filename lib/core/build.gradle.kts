@@ -1,22 +1,19 @@
 plugins {
-  local("app-mpp")
-  kotlin("plugin.serialization")
+  id("convention.mpp")
 }
 
 kotlin {
-  jvm()
-  js { nodejs() }
-
   sourceSets {
     commonMain {
       dependencies {
         api("org.kodein.di:kodein-di:_")
-        api("org.jetbrains.kotlinx:kotlinx-serialization-core:_")
+        api("org.jetbrains.kotlinx:kotlinx-serialization-json:_")
       }
     }
-    commonTest {
-      dependencies { implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:_") }
+    jvmMain {
+      dependencies {
+        api(kotlin("reflect"))
+      }
     }
-    named("jvmMain") { dependencies { api(kotlin("reflect")) } }
   }
 }

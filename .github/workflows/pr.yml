@@ -2,12 +2,16 @@ name: PR CI/CD
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, closed]
+    types: [ opened, synchronize, reopened, closed ]
     branches:
       - master
 
 jobs:
+  check:
+    uses: ./.github/workflows/check.yml
+
   build:
+    needs: [ check ]
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     name: Build App
     runs-on: ubuntu-latest
@@ -36,7 +40,7 @@ jobs:
           path: app/client/build/dist/js/WEB-INF/
           name: static-web-app
           if-no-files-found: error
-          
+
   deploy:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     name: Deploy Staging

@@ -23,24 +23,25 @@ abstract class MavenScannerService<A : MavenArtefact> : Closeable {
   protected abstract val gradleModuleProcessor: GradleModuleProcessor
   protected abstract val client: MavenRepositoryClient<A>
   protected abstract fun CoroutineScope.produceArtifacts(
-      cliOptions: CLIOptions? = null,
+    cliOptions: CLIOptions? = null,
   ): ReceiveChannel<A>
 
   private fun CoroutineScope.scanMavenArtefacts(cliOptions: CLIOptions? = null): Flow<A> =
-      run {
-            logger.info(
-                "Scanning from repository root and filtering by ${cliOptions?.include ?: setOf()}, explicitly excluding ${cliOptions?.exclude ?: setOf()}")
-            produceArtifacts(cliOptions)
-          }
-          .receiveAsFlow()
+    run {
+      logger.info(
+        "Scanning from repository root and filtering by ${cliOptions?.include ?: setOf()}, explicitly excluding ${cliOptions?.exclude ?: setOf()}"
+      )
+      produceArtifacts(cliOptions)
+    }
+      .receiveAsFlow()
 
   suspend fun scanKotlinLibraries(cliOptions: CLIOptions? = null): Flow<KotlinLibrary> =
-      channelFlow {
-    val artefactsFlow = scanMavenArtefacts(cliOptions)
+    channelFlow {
+      val artefactsFlow = scanMavenArtefacts(cliOptions)
 
-    repeat(Runtime.getRuntime().availableProcessors() * 2) {
-      supervisedLaunch {
-        artefactsFlow
+      repeat(Runtime.getRuntime().availableProcessors() * 2) {
+        supervisedLaunch {
+          artefactsFlow
             .mapNotNull { artefact -> client.getGradleModule(artefact)?.let { artefact to it } }
             .mapNotNull { (artefact, module) ->
               with(gradleModuleProcessor) {
@@ -48,11 +49,11 @@ abstract class MavenScannerService<A : MavenArtefact> : Closeable {
                   client.getMavenPom(artefact)?.let { pom ->
                     with(pomProcessor) {
                       KotlinLibrary(
-                          targets = it,
-                          artifact = artefact,
-                          description = pom.description,
-                          website = pom.url,
-                          scm = pom.scmUrl,
+                        targets = it,
+                        artifact = artefact,
+                        description = pom.description,
+                        website = pom.url,
+                        scm = pom.scmUrl,
                       )
                     }
                   }
@@ -60,9 +61,9 @@ abstract class MavenScannerService<A : MavenArtefact> : Closeable {
               }
             }
             .collect(::send)
+        }
       }
     }
-  }
 
   override fun close() = client.close()
 }

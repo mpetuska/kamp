@@ -21,14 +21,14 @@ import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.accept
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import kotlin.time.Duration
-import kotlin.time.DurationUnit
 import kotlinx.serialization.json.Json
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
 import org.kodein.di.provider
 import org.kodein.di.singleton
+import kotlin.time.Duration
+import kotlin.time.DurationUnit
 
 fun HttpClientConfig<CIOEngineConfig>.baseConfig() {
   val timeout = Duration.minutes(2.5).toLong(DurationUnit.MILLISECONDS)
@@ -50,7 +50,7 @@ val di = DI {
   Repository.values().forEach { repo ->
     bind(repo.alias) { provider { with(repo) { client(url) } } }
     bind<MavenScannerService<*>>(repo.alias) with
-        singleton { MavenScannerServiceImpl(instance(repo.alias), instance(), instance()) }
+      singleton { MavenScannerServiceImpl(instance(repo.alias), instance(), instance()) }
   }
 
   bind {
@@ -72,7 +72,8 @@ val di = DI {
           basic {
             credentials {
               BasicAuthCredentials(
-                  username = PrivateEnv.ADMIN_USER, password = PrivateEnv.ADMIN_PASSWORD)
+                username = PrivateEnv.ADMIN_USER, password = PrivateEnv.ADMIN_PASSWORD
+              )
             }
           }
         }

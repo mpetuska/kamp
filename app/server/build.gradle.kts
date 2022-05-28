@@ -1,13 +1,14 @@
 plugins {
-  local("app-jvm")
-  kotlin("plugin.serialization")
+  id("convention.app-mpp")
 }
 
-val mainClassName = "dev.petuska.kamp.server.MainKt"
+mppApp {
+  jvmMainClass by "dev.petuska.kamp.server.MainKt"
+}
 
 kotlin {
   sourceSets {
-    main {
+    jvmMain {
       dependencies {
         implementation(project(":lib:fullstack"))
         implementation("io.ktor:ktor-server-cio:_")
@@ -20,51 +21,23 @@ kotlin {
         implementation("org.litote.kmongo:kmongo-coroutine-serialization:_")
       }
     }
-    test { dependencies { implementation("io.kotest:kotest-runner-junit5:_") } }
-    all { languageSettings { optIn("kotlinx.serialization.ExperimentalSerializationApi") } }
+    all {
+      languageSettings {
+        optIn("kotlinx.serialization.ExperimentalSerializationApi")
+      }
+    }
   }
 }
 
-afterEvaluate {
-  tasks {
-    val jsBrowserDistribution = findByPath(":app:client:jsBrowserDistribution")!!
-    val compileKotlin by getting
-    val processResources by getting
-    create<JavaExec>("run") {
-      group = "run"
-      mainClass by mainClassName
-      dependsOn(compileKotlin, processResources)
-      systemProperty("io.ktor.development", "true")
-      classpath =
-          files(
-              configurations["runtimeClasspath"],
-              compileKotlin.outputs,
-              processResources.outputs,
-              project(":app:client").buildDir.resolve("dist/js"))
-    }
-    jar {
-      dependsOn(jsBrowserDistribution)
-      into("WEB-INF") { from(jsBrowserDistribution) }
-      val classpath =
-          configurations.getByName("runtimeClasspath").map {
-            if (it.isDirectory) it else zipTree(it)
-          }
-      duplicatesStrategy = DuplicatesStrategy.WARN
-      from(classpath) { exclude("META-INF/**") }
-
-      manifest {
-        attributes(
-            "Main-Class" to mainClassName,
-            "Built-By" to System.getProperty("user.name"),
-            "Build-Jdk" to System.getProperty("java.version"),
-            "Implementation-Version" to project.version,
-            "Created-By" to "Gradle v${GradleVersion.current()}",
-            "Created-From" to Git.headCommitHash)
-      }
-
-      inputs.property("mainClassName", mainClassName)
-      inputs.files(classpath)
-      inputs.files(jsBrowserDistribution.outputs)
-    }
+tasks {
+  val jsBrowserDistribution = findByPath(":app:client:jsBrowserDistribution")!!
+  named<Jar>("jvmJar") {
+    dependsOn(jsBrowserDistribution)
+    into("WEB-INF") { from(jsBrowserDistribution) }
+    inputs.files(jsBrowserDistribution)
+  }
+  named<JavaExec>("jvmRun") {
+    classpath(jsBrowserDistribution)
+    systemProperty("io.ktor.development", "true")
   }
 }

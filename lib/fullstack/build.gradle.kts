@@ -1,11 +1,8 @@
-plugins { local("app-mpp") }
+plugins {
+  id("convention.mpp")
+}
 
 kotlin {
-  jvm {}
-  js {
-    useCommonJs()
-    browser {}
-  }
   sourceSets {
     commonMain {
       dependencies {
@@ -15,6 +12,5 @@ kotlin {
         api("io.ktor:ktor-client-serialization:_")
       }
     }
-    named("jvmTest") { dependencies { implementation("io.kotest:kotest-runner-junit5:_") } }
   }
 }

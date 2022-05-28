@@ -11,15 +11,15 @@ import dev.petuska.kamp.client.util.FABIcon
 import dev.petuska.kamp.client.util.select
 import dev.petuska.kamp.client.view.style.AppStyle
 import dev.petuska.kmdc.linear.progress.MDCLinearProgress
-import dev.petuska.kmdc.top.app.bar.MDCTopAppBar
-import dev.petuska.kmdc.top.app.bar.MDCTopAppBarActionButton
-import dev.petuska.kmdc.top.app.bar.MDCTopAppBarActionLink
+import dev.petuska.kmdc.top.app.bar.ActionButton
+import dev.petuska.kmdc.top.app.bar.ActionLink
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarContextScope
-import dev.petuska.kmdc.top.app.bar.MDCTopAppBarNavigationButton
-import dev.petuska.kmdc.top.app.bar.MDCTopAppBarRow
-import dev.petuska.kmdc.top.app.bar.MDCTopAppBarSection
-import dev.petuska.kmdc.top.app.bar.MDCTopAppBarSectionOpts
-import dev.petuska.kmdc.top.app.bar.MDCTopAppBarTitle
+import dev.petuska.kmdc.top.app.bar.MDCTopAppBarSectionAlign
+import dev.petuska.kmdc.top.app.bar.NavButton
+import dev.petuska.kmdc.top.app.bar.Row
+import dev.petuska.kmdc.top.app.bar.Section
+import dev.petuska.kmdc.top.app.bar.Title
+import dev.petuska.kmdc.top.app.bar.TopAppBar
 import dev.petuska.kmdc.typography.mdcTypography
 import org.jetbrains.compose.web.attributes.ATarget
 import org.jetbrains.compose.web.attributes.href
@@ -37,9 +37,6 @@ import org.jetbrains.compose.web.css.left
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.right
-import org.jetbrains.compose.web.css.selectors.CSSSelector
-import org.jetbrains.compose.web.css.selectors.child
-import org.jetbrains.compose.web.css.selectors.hover
 import org.jetbrains.compose.web.css.textDecoration
 import org.jetbrains.compose.web.css.top
 import org.jetbrains.compose.web.css.width
@@ -56,7 +53,7 @@ object NavbarStyle : StyleSheet(AppStyle) {
   val brand by style {
     cursor("pointer")
     hover(self) style {
-      child(self, CSSSelector.Universal) style {
+      child(self, universal) style {
         textDecoration("none")
       }
     }
@@ -79,15 +76,15 @@ fun MDCTopAppBarContextScope.Navbar() {
   val store by rememberInstance<AppStore>()
   val drawerOpen by select { drawerOpen }
   val page by select { page }
-  MDCTopAppBar(
+  TopAppBar(
     attrs = {
       classes(NavbarStyle.container)
       mdcTypography()
     }
   ) {
-    MDCTopAppBarRow {
-      MDCTopAppBarSection(opts = { align = MDCTopAppBarSectionOpts.Align.Start }) {
-        MDCTopAppBarNavigationButton(attrs = {
+    Row {
+      Section(align = MDCTopAppBarSectionAlign.Start) {
+        NavButton(attrs = {
           classes("material-icons")
           onClick {
             store.dispatch(AppAction.ToggleDrawer)
@@ -98,18 +95,18 @@ fun MDCTopAppBarContextScope.Navbar() {
         val title = remember(page) {
           "KAMP" + if (page != Page.Home) " | ${page.name.uppercase()}" else ""
         }
-        MDCTopAppBarTitle(title)
+        Title(title)
         // KampIcon()
       }
-      MDCTopAppBarSection(opts = { align = MDCTopAppBarSectionOpts.Align.End }) {
+      Section(align = MDCTopAppBarSectionAlign.End) {
         CountBadge()
-        MDCTopAppBarActionButton(attrs = {
+        ActionButton(attrs = {
           classes("material-icons")
           onClick { HashRouter.navigate("/${Page.Home}") }
         }) {
           Text("home")
         }
-        MDCTopAppBarActionLink(
+        ActionLink(
           attrs = {
             href("https://github.com/mpetuska/kamp")
             target(ATarget.Blank)
@@ -129,11 +126,9 @@ private fun ProgressBar() {
   val loading by select { loading }
   val progress by select { progress }
   MDCLinearProgress(
-    {
-      indeterminate = loading && progress == null
-      closed = !loading
-      this.progress = progress
-    }
+    determinate = loading && progress != null,
+    closed = !loading,
+    progress = progress ?: 0,
   )
 }
 
@@ -145,7 +140,7 @@ private fun CountBadge() {
 @Composable
 private fun KampIcon() {
   Img(
-    src = "/images/kamp.svg",
+    src = "./images/kamp.svg",
     attrs = {
       classes(NavbarStyle.logo)
     },

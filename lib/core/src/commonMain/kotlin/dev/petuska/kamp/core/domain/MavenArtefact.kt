@@ -18,4 +18,3 @@ interface MavenArtefact {
   val path: String
     get() = "$group:$name:$version"
 }
-

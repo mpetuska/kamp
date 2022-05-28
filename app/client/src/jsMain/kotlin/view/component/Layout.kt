@@ -1,14 +1,13 @@
 package dev.petuska.kamp.client.view.component
 
 import androidx.compose.runtime.Composable
-import dev.petuska.kmdc.Builder
-import org.jetbrains.compose.web.attributes.AttrsBuilder
+import dev.petuska.kmdc.core.AttrsBuilder
+import dev.petuska.kmdc.core.ContentBuilder
 import org.jetbrains.compose.web.css.DisplayStyle
 import org.jetbrains.compose.web.css.FlexDirection
 import org.jetbrains.compose.web.css.StyleSheet
 import org.jetbrains.compose.web.css.display
 import org.jetbrains.compose.web.css.flexDirection
-import org.jetbrains.compose.web.dom.ContentBuilder
 import org.jetbrains.compose.web.dom.Div
 import org.w3c.dom.HTMLDivElement
 
@@ -26,7 +25,7 @@ object LayoutStyle : StyleSheet() {
 
 @Composable
 fun FlexColumn(
-  attrs: Builder<AttrsBuilder<HTMLDivElement>>? = null,
+  attrs: AttrsBuilder<HTMLDivElement>? = null,
   content: ContentBuilder<HTMLDivElement>
 ) {
   Div(
@@ -41,7 +40,7 @@ fun FlexColumn(
 
 @Composable
 fun FlexRow(
-  attrs: Builder<AttrsBuilder<HTMLDivElement>>? = null,
+  attrs: AttrsBuilder<HTMLDivElement>? = null,
   content: ContentBuilder<HTMLDivElement>
 ) {
   Div(

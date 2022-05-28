@@ -6,7 +6,6 @@ import dev.petuska.kamp.cli.util.PrivateEnv
 import dev.petuska.kamp.cli.util.supervisedLaunch
 import io.ktor.client.HttpClient
 import io.ktor.client.request.post
-import kotlin.time.measureTime
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.collect
@@ -16,6 +15,7 @@ import org.kodein.di.DIAware
 import org.kodein.di.direct
 import org.kodein.di.instance
 import org.kodein.di.instanceOrNull
+import kotlin.time.measureTime
 
 class Orchestrator(override val di: DI) : DIAware {
   private val logger by LoggerDelegate()
@@ -33,24 +33,26 @@ class Orchestrator(override val di: DI) : DIAware {
             logger.info("Starting $scanner scan")
             val count = scanRepo(scannerService, cliOptions)
             logger.info(
-                "Found $count kotlin modules with gradle metadata in $scanner repository filtered by ${cliOptions?.include ?: setOf()}, " +
-                    "explicitly excluding ${cliOptions?.exclude ?: setOf()}")
+              "Found $count kotlin modules with gradle metadata in $scanner repository filtered by ${cliOptions?.include ?: setOf()}, " +
+                "explicitly excluding ${cliOptions?.exclude ?: setOf()}"
+            )
           }
         }
       }
       logger.info(
-          "Finished scanning $scanner in ${
+        "Finished scanning $scanner in ${
         duration.toComponents { hours, minutes, seconds, nanoseconds ->
           "${hours}h ${minutes}m $seconds.${nanoseconds}s"
         }
-        }")
+        }"
+      )
     }
-        ?: logger.error("ScannerService for $scanner not found")
+      ?: logger.error("ScannerService for $scanner not found")
   }
 
   private suspend fun scanRepo(
-      scanner: MavenScannerService<*>,
-      cliOptions: CLIOptions? = null,
+    scanner: MavenScannerService<*>,
+    cliOptions: CLIOptions? = null,
   ): Int {
     var count = 0
     val kamp by di.instance<HttpClient>("kamp")

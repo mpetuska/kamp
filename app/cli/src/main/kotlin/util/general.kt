@@ -13,4 +13,4 @@ val prettyJson = Json {
 }
 
 suspend fun String.asDocument(): Document =
-    withContext(Dispatchers.IO) { Jsoup.parse(this@asDocument) }
+  withContext(Dispatchers.IO) { Jsoup.parse(this@asDocument) }

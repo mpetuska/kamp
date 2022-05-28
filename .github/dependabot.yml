@@ -1,14 +1,14 @@
 version: 2
 updates:
   - package-ecosystem: "github-actions"
-    directory: "/"
+    directory: "/.github/workflows"
     schedule:
-      interval: "daily"
+      interval: "monthly"
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "monthly"
   - package-ecosystem: "terraform"
     directory: "/infra"
     schedule:
-      interval: "daily"
+      interval: "monthly"

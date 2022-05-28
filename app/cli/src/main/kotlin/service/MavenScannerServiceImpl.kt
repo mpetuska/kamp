@@ -6,34 +6,34 @@ import dev.petuska.kamp.cli.processor.GradleModuleProcessor
 import dev.petuska.kamp.cli.processor.PomProcessor
 import dev.petuska.kamp.cli.util.supervisedLaunch
 import dev.petuska.kamp.core.domain.SimpleMavenArtefact
-import kotlin.time.Duration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.delay
+import kotlin.time.Duration
 
 class MavenScannerServiceImpl(
-    override val client: MavenRepositoryClient<SimpleMavenArtefact>,
-    override val pomProcessor: PomProcessor,
-    override val gradleModuleProcessor: GradleModuleProcessor,
+  override val client: MavenRepositoryClient<SimpleMavenArtefact>,
+  override val pomProcessor: PomProcessor,
+  override val gradleModuleProcessor: GradleModuleProcessor,
 ) : MavenScannerService<SimpleMavenArtefact>() {
   override fun CoroutineScope.produceArtifacts(
-      cliOptions: CLIOptions?,
+    cliOptions: CLIOptions?,
   ): ReceiveChannel<SimpleMavenArtefact> = produce {
     val pageChannel = Channel<List<MavenRepositoryClient.RepoItem>>(Channel.BUFFERED)
     supervisedLaunch {
       client
-          .listRepositoryPath("")
-          ?.filter { repoItem ->
-            val path = repoItem.path.removePrefix("/")
-            val included =
-                cliOptions?.include?.let { filter -> filter.any { path.startsWith(it) } } ?: true
-            val excluded =
-                cliOptions?.exclude?.let { filter -> filter.any { path.startsWith(it) } } ?: false
-            included && !excluded
-          }
-          ?.let { pageChannel.send(it) }
+        .listRepositoryPath("")
+        ?.filter { repoItem ->
+          val path = repoItem.path.removePrefix("/")
+          val included =
+            cliOptions?.include?.let { filter -> filter.any { path.startsWith(it) } } ?: true
+          val excluded =
+            cliOptions?.exclude?.let { filter -> filter.any { path.startsWith(it) } } ?: false
+          included && !excluded
+        }
+        ?.let { pageChannel.send(it) }
     }
 
     // Tracker
@@ -59,9 +59,9 @@ class MavenScannerServiceImpl(
         for (page in pageChannel) {
           cliOptions?.delayMS?.let { delay(Duration.milliseconds(it)) }
           val artifactDetails =
-              page.find { it.value == "maven-metadata.xml" }?.let {
-                client.getArtifactDetails(it.path)
-              }
+            page.find { it.value == "maven-metadata.xml" }?.let {
+              client.getArtifactDetails(it.path)
+            }
           if (artifactDetails != null) {
             logger.debug("Found MC artefact ${artifactDetails.group}:${artifactDetails.name}")
             send(artifactDetails)

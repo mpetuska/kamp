@@ -11,39 +11,37 @@ import dev.petuska.kamp.client.util.select
 import dev.petuska.kamp.client.view.style.AppStyle
 import dev.petuska.kamp.core.domain.KotlinTarget
 import dev.petuska.kamp.core.service.LibraryService
+import dev.petuska.kmdc.button.Icon
+import dev.petuska.kmdc.button.Label
 import dev.petuska.kmdc.button.MDCButton
-import dev.petuska.kmdc.button.MDCButtonIcon
-import dev.petuska.kmdc.button.MDCButtonLabel
-import dev.petuska.kmdc.button.MDCButtonOpts
+import dev.petuska.kmdc.button.MDCButtonType
 import dev.petuska.kmdc.checkbox.MDCCheckbox
 import dev.petuska.kmdc.form.field.MDCFormField
-import dev.petuska.kmdc.layout.grid.MDCLayoutGridCell
-import dev.petuska.kmdc.layout.grid.MDCLayoutGridCells
+import dev.petuska.kmdc.layout.grid.Cell
+import dev.petuska.kmdc.layout.grid.Cells
 import dev.petuska.kmdc.layout.grid.MDCLayoutGridScope
 import dev.petuska.kmdc.textfield.MDCTextField
-import dev.petuska.kmdc.textfield.MDCTextFieldCommonOpts
+import dev.petuska.kmdc.textfield.MDCTextFieldType
 import dev.petuska.kmdc.typography.MDCOverline
 import org.jetbrains.compose.web.dom.Text
 import org.kodein.di.compose.rememberInstance
 
 @Composable
-fun SearchForm(mdcLayoutGridScope: MDCLayoutGridScope) {
-  with(mdcLayoutGridScope) {
-    MDCLayoutGridCells {
-      MDCLayoutGridCell({ span = 12u }) {
-        TextFilter(this)
-      }
-      MDCLayoutGridCell({ span = 12u }) {
-        TargetsFilter(this)
-      }
+fun MDCLayoutGridScope.SearchForm() {
+  Cells {
+    Cell(span = 12u) {
+      TextFilter()
+    }
+    Cell(span = 12u) {
+      TargetsFilter()
     }
   }
 }
 
 @Composable
-private fun TargetsFilter(mdcLayoutGridScope: MDCLayoutGridScope) = with(mdcLayoutGridScope) {
-  MDCLayoutGridCells {
-    MDCLayoutGridCell({ span = 12u }, { classes(AppStyle.centered) }) {
+private fun MDCLayoutGridScope.TargetsFilter() {
+  Cells {
+    Cell(span = 12u, attrs = { classes(AppStyle.centered) }) {
       MDCOverline("Targets Filter")
     }
     val targetGroups = remember {
@@ -54,7 +52,7 @@ private fun TargetsFilter(mdcLayoutGridScope: MDCLayoutGridScope) = with(mdcLayo
       ) + KotlinTarget.Native.values().groupBy { it.family }.map { (k, v) -> k to v.toSet() }
     }
     targetGroups.forEach { (category, targets) ->
-      MDCLayoutGridCell {
+      Cell {
         TargetGroup(category, targets)
       }
     }
@@ -73,12 +71,10 @@ private fun TargetGroup(
   }
   MDCFormField {
     MDCCheckbox(
-      opts = {
-        label = category
-        indeterminate = !allSelected && !noneSelected
-      },
+      checked = allSelected,
+      label = category,
+      indeterminate = !allSelected && !noneSelected,
       attrs = {
-        checked(allSelected)
         onInput {
           if (it.value) {
             store.dispatch(AppAction.AddTargets(groupTargets))
@@ -92,11 +88,9 @@ private fun TargetGroup(
   groupTargets.forEach { target ->
     MDCFormField {
       MDCCheckbox(
-        opts = {
-          label = target.toString()
-        },
+        checked = target in selectedTargets,
+        label = target.toString(),
         attrs = {
-          checked(target in selectedTargets)
           onInput {
             if (it.value) {
               store.dispatch(AppAction.AddTargets(target))
@@ -111,7 +105,7 @@ private fun TargetGroup(
 }
 
 @Composable
-private fun TextFilter(mdcLayoutGridScope: MDCLayoutGridScope) = with(mdcLayoutGridScope) {
+private fun MDCLayoutGridScope.TextFilter() {
   val store by rememberInstance<AppStore>()
   val search by select { search }
   val targets by select { targets }
@@ -129,33 +123,29 @@ private fun TextFilter(mdcLayoutGridScope: MDCLayoutGridScope) = with(mdcLayoutG
       Routing.setQuery(mapOf("search" to search, "target" to targets?.map { it.platform }))
     }
   }
-  MDCLayoutGridCells(attrs = { classes(AppStyle.centered) }) {
-    MDCLayoutGridCell({ span = 6u }, { classes(AppStyle.centeredRight) }) {
+  Cells(attrs = { classes(AppStyle.centered) }) {
+    Cell(span = 6u, attrs = { classes(AppStyle.centeredRight) }) {
       MDCTextField(
-        opts = {
-          label = "Search by text"
-          type = MDCTextFieldCommonOpts.Type.Outlined
-        },
+        value = search ?: "",
+        label = "Search by text",
+        type = MDCTextFieldType.Outlined,
         attrs = {
           onKeyDown {
             if (it.key == "Enter") submit()
           }
           onInput { store.dispatch(AppAction.SetSearch(it.value.takeIf(String::isNotBlank))) }
-          value(search ?: "")
         }
       )
     }
-    MDCLayoutGridCell({ span = 6u }, { classes(AppStyle.centeredLeft) }) {
+    Cell(span = 6u, attrs = { classes(AppStyle.centeredLeft) }) {
       MDCButton(
-        opts = {
-          type = MDCButtonOpts.Type.Raised
-        },
+        type = MDCButtonType.Raised,
         attrs = {
           onClick { submit() }
         }
       ) {
-        MDCButtonIcon(attrs = { classes("material-icons") }) { Text("search") }
-        MDCButtonLabel("Search")
+        Icon(attrs = { classes("material-icons") }) { Text("search") }
+        Label("Search")
       }
     }
   }

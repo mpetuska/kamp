@@ -99,13 +99,13 @@ sealed class KotlinTarget(
     companion object {
       const val CATEGORY = "native"
       fun values(): Set<Native> = AndroidNative.values() +
-          IOS.values() +
-          WatchOS.values() +
-          TvOS.values() +
-          MacOS.values() +
-          Mingw.values() +
-          Linux.values() +
-          Wasm32
+        IOS.values() +
+        WatchOS.values() +
+        TvOS.values() +
+        MacOS.values() +
+        Mingw.values() +
+        Linux.values() +
+        Wasm32
     }
 
     object Wasm32 : Native("wasm", "wasm32")
