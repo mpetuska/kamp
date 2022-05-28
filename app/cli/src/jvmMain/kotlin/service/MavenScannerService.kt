@@ -11,11 +11,7 @@ import dev.petuska.kamp.core.domain.MavenArtefact
 import io.ktor.utils.io.core.Closeable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.*
 
 abstract class MavenScannerService<A : MavenArtefact> : Closeable {
   protected val logger by LoggerDelegate()
@@ -29,7 +25,8 @@ abstract class MavenScannerService<A : MavenArtefact> : Closeable {
   private fun CoroutineScope.scanMavenArtefacts(cliOptions: CLIOptions? = null): Flow<A> =
     run {
       logger.info(
-        "Scanning from repository root and filtering by ${cliOptions?.include ?: setOf()}, explicitly excluding ${cliOptions?.exclude ?: setOf()}"
+        "Scanning from repository root and filtering by ${cliOptions?.include ?: setOf()}, " +
+          "explicitly excluding ${cliOptions?.exclude ?: setOf()}"
       )
       produceArtifacts(cliOptions)
     }

@@ -7,11 +7,11 @@ import dev.petuska.kamp.core.service.LibraryService
 import dev.petuska.kamp.server.util.buildNextUrl
 import dev.petuska.kamp.server.util.buildPrevUrl
 import io.ktor.application.ApplicationCall
+import org.litote.kmongo.MongoOperator
 import org.litote.kmongo.MongoOperator.all
 import org.litote.kmongo.MongoOperator.and
 import org.litote.kmongo.MongoOperator.language
 import org.litote.kmongo.MongoOperator.meta
-import org.litote.kmongo.MongoOperator.search
 import org.litote.kmongo.MongoOperator.text
 import org.litote.kmongo.bson
 import org.litote.kmongo.coroutine.CoroutineCollection
@@ -20,13 +20,13 @@ class LibraryServiceImpl(
   private val call: ApplicationCall,
   private val collection: CoroutineCollection<KotlinLibrary>,
 ) : LibraryService {
-  private fun buildQuery(_search: String?, targets: Set<String>?): Pair<String?, String?> {
+  private fun buildQuery(search: String?, targets: Set<String>?): Pair<String?, String?> {
     val searchQuery =
-      _search?.let {
+      search?.let {
         """
       {
         $text: {
-          $search: '${_search.replace("'", "\\'")}',
+          ${MongoOperator.search}: '${search.replace("'", "\\'")}',
           $language: 'en'
         }
       }
@@ -52,7 +52,7 @@ class LibraryServiceImpl(
       }
 
     val projection =
-      _search?.let {
+      search?.let {
         """
         { score: {  $meta: "textScore" } }
         """.trimIndent()

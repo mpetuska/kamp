@@ -35,19 +35,17 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
         val url = "$defaultRepositoryRootUrl$pathToMavenMetadata"
         val pom = client.get<String>(url).asDocument()
         val doc = pom.getElementsByTag("metadata").first()!!
-        try {
-          val lastUpdated =
-            doc.selectFirst("versioning>lastUpdated")?.text()?.let {
-              GMTDate(
-                year = it.substring(0 until 4).toInt(),
-                month = Month.from(it.substring(4 until 6).toInt() - 1),
-                dayOfMonth = it.substring(6 until 8).toInt(),
-                hours = it.substring(8 until 10).toInt(),
-                minutes = it.substring(10 until 12).toInt(),
-                seconds = it.substring(12 until 14).toInt(),
-              )
-                .timestamp
-            }
+        runCatching {
+          val lastUpdated = doc.selectFirst("versioning>lastUpdated")?.text()?.let {
+            GMTDate(
+              year = it.substring(0 until 4).toInt(),
+              month = Month.from(it.substring(4 until 6).toInt() - 1),
+              dayOfMonth = it.substring(6 until 8).toInt(),
+              hours = it.substring(8 until 10).toInt(),
+              minutes = it.substring(10 until 12).toInt(),
+              seconds = it.substring(12 until 14).toInt(),
+            ).timestamp
+          }
           SimpleMavenArtefact(
             group = doc.selectFirst("groupId")!!.text(),
             name = doc.selectFirst("artifactId")!!.text(),
@@ -57,12 +55,11 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
             versions = doc.selectFirst("versioning>versions")?.children()?.map { v -> v.text() },
             lastUpdated = lastUpdated,
           )
-        } catch (e: Exception) {
+        }.onFailure {
           if (doc.selectFirst("plugins") == null) {
             logger.warn("Unable to parse maven-metadata.xml from $url")
           }
-          null
-        }
+        }.getOrNull()
       }
 
       artifact.await()

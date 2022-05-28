@@ -1,11 +1,11 @@
-import ext.MppAppConvention
+import ext.MppAppExtension
 import util.Git
 
 plugins {
   id("convention.mpp")
 }
 
-val mppApp = extensions.create("mppApp", MppAppConvention::class, project)
+val mppApp = extensions.create("mppApp", MppAppExtension::class, project)
 
 kotlin {
   jvm()

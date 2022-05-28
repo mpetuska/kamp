@@ -68,7 +68,7 @@ fun FABIcon(
 ) {
   I(
     attrs = {
-      classes(*fab(icon))
+      classes(classes = fab(icon))
       attrs?.invoke(this)
     },
     content = content,

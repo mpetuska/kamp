@@ -35,7 +35,7 @@ data class KotlinLibrary(
     scm = scm
   )
 
-  @Suppress("PropertyName", "unused")
+  @Suppress("PropertyName", "unused", "VariableNaming")
   val _id: String = "$group:$name"
 
   @Transient

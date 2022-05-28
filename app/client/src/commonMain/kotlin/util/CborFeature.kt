@@ -105,18 +105,14 @@ class CborFeature internal constructor(
 
       val selected = serializers.singleOrNull() ?: String.serializer()
 
-      if (selected.descriptor.isNullable) {
-        return selected
+      return if (selected.descriptor.isNullable) {
+        selected
+      } else {
+        @Suppress("UNCHECKED_CAST")
+        selected as KSerializer<Any>
+
+        if (any { it == null }) selected.nullable else selected
       }
-
-      @Suppress("UNCHECKED_CAST")
-      selected as KSerializer<Any>
-
-      if (any { it == null }) {
-        return selected.nullable
-      }
-
-      return selected
     }
   }
 

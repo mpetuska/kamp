@@ -48,7 +48,7 @@ fun Drawer() {
       Subtitle("Find your stuff")
     }
     Content {
-      PageList(*Page.values())
+      PageList(pages = Page.values())
     }
   }
 }

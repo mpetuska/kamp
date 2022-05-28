@@ -41,11 +41,13 @@ kotlin {
     commonMain {
       dependencies {
         implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:_")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:_")
       }
     }
     commonTest {
       dependencies {
         implementation(kotlin("test-common"))
+        implementation(kotlin("test-annotations-common"))
         implementation("io.kotest:kotest-assertions-core:_")
         implementation("io.kotest:kotest-property:_")
       }

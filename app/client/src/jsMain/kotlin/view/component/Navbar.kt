@@ -10,39 +10,18 @@ import dev.petuska.kamp.client.store.state.Page
 import dev.petuska.kamp.client.util.FABIcon
 import dev.petuska.kamp.client.util.select
 import dev.petuska.kamp.client.view.style.AppStyle
+import dev.petuska.kmdc.core.AttrsBuilder
 import dev.petuska.kmdc.linear.progress.MDCLinearProgress
-import dev.petuska.kmdc.top.app.bar.ActionButton
-import dev.petuska.kmdc.top.app.bar.ActionLink
-import dev.petuska.kmdc.top.app.bar.MDCTopAppBarContextScope
-import dev.petuska.kmdc.top.app.bar.MDCTopAppBarSectionAlign
-import dev.petuska.kmdc.top.app.bar.NavButton
-import dev.petuska.kmdc.top.app.bar.Row
-import dev.petuska.kmdc.top.app.bar.Section
-import dev.petuska.kmdc.top.app.bar.Title
-import dev.petuska.kmdc.top.app.bar.TopAppBar
+import dev.petuska.kmdc.top.app.bar.*
 import dev.petuska.kmdc.typography.mdcTypography
 import org.jetbrains.compose.web.attributes.ATarget
 import org.jetbrains.compose.web.attributes.href
 import org.jetbrains.compose.web.attributes.target
-import org.jetbrains.compose.web.css.DisplayStyle
-import org.jetbrains.compose.web.css.FlexDirection
-import org.jetbrains.compose.web.css.StyleSheet
-import org.jetbrains.compose.web.css.borderRadius
-import org.jetbrains.compose.web.css.cssRem
-import org.jetbrains.compose.web.css.cursor
-import org.jetbrains.compose.web.css.display
-import org.jetbrains.compose.web.css.flexDirection
-import org.jetbrains.compose.web.css.height
-import org.jetbrains.compose.web.css.left
-import org.jetbrains.compose.web.css.percent
-import org.jetbrains.compose.web.css.px
-import org.jetbrains.compose.web.css.right
-import org.jetbrains.compose.web.css.textDecoration
-import org.jetbrains.compose.web.css.top
-import org.jetbrains.compose.web.css.width
+import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.Img
 import org.jetbrains.compose.web.dom.Text
 import org.kodein.di.compose.rememberInstance
+import org.w3c.dom.HTMLImageElement
 
 object NavbarStyle : StyleSheet(AppStyle) {
   val container by style {
@@ -138,11 +117,13 @@ private fun CountBadge() {
 }
 
 @Composable
-private fun KampIcon() {
+@Suppress("UnusedPrivateMember")
+private fun KampIcon(attrs: AttrsBuilder<HTMLImageElement>? = null) {
   Img(
     src = "./images/kamp.svg",
     attrs = {
       classes(NavbarStyle.logo)
+      attrs?.invoke(this)
     },
   )
 }

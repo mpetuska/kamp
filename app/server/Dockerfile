@@ -1,7 +1,7 @@
 FROM gcr.io/distroless/java:11
 
 WORKDIR /app
-COPY build/libs/server-*.jar app.jar
+COPY build/libs/server-jvm*.jar app.jar
 ENV PORT=8000
 EXPOSE $PORT
 ENTRYPOINT ["java", "-jar", "app.jar"]

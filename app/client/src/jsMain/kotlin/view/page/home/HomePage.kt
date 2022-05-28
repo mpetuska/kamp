@@ -8,5 +8,5 @@ import dev.petuska.kmdc.typography.MDCBody1
 @Composable
 fun HomePage() {
   MDCBody1("Home")
-  PageList(*Page.values())
+  PageList(pages = Page.values())
 }

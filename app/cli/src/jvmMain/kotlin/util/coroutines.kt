@@ -2,29 +2,21 @@ package dev.petuska.kamp.cli.util
 
 import io.ktor.client.features.ClientRequestException
 import io.ktor.http.HttpStatusCode
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.supervisorScope
+import kotlinx.coroutines.*
 
 fun <R> CoroutineScope.supervisedAsync(block: suspend CoroutineScope.() -> R): Deferred<R?> =
   async {
-    try {
+    runCatching {
       supervisorScope(block)
-    } catch (e: Exception) {
-      if (e !is ClientRequestException || e.response.status != HttpStatusCode.NotFound) {
+    }.onFailure { e ->
+      if ((e !is ClientRequestException) || (e.response.status != HttpStatusCode.NotFound)) {
         e.printStackTrace()
       }
-      null
-    }
+    }.getOrNull()
   }
 
 fun <R> CoroutineScope.supervisedLaunch(block: suspend CoroutineScope.() -> R): Job = launch {
-  try {
+  runCatching {
     supervisorScope(block)
-  } catch (e: Exception) {
-    e.printStackTrace()
-  }
+  }.onFailure { it.printStackTrace() }
 }

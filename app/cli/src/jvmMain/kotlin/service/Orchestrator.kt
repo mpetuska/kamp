@@ -10,11 +10,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.collect
 import kotlinx.serialization.json.Json
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.direct
-import org.kodein.di.instance
-import org.kodein.di.instanceOrNull
+import org.kodein.di.*
 import kotlin.time.measureTime
 
 class Orchestrator(override val di: DI) : DIAware {
@@ -33,7 +29,8 @@ class Orchestrator(override val di: DI) : DIAware {
             logger.info("Starting $scanner scan")
             val count = scanRepo(scannerService, cliOptions)
             logger.info(
-              "Found $count kotlin modules with gradle metadata in $scanner repository filtered by ${cliOptions?.include ?: setOf()}, " +
+              "Found $count kotlin modules with gradle metadata in $scanner repository " +
+                "filtered by ${cliOptions?.include ?: setOf()}, " +
                 "explicitly excluding ${cliOptions?.exclude ?: setOf()}"
             )
           }

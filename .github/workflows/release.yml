@@ -6,9 +6,13 @@ on:
     types: [ created ]
 
 jobs:
+  check:
+    uses: ./.github/workflows/check.yml
+
   build:
     name: Build App
     runs-on: ubuntu-latest
+    needs: [ check ]
     steps:
       - uses: actions/checkout@v2.3.4
       - name: Restore Gradle cache
