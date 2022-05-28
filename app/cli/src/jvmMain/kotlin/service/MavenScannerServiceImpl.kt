@@ -66,7 +66,7 @@ class MavenScannerServiceImpl(
     supervisedLaunch {
       var ticks = 0
       do {
-        delay(cliOptions?.delayMS?.let { it.milliseconds } ?: 10.seconds)
+        delay(cliOptions?.delayMS?.milliseconds ?: 10.seconds)
         if (pageChannel.isEmpty) {
           logger.info("Page channel empty, ${5 - ticks} ticks remaining until close")
           ticks++
