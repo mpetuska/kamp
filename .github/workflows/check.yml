@@ -38,8 +38,11 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: ${{ runner.os }}-gradle-
 
+      - name: Run detekt
+        run: ./gradlew detektAll -x detekt --scan
+
       - name: Gradle Check
-        run: ./gradlew detektAll check -x detekt --scan
+        run: ./gradlew check -x detekt --scan
 
       - name: Make artifact location URIs relative
         if: ${{ always() }}
