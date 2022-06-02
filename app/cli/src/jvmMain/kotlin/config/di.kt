@@ -11,27 +11,23 @@ import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.engine.cio.CIOEngineConfig
-import io.ktor.client.features.HttpTimeout
-import io.ktor.client.features.auth.Auth
-import io.ktor.client.features.auth.providers.BasicAuthCredentials
-import io.ktor.client.features.auth.providers.basic
-import io.ktor.client.features.defaultRequest
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.serializer.KotlinxSerializer
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.providers.BasicAuthCredentials
+import io.ktor.client.plugins.auth.providers.basic
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.accept
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
-import org.kodein.di.provider
-import org.kodein.di.singleton
-import kotlin.time.Duration
+import org.kodein.di.*
+import kotlin.time.Duration.Companion.minutes
 import kotlin.time.DurationUnit
 
 fun HttpClientConfig<CIOEngineConfig>.baseConfig() {
-  val timeout = Duration.minutes(2.5).toLong(DurationUnit.MILLISECONDS)
+  val timeout = 2.5.minutes.toLong(DurationUnit.MILLISECONDS)
   engine { requestTimeout = timeout }
   defaultRequest {
     contentType(ContentType.Application.Json)
@@ -43,7 +39,7 @@ fun HttpClientConfig<CIOEngineConfig>.baseConfig() {
     connectTimeoutMillis = timeout
     socketTimeoutMillis = timeout
   }
-  install(JsonFeature) { serializer = KotlinxSerializer(prettyJson) }
+  install(ContentNegotiation) { json(prettyJson) }
 }
 
 val di = DI {

@@ -4,8 +4,8 @@ import dev.petuska.kamp.server.config.diConfig
 import dev.petuska.kamp.server.config.features
 import dev.petuska.kamp.server.config.routing
 import dev.petuska.kamp.server.util.PublicEnv
-import io.ktor.application.Application
-import io.ktor.application.log
+import io.ktor.server.application.Application
+import io.ktor.server.application.log
 import io.ktor.server.cio.EngineMain
 
 fun main(args: Array<String>) {

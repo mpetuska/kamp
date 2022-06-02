@@ -1,28 +1,26 @@
 package dev.petuska.kamp.server.config
 
 import dev.petuska.kamp.server.util.PrivateEnv
-import io.ktor.application.Application
-import io.ktor.application.install
-import io.ktor.auth.Authentication
-import io.ktor.auth.UserIdPrincipal
-import io.ktor.auth.basic
-import io.ktor.features.CachingHeaders
-import io.ktor.features.CallLogging
-import io.ktor.features.Compression
-import io.ktor.features.ContentNegotiation
-import io.ktor.features.DefaultHeaders
-import io.ktor.features.StatusPages
-import io.ktor.http.ContentType
-import io.ktor.serialization.json
-import io.ktor.serialization.serialization
-import kotlinx.serialization.cbor.Cbor
+import io.ktor.serialization.kotlinx.cbor.cbor
+import io.ktor.serialization.kotlinx.json.json
+import io.ktor.server.application.Application
+import io.ktor.server.application.install
+import io.ktor.server.auth.Authentication
+import io.ktor.server.auth.UserIdPrincipal
+import io.ktor.server.auth.basic
+import io.ktor.server.plugins.cachingheaders.CachingHeaders
+import io.ktor.server.plugins.callloging.CallLogging
+import io.ktor.server.plugins.compression.Compression
+import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.server.plugins.defaultheaders.DefaultHeaders
+import io.ktor.server.plugins.statuspages.StatusPages
 import org.slf4j.event.Level
 
 fun Application.features() {
   install(CallLogging) { level = Level.INFO }
   install(ContentNegotiation) {
     json()
-    serialization(ContentType.Application.Cbor, Cbor.Default)
+    cbor()
   }
   install(Compression)
   install(DefaultHeaders)

@@ -1,6 +1,6 @@
 package dev.petuska.kamp.cli.util
 
-import io.ktor.client.features.ClientRequestException
+import io.ktor.client.plugins.ClientRequestException
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.*
 

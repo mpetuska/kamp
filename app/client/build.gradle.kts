@@ -20,8 +20,8 @@ kotlin {
         outputFileName = jsOutputFile
         devServer = devServer?.copy(
           port = 3000,
-          proxy = mutableMapOf("/api/*" to "http://localhost:8080"),
-          // proxy = mutableMapOf("/api/*" to "https://kamp.azurewebsites.net"),
+//          proxy = mutableMapOf("/api/*" to "http://localhost:8080"),
+          proxy = mutableMapOf("/api/*" to "https://kamp.azurewebsites.net"),
           open = false
         )
       }
@@ -31,13 +31,15 @@ kotlin {
   sourceSets {
     commonMain {
       dependencies {
-        implementation(compose.runtime)
         implementation(project(":lib:fullstack"))
         implementation("org.reduxkotlin:redux-kotlin-threadsafe:_")
         implementation("org.reduxkotlin:redux-kotlin-thunk:_")
+
         implementation("io.ktor:ktor-client-auth:_")
-        implementation("io.ktor:ktor-client-serialization:_")
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-cbor:_")
+        implementation("io.ktor:ktor-client-content-negotiation:_")
+        implementation("io.ktor:ktor-serialization-kotlinx-json:_")
+        implementation("io.ktor:ktor-serialization-kotlinx-cbor:_")
+
         implementation("org.kodein.di:kodein-di-framework-compose:_")
       }
     }

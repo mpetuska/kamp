@@ -1,9 +1,9 @@
 package dev.petuska.kamp.server.util
 
 import io.ktor.http.URLBuilder
-import io.ktor.request.ApplicationRequest
-import io.ktor.request.port
-import io.ktor.request.uri
+import io.ktor.server.request.ApplicationRequest
+import io.ktor.server.request.port
+import io.ktor.server.request.uri
 
 fun ApplicationRequest.buildNextUrl(currentElementCount: Int): String? =
   if (currentElementCount == pageSize) {

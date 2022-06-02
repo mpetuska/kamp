@@ -8,8 +8,7 @@ kotlin {
       dependencies {
         api(project(":lib:core"))
         api("org.kodein.di:kodein-di:_")
-        api("org.jetbrains.kotlinx:kotlinx-serialization-json:_")
-        api("io.ktor:ktor-client-serialization:_")
+        api("io.ktor:ktor-serialization-kotlinx-json:_")
       }
     }
   }

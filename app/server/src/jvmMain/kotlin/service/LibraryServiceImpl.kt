@@ -6,7 +6,7 @@ import dev.petuska.kamp.core.domain.PagedResponse
 import dev.petuska.kamp.core.service.LibraryService
 import dev.petuska.kamp.server.util.buildNextUrl
 import dev.petuska.kamp.server.util.buildPrevUrl
-import io.ktor.application.ApplicationCall
+import io.ktor.server.application.ApplicationCall
 import org.litote.kmongo.MongoOperator
 import org.litote.kmongo.MongoOperator.all
 import org.litote.kmongo.MongoOperator.and

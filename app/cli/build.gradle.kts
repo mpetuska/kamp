@@ -12,9 +12,13 @@ kotlin {
       dependencies {
         implementation(project(":lib:core"))
         implementation(kotlin("reflect"))
+
         implementation("io.ktor:ktor-client-cio:_")
         implementation("io.ktor:ktor-client-auth:_")
-        implementation("io.ktor:ktor-client-serialization:_")
+        implementation("io.ktor:ktor-client-content-negotiation:_")
+        implementation("io.ktor:ktor-serialization-kotlinx-json:_")
+        implementation("io.ktor:ktor-serialization-kotlinx-cbor:_")
+
         implementation("org.kodein.di:kodein-di:_")
         implementation("org.jsoup:jsoup:_")
         implementation("ch.qos.logback:logback-classic:_")

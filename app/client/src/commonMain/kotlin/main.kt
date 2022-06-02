@@ -8,7 +8,7 @@ import dev.petuska.kamp.client.store.loadStore
 import org.kodein.di.DI
 
 data class AppContext(
-  val args: Set<String>,
+  val args: List<String>,
   val env: AppEnv,
   override val di: DI,
   val store: AppStore,
@@ -17,12 +17,11 @@ data class AppContext(
 expect suspend fun AppContext.start()
 
 suspend fun main(vararg args: String) {
-  val argsSet = args.toSet()
-  val env = loadEnv(argsSet)
+  val env = loadEnv(args = args)
   val store = loadStore(env)
   val di = loadDI(env, store)
   AppContext(
-    args = argsSet,
+    args = args.toList(),
     env = env,
     di = di,
     store = store

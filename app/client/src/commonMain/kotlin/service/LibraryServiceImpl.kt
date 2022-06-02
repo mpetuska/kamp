@@ -6,7 +6,8 @@ import dev.petuska.kamp.core.domain.LibraryCount
 import dev.petuska.kamp.core.domain.PagedResponse
 import dev.petuska.kamp.core.service.LibraryService.Companion.PATH
 import io.ktor.client.HttpClient
-import io.ktor.client.features.onDownload
+import io.ktor.client.call.body
+import io.ktor.client.plugins.onDownload
 import io.ktor.client.request.get
 
 class LibraryServiceImpl(private val client: HttpClient, private val urlUtils: UrlUtils) : LibraryService {
@@ -25,7 +26,7 @@ class LibraryServiceImpl(private val client: HttpClient, private val urlUtils: U
 
     return client.get("${PATH}${buildQuery(pagination, searchQuery, targetsQuery)}".toApiUrl()) {
       onDownload(onProgress)
-    }
+    }.body()
   }
 
   override suspend fun create(library: KotlinLibrary) {
@@ -36,7 +37,7 @@ class LibraryServiceImpl(private val client: HttpClient, private val urlUtils: U
     val searchQuery = search?.let { "search=$it" }
     val targetsQuery = targets?.joinToString(prefix = "target=", separator = "&target=")
 
-    return client.get("$PATH/count${buildQuery(searchQuery, targetsQuery)}".toApiUrl())
+    return client.get("$PATH/count${buildQuery(searchQuery, targetsQuery)}".toApiUrl()).body()
   }
 
   private fun buildQuery(vararg query: String?): String {

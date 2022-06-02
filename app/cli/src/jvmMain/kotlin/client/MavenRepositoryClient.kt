@@ -8,6 +8,7 @@ import dev.petuska.kamp.core.domain.MavenArtefact
 import dev.petuska.kamp.core.domain.SimpleMavenArtefact
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
+import io.ktor.client.statement.bodyAsText
 import io.ktor.util.date.GMTDate
 import io.ktor.util.date.Month
 import io.ktor.utils.io.core.Closeable
@@ -33,7 +34,7 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
     coroutineScope {
       val artifact = supervisedAsync {
         val url = "$defaultRepositoryRootUrl$pathToMavenMetadata"
-        val pom = client.get<String>(url).asDocument()
+        val pom = client.get(url).bodyAsText().asDocument()
         val doc = pom.getElementsByTag("metadata").first()!!
         runCatching {
           val lastUpdated = doc.selectFirst("versioning>lastUpdated")?.text()?.let {
@@ -68,9 +69,8 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
   suspend fun getGradleModule(artifact: A): GradleModule? = coroutineScope {
     supervisedAsync {
       val module =
-        client.get<String>(
-          "${artifact.mavenModuleVersionUrl}/${artifact.name}-${artifact.releaseVersion}.module"
-        )
+        client.get("${artifact.mavenModuleVersionUrl}/${artifact.name}-${artifact.releaseVersion}.module")
+          .bodyAsText()
       json.decodeFromString<GradleModule>(module)
     }
       .await()
@@ -79,9 +79,8 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
   suspend fun getMavenPom(artifact: A): Document? = coroutineScope {
     supervisedAsync {
       client
-        .get<String>(
-          "${artifact.mavenModuleVersionUrl}/${artifact.name}-${artifact.releaseVersion}.pom"
-        )
+        .get("${artifact.mavenModuleVersionUrl}/${artifact.name}-${artifact.releaseVersion}.pom")
+        .bodyAsText()
         .asDocument()
     }
       .await()
@@ -89,7 +88,7 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
 
   suspend fun listRepositoryPath(path: String): List<RepoItem>? = coroutineScope {
     supervisedAsync {
-      client.get<String>("$defaultRepositoryRootUrl${path.removeSuffix("/")}/").let { str ->
+      client.get("$defaultRepositoryRootUrl${path.removeSuffix("/")}/").bodyAsText().let { str ->
         parsePage(str.asDocument())?.map { RepoItem(it, path) }
       }
     }

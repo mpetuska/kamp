@@ -1,30 +1,16 @@
 package dev.petuska.kamp.server.config
 
 import dev.petuska.kamp.core.service.LibraryService
-import dev.petuska.kamp.server.util.PublicEnv
-import dev.petuska.kamp.server.util.inject
-import dev.petuska.kamp.server.util.page
-import dev.petuska.kamp.server.util.pageSize
-import dev.petuska.kamp.server.util.search
-import dev.petuska.kamp.server.util.targets
-import io.ktor.application.Application
-import io.ktor.application.call
-import io.ktor.auth.authenticate
+import dev.petuska.kamp.server.util.*
 import io.ktor.http.HttpStatusCode
-import io.ktor.http.content.default
-import io.ktor.http.content.defaultResource
-import io.ktor.http.content.files
-import io.ktor.http.content.resources
-import io.ktor.http.content.static
-import io.ktor.request.receive
-import io.ktor.response.respond
-import io.ktor.response.respondText
-import io.ktor.routing.Route
-import io.ktor.routing.Routing
-import io.ktor.routing.get
-import io.ktor.routing.post
-import io.ktor.routing.route
-import io.ktor.routing.routing
+import io.ktor.server.application.Application
+import io.ktor.server.application.call
+import io.ktor.server.auth.authenticate
+import io.ktor.server.http.content.*
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import io.ktor.server.response.respondText
+import io.ktor.server.routing.*
 
 fun Application.routing() = routing {
   libraries()

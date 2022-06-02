@@ -4,7 +4,7 @@ import kotlinx.browser.window
 import kotlinx.coroutines.await
 import kotlin.js.Json
 
-actual suspend fun loadEnv(args: Set<String>): AppEnv {
+actual suspend fun loadEnv(vararg args: String): AppEnv {
   val envJson: Json = window.fetch("/application.env").await().text().await()
     .split("\n")
     .filter(String::isNotBlank)

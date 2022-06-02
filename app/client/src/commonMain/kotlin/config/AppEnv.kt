@@ -6,4 +6,4 @@ interface AppEnv {
   val DEV_MODE: Boolean
 }
 
-expect suspend fun loadEnv(args: Set<String>): AppEnv
+expect suspend fun loadEnv(vararg args: String): AppEnv

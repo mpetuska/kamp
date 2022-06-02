@@ -12,9 +12,9 @@ import dev.petuska.kmdc.typography.mdcTypography
 @Composable
 fun App() {
   MDCTopAppBar(type = MDCTopAppBarType.Fixed) {
-    Drawer()
     Navbar()
     Main(attrs = { mdcTypography() }) {
+      Drawer()
       AppRouter()
     }
   }

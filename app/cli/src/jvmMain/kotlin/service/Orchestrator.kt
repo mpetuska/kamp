@@ -6,9 +6,9 @@ import dev.petuska.kamp.cli.util.PrivateEnv
 import dev.petuska.kamp.cli.util.supervisedLaunch
 import io.ktor.client.HttpClient
 import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.buffer
-import kotlinx.coroutines.flow.collect
 import kotlinx.serialization.json.Json
 import org.kodein.di.*
 import kotlin.time.measureTime
@@ -58,7 +58,7 @@ class Orchestrator(override val di: DI) : DIAware {
         supervisedLaunch {
           count++
           logger.info("Found lib: ${lib.path}")
-          kamp.post<Unit>("${PrivateEnv.API_URL}/api/libraries") { body = lib }
+          kamp.post("${PrivateEnv.API_URL}/api/libraries") { setBody(lib) }
         }
       }
     }
