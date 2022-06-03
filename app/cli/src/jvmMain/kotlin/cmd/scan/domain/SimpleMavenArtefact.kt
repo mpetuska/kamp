@@ -1,4 +1,6 @@
-package dev.petuska.kamp.core.domain
+package dev.petuska.kamp.cli.cmd.scan.domain
+
+import dev.petuska.kamp.core.domain.MavenArtefact
 
 data class SimpleMavenArtefact(
   override val group: String,
@@ -7,4 +9,6 @@ data class SimpleMavenArtefact(
   override val releaseVersion: String?,
   override val versions: List<String>?,
   override val lastUpdated: Long?,
-) : MavenArtefact
+) : MavenArtefact {
+  override fun toString(): String = "$group:$name"
+}

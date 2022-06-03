@@ -7,7 +7,11 @@ kotlin {
     commonMain {
       dependencies {
         api(project(":lib:core"))
-        api("org.kodein.di:kodein-di:_")
+      }
+    }
+    jvmMain {
+      dependencies {
+        implementation("org.litote.kmongo:kmongo-coroutine-serialization:_")
       }
     }
   }

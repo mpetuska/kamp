@@ -20,6 +20,7 @@ dependencies {
   implementation("org.jetbrains.kotlin:kotlin-serialization:_")
   implementation("com.github.jakemarsden:git-hooks-gradle-plugin:_")
   implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:_")
+  implementation("gradle.plugin.com.github.jengelman.gradle.plugins:shadow:_")
   @OptIn(InternalRefreshVersionsApi::class)
   implementation("de.fayard.refreshVersions:refreshVersions-core:${RefreshVersionsCorePlugin.currentVersion}")
 }

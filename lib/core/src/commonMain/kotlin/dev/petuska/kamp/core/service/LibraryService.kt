@@ -1,11 +1,11 @@
 package dev.petuska.kamp.core.service
 
+import dev.petuska.kamp.core.domain.Count
 import dev.petuska.kamp.core.domain.KotlinLibrary
-import dev.petuska.kamp.core.domain.LibraryCount
 import dev.petuska.kamp.core.domain.PagedResponse
 
 interface LibraryService {
-  suspend fun getCount(search: String?, targets: Set<String>?): LibraryCount
+  suspend fun getCount(search: String?, targets: Set<String>?): Count
 
   suspend fun getAll(
     page: Int,

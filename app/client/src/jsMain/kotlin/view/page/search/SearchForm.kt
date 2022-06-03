@@ -47,8 +47,8 @@ private fun MDCLayoutGridScope.TargetsFilter() {
     val targetGroups = remember {
       mapOf(
         KotlinTarget.Common.category to setOf(KotlinTarget.Common),
-        KotlinTarget.JVM.CATEGORY to KotlinTarget.JVM.values(),
-        KotlinTarget.JS.CATEGORY to KotlinTarget.JS.values(),
+        KotlinTarget.JVM.category to KotlinTarget.JVM.values(),
+        KotlinTarget.JS.category to KotlinTarget.JS.values(),
       ) + KotlinTarget.Native.values().groupBy { it.family }.map { (k, v) -> k to v.toSet() }
     }
     targetGroups.forEach { (category, targets) ->

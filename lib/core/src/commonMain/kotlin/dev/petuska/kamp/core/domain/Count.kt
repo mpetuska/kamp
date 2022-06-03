@@ -1,6 +1,8 @@
 package dev.petuska.kamp.core.domain
 
 import kotlinx.serialization.Serializable
+import kotlin.jvm.JvmInline
 
 @Serializable
-data class LibraryCount(val count: Long)
+@JvmInline
+value class Count(val count: Long)

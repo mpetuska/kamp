@@ -1,4 +1,4 @@
-package dev.petuska.kamp.cli.domain
+package dev.petuska.kamp.cli.cmd.scan.domain
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

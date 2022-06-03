@@ -1,4 +1,4 @@
-package dev.petuska.kamp.cli.client
+package dev.petuska.kamp.cli.cmd.scan.client
 
 import dev.petuska.kamp.core.domain.MavenArtefact
 import org.jsoup.nodes.Document

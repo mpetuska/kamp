@@ -5,11 +5,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.element
-import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
+import kotlinx.serialization.encoding.*
 
 @Serializable(with = KotlinTarget.Serializer::class)
 sealed class KotlinTarget(
@@ -73,9 +69,9 @@ sealed class KotlinTarget(
 
   object Common : KotlinTarget("metadata", "common")
 
-  sealed class JS(platform: String) : KotlinTarget(CATEGORY, platform) {
+  sealed class JS(platform: String) : KotlinTarget(category, platform) {
     companion object {
-      const val CATEGORY = "js"
+      const val category = "js"
       fun values(): Set<JS> = setOf(Legacy, IR)
     }
 
@@ -84,9 +80,9 @@ sealed class KotlinTarget(
     object IR : JS("ir")
   }
 
-  sealed class JVM(platform: String) : KotlinTarget(CATEGORY, platform) {
+  sealed class JVM(platform: String) : KotlinTarget(category, platform) {
     companion object {
-      const val CATEGORY = "jvm"
+      const val category = "jvm"
       fun values(): Set<JVM> = setOf(Java, Android)
     }
 
@@ -95,9 +91,9 @@ sealed class KotlinTarget(
     object Android : JVM("android")
   }
 
-  sealed class Native(val family: String, platform: String) : KotlinTarget(CATEGORY, platform) {
+  sealed class Native(val family: String, platform: String) : KotlinTarget(category, platform) {
     companion object {
-      const val CATEGORY = "native"
+      const val category = "native"
       fun values(): Set<Native> = AndroidNative.values() +
         IOS.values() +
         WatchOS.values() +

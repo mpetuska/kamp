@@ -15,6 +15,8 @@ interface MavenArtefact {
     get() = releaseVersion ?: latestVersion
 
   @Transient
-  val path: String
-    get() = "$group:$name:$version"
+  val id: String get() = "$group:$name"
+
+  @Transient
+  val path: String get() = "$id:$version"
 }

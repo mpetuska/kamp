@@ -4,6 +4,7 @@ plugins {
 
 mppApp {
   jvmMainClass by "dev.petuska.kamp.server.MainKt"
+  fatJar by true
 }
 
 kotlin {
@@ -23,9 +24,7 @@ kotlin {
         implementation("io.ktor:ktor-serialization-kotlinx-json:_")
         implementation("io.ktor:ktor-serialization-kotlinx-cbor:_")
 
-        implementation("ch.qos.logback:logback-classic:_")
         implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:_")
-        implementation("org.litote.kmongo:kmongo-coroutine-serialization:_")
         implementation("com.microsoft.azure:applicationinsights-web-auto:_")
       }
     }

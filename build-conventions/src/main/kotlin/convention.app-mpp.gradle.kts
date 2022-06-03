@@ -1,8 +1,10 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import ext.MppAppExtension
 import util.Git
 
 plugins {
   id("convention.mpp")
+  id("com.github.johnrengelman.shadow")
 }
 
 val mppApp = extensions.create("mppApp", MppAppExtension::class, project)
@@ -16,32 +18,42 @@ kotlin {
 
 tasks {
   val jvmRuntimeClasspath = configurations.named("jvmRuntimeClasspath")
-  val compileKotlinJvm by getting
-  val jvmProcessResources by getting
-  named<Jar>("jvmJar") {
-    duplicatesStrategy = DuplicatesStrategy.WARN
-    val jvmClasspath = jvmRuntimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) }
-    from(jvmClasspath) { exclude("META-INF/**") }
+  val compileKotlinJvm = named("compileKotlinJvm")
+  val jvmProcessResources = named("jvmProcessResources")
+  val fatJar = register<ShadowJar>("fatJar") {
+    onlyIf { mppApp.fatJar.get() }
+    group = "build"
     manifest {
       attributes(
-        "Main-Class" to mppApp.jvmMainClass.get(),
-        "Built-By" to System.getProperty("user.name"),
-        "Build-Jdk" to System.getProperty("java.version"),
-        "Implementation-Version" to project.version,
-        "Created-By" to "${GradleVersion.current()}",
-        "Created-From" to Git.headCommitHash
+        mapOf(
+          "Built-By" to System.getProperty("user.name"),
+          "Build-Jdk" to System.getProperty("java.version"),
+          "Implementation-Version" to project.version,
+          "Created-By" to "${GradleVersion.current()}",
+          "Created-From" to Git.headCommitHash
+        ) + (mppApp.jvmMainClass.orNull?.let { mapOf("Main-Class" to it) } ?: mapOf())
       )
     }
+    archiveAppendix.set("jvm")
+    archiveClassifier.set("fat")
+    from(compileKotlinJvm)
+    println(project.configurations.map { it.name })
+    configurations.add(jvmRuntimeClasspath.get())
     inputs.property("mainClassName", mppApp.jvmMainClass)
-    inputs.files(jvmRuntimeClasspath)
+  }
+  build {
+    dependsOn(fatJar)
   }
   register<JavaExec>("jvmRun") {
+    onlyIf { mppApp.jvmMainClass.isPresent }
     dependsOn(compileKotlinJvm, jvmProcessResources, jvmRuntimeClasspath)
     classpath(compileKotlinJvm, jvmProcessResources, jvmRuntimeClasspath)
-    mainClass.set(mppApp.jvmMainClass)
+    mppApp.jvmMainClass.orNull?.let {
+      mainClass.set(it)
+      inputs.property("mainClassName", it)
+    }
     systemProperty("io.ktor.development", "true")
 
-    inputs.property("mainClassName", mppApp.jvmMainClass)
     inputs.files(jvmRuntimeClasspath, compileKotlinJvm, jvmProcessResources)
   }
 }

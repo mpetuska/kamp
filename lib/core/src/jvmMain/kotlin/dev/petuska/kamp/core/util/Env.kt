@@ -2,8 +2,6 @@ package dev.petuska.kamp.core.util
 
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
-import kotlin.reflect.KProperty1
-import kotlin.reflect.full.memberProperties
 
 abstract class Env {
   protected class EnvDelegate<T>(private val converter: EnvDelegate<*>.(String?) -> T) : ReadOnlyProperty<Any, T> {
@@ -17,10 +15,5 @@ abstract class Env {
     }
 
     fun findEnv(name: String): String? = System.getenv()[name]
-  }
-
-  override fun toString(): String = this::class.memberProperties.joinToString("\n") {
-    @Suppress("UNCHECKED_CAST")
-    "${it.name.uppercase()}=${(it as KProperty1<Any, *>).get(this)}"
   }
 }

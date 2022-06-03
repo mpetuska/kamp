@@ -1,5 +1,6 @@
 package dev.petuska.kamp.cli.processor
 
+import dev.petuska.kamp.cli.cmd.scan.processor.PomProcessor
 import dev.petuska.kamp.cli.testutil.parseXmlFile
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.DynamicTest

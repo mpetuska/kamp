@@ -8,11 +8,12 @@ kotlin {
       dependencies {
         api("org.kodein.di:kodein-di:_")
         api("org.jetbrains.kotlinx:kotlinx-serialization-json:_")
+        api("org.jetbrains.kotlinx:kotlinx-serialization-cbor:_")
       }
     }
     jvmMain {
       dependencies {
-        api(kotlin("reflect"))
+        implementation("ch.qos.logback:logback-classic:_")
       }
     }
   }

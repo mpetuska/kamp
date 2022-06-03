@@ -1,7 +1,7 @@
 package dev.petuska.kamp.server.service
 
+import dev.petuska.kamp.core.domain.Count
 import dev.petuska.kamp.core.domain.KotlinLibrary
-import dev.petuska.kamp.core.domain.LibraryCount
 import dev.petuska.kamp.core.domain.PagedResponse
 import dev.petuska.kamp.core.service.LibraryService
 import dev.petuska.kamp.server.util.buildNextUrl
@@ -12,13 +12,11 @@ import org.litote.kmongo.MongoOperator.all
 import org.litote.kmongo.MongoOperator.and
 import org.litote.kmongo.MongoOperator.language
 import org.litote.kmongo.MongoOperator.meta
-import org.litote.kmongo.MongoOperator.text
 import org.litote.kmongo.bson
-import org.litote.kmongo.coroutine.CoroutineCollection
+import java.awt.SystemColor.text
 
 class LibraryServiceImpl(
   private val call: ApplicationCall,
-  private val collection: CoroutineCollection<KotlinLibrary>,
 ) : LibraryService {
   private fun buildQuery(search: String?, targets: Set<String>?): Pair<String?, String?> {
     val searchQuery =
@@ -86,8 +84,8 @@ class LibraryServiceImpl(
     )
   }
 
-  override suspend fun getCount(search: String?, targets: Set<String>?): LibraryCount {
-    return LibraryCount(collection.countDocuments(buildQuery(search, targets).first ?: "{}"))
+  override suspend fun getCount(search: String?, targets: Set<String>?): Count {
+    return Count(collection.countDocuments(buildQuery(search, targets).first ?: "{}"))
   }
 
   override suspend fun create(library: KotlinLibrary) {

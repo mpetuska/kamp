@@ -1,8 +1,8 @@
 package dev.petuska.kamp.core.service
 
 import dev.petuska.kamp.client.util.UrlUtils
+import dev.petuska.kamp.core.domain.Count
 import dev.petuska.kamp.core.domain.KotlinLibrary
-import dev.petuska.kamp.core.domain.LibraryCount
 import dev.petuska.kamp.core.domain.PagedResponse
 import dev.petuska.kamp.core.service.LibraryService.Companion.PATH
 import io.ktor.client.HttpClient
@@ -33,7 +33,7 @@ class LibraryServiceImpl(private val client: HttpClient, private val urlUtils: U
     TODO("Not yet implemented")
   }
 
-  override suspend fun getCount(search: String?, targets: Set<String>?): LibraryCount {
+  override suspend fun getCount(search: String?, targets: Set<String>?): Count {
     val searchQuery = search?.let { "search=$it" }
     val targetsQuery = targets?.joinToString(prefix = "target=", separator = "&target=")
 
