@@ -1,0 +1,56 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../klip-core/0.3.0/klip-core-0.3.0.module",
+    "group": "dev.petuska",
+    "module": "klip-core",
+    "version": "0.3.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.3"
+    }
+  },
+  "variants": [
+    {
+      "name": "linuxArm32HfpApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_arm32_hfp",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-test",
+          "version": {
+            "requires": "1.6.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.6.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "klip-core.klib",
+          "url": "klip-core-linuxarm32hfp-0.3.0.klib",
+          "size": 25333,
+          "sha512": "031a86a46a87a616f649e57f26333f9ca755acb2fa64a2028df2fa41ccbc0a8664381c799d8e4bbbcdf06c63eb8afa0c7afd65bc1192bd5894c380241b174c6b",
+          "sha256": "d00508effee7fa4c2d6a12875b0c8e555d05cb9473930de24eac2486b1bac733",
+          "sha1": "b4aa7fa821299beebab6f84d4c15a20f05be5f9a",
+          "md5": "3d4317f3d8a38d9e2e2b5e77d184712b"
+        }
+      ]
+    }
+  ]
+}

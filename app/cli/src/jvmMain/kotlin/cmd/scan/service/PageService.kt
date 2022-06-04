@@ -38,7 +38,7 @@ class PageService(
     logger.debug("Looking for pages in $parent")
     val items = client.listRepositoryPath(parent.path)
     items?.filterIsInstance<RepositoryItem.Directory>()?.map { item ->
-      logger.info("Found page [$item] in $parent")
+      logger.debug("Found page [$item] in $parent")
       send(item)
       launch {
         producePages(item)

@@ -1,0 +1,93 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../klip-core/0.3.0/klip-core-0.3.0.module",
+    "group": "dev.petuska",
+    "module": "klip-core",
+    "version": "0.3.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.3"
+    }
+  },
+  "variants": [
+    {
+      "name": "linuxMipsel32ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_mipsel32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-test",
+          "version": {
+            "requires": "1.6.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.6.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "klip-core.klib",
+          "url": "klip-core-linuxmipsel32-0.3.0.klib",
+          "size": 25324,
+          "sha512": "e4c138d6876d42c388dcc374345a203a2fa53fb8fb0bce900c69d8525f2388a9ffcafff6791db73596bef41de0a7b99c06238b3a4d11e67be13f9987c4e1e28e",
+          "sha256": "e0337c1cd6dc1b01123088c1a141a17672c6a277dcb4462d04713e5eae5c237e",
+          "sha1": "7340ea4fa9824abc672ef207d481cbcf5ad53249",
+          "md5": "8a5cebea9a48642a4f368c10514b2ae8"
+        }
+      ]
+    },
+    {
+      "name": "linuxMipsel32MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "linux_mipsel32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-test",
+          "version": {
+            "requires": "1.6.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.6.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "klip-core-linuxmipsel32-0.3.0-metadata.jar",
+          "url": "klip-core-linuxmipsel32-0.3.0-metadata.jar",
+          "size": 261,
+          "sha512": "f949017f93182419b86f73020fe390f536b94cbc18eac508ae941b695731d5a3a7b826b75d67bcec2f98be57df61dd767e1e10e01c07bd510eb317ec7534816f",
+          "sha256": "dfe5d75ec8ce0ae22021a5afd1ce254e156f13c253a67fbdee574c98ee779b55",
+          "sha1": "c74d3422cbb68d31f6d35e8ece619e1711ca01ec",
+          "md5": "e41d1d34a325d35fd810a650dacacf9f"
+        }
+      ]
+    }
+  ]
+}

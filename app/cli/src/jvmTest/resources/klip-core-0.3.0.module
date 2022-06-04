@@ -1,0 +1,808 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "dev.petuska",
+    "module": "klip-core",
+    "version": "0.3.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.3"
+    }
+  },
+  "variants": [
+    {
+      "name": "metadataApiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.platform.type": "common"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-test",
+          "version": {
+            "requires": "1.6.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.6.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "klip-core-metadata-0.3.0-all.jar",
+          "url": "klip-core-0.3.0-all.jar",
+          "size": 21632,
+          "sha512": "933c85b488a48120cf9f22c56795c344d468a424c87343dbc150d03c10358bfe0994f27aa64e3b7992c5c7427c9076e6b61eec84300014e4ad4428745b477aa6",
+          "sha256": "16755204b444a0d48b5276e1d2f4e63cc58a83a4590578ad3a875868da6c047f",
+          "sha1": "31eb30dc0c46a35b1cb91cb97e25ee8e7cb45385",
+          "md5": "3b1b0db3d719d652cfb61f589c58e021"
+        }
+      ]
+    },
+    {
+      "name": "commonMainMetadataElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.platform.type": "common"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-test",
+          "version": {
+            "requires": "1.6.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.6.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "klip-core-0.3.0.jar",
+          "url": "klip-core-0.3.0.jar",
+          "size": 5526,
+          "sha512": "ff70037ceb3e32b1e42de0b97795454aec8d1bde4c583a38dcdb3324e27dbc45ebc4e4ca8dbb38f3d39dbff3c7717406cccbdb07cb7068856aa42f42e7a8a053",
+          "sha256": "d992515b3fec9777fb36944ed51b19cb277cd7a0e5dd575beedbffc8f64c72e2",
+          "sha1": "02d9f55ff886404ee74fa9368ab311055f32c0c5",
+          "md5": "ccd6919f2205c06c1d6e597562dff334"
+        }
+      ]
+    },
+    {
+      "name": "debugApiElements-published",
+      "attributes": {
+        "com.android.build.api.attributes.BuildTypeAttr": "debug",
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "android",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "available-at": {
+        "url": "../../klip-core-android-debug/0.3.0/klip-core-android-debug-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-android-debug",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "debugRuntimeElements-published",
+      "attributes": {
+        "com.android.build.api.attributes.BuildTypeAttr": "debug",
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "android",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "available-at": {
+        "url": "../../klip-core-android-debug/0.3.0/klip-core-android-debug-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-android-debug",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "releaseApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "android",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "available-at": {
+        "url": "../../klip-core-android/0.3.0/klip-core-android-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-android",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "releaseRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "android",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "available-at": {
+        "url": "../../klip-core-android/0.3.0/klip-core-android-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-android",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "androidNativeArm32ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "android_arm32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-androidnativearm32/0.3.0/klip-core-androidnativearm32-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-androidnativearm32",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "androidNativeArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "android_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-androidnativearm64/0.3.0/klip-core-androidnativearm64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-androidnativearm64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "iosArm32ApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_arm32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-iosarm32/0.3.0/klip-core-iosarm32-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-iosarm32",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "iosArm32MetadataElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_arm32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-iosarm32/0.3.0/klip-core-iosarm32-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-iosarm32",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "iosArm64ApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-iosarm64/0.3.0/klip-core-iosarm64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-iosarm64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "iosArm64MetadataElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-iosarm64/0.3.0/klip-core-iosarm64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-iosarm64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "iosSimulatorArm64ApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-iossimulatorarm64/0.3.0/klip-core-iossimulatorarm64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-iossimulatorarm64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "iosSimulatorArm64MetadataElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-iossimulatorarm64/0.3.0/klip-core-iossimulatorarm64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-iossimulatorarm64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "iosX64ApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-iosx64/0.3.0/klip-core-iosx64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-iosx64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "iosX64MetadataElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-iosx64/0.3.0/klip-core-iosx64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-iosx64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "jsApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../klip-core-js/0.3.0/klip-core-js-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-js",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "jsRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../klip-core-js/0.3.0/klip-core-js-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-js",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "jvmApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "available-at": {
+        "url": "../../klip-core-jvm/0.3.0/klip-core-jvm-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-jvm",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "jvmRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "available-at": {
+        "url": "../../klip-core-jvm/0.3.0/klip-core-jvm-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-jvm",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "linuxArm32HfpApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_arm32_hfp",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-linuxarm32hfp/0.3.0/klip-core-linuxarm32hfp-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-linuxarm32hfp",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "linuxArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-linuxarm64/0.3.0/klip-core-linuxarm64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-linuxarm64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "linuxMips32ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_mips32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-linuxmips32/0.3.0/klip-core-linuxmips32-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-linuxmips32",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "linuxMips32MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "linux_mips32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-linuxmips32/0.3.0/klip-core-linuxmips32-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-linuxmips32",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "linuxMipsel32ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_mipsel32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-linuxmipsel32/0.3.0/klip-core-linuxmipsel32-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-linuxmipsel32",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "linuxMipsel32MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "linux_mipsel32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-linuxmipsel32/0.3.0/klip-core-linuxmipsel32-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-linuxmipsel32",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "linuxX64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-linuxx64/0.3.0/klip-core-linuxx64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-linuxx64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "macosArm64ApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "macos_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-macosarm64/0.3.0/klip-core-macosarm64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-macosarm64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "macosArm64MetadataElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "macos_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-macosarm64/0.3.0/klip-core-macosarm64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-macosarm64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "macosX64ApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "macos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-macosx64/0.3.0/klip-core-macosx64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-macosx64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "macosX64MetadataElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "macos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-macosx64/0.3.0/klip-core-macosx64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-macosx64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "mingwX64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "mingw_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-mingwx64/0.3.0/klip-core-mingwx64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-mingwx64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "mingwX86ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "mingw_x86",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-mingwx86/0.3.0/klip-core-mingwx86-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-mingwx86",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "tvosArm64ApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "tvos_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-tvosarm64/0.3.0/klip-core-tvosarm64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-tvosarm64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "tvosArm64MetadataElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "tvos_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-tvosarm64/0.3.0/klip-core-tvosarm64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-tvosarm64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "tvosSimulatorArm64ApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "tvos_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-tvossimulatorarm64/0.3.0/klip-core-tvossimulatorarm64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-tvossimulatorarm64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "tvosSimulatorArm64MetadataElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "tvos_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-tvossimulatorarm64/0.3.0/klip-core-tvossimulatorarm64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-tvossimulatorarm64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "tvosX64ApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "tvos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-tvosx64/0.3.0/klip-core-tvosx64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-tvosx64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "tvosX64MetadataElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "tvos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-tvosx64/0.3.0/klip-core-tvosx64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-tvosx64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "watchosArm32ApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "watchos_arm32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-watchosarm32/0.3.0/klip-core-watchosarm32-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-watchosarm32",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "watchosArm32MetadataElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "watchos_arm32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-watchosarm32/0.3.0/klip-core-watchosarm32-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-watchosarm32",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "watchosArm64ApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "watchos_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-watchosarm64/0.3.0/klip-core-watchosarm64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-watchosarm64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "watchosArm64MetadataElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "watchos_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-watchosarm64/0.3.0/klip-core-watchosarm64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-watchosarm64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "watchosSimulatorArm64ApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "watchos_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-watchossimulatorarm64/0.3.0/klip-core-watchossimulatorarm64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-watchossimulatorarm64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "watchosSimulatorArm64MetadataElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "watchos_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-watchossimulatorarm64/0.3.0/klip-core-watchossimulatorarm64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-watchossimulatorarm64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "watchosX64ApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "watchos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-watchosx64/0.3.0/klip-core-watchosx64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-watchosx64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "watchosX64MetadataElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "watchos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-watchosx64/0.3.0/klip-core-watchosx64-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-watchosx64",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "watchosX86ApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "watchos_x86",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-watchosx86/0.3.0/klip-core-watchosx86-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-watchosx86",
+        "version": "0.3.0"
+      }
+    },
+    {
+      "name": "watchosX86MetadataElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "watchos_x86",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../klip-core-watchosx86/0.3.0/klip-core-watchosx86-0.3.0.module",
+        "group": "dev.petuska",
+        "module": "klip-core-watchosx86",
+        "version": "0.3.0"
+      }
+    }
+  ]
+}

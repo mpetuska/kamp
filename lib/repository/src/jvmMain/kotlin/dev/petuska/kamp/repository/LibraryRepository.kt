@@ -96,7 +96,7 @@ class LibraryRepository(private val collection: CoroutineCollection<KotlinLibrar
       KotlinTarget.Native.category,
       KotlinTarget.Unknown.category,
     )
-    val platforms = KotlinTarget.values().map(KotlinTarget::platform)
+    val platforms = KotlinTarget.values().map(KotlinTarget::id)
     val date = Date()
     val dateFormat = SimpleDateFormat("yyyy-MM-dd")
 
@@ -106,7 +106,7 @@ class LibraryRepository(private val collection: CoroutineCollection<KotlinLibrar
         Facet("c$it", Aggregates.match("{ 'targets.category': '$it' }".bson), Aggregates.count())
       }.let(::addAll)
       platforms.map {
-        Facet("p$it", Aggregates.match("{ 'targets.platform': '$it' }".bson), Aggregates.count())
+        Facet("p$it", Aggregates.match("{ 'targets.id': '$it' }".bson), Aggregates.count())
       }.let(::addAll)
     }
     val categoriesProjection = categories.joinToString(

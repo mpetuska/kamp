@@ -13,6 +13,7 @@ import dev.petuska.kamp.cli.cmd.scan.domain.Repository
 import dev.petuska.kamp.cli.cmd.scan.domain.RepositoryItem
 import dev.petuska.kamp.cli.cmd.scan.service.PageService
 import dev.petuska.kamp.cli.cmd.scan.service.SimpleMavenArtefactService
+import dev.petuska.kamp.core.domain.KotlinTarget
 import dev.petuska.kamp.core.util.logger
 import dev.petuska.kamp.repository.LibraryRepository
 import io.ktor.client.HttpClient
@@ -70,7 +71,7 @@ class ScanCmd(override val di: DI) : CliktCommand(name = "scan"), DIAware {
 
     logger.info("Bootstrapping repository page lookup")
     val pages = findPages(client)
-    logger.info("Bootstrapping Maven Artefact lookup")
+    logger.info("Bootstrapping maven artefact lookup")
     val scanner = SimpleMavenArtefactService(
       workers = workers,
       delay = delay,
@@ -81,11 +82,12 @@ class ScanCmd(override val di: DI) : CliktCommand(name = "scan"), DIAware {
       val artefacts = scanner.findMavenArtefacts(pages.buffer().produceIn(this))
       val libraries = scanner.findKotlinLibraries(artefacts)
       libraries.collect {
+        logger.info("Found kotlin library: ${it._id} ${it.targets.map(KotlinTarget::id)}")
         count++
         libraryRepository.create(it)
       }
       logger.info(
-        "Found $count kotlin modules with gradle metadata in ${repository.alias} repository " +
+        "Found $count kotlin libraries with gradle metadata in ${repository.alias} repository " +
           "filtered by $include, explicitly excluding $exclude."
       )
       client.close()

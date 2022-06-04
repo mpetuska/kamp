@@ -18,6 +18,7 @@ refreshVersions {
 
 rootProject.name = "kamp"
 include(
+  ":lib:test",
   ":lib:core",
   ":lib:repository",
   ":lib:fullstack",

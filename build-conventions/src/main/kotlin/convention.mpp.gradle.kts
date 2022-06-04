@@ -47,20 +47,7 @@ kotlin {
     }
     commonTest {
       dependencies {
-        implementation(kotlin("test-common"))
-        implementation(kotlin("test-annotations-common"))
-        implementation("io.kotest:kotest-assertions-core:_")
-        implementation("io.kotest:kotest-property:_")
-      }
-    }
-    jvmTest {
-      dependencies {
-        implementation(kotlin("test-junit5"))
-      }
-    }
-    jsTest {
-      dependencies {
-        implementation(kotlin("test-js"))
+        implementation(project(":lib:test"))
       }
     }
   }

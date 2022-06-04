@@ -18,35 +18,37 @@ sealed class KotlinTarget(
 ) {
   object Serializer : KSerializer<KotlinTarget> {
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor("KotlinTarget") {
+      element<String>("id")
       element<String>("category")
       element<String>("platform")
-      element<String>("id")
     }
 
     override fun deserialize(decoder: Decoder): KotlinTarget {
       return decoder.decodeStructure(descriptor) {
         var category: String? = null
         var platform: String? = null
+        var id: String? = null
         while (true) {
           when (val index = decodeElementIndex(descriptor)) {
-            0 -> category = decodeStringElement(descriptor, 0)
-            1 -> platform = decodeStringElement(descriptor, 1)
-            2 -> decodeStringElement(descriptor, 2)
+            0 -> id = decodeStringElement(descriptor, 0)
+            1 -> category = decodeStringElement(descriptor, 1)
+            2 -> platform = decodeStringElement(descriptor, 2)
             CompositeDecoder.DECODE_DONE -> break
             else -> error("Unexpected index: $index")
           }
         }
+        requireNotNull(id)
         requireNotNull(category)
         requireNotNull(platform)
-        fromString("$category:$platform")
+        fromString(id)
       }
     }
 
     override fun serialize(encoder: Encoder, value: KotlinTarget) {
       encoder.encodeStructure(descriptor) {
-        encodeStringElement(descriptor, 0, value.category)
-        encodeStringElement(descriptor, 1, value.platform)
-        encodeStringElement(descriptor, 2, value.id)
+        encodeStringElement(descriptor, 0, value.id)
+        encodeStringElement(descriptor, 1, value.category)
+        encodeStringElement(descriptor, 2, value.platform)
       }
     }
   }
@@ -57,6 +59,7 @@ sealed class KotlinTarget(
     if (this === other) return true
     if (other !is KotlinTarget) return false
 
+    if (id != other.id) return false
     if (platform != other.platform) return false
     if (category != other.category) return false
 
@@ -71,9 +74,8 @@ sealed class KotlinTarget(
 
   companion object {
     fun values(): Set<KotlinTarget> = JS.values() + JVM.values() + Native.values() + Common
-    fun fromString(str: String): KotlinTarget {
-      val (category, platform) = str.split(":")
-      return values().find { it.category == category && it.platform == platform } ?: Unknown(platform)
+    fun fromString(id: String): KotlinTarget {
+      return values().find { it.id == id } ?: Unknown(id)
     }
   }
 
@@ -137,11 +139,14 @@ sealed class KotlinTarget(
       companion object {
         const val FAMILY = "androidNative"
         private const val architectureId = "android"
-        fun values(): Set<AndroidNative> = setOf(AndroidNativeArm32, AndroidNativeArm64)
+        fun values(): Set<AndroidNative> =
+          setOf(AndroidNativeArm32, AndroidNativeArm64, AndroidNativeX32, AndroidNativeX64)
       }
 
       object AndroidNativeArm32 : AndroidNative("Arm32", "arm32")
       object AndroidNativeArm64 : AndroidNative("Arm64", "arm64")
+      object AndroidNativeX32 : AndroidNative("X32", "x32")
+      object AndroidNativeX64 : AndroidNative("X64", "x64")
     }
 
     sealed class IOS(

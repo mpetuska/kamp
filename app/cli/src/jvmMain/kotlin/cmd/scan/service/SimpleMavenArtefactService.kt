@@ -26,14 +26,14 @@ class SimpleMavenArtefactService(
     repeat(workers) {
       launch {
         for (page in pages) {
-          logger.info("Looking for maven artefact in $page")
+          logger.debug("Looking for maven artefact in $page")
           delay?.let { delay(it) }
           val files = client.listRepositoryPath(page.path)?.filterIsInstance<RepositoryItem.File>()
           val artefact = files?.find { it.name == "maven-metadata.xml" }?.let {
             client.getMavenArtefact(it.path)
           }
           artefact?.let {
-            logger.info("Found maven artefact [$it] in $page")
+            logger.debug("Found maven artefact [$it] in $page")
             send(it)
           }
         }
