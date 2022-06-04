@@ -13,15 +13,14 @@ import dev.petuska.kamp.cli.cmd.scan.domain.Repository
 import dev.petuska.kamp.cli.cmd.scan.domain.RepositoryItem
 import dev.petuska.kamp.cli.cmd.scan.service.PageService
 import dev.petuska.kamp.cli.cmd.scan.service.SimpleMavenArtefactService
-import dev.petuska.kamp.core.util.cancelOnShutdown
 import dev.petuska.kamp.core.util.logger
 import dev.petuska.kamp.repository.LibraryRepository
 import io.ktor.client.HttpClient
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.produceIn
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.kodein.di.DI
 import org.kodein.di.DIAware
@@ -61,7 +60,7 @@ class ScanCmd(override val di: DI) : CliktCommand(name = "scan"), DIAware {
   private val libraryRepository by di.instance<LibraryRepository>()
 
   @OptIn(FlowPreview::class)
-  override fun run() = cancelOnShutdown(Dispatchers.Default) {
+  override fun run() = runBlocking {
     val client = run {
       val json by di.instance<Json>("pretty")
       val httpClient by di.instance<HttpClient>()

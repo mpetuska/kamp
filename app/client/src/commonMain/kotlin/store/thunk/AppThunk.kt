@@ -1,10 +1,10 @@
 package dev.petuska.kamp.client.store.thunk
 
+import dev.petuska.kamp.client.service.LibraryService
 import dev.petuska.kamp.client.store.action.AppAction
 import dev.petuska.kamp.client.store.state.AppState
 import dev.petuska.kamp.client.util.suspending
 import dev.petuska.kamp.core.domain.KotlinTarget
-import dev.petuska.kamp.core.service.LibraryService
 import org.reduxkotlin.Thunk
 
 typealias AppThunk = Thunk<AppState>
@@ -22,7 +22,7 @@ fun LibraryService.fetchLibraryPage(
 
     dispatch(AppAction.SetLoading(true))
     val theLibraries =
-      getAll(page, size, theSearch, theTargets?.map(KotlinTarget::platform)?.toSet()) { current, total ->
+      search(page, size, theSearch, theTargets?.map(KotlinTarget::platform)?.toSet()) { current, total ->
         val progress = total.toDouble() / current
         dispatch(AppAction.SetLoading(progress > 0, progress))
       }
@@ -63,7 +63,7 @@ fun LibraryService.fetchLibraryCount(
     val theSearch = (search ?: state.search)?.takeIf(String::isNotEmpty)
     val theTargets = (targets ?: state.targets)?.takeIf(Set<*>::isNotEmpty)
 
-    val theCount = getCount(theSearch, theTargets?.map(KotlinTarget::toString)?.toSet()).count
+    val theCount = count(theSearch, theTargets?.map(KotlinTarget::toString)?.toSet()).count
 
     dispatch(AppAction.SetCount(theCount))
     dispatch(AppAction.SetSearch(theSearch))

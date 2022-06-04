@@ -4,7 +4,6 @@ plugins {
 
 mppApp {
   jvmMainClass by "dev.petuska.kamp.cli.MainKt"
-  fatJar by true
 }
 
 kotlin {
@@ -28,7 +27,6 @@ kotlin {
       dependencies {
         implementation("io.ktor:ktor-client-cio:_")
         implementation("org.jsoup:jsoup:_")
-        implementation("ch.qos.logback:logback-classic:_")
       }
     }
     all {

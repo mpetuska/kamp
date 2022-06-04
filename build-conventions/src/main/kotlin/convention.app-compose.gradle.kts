@@ -1,6 +1,12 @@
+import ext.MppAppExtension
+
 plugins {
   id("convention.app-mpp")
   id("convention.compose")
+}
+
+extensions.configure<MppAppExtension> {
+  fatJar by false
 }
 
 kotlin {

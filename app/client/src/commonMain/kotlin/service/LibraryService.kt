@@ -1,43 +1,38 @@
-package dev.petuska.kamp.core.service
+package dev.petuska.kamp.client.service
 
 import dev.petuska.kamp.client.util.UrlUtils
 import dev.petuska.kamp.core.domain.Count
 import dev.petuska.kamp.core.domain.KotlinLibrary
 import dev.petuska.kamp.core.domain.PagedResponse
-import dev.petuska.kamp.core.service.LibraryService.Companion.PATH
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.onDownload
 import io.ktor.client.request.get
 
-class LibraryServiceImpl(private val client: HttpClient, private val urlUtils: UrlUtils) : LibraryService {
+class LibraryService(private val client: HttpClient, private val urlUtils: UrlUtils) {
   private fun String.toApiUrl() = with(urlUtils) { toApiUrl() }
 
-  override suspend fun getAll(
+  suspend fun search(
     page: Int,
     size: Int,
     search: String?,
     targets: Set<String>?,
-    onProgress: (suspend (current: Long, total: Long) -> Unit)?,
+    onProgress: (suspend (current: Long, total: Long) -> Unit)? = null,
   ): PagedResponse<KotlinLibrary> {
     val pagination = "page=$page&size=$size"
     val searchQuery = search?.let { "search=$it" } ?: ""
     val targetsQuery = targets?.joinToString(prefix = "target=", separator = "&target=") ?: ""
 
-    return client.get("${PATH}${buildQuery(pagination, searchQuery, targetsQuery)}".toApiUrl()) {
+    return client.get("/api/libraries${buildQuery(pagination, searchQuery, targetsQuery)}".toApiUrl()) {
       onDownload(onProgress)
     }.body()
   }
 
-  override suspend fun create(library: KotlinLibrary) {
-    TODO("Not yet implemented")
-  }
-
-  override suspend fun getCount(search: String?, targets: Set<String>?): Count {
+  suspend fun count(search: String?, targets: Set<String>?): Count {
     val searchQuery = search?.let { "search=$it" }
     val targetsQuery = targets?.joinToString(prefix = "target=", separator = "&target=")
 
-    return client.get("$PATH/count${buildQuery(searchQuery, targetsQuery)}".toApiUrl()).body()
+    return client.get("/api/libraries/count${buildQuery(searchQuery, targetsQuery)}".toApiUrl()).body()
   }
 
   private fun buildQuery(vararg query: String?): String {

@@ -36,6 +36,7 @@ kotlin {
     configureEach {
       languageSettings {
         optIn("kotlin.RequiresOptIn")
+        optIn("kotlinx.serialization.ExperimentalSerializationApi")
       }
     }
     commonMain {

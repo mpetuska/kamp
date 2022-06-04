@@ -20,7 +20,7 @@ tasks {
   val jvmRuntimeClasspath = configurations.named("jvmRuntimeClasspath")
   val compileKotlinJvm = named("compileKotlinJvm")
   val jvmProcessResources = named("jvmProcessResources")
-  val fatJar = register<ShadowJar>("fatJar") {
+  val fatJar = register<ShadowJar>("jvmFatJar") {
     onlyIf { mppApp.fatJar.get() }
     group = "build"
     manifest {
@@ -34,27 +34,23 @@ tasks {
         ) + (mppApp.jvmMainClass.orNull?.let { mapOf("Main-Class" to it) } ?: mapOf())
       )
     }
+    mergeServiceFiles()
     archiveAppendix.set("jvm")
     archiveClassifier.set("fat")
-    from(compileKotlinJvm)
-    println(project.configurations.map { it.name })
+    from(compileKotlinJvm, jvmProcessResources)
     configurations.add(jvmRuntimeClasspath.get())
     inputs.property("mainClassName", mppApp.jvmMainClass)
   }
-  build {
+  assemble {
     dependsOn(fatJar)
   }
   register<JavaExec>("jvmRun") {
     onlyIf { mppApp.jvmMainClass.isPresent }
-    dependsOn(compileKotlinJvm, jvmProcessResources, jvmRuntimeClasspath)
     classpath(compileKotlinJvm, jvmProcessResources, jvmRuntimeClasspath)
     mppApp.jvmMainClass.orNull?.let {
       mainClass.set(it)
       inputs.property("mainClassName", it)
     }
-    systemProperty("io.ktor.development", "true")
-
-    inputs.files(jvmRuntimeClasspath, compileKotlinJvm, jvmProcessResources)
   }
 }
 

@@ -3,6 +3,7 @@ package dev.petuska.kamp.client.view.page.search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import dev.petuska.kamp.client.service.LibraryService
 import dev.petuska.kamp.client.store.AppStore
 import dev.petuska.kamp.client.store.action.AppAction
 import dev.petuska.kamp.client.store.thunk.fetchLibraryPage
@@ -10,7 +11,6 @@ import dev.petuska.kamp.client.util.Routing
 import dev.petuska.kamp.client.util.select
 import dev.petuska.kamp.client.view.style.AppStyle
 import dev.petuska.kamp.core.domain.KotlinTarget
-import dev.petuska.kamp.core.service.LibraryService
 import dev.petuska.kmdc.button.Icon
 import dev.petuska.kmdc.button.Label
 import dev.petuska.kmdc.button.MDCButton
@@ -116,6 +116,7 @@ private fun MDCLayoutGridScope.TextFilter() {
       store.dispatch(
         libraryService.fetchLibraryPage(
           page = 1,
+          size = 50,
           search = search,
           targets = targets,
         )

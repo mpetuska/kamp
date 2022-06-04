@@ -1,16 +1,19 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
   id("convention.app-mpp")
 }
 
 mppApp {
   jvmMainClass by "dev.petuska.kamp.server.MainKt"
-  fatJar by true
 }
 
 kotlin {
   sourceSets {
     jvmMain {
       dependencies {
+        implementation(project(":lib:core"))
+        implementation(project(":lib:repository"))
         implementation(project(":lib:fullstack"))
 
         implementation("io.ktor:ktor-server-cio:_")
@@ -25,26 +28,23 @@ kotlin {
         implementation("io.ktor:ktor-serialization-kotlinx-cbor:_")
 
         implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:_")
-        implementation("com.microsoft.azure:applicationinsights-web-auto:_")
-      }
-    }
-    all {
-      languageSettings {
-        optIn("kotlinx.serialization.ExperimentalSerializationApi")
       }
     }
   }
 }
 
 tasks {
-  val jsBrowserDistribution = findByPath(":app:client:jsBrowserDistribution")!!
-  named<Jar>("jvmJar") {
+  val jsBrowserDistribution = findByPath(":app:client:jsBrowserDistribution")
+  named<ShadowJar>("jvmFatJar") {
     dependsOn(jsBrowserDistribution)
-    into("WEB-INF") { from(jsBrowserDistribution) }
+    into("WEB-INF") {
+      from(jsBrowserDistribution)
+      exclude("**/*.scss")
+    }
     inputs.files(jsBrowserDistribution)
   }
   named<JavaExec>("jvmRun") {
-    classpath(jsBrowserDistribution)
+    classpath(project(":app:client").buildDir.resolve("dist"))
     systemProperty("io.ktor.development", "true")
   }
 }

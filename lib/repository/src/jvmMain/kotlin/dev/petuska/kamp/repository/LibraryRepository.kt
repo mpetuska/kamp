@@ -90,11 +90,11 @@ class LibraryRepository(private val collection: CoroutineCollection<KotlinLibrar
 
   suspend fun captureStatistics(): LibrariesStatistic {
     val categories = listOf(
-      KotlinTarget.Common.category,
+      KotlinTarget.Common.platform,
       KotlinTarget.JVM.category,
       KotlinTarget.JS.category,
       KotlinTarget.Native.category,
-      KotlinTarget.Unknown("unknown")
+      KotlinTarget.Unknown.category,
     )
     val platforms = KotlinTarget.values().map(KotlinTarget::platform)
     val date = Date()

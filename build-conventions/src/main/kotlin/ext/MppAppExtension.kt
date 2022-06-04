@@ -9,6 +9,6 @@ abstract class MppAppExtension(override val project: Project) : ProjectExtension
   abstract val fatJar: Property<Boolean>
 
   init {
-    fatJar.convention(false)
+    fatJar.convention(true)
   }
 }

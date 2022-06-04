@@ -43,7 +43,7 @@ class StatisticRepository(
     return dbCall.toList()
   }
 
-  suspend fun count(from: Long, to: Long): Long {
+  suspend fun count(from: Long?, to: Long?): Long {
     return collection.countDocuments(buildQuery(from, to) ?: "{}")
   }
 

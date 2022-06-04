@@ -31,6 +31,7 @@ kotlin {
   sourceSets {
     commonMain {
       dependencies {
+        implementation(project(":lib:core"))
         implementation(project(":lib:fullstack"))
         implementation("org.reduxkotlin:redux-kotlin-threadsafe:_")
         implementation("org.reduxkotlin:redux-kotlin-thunk:_")
@@ -52,11 +53,6 @@ kotlin {
         implementation(npm("@fortawesome/free-regular-svg-icons", versionFor("version.npm.fontawesome")))
         implementation(npm("@fortawesome/free-brands-svg-icons", versionFor("version.npm.fontawesome")))
         implementation(npm("@fortawesome/fontawesome-free", versionFor("version.npm.fontawesome")))
-      }
-    }
-    all {
-      languageSettings {
-        optIn("kotlinx.serialization.ExperimentalSerializationApi")
       }
     }
   }

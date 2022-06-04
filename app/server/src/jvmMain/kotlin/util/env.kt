@@ -1,6 +1,7 @@
 package dev.petuska.kamp.server.util
 
 import dev.petuska.kamp.core.util.Env
+import org.slf4j.event.Level
 
 object PrivateEnv : Env() {
   val MONGO_STRING by EnvDelegate { it ?: "mongodb://localhost:27017" }
@@ -10,7 +11,9 @@ object PrivateEnv : Env() {
 }
 
 object PublicEnv : Env() {
+  val LOG_LEVEL by EnvDelegate { it?.uppercase()?.let(Level::valueOf) ?: Level.INFO }
+  val PORT by EnvDelegate { it?.toInt() ?: 8080 }
   val API_URL by EnvDelegate {
-    it ?: findEnv("WEBSITE_HOSTNAME")?.let { host -> "https://$host" } ?: "http://localhost:8080"
+    it ?: findEnv("WEBSITE_HOSTNAME")?.let { host -> "https://$host" } ?: "http://localhost:$PORT"
   }
 }

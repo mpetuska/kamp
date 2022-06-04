@@ -32,7 +32,7 @@ sealed class KotlinTarget(
         }
         requireNotNull(category)
         requireNotNull(platform)
-        values().find { it.platform == platform && it.category == category } ?: Unknown(platform)
+        values().find { it.category == category && it.platform == platform } ?: Unknown(platform)
       }
     }
 
@@ -65,7 +65,11 @@ sealed class KotlinTarget(
     fun values(): Set<KotlinTarget> = JS.values() + JVM.values() + Native.values() + Common
   }
 
-  class Unknown(platform: String) : KotlinTarget("unknown", platform)
+  class Unknown(platform: String) : KotlinTarget(category, platform) {
+    companion object {
+      const val category = "unknown"
+    }
+  }
 
   object Common : KotlinTarget("metadata", "common")
 

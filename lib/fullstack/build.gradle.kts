@@ -6,8 +6,7 @@ kotlin {
   sourceSets {
     commonMain {
       dependencies {
-        api(project(":lib:core"))
-        api("org.kodein.di:kodein-di:_")
+        implementation(project(":lib:core"))
       }
     }
   }
