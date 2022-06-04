@@ -14,11 +14,13 @@ sealed class KotlinTarget(
   val platform: String,
   val displayCategory: String = category,
   val displayPlatform: String = platform,
+  val id: String = platform,
 ) {
   object Serializer : KSerializer<KotlinTarget> {
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor("KotlinTarget") {
       element<String>("category")
       element<String>("platform")
+      element<String>("id")
     }
 
     override fun deserialize(decoder: Decoder): KotlinTarget {
@@ -29,6 +31,7 @@ sealed class KotlinTarget(
           when (val index = decodeElementIndex(descriptor)) {
             0 -> category = decodeStringElement(descriptor, 0)
             1 -> platform = decodeStringElement(descriptor, 1)
+            2 -> decodeStringElement(descriptor, 2)
             CompositeDecoder.DECODE_DONE -> break
             else -> error("Unexpected index: $index")
           }
@@ -43,6 +46,7 @@ sealed class KotlinTarget(
       encoder.encodeStructure(descriptor) {
         encodeStringElement(descriptor, 0, value.category)
         encodeStringElement(descriptor, 1, value.platform)
+        encodeStringElement(descriptor, 2, value.id)
       }
     }
   }
@@ -87,7 +91,7 @@ sealed class KotlinTarget(
 
   object Common : KotlinTarget("common", "common", "Common")
 
-  sealed class JS(platform: String) : KotlinTarget(category, platform, "JS") {
+  sealed class JS(platform: String) : KotlinTarget(category, platform, "JS", id = "${category}_$platform") {
     companion object {
       const val category = "js"
       fun values(): Set<JS> = setOf(Legacy, IR)
@@ -97,7 +101,7 @@ sealed class KotlinTarget(
     object IR : JS("ir")
   }
 
-  sealed class JVM(platform: String) : KotlinTarget(category, platform, "JVM") {
+  sealed class JVM(platform: String) : KotlinTarget(category, platform, "JVM", id = "${category}_$platform") {
     companion object {
       const val category = "jvm"
       fun values(): Set<JVM> = setOf(Java, Android)
@@ -110,8 +114,8 @@ sealed class KotlinTarget(
   sealed class Native(
     val family: String,
     platform: String,
-    val id: String = platform
-  ) : KotlinTarget(category, platform, "Native") {
+    id: String = platform
+  ) : KotlinTarget(category, platform, "Native", id = id) {
     companion object {
       const val category = "native"
       fun values(): Set<Native> = AndroidNative.values() +
