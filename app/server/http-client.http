@@ -1,5 +1,5 @@
 ###
-GET {{host}}/api/libraries
+GET {{host}}/api/libraries?target=android_x64
 
 ###
 GET {{host}}/api/libraries/count

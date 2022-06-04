@@ -91,7 +91,7 @@ sealed class KotlinTarget(
     }
   }
 
-  object Common : KotlinTarget("common", "common", "Common")
+  object Common : KotlinTarget("metadata", "common", "Metadata")
 
   sealed class JS(platform: String) : KotlinTarget(category, platform, "JS", id = "${category}_$platform") {
     companion object {
@@ -140,12 +140,12 @@ sealed class KotlinTarget(
         const val FAMILY = "androidNative"
         private const val architectureId = "android"
         fun values(): Set<AndroidNative> =
-          setOf(AndroidNativeArm32, AndroidNativeArm64, AndroidNativeX32, AndroidNativeX64)
+          setOf(AndroidNativeArm32, AndroidNativeArm64, AndroidNativeX86, AndroidNativeX64)
       }
 
       object AndroidNativeArm32 : AndroidNative("Arm32", "arm32")
       object AndroidNativeArm64 : AndroidNative("Arm64", "arm64")
-      object AndroidNativeX32 : AndroidNative("X32", "x32")
+      object AndroidNativeX86 : AndroidNative("X86", "x86")
       object AndroidNativeX64 : AndroidNative("X64", "x64")
     }
 

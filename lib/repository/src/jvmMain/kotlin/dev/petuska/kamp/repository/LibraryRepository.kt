@@ -90,13 +90,15 @@ class LibraryRepository(private val collection: CoroutineCollection<KotlinLibrar
 
   suspend fun captureStatistics(): LibrariesStatistic {
     val categories = listOf(
+      // TODO Switch to `KotlinTarget.Common.category`
       KotlinTarget.Common.platform,
       KotlinTarget.JVM.category,
       KotlinTarget.JS.category,
       KotlinTarget.Native.category,
       KotlinTarget.Unknown.category,
     )
-    val platforms = KotlinTarget.values().map(KotlinTarget::id)
+    // TODO Remove old platform identifiers
+    val platforms = KotlinTarget.values().map(KotlinTarget::id) + "ir" + "legacy" + "jvm" + "android"
     val date = Date()
     val dateFormat = SimpleDateFormat("yyyy-MM-dd")
 
@@ -106,7 +108,8 @@ class LibraryRepository(private val collection: CoroutineCollection<KotlinLibrar
         Facet("c$it", Aggregates.match("{ 'targets.category': '$it' }".bson), Aggregates.count())
       }.let(::addAll)
       platforms.map {
-        Facet("p$it", Aggregates.match("{ 'targets.id': '$it' }".bson), Aggregates.count())
+        // TODO Switch to `targets.id`
+        Facet("p$it", Aggregates.match("{ 'targets.platform': '$it' }".bson), Aggregates.count())
       }.let(::addAll)
     }
     val categoriesProjection = categories.joinToString(

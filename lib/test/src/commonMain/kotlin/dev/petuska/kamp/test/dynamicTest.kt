@@ -1,8 +1,9 @@
 package dev.petuska.kamp.test
 
-expect class DynamicTest
+@Suppress("NO_ACTUAL_FOR_EXPECT")
+expect class DynamicTests
 
-expect fun dynamicTests(builder: DynamicTestBuilder.() -> Unit): Collection<DynamicTest>
+expect fun dynamicTests(builder: DynamicTestBuilder.() -> Unit): DynamicTests
 
 class DynamicTestBuilder {
   internal val tests = mutableMapOf<String, () -> Unit>()

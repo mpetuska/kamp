@@ -1,0 +1,768 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "co.touchlab",
+    "module": "stately-concurrency",
+    "version": "1.2.3",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.0.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "metadataApiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.platform.type": "common"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.6.20"
+          }
+        },
+        {
+          "group": "co.touchlab",
+          "module": "stately-common",
+          "version": {
+            "requires": "1.2.3"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "stately-concurrency-metadata-1.2.3-all.jar",
+          "url": "stately-concurrency-1.2.3-all.jar",
+          "size": 20647,
+          "sha512": "c6482162bf54aeebca21d40740918964e2848b51e1af21d6a1d9d9d4d77669adf4b996e15c8f9dc8eb1426f1dce1f7aa35695b46bcdbb54a4be4b3b5476de9e2",
+          "sha256": "133ec0637e9741a5401e9e631f7671dbc94af6c246239f76b1a9f62cad457a06",
+          "sha1": "3a31e34659f92008aa4528fb053bfc3a71b7a6e3",
+          "md5": "0f60ad9056b9b0667bae0da62f6504d4"
+        }
+      ]
+    },
+    {
+      "name": "commonMainMetadataElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.platform.type": "common"
+      },
+      "files": [
+        {
+          "name": "stately-concurrency-1.2.3.jar",
+          "url": "stately-concurrency-1.2.3.jar",
+          "size": 5758,
+          "sha512": "a0ea576fc976c95e588dfccdfbe458558dac58fd8f8eec5e724192c3dd523b0daf73ba3d66c112f887bd75f15f9315fa285757e3eafc07f8e82b3c2cb9e9007d",
+          "sha256": "2731354f45bd0c8a8bd292d3f2e55dcc773dbec41f6a99392511de0a15bdccee",
+          "sha1": "d63390adea371fc70b2335e7e3d7c9d8c47b77c6",
+          "md5": "8bf20c3def272152835f04830b11dd2e"
+        }
+      ]
+    },
+    {
+      "name": "androidNativeArm32ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "android_arm32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-androidnativearm32/1.2.3/stately-concurrency-androidnativearm32-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-androidnativearm32",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "androidNativeArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "android_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-androidnativearm64/1.2.3/stately-concurrency-androidnativearm64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-androidnativearm64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "androidNativeX64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "android_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-androidnativex64/1.2.3/stately-concurrency-androidnativex64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-androidnativex64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "androidNativeX86ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "android_x86",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-androidnativex86/1.2.3/stately-concurrency-androidnativex86-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-androidnativex86",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "iosArm32ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_arm32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-iosarm32/1.2.3/stately-concurrency-iosarm32-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-iosarm32",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "iosArm32MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_arm32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-iosarm32/1.2.3/stately-concurrency-iosarm32-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-iosarm32",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "iosArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-iosarm64/1.2.3/stately-concurrency-iosarm64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-iosarm64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "iosArm64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-iosarm64/1.2.3/stately-concurrency-iosarm64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-iosarm64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "iosSimulatorArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-iossimulatorarm64/1.2.3/stately-concurrency-iossimulatorarm64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-iossimulatorarm64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "iosSimulatorArm64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-iossimulatorarm64/1.2.3/stately-concurrency-iossimulatorarm64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-iossimulatorarm64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "iosX64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-iosx64/1.2.3/stately-concurrency-iosx64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-iosx64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "iosX64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-iosx64/1.2.3/stately-concurrency-iosx64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-iosx64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "jsLegacyApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.js.compiler": "legacy",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-js/1.2.3/stately-concurrency-js-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-js",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "jsLegacyRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.js.compiler": "legacy",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-js/1.2.3/stately-concurrency-js-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-js",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "jsIrApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-js/1.2.3/stately-concurrency-js-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-js",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "jsIrRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-js/1.2.3/stately-concurrency-js-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-js",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "jvmApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-jvm/1.2.3/stately-concurrency-jvm-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-jvm",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "jvmRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-jvm/1.2.3/stately-concurrency-jvm-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-jvm",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "linuxArm32HfpApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_arm32_hfp",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-linuxarm32hfp/1.2.3/stately-concurrency-linuxarm32hfp-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-linuxarm32hfp",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "linuxMips32ApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_mips32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-linuxmips32/1.2.3/stately-concurrency-linuxmips32-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-linuxmips32",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "linuxMips32MetadataElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "linux_mips32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-linuxmips32/1.2.3/stately-concurrency-linuxmips32-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-linuxmips32",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "linuxX64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-linuxx64/1.2.3/stately-concurrency-linuxx64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-linuxx64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "macosArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "macos_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-macosarm64/1.2.3/stately-concurrency-macosarm64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-macosarm64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "macosArm64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "macos_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-macosarm64/1.2.3/stately-concurrency-macosarm64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-macosarm64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "macosX64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "macos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-macosx64/1.2.3/stately-concurrency-macosx64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-macosx64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "macosX64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "macos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-macosx64/1.2.3/stately-concurrency-macosx64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-macosx64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "mingwX64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "mingw_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-mingwx64/1.2.3/stately-concurrency-mingwx64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-mingwx64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "mingwX86ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "mingw_x86",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-mingwx86/1.2.3/stately-concurrency-mingwx86-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-mingwx86",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "tvosArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "tvos_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-tvosarm64/1.2.3/stately-concurrency-tvosarm64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-tvosarm64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "tvosArm64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "tvos_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-tvosarm64/1.2.3/stately-concurrency-tvosarm64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-tvosarm64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "tvosSimulatorArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "tvos_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-tvossimulatorarm64/1.2.3/stately-concurrency-tvossimulatorarm64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-tvossimulatorarm64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "tvosSimulatorArm64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "tvos_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-tvossimulatorarm64/1.2.3/stately-concurrency-tvossimulatorarm64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-tvossimulatorarm64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "tvosX64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "tvos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-tvosx64/1.2.3/stately-concurrency-tvosx64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-tvosx64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "tvosX64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "tvos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-tvosx64/1.2.3/stately-concurrency-tvosx64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-tvosx64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "watchosArm32ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "watchos_arm32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-watchosarm32/1.2.3/stately-concurrency-watchosarm32-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-watchosarm32",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "watchosArm32MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "watchos_arm32",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-watchosarm32/1.2.3/stately-concurrency-watchosarm32-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-watchosarm32",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "watchosArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "watchos_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-watchosarm64/1.2.3/stately-concurrency-watchosarm64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-watchosarm64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "watchosArm64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "watchos_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-watchosarm64/1.2.3/stately-concurrency-watchosarm64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-watchosarm64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "watchosSimulatorArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "watchos_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-watchossimulatorarm64/1.2.3/stately-concurrency-watchossimulatorarm64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-watchossimulatorarm64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "watchosSimulatorArm64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "watchos_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-watchossimulatorarm64/1.2.3/stately-concurrency-watchossimulatorarm64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-watchossimulatorarm64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "watchosX64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "watchos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-watchosx64/1.2.3/stately-concurrency-watchosx64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-watchosx64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "watchosX64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "watchos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-watchosx64/1.2.3/stately-concurrency-watchosx64-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-watchosx64",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "watchosX86ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "watchos_x86",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-watchosx86/1.2.3/stately-concurrency-watchosx86-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-watchosx86",
+        "version": "1.2.3"
+      }
+    },
+    {
+      "name": "watchosX86MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "watchos_x86",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../stately-concurrency-watchosx86/1.2.3/stately-concurrency-watchosx86-1.2.3.module",
+        "group": "co.touchlab",
+        "module": "stately-concurrency-watchosx86",
+        "version": "1.2.3"
+      }
+    }
+  ]
+}

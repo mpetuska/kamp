@@ -10,6 +10,7 @@ kotlin {
         api(kotlin("test-annotations-common"))
         api("io.kotest:kotest-assertions-core:_")
         api("io.kotest:kotest-property:_")
+        api("org.jetbrains.kotlinx:kotlinx-coroutines-test:_")
       }
     }
     jsMain {

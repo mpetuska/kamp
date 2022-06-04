@@ -2,9 +2,10 @@ package dev.petuska.kamp.test
 
 import io.kotest.matchers.shouldBe
 
-actual typealias DynamicTest = Any
+@Suppress("ACTUAL_WITHOUT_EXPECT")
+actual typealias DynamicTests = Unit
 
-actual fun dynamicTests(builder: DynamicTestBuilder.() -> Unit): dynamic {
+actual fun dynamicTests(builder: DynamicTestBuilder.() -> Unit) {
   val tests = DynamicTestBuilder().apply(builder).tests
   val results = tests.map { (name, test) ->
     println("[TEST] $name")
@@ -13,5 +14,5 @@ actual fun dynamicTests(builder: DynamicTestBuilder.() -> Unit): dynamic {
     }.onFailure { it.printStackTrace() }
   }
   results.none { it.isFailure } shouldBe true
-  return Unit
+  return
 }
