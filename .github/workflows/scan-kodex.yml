@@ -25,7 +25,7 @@ env:
   LOG_LEVEL: ${{ github.event.inputs.logLevel }}
 
 concurrency:
-  group: scan-kodex
+  group: kodex
   cancel-in-progress: false
 
 permissions:
