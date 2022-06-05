@@ -90,15 +90,15 @@ class LibraryRepository(private val collection: CoroutineCollection<KotlinLibrar
 
   suspend fun captureStatistics(): LibrariesStatistic {
     val categories = listOf(
-      // TODO Switch to `KotlinTarget.Common.category`
-      KotlinTarget.Common.platform,
+      KotlinTarget.Common.category,
       KotlinTarget.JVM.category,
       KotlinTarget.JS.category,
       KotlinTarget.Native.category,
       KotlinTarget.Unknown.category,
     )
-    // TODO Remove old platform identifiers
-    val platforms = KotlinTarget.values().map(KotlinTarget::id) + "ir" + "legacy" + "jvm" + "android"
+    val families = KotlinTarget.values().map(KotlinTarget::family).toSet() +
+      KotlinTarget.Unknown("unknown").family
+    val platforms = KotlinTarget.values().map(KotlinTarget::id)
     val date = Date()
     val dateFormat = SimpleDateFormat("yyyy-MM-dd")
 
@@ -107,9 +107,11 @@ class LibraryRepository(private val collection: CoroutineCollection<KotlinLibrar
       categories.map {
         Facet("c$it", Aggregates.match("{ 'targets.category': '$it' }".bson), Aggregates.count())
       }.let(::addAll)
+      families.map {
+        Facet("f$it", Aggregates.match("{ 'targets.family': '$it' }".bson), Aggregates.count())
+      }.let(::addAll)
       platforms.map {
-        // TODO Switch to `targets.id`
-        Facet("p$it", Aggregates.match("{ 'targets.platform': '$it' }".bson), Aggregates.count())
+        Facet("p$it", Aggregates.match("{ 'targets.id': '$it' }".bson), Aggregates.count())
       }.let(::addAll)
     }
     val categoriesProjection = categories.joinToString(
@@ -117,6 +119,11 @@ class LibraryRepository(private val collection: CoroutineCollection<KotlinLibrar
       postfix = "}",
       separator = ","
     ) { "'$it': { '$arrayElemAt': ['\$c$it.count', 0] }" }
+    val familiesProjection = families.joinToString(
+      prefix = "{",
+      postfix = "}",
+      separator = ","
+    ) { "'$it': { '$arrayElemAt': ['\$f$it.count', 0] }" }
     val platformsProjection = platforms.joinToString(
       prefix = "{",
       postfix = "}",
@@ -127,7 +134,8 @@ class LibraryRepository(private val collection: CoroutineCollection<KotlinLibrar
         {
           countTotal: { "$arrayElemAt": ["${'$'}total.count", 0] },
           countByCategory: $categoriesProjection,
-          countByTarget: $platformsProjection,
+          countByFamily: $familiesProjection,
+          countByPlatform: $platformsProjection,
         }
       """.trimIndent().bson
     )

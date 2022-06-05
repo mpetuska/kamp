@@ -8,7 +8,8 @@ data class LibrariesStatistic(
   val ts: Long,
   val countTotal: Int,
   val countByCategory: Map<String, Int>,
-  val countByTarget: Map<String, Int>,
+  val countByFamily: Map<String, Int>,
+  val countByPlatform: Map<String, Int>,
 ) {
   @Suppress("PropertyName", "unused", "VariableNaming")
   val _id: String = date
