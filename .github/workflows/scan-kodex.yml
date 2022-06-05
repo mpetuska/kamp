@@ -1,4 +1,4 @@
-name: Scan
+name: Scan Kodex
 
 on:
   workflow_dispatch:
