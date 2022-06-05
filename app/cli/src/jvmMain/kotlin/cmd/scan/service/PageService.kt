@@ -28,6 +28,7 @@ class PageService(
     }?.filterIsInstance<RepositoryItem.Directory>()
     directories?.forEach { page ->
       send(page)
+      logger.info("Scanning page tree in $page")
       producePages(page)
     }
   }

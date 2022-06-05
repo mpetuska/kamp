@@ -8,9 +8,7 @@ import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.int
 import com.github.ajalt.clikt.parameters.types.long
-import dev.petuska.kamp.cli.cmd.scan.client.MavenRepositoryClient
 import dev.petuska.kamp.cli.cmd.scan.domain.Repository
-import dev.petuska.kamp.cli.cmd.scan.domain.RepositoryItem
 import dev.petuska.kamp.cli.cmd.scan.service.PageService
 import dev.petuska.kamp.cli.cmd.scan.service.SimpleMavenArtefactService
 import dev.petuska.kamp.core.domain.KotlinTarget
@@ -18,9 +16,9 @@ import dev.petuska.kamp.core.util.logger
 import dev.petuska.kamp.repository.LibraryRepository
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.produceIn
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.kodein.di.DI
@@ -69,26 +67,35 @@ class ScanCmd(override val di: DI) : CliktCommand(name = "scan"), DIAware {
     }
     logger.info("Scanning ${repository.alias} repository")
 
+    val includes = run {
+      include + (filterOptions?.run { from..to }?.map(Char::toString) ?: listOf())
+    }
+    val excludes = exclude
+
     logger.info("Bootstrapping repository page lookup")
-    val pages = findPages(client)
+    val pages = PageService(
+      client = client,
+      include = includes.takeIf { it.isNotEmpty() },
+      exclude = excludes.takeIf { it.isNotEmpty() },
+    ).findPages()
     logger.info("Bootstrapping maven artefact lookup")
     val scanner = SimpleMavenArtefactService(
       workers = workers,
       delay = delay,
       client = client,
     )
-    var count = 0
     val duration = measureTime {
+      var count = 0
       val artefacts = scanner.findMavenArtefacts(pages.buffer().produceIn(this))
       val libraries = scanner.findKotlinLibraries(artefacts)
       libraries.collect {
         logger.info("Found kotlin library: ${it._id} ${it.targets.map(KotlinTarget::id)}")
         count++
-        libraryRepository.create(it)
+        launch { libraryRepository.create(it) }
       }
       logger.info(
         "Found $count kotlin libraries with gradle metadata in ${repository.alias} repository " +
-          "filtered by $include, explicitly excluding $exclude."
+          "filtered by $includes, explicitly excluding $excludes."
       )
       client.close()
     }
@@ -98,18 +105,5 @@ class ScanCmd(override val di: DI) : CliktCommand(name = "scan"), DIAware {
     logger.info(
       "Finished scanning ${repository.alias} in $timeStr"
     )
-  }
-
-  private fun findPages(client: MavenRepositoryClient<*>): Flow<RepositoryItem.Directory> {
-    val includes = run {
-      include + (filterOptions?.run { from..to }?.map(Char::toString) ?: listOf())
-    }.takeIf { it.isNotEmpty() }
-    val excludes = exclude.takeIf { it.isNotEmpty() }
-
-    return PageService(
-      client = client,
-      include = includes,
-      exclude = excludes
-    ).findPages()
   }
 }
