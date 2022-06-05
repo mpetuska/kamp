@@ -19,9 +19,14 @@ env:
   IMAGE: docker.pkg.github.com/mpetuska/kamp/cli-kodex
   LOG_LEVEL: ${{ github.event.inputs.logLevel }}
 
+concurrency:
+  group: production
+  cancel-in-progress: false
+
 jobs:
   scan:
     runs-on: ubuntu-latest
+    environment: kodex
     strategy:
       max-parallel: 10
       matrix:
@@ -49,10 +54,10 @@ jobs:
           length: 7
       - run: >-
           docker run -a stderr -a stdout 
-            -e "LOG_LEVEL=${LOG_LEVEL:-INFO}" 
-            -e API_URL 
-            -e ADMIN_USER
-            -e ADMIN_PASSWORD 
-            -e MONGO_STRING
-            -e MONGO_DATABASE
+            -e="LOG_LEVEL=${LOG_LEVEL:-INFO}" 
+            -e=API_URL 
+            -e=ADMIN_USER
+            -e=ADMIN_PASSWORD 
+            -e=MONGO_STRING
+            -e=MONGO_DATABASE
             ${{ env.IMAGE }}:sha-${{ steps.short-sha.outputs.sha }} scan ${{ matrix.repository }} ${{ matrix.options }}
