@@ -13,7 +13,7 @@ class KotlinTargetTest {
       "KotlinTarget ${target::class.simpleName} should be able to handle serialization" {
         val json = Json.encodeToString(KotlinTarget.serializer(), target)
         json shouldBeEqualIgnoringCase
-          """{"id":"${target.id}","category":"${target.category}","platform":"${target.platform}"}"""
+          """{"id":"${target.id}","category":"${target.category}","family":"${target.family}","platform":"${target.platform}"}"""
         Json.decodeFromString(KotlinTarget.serializer(), json) shouldBe target
       }
     }

@@ -11,6 +11,7 @@ import kotlinx.serialization.encoding.*
 @Serializable(with = KotlinTarget.Serializer::class)
 sealed class KotlinTarget(
   val category: String,
+  val family: String = category,
   val platform: String,
   val displayCategory: String = category,
   val displayPlatform: String = platform,
@@ -20,6 +21,7 @@ sealed class KotlinTarget(
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor("KotlinTarget") {
       element<String>("id")
       element<String>("category")
+      element<String>("family")
       element<String>("platform")
     }
 
@@ -32,7 +34,8 @@ sealed class KotlinTarget(
           when (val index = decodeElementIndex(descriptor)) {
             0 -> id = decodeStringElement(descriptor, 0)
             1 -> category = decodeStringElement(descriptor, 1)
-            2 -> platform = decodeStringElement(descriptor, 2)
+            2 -> decodeStringElement(descriptor, 2)
+            3 -> platform = decodeStringElement(descriptor, 3)
             CompositeDecoder.DECODE_DONE -> break
             else -> error("Unexpected index: $index")
           }
@@ -48,7 +51,8 @@ sealed class KotlinTarget(
       encoder.encodeStructure(descriptor) {
         encodeStringElement(descriptor, 0, value.id)
         encodeStringElement(descriptor, 1, value.category)
-        encodeStringElement(descriptor, 2, value.platform)
+        encodeStringElement(descriptor, 2, value.family)
+        encodeStringElement(descriptor, 3, value.platform)
       }
     }
   }
@@ -61,16 +65,20 @@ sealed class KotlinTarget(
 
     if (id != other.id) return false
     if (platform != other.platform) return false
+    if (family != other.family) return false
     if (category != other.category) return false
 
     return true
   }
 
   override fun hashCode(): Int {
-    var result = platform.hashCode()
-    result = 31 * result + category.hashCode()
+    var result = category.hashCode()
+    result = 31 * result + family.hashCode()
+    result = 31 * result + platform.hashCode()
+    result = 31 * result + id.hashCode()
     return result
   }
+
 
   companion object {
     fun values(): Set<KotlinTarget> = JS.values() + JVM.values() + Native.values() + Common
@@ -91,9 +99,14 @@ sealed class KotlinTarget(
     }
   }
 
-  object Common : KotlinTarget("metadata", "common", "Metadata")
+  object Common : KotlinTarget(category = "metadata", platform = "common", displayCategory = "Metadata")
 
-  sealed class JS(platform: String) : KotlinTarget(category, platform, "JS", id = "${category}_$platform") {
+  sealed class JS(platform: String) : KotlinTarget(
+    category = category,
+    platform = platform,
+    displayCategory = "JS",
+    id = "${category}_$platform"
+  ) {
     companion object {
       const val category = "js"
       fun values(): Set<JS> = setOf(Legacy, IR)
@@ -103,7 +116,12 @@ sealed class KotlinTarget(
     object IR : JS("ir")
   }
 
-  sealed class JVM(platform: String) : KotlinTarget(category, platform, "JVM", id = "${category}_$platform") {
+  sealed class JVM(platform: String) : KotlinTarget(
+    category = category,
+    platform = platform,
+    displayCategory = "JVM",
+    id = "${category}_$platform"
+  ) {
     companion object {
       const val category = "jvm"
       fun values(): Set<JVM> = setOf(Java, Android)
@@ -114,10 +132,16 @@ sealed class KotlinTarget(
   }
 
   sealed class Native(
-    val family: String,
+    family: String,
     platform: String,
     id: String = platform
-  ) : KotlinTarget(category, platform, "Native", id = id) {
+  ) : KotlinTarget(
+    category = category,
+    platform = platform,
+    family = family,
+    displayCategory = "Native",
+    id = id
+  ) {
     companion object {
       const val category = "native"
       fun values(): Set<Native> = AndroidNative.values() +
