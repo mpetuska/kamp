@@ -24,10 +24,6 @@ env:
   TAG: ${{ github.event.inputs.tag }}
   LOG_LEVEL: ${{ github.event.inputs.logLevel }}
 
-concurrency:
-  group: kodex
-  cancel-in-progress: false
-
 permissions:
   packages: read
 
