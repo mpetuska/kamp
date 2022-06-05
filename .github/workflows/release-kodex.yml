@@ -11,6 +11,9 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  #  check:
+  #    uses: ./.github/workflows/check.yml
+
   build:
     name: Build Apps
     runs-on: ubuntu-latest
