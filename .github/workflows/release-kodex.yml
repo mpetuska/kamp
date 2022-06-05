@@ -3,10 +3,15 @@ name: Release Kodex
 on:
   workflow_dispatch:
 
+concurrency:
+  group: production
+  cancel-in-progress: false
+
 jobs:
   build:
     name: Build Apps
     runs-on: ubuntu-latest
+    environment: kodex
     env:
       REGISTRY: ghcr.io
     steps:
