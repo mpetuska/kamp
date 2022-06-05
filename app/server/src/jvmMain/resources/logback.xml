@@ -1,12 +1,45 @@
 <configuration>
-  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+  <variable name="LOG_LEVEL" value="${LOG_LEVEL:-INFO}"/>
+
+  <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
+    <target>System.err</target>
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>WARN</level>
+    </filter>
     <encoder>
-      <pattern>[%-5.5level] %d{HH:mm:ss} [%-20.20thread] %-30.30logger{30} - %msg%n</pattern>
+      <pattern>[%-5.5level][%d{HH:mm:ss}][%-15.15logger{15}] %msg%n</pattern>
     </encoder>
   </appender>
 
-  <variable name="LOG_LEVEL" value="${LOG_LEVEL:-INFO}"/>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <target>System.out</target>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>DEBUG</level>
+      <onMatch>ACCEPT</onMatch>
+    </filter>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>INFO</level>
+      <onMatch>ACCEPT</onMatch>
+    </filter>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>TRACE</level>
+      <onMatch>ACCEPT</onMatch>
+    </filter>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>WARN</level>
+      <onMatch>DENY</onMatch>
+    </filter>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>ERROR</level>
+      <onMatch>DENY</onMatch>
+    </filter>
+    <encoder>
+      <pattern>[%-5.5level][%d{HH:mm:ss}][%-15.15logger{15}] %msg%n</pattern>
+    </encoder>
+  </appender>
+
   <root level="${LOG_LEVEL}">
     <appender-ref ref="STDOUT"/>
+    <appender-ref ref="STDERR"/>
   </root>
 </configuration>

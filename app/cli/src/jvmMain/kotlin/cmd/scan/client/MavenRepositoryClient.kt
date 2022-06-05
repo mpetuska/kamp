@@ -49,11 +49,12 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
               seconds = it.substring(12 until 14).toInt(),
             ).timestamp
           }
-          val latestVersion = doc.selectFirst("versioning>latest")?.text()
-            ?: doc.selectXpath("//version").first()?.text()
-            ?: versions.last()
+          val latestVersion =
+            doc.selectFirst("versioning>latest")?.text()
+              ?: doc.selectXpath("//version").first()?.text() ?: versions.last()
           SimpleMavenArtefact(
-            group = doc.selectFirst("groupId")!!.text(),
+            // https://repo1.maven.org/maven2/com/inmobi/monetization/inmobi-mediation/maven-metadata.xml
+            group = doc.selectFirst("groupId")?.text() ?: doc.selectFirst("groupdId")!!.text(),
             name = doc.selectFirst("artifactId")!!.text(),
             latestVersion = latestVersion,
             releaseVersion = doc.selectFirst("versioning>release")?.text(),
