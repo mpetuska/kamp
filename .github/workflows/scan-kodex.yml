@@ -23,7 +23,7 @@ env:
   MONGO_STRING: ${{ secrets.MONGO_STRING }}
   MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }}
   REGISTRY: ghcr.io
-  IMAGE: ${{ github.repository }}/kodex-cli
+  IMAGE: ${{ github.repository }}/kodex/cli
   TAG: ${{ github.event.inputs.tag }}
   LOG_LEVEL: ${{ github.event.inputs.logLevel }}
 
