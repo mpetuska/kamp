@@ -1,7 +1,7 @@
 name: Release Kodex
 
 on:
-  deployment:
+  workflow_dispatch:
 
 jobs:
   build:
