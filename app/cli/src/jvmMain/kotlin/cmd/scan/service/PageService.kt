@@ -98,8 +98,8 @@ class PageService(
           val duration = measureTime {
             producePages(
               parent = item,
-              include = cInclude.mapNotNull(Pair<*, String?>::second),
-              exclude = cExclude.mapNotNull(Pair<*, String?>::second),
+              include = cInclude.mapNotNull { it.second?.takeIf(String::isNotBlank) },
+              exclude = cExclude.mapNotNull { it.second?.takeIf(String::isNotBlank) },
               explicitChildren = explicitC,
             )
           }

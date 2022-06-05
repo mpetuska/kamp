@@ -6,6 +6,7 @@ import dev.petuska.kamp.cli.cmd.scan.domain.SimpleMavenArtefact
 import dev.petuska.kamp.cli.util.asDocument
 import dev.petuska.kamp.core.domain.MavenArtefact
 import dev.petuska.kamp.core.util.logger
+import dev.petuska.kamp.repository.util.runCatchingIO
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
@@ -36,7 +37,7 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
     val pom = getMavenPom(url)
     val doc = pom?.getElementsByTag("metadata")?.first()
     doc?.let {
-      runCatching {
+      runCatchingIO {
         val versions = doc.selectFirst("versioning>versions")?.children()?.map { v -> v.text() }
         versions?.let {
           val lastUpdated = doc.selectFirst("versioning>lastUpdated")?.text()?.let {
@@ -72,7 +73,7 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
 
   suspend fun getGradleModule(artifact: A): GradleModule? = supervisorScope {
     val url = "${artifact.mavenModuleVersionUrl}/${artifact.name}-${artifact.version}.module"
-    runCatching {
+    runCatchingIO {
       logger.debug("Looking for gradle module in $url")
       client.get(url).takeIf { it.status.isSuccess() }?.bodyAsText()?.let { module ->
         json.decodeFromString<GradleModule>(module)
@@ -86,7 +87,7 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
     getMavenPom("${artifact.mavenModuleVersionUrl}/${artifact.name}-${artifact.releaseVersion}.pom")
 
   suspend fun getMavenPom(url: String): Document? = supervisorScope {
-    runCatching {
+    runCatchingIO {
       client.get(url).bodyAsText().asDocument()
     }.onFailure {
       logger.error("Unable to extract Maven pom file from $url", it)
@@ -94,7 +95,7 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
   }
 
   suspend fun listRepositoryPath(path: String): List<RepositoryItem>? = supervisorScope {
-    runCatching {
+    runCatchingIO {
       client.get("$defaultRepositoryRootUrl${path.removeSuffix("/")}/").bodyAsText().let { str ->
         parsePage(str.asDocument())?.map {
           RepositoryItem(it, path)

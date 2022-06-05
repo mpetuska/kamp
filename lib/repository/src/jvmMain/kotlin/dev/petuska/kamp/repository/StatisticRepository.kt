@@ -1,6 +1,7 @@
 package dev.petuska.kamp.repository
 
 import dev.petuska.kamp.core.domain.LibrariesStatistic
+import dev.petuska.kamp.repository.util.runCatchingIO
 import org.litote.kmongo.MongoOperator.and
 import org.litote.kmongo.MongoOperator.gte
 import org.litote.kmongo.MongoOperator.lt
@@ -38,20 +39,22 @@ class StatisticRepository(
   suspend fun search(page: Int, size: Int, from: Long?, to: Long?): List<LibrariesStatistic> {
     val query = buildQuery(from, to)
 
-    val dbCall = query?.let(collection::find) ?: collection.find()
-    dbCall.skip(size * (page - 1)).limit(size)
-    return dbCall.toList()
+    return runCatchingIO {
+      val dbCall = query?.let(collection::find) ?: collection.find()
+      dbCall.skip(size * (page - 1)).limit(size)
+      dbCall.toList()
+    }.getOrThrow()
   }
 
   suspend fun count(from: Long?, to: Long?): Long {
-    return collection.countDocuments(buildQuery(from, to) ?: "{}")
+    return runCatchingIO { collection.countDocuments(buildQuery(from, to) ?: "{}") }.getOrThrow()
   }
 
   suspend fun getByDate(date: String): LibrariesStatistic? {
-    return collection.findOneById(date)
+    return runCatchingIO { collection.findOneById(date) }.getOrThrow()
   }
 
   suspend fun create(statistic: LibrariesStatistic) {
-    collection.save(statistic)
+    runCatchingIO { collection.save(statistic) }.getOrThrow()
   }
 }

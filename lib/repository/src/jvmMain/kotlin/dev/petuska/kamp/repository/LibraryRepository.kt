@@ -6,6 +6,7 @@ import com.mongodb.client.model.Field
 import dev.petuska.kamp.core.domain.KotlinLibrary
 import dev.petuska.kamp.core.domain.KotlinTarget
 import dev.petuska.kamp.core.domain.LibrariesStatistic
+import dev.petuska.kamp.repository.util.runCatchingIO
 import org.litote.kmongo.MongoOperator.all
 import org.litote.kmongo.MongoOperator.and
 import org.litote.kmongo.MongoOperator.arrayElemAt
@@ -67,27 +68,30 @@ class LibraryRepository(private val collection: CoroutineCollection<KotlinLibrar
   ): List<KotlinLibrary> {
     val (query, projection) = buildQuery(search, targets)
 
-    val dbCall = query?.let(collection::find) ?: collection.find()
-    projection?.let {
-      dbCall.projection(it.bson)
-      dbCall.sort("""{ score: { $meta: "textScore" } }""".bson)
-    } ?: dbCall.ascendingSort(KotlinLibrary::name)
-    dbCall.skip(size * (page - 1)).limit(size)
-    return dbCall.toList()
+    return runCatchingIO {
+      val dbCall = query?.let(collection::find) ?: collection.find()
+      projection?.let {
+        dbCall.projection(it.bson)
+        dbCall.sort("""{ score: { $meta: "textScore" } }""".bson)
+      } ?: dbCall.ascendingSort(KotlinLibrary::name)
+      dbCall.skip(size * (page - 1)).limit(size)
+      dbCall.toList()
+    }.getOrThrow()
   }
 
   suspend fun count(search: String?, targets: Set<String>?): Long {
-    return collection.countDocuments(buildQuery(search, targets).first ?: "{}")
+    return runCatchingIO { collection.countDocuments(buildQuery(search, targets).first ?: "{}") }.getOrThrow()
   }
 
   suspend fun create(library: KotlinLibrary) {
-    collection.save(library)
+    runCatchingIO { collection.save(library) }.getOrThrow()
   }
 
   suspend fun findById(id: String): KotlinLibrary? {
-    return collection.findOneById(id)
+    return runCatchingIO { collection.findOneById(id) }.getOrThrow()
   }
 
+  @Suppress("LongMethod")
   suspend fun captureStatistics(): LibrariesStatistic {
     val categories = listOf(
       KotlinTarget.Common.category,
@@ -139,13 +143,15 @@ class LibraryRepository(private val collection: CoroutineCollection<KotlinLibrar
         }
       """.trimIndent().bson
     )
-    return collection.aggregate<LibrariesStatistic>(
-      facet(facets),
-      projection,
-      addFields(
-        Field("date", dateFormat.format(date)),
-        Field("ts", date.time),
-      )
-    ).first()!!
+    return runCatchingIO {
+      collection.aggregate<LibrariesStatistic>(
+        facet(facets),
+        projection,
+        addFields(
+          Field("date", dateFormat.format(date)),
+          Field("ts", date.time),
+        )
+      ).first()!!
+    }.getOrThrow()
   }
 }
