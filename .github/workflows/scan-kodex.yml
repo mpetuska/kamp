@@ -23,7 +23,7 @@ env:
   MONGO_STRING: ${{ secrets.MONGO_STRING }}
   MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }}
   REGISTRY: ghcr.io
-  IMAGE: ${{ env.REGISTRY }}/${{ github.repository }}/kodex-cli
+  IMAGE: ${{ github.repository }}/kodex/cli
   TAG: ${{ github.event.inputs.tag }}
   LOG_LEVEL: ${{ github.event.inputs.logLevel }}
 
@@ -68,4 +68,4 @@ jobs:
             -e=ADMIN_PASSWORD \
             -e=MONGO_STRING \
             -e=MONGO_DATABASE \
-            "${{ env.IMAGE }}:${TAG:-latest}" scan ${{ matrix.repository }} ${{ matrix.options }}
+            "${{ env.REGISTRY }}/${{ env.IMAGE }}:${TAG:-latest}" scan ${{ matrix.repository }} ${{ matrix.options }}

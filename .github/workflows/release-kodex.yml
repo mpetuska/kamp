@@ -1,0 +1,131 @@
+name: Release Kodex
+
+on:
+  deployment:
+
+jobs:
+  build:
+    name: Build Apps
+    runs-on: ubuntu-latest
+    env:
+      REGISTRY: ghcr.io
+    steps:
+      - uses: actions/checkout@v2.3.4
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Restore Gradle cache
+        id: cache
+        uses: actions/cache@v2.1.6
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 11
+
+      - name: Build Apps
+        # TODO switch to global assemble
+        run: ./gradlew :app:cli:assemble
+
+      # TODO uncomment
+      #      - name: Upload Static Web App Artifact
+      #        uses: actions/upload-artifact@v2
+      #        id: upload
+      #        with:
+      #          path: app/build/dist/WEB-INF
+      #          name: static-web-app
+      #          if-no-files-found: error
+
+      # TODO uncomment
+      #      - name: Build App Docker image & push to GitHub Packages
+      #        uses: docker/build-push-action@v1
+      #        with:
+      #          path: app
+      #          username: ${{ github.actor }}
+      #          password: ${{ github.token }}
+      #          registry: docker.pkg.github.com
+      #          repository: mpetuska/kamp/app
+      #          tag_with_ref: true
+      #          tag_with_sha: true
+      #          add_git_labels: true
+      #          tags: latest
+
+      - name: Build CLI Docker image & push to GitHub Packages
+        uses: docker/build-push-action@v5
+        with:
+          directory: ./app/cli/
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+          registry: ${{ env.REGISTRY }}
+          image: ${{ env.REGISTRY }}/${{ github.repository }}/kodex/cli
+          addLatest: true
+
+#  deploy-Infrastructure:
+#    runs-on: ubuntu-latest
+#    name: Deploy Main Infrastructure
+#    needs: [ build ]
+#    env:
+#      ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USER }}
+#      ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+#      MONGODB_ATLAS_PUBLIC_KEY: ${{ secrets.MONGODB_ATLAS_PUBLIC_KEY }}
+#      MONGODB_ATLAS_PRIVATE_KEY: ${{ secrets.MONGODB_ATLAS_PRIVATE_KEY }}
+#      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+#      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+#      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+#      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+#      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2.3.4
+#      - name: Setup Terraform environment
+#        uses: little-core-labs/install-terraform@v2.0.0
+#        with:
+#          version: 0.14.5
+#      - name: Terraform init
+#        run: terraform init
+#        working-directory: infra
+#      - uses: benjlevesque/short-sha@v1.2
+#        id: short-sha
+#        with:
+#          length: 7
+#      - name: Terraform apply
+#        run: terraform apply -auto-approve
+#        working-directory: infra
+#        env:
+#          TF_VAR_docker_registry_username: ${{ secrets.GH_PKG_USER }}
+#          TF_VAR_docker_registry_password: ${{ secrets.GH_PKG_PASSWORD }}
+#          TF_VAR_docker_image_tag: docker.pkg.github.com/mpetuska/kamp/app:sha-${{ steps.short-sha.outputs.sha }}
+#          TF_VAR_api_admin_user: ${{ secrets.API_ADMIN_USER }}
+#          TF_VAR_api_admin_password: ${{ secrets.API_ADMIN_PASSWORD }}
+#
+#  deploy-StaticWebApp:
+#    runs-on: ubuntu-latest
+#    name: Deploy Static Web App
+#    needs: [ build ]
+#    steps:
+#      - name: Download Static Web App Artifact
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: static-web-app
+#          path: dist/
+#      - name: Prepare Env
+#        uses: DamianReeves/write-file-action@v1.0
+#        with:
+#          path: dist/application.env
+#          contents: |
+#            API_URL=https://kamp.azurewebsites.net
+#          write-mode: overwrite
+#      - name: Deploy Azure Static Web App
+#        uses: Azure/static-web-apps-deploy@v0.0.1-preview
+#        with:
+#          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_API_TOKEN }}
+#          repo_token: ${{ github.token }} # Used for Github integrations (i.e. PR comments)
+#          action: "upload"
+#          app_location: "/dist"
