@@ -2,6 +2,8 @@ name: Scan Kodex
 
 on:
   workflow_dispatch:
+    branches:
+      - kodex
     inputs:
       logLevel:
         description: 'Log level'
