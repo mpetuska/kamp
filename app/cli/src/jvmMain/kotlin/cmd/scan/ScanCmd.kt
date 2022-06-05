@@ -19,6 +19,7 @@ import dev.petuska.kamp.core.util.logger
 import dev.petuska.kamp.repository.LibraryRepository
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.produceIn
@@ -91,19 +92,21 @@ class ScanCmd(
       client = client,
     )
     val duration = measureTime {
-      var count = 0
-      val artefacts: Flow<SimpleMavenArtefact> = scanner.findMavenArtefacts(pages.buffer().produceIn(this))
-      val libraries: Flow<KotlinLibrary> = scanner.findKotlinLibraries(artefacts)
-      libraries.buffer().collect {
-        logger.info("Found kotlin library: ${it._id} ${it.targets.map(KotlinTarget::id)}")
-        count++
-        launch { libraryRepository.create(it) }
+      coroutineScope {
+        var count = 0
+        val artefacts: Flow<SimpleMavenArtefact> = scanner.findMavenArtefacts(pages.buffer().produceIn(this))
+        val libraries: Flow<KotlinLibrary> = scanner.findKotlinLibraries(artefacts)
+        libraries.buffer().collect {
+          logger.info("Found kotlin library: ${it._id} ${it.targets.map(KotlinTarget::id)}")
+          count++
+          launch { libraryRepository.create(it) }
+        }
+        logger.info(
+          "Found $count kotlin libraries with gradle metadata in ${repository.alias} repository " +
+            "filtered by $includes, explicitly excluding $excludes."
+        )
+        client.close()
       }
-      logger.info(
-        "Found $count kotlin libraries with gradle metadata in ${repository.alias} repository " +
-          "filtered by $includes, explicitly excluding $excludes."
-      )
-      client.close()
     }
     logger.info(
       "Finished scanning ${repository.alias} in ${duration.toHumanString()}"

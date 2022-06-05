@@ -29,7 +29,7 @@ class PageService(
     include: List<Pair<String, String?>>,
     exclude: List<Pair<String, String?>>,
   ): Triple<Boolean, Boolean, Boolean> {
-    val safePath = name.removePrefix("/").removeSuffix("/")
+    val safePath = path.removePrefix("/").removeSuffix("/")
     var explicit = false
     var explicitChildren = false
     val included = include.takeIf { it.isNotEmpty() }?.let { filter ->
@@ -70,11 +70,19 @@ class PageService(
     supervisorScope {
       val cInclude = include.splitFirst()
       val cExclude = exclude.splitFirst()
+      val includes = cInclude.map {
+        "$parent/${it.first}".removePrefix("/") to it.second
+      }
+      val excludes = cExclude.map { exc ->
+        var first = "$parent/${exc.first}"
+        exc.second?.let { first += "/$it" }
+        first.removePrefix("/").removeSuffix("/") to exc.second
+      }
 
       val items = client.listRepositoryPath(parent.path)
         ?.filterIsInstance<RepositoryItem.Directory>()
         ?.mapNotNull { item ->
-          val (included, explicit, explicitC) = item.isIncluded(cInclude, cExclude)
+          val (included, explicit, explicitC) = item.isIncluded(includes, excludes)
           item.takeIf { included }?.let { Triple(it, explicit, explicitC) }
         }
 
