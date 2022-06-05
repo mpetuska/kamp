@@ -7,7 +7,7 @@ on:
       - kodex
 
 concurrency:
-  group: production
+  group: release-kodex
   cancel-in-progress: false
 
 jobs:
