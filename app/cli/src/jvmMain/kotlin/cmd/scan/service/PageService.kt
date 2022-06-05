@@ -12,37 +12,77 @@ import kotlinx.coroutines.supervisorScope
 
 class PageService(
   private val client: MavenRepositoryClient<*>,
-  private val include: Collection<String>?,
-  private val exclude: Collection<String>?,
 ) {
   private val logger = logger()
+  private val pathSeparator = Regex("[\\./\\\\]")
 
-  fun findPages(path: String = ""): Flow<RepositoryItem.Directory> = channelFlow {
-    val directories = client.listRepositoryPath(path)?.filter { item ->
-      val safePath = item.path.removePrefix("/")
-      val included =
-        include?.let { filter -> filter.any { safePath.startsWith(it) } } ?: true
-      val excluded =
-        exclude?.let { filter -> filter.any { safePath.startsWith(it) } } ?: false
-      included && !excluded
-    }?.filterIsInstance<RepositoryItem.Directory>()
-    directories?.forEach { page ->
-      send(page)
-      logger.info("Scanning page tree in $page")
-      producePages(page)
-    }
+  fun findPages(
+    path: String = "",
+    include: Collection<String>,
+    exclude: Collection<String>,
+  ): Flow<RepositoryItem.Directory> = channelFlow {
+    producePages(RepositoryItem.Directory("", path), include, exclude)
+  }
+
+  private fun RepositoryItem.isIncluded(
+    include: List<Pair<String, String?>>,
+    exclude: List<Pair<String, String?>>,
+  ): Pair<Boolean, Boolean> {
+    val safePath = name.removePrefix("/").removeSuffix("/")
+    var explicit = false
+    val included = include.takeIf { it.isNotEmpty() }?.let { filter ->
+      filter.any { (match, next) ->
+        if (match.isNotBlank()) explicit = true
+        if (next == null) {
+          safePath.equals(match, ignoreCase = true)
+        } else {
+          safePath.startsWith(match, ignoreCase = true)
+        }
+      }
+    } ?: true
+    val excluded = exclude.takeIf { it.isNotEmpty() }?.let { filter ->
+      filter.any { (match, next) ->
+        if (next == null) {
+          safePath.equals(match, ignoreCase = true)
+        } else {
+          safePath.startsWith(match, ignoreCase = true)
+        }
+      }
+    } ?: false
+    return (included && !excluded) to explicit
+  }
+
+  private fun Collection<String>.splitFirst(): List<Pair<String, String?>> = map {
+    val s = it.split(pathSeparator, limit = 2)
+    val next = s.getOrNull(1)
+    s[0] to if (next?.isBlank() == true) null else (next ?: "")
   }
 
   private suspend fun ProducerScope<RepositoryItem.Directory>.producePages(
-    parent: RepositoryItem.Directory
+    parent: RepositoryItem.Directory,
+    include: Collection<String>,
+    exclude: Collection<String>,
   ): List<Job> = supervisorScope {
-    logger.debug("Looking for pages in $parent")
+    val cInclude = include.splitFirst()
+    val cExclude = exclude.splitFirst()
+
     val items = client.listRepositoryPath(parent.path)
-    items?.filterIsInstance<RepositoryItem.Directory>()?.map { item ->
-      logger.debug("Found page [$item] in $parent")
+      ?.filterIsInstance<RepositoryItem.Directory>()
+      ?.mapNotNull { item ->
+        val (included, explicit) = item.isIncluded(cInclude, cExclude)
+        item.takeIf { included }?.let { it to explicit }
+      }
+
+    items?.map { (item, explicit) ->
+      logger.debug("Found page [${item.name}] in $parent")
       send(item)
+      if (explicit) logger.info("Scanning included page tree in $item") else logger.debug("Looking for pages in $item")
       launch {
-        producePages(item)
+        producePages(
+          parent = item,
+          include = cInclude.mapNotNull(Pair<*, String?>::second),
+          exclude = cExclude.mapNotNull(Pair<*, String?>::second)
+        )
       }
     } ?: listOf()
   }

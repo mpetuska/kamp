@@ -11,7 +11,9 @@ import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
 
-class CaptureCmd(override val di: DI) : CliktCommand(name = "capture"), DIAware {
+class CaptureCmd(
+  override val di: DI
+) : CliktCommand(name = "capture", help = "Capture a snapshot of current library distribution"), DIAware {
   private val logger = logger()
   private val libRepository by instance<LibraryRepository>()
   private val statRepository by instance<StatisticRepository>()

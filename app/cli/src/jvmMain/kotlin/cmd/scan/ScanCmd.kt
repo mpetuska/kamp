@@ -9,13 +9,16 @@ import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.int
 import com.github.ajalt.clikt.parameters.types.long
 import dev.petuska.kamp.cli.cmd.scan.domain.Repository
+import dev.petuska.kamp.cli.cmd.scan.domain.SimpleMavenArtefact
 import dev.petuska.kamp.cli.cmd.scan.service.PageService
 import dev.petuska.kamp.cli.cmd.scan.service.SimpleMavenArtefactService
+import dev.petuska.kamp.core.domain.KotlinLibrary
 import dev.petuska.kamp.core.domain.KotlinTarget
 import dev.petuska.kamp.core.util.logger
 import dev.petuska.kamp.repository.LibraryRepository
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.produceIn
 import kotlinx.coroutines.launch
@@ -27,7 +30,9 @@ import org.kodein.di.instance
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.measureTime
 
-class ScanCmd(override val di: DI) : CliktCommand(name = "scan"), DIAware {
+class ScanCmd(
+  override val di: DI
+) : CliktCommand(name = "scan", help = "Scan a maven repository for kotlin libraries"), DIAware {
   private class FilterOptions : OptionGroup() {
     val from by option(help = "Repository root page filter start")
       .choice(('a'..'z').associateBy(Char::toString), ignoreCase = true).required()
@@ -75,9 +80,7 @@ class ScanCmd(override val di: DI) : CliktCommand(name = "scan"), DIAware {
     logger.info("Bootstrapping repository page lookup")
     val pages = PageService(
       client = client,
-      include = includes.takeIf { it.isNotEmpty() },
-      exclude = excludes.takeIf { it.isNotEmpty() },
-    ).findPages()
+    ).findPages(include = includes, exclude = excludes)
     logger.info("Bootstrapping maven artefact lookup")
     val scanner = SimpleMavenArtefactService(
       workers = workers,
@@ -86,9 +89,9 @@ class ScanCmd(override val di: DI) : CliktCommand(name = "scan"), DIAware {
     )
     val duration = measureTime {
       var count = 0
-      val artefacts = scanner.findMavenArtefacts(pages.buffer().produceIn(this))
-      val libraries = scanner.findKotlinLibraries(artefacts)
-      libraries.collect {
+      val artefacts: Flow<SimpleMavenArtefact> = scanner.findMavenArtefacts(pages.buffer().produceIn(this))
+      val libraries: Flow<KotlinLibrary> = scanner.findKotlinLibraries(artefacts)
+      libraries.buffer().collect {
         logger.info("Found kotlin library: ${it._id} ${it.targets.map(KotlinTarget::id)}")
         count++
         launch { libraryRepository.create(it) }
