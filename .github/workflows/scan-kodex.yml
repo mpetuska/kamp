@@ -22,7 +22,7 @@ env:
   ADMIN_PASSWORD: ${{ secrets.API_ADMIN_PASSWORD }}
   MONGO_STRING: ${{ secrets.MONGO_STRING }}
   MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }}
-  IMAGE: ghcr.io/mpetuska/kamp/kodex-cli
+  IMAGE: ${{ github.repository }}/kodex-cli
   TAG: ${{ github.event.inputs.tag }}
   LOG_LEVEL: ${{ github.event.inputs.logLevel }}
 
@@ -31,7 +31,6 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: read
   packages: write
   id-token: write
 
