@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: kodex
     strategy:
-      max-parallel: 10
+      max-parallel: 50
       matrix:
         repository:
           - 'mavenCentral'
@@ -45,6 +45,7 @@ jobs:
           - '--include=org'
           - '--include=io --exclude=github/'
           - '--include=io/github/'
+          - '--exclude-letters'
           - '--include=a'
           - '--include=b'
           - '--include=c --exclude=com'
@@ -71,7 +72,6 @@ jobs:
           - '--include=x'
           - '--include=y'
           - '--include=z'
-          - '--exclude-letters'
     steps:
       - uses: docker/login-action@v2
         with:
