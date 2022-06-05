@@ -50,6 +50,8 @@ class ScanCmd(
   private val exclude by option(help = "Repository root page filter to exclude")
     .multiple()
 
+  private val excludeLetters by option(help = "Same as if you were to pass --exclude for a..z").flag()
+
   private val filterOptions by FilterOptions().cooccurring()
 
   private val delay by option(help = "Worker processing delay in milliseconds")
@@ -75,7 +77,7 @@ class ScanCmd(
     val includes = run {
       include + (filterOptions?.run { from..to }?.map(Char::toString) ?: listOf())
     }
-    val excludes = exclude
+    val excludes = exclude + (if (excludeLetters) ('a'..'z').map(Char::toString) else listOf())
 
     logger.info("Bootstrapping repository page lookup")
     val pages = PageService(
