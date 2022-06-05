@@ -54,11 +54,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ github.token }}
       - run: >-
-          docker run -a stderr -a stdout 
-            -e="LOG_LEVEL=${LOG_LEVEL:-INFO}" 
-            -e=API_URL 
-            -e=ADMIN_USER
-            -e=ADMIN_PASSWORD 
-            -e=MONGO_STRING
-            -e=MONGO_DATABASE
-            "${{ env.IMAGE }}:${TAG:-latest}" scan ${{ matrix.repository }} ${{ matrix.options }}
+          docker run -a stderr -a stdout
+          -e="LOG_LEVEL=${LOG_LEVEL:-INFO}"
+          -e=API_URL
+          -e=ADMIN_USER
+          -e=ADMIN_PASSWORD
+          -e=MONGO_STRING
+          -e=MONGO_DATABASE
+          "${{ env.IMAGE }}:${TAG:-latest}" scan ${{ matrix.repository }} ${{ matrix.options }}
