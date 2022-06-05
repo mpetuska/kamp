@@ -30,6 +30,11 @@ concurrency:
   group: production
   cancel-in-progress: false
 
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
 jobs:
   scan:
     runs-on: ubuntu-latest
