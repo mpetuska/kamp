@@ -1,0 +1,64 @@
+name: Scan Kodex
+
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: INFO
+      tag:
+        description: 'CLI image tag'
+        required: true
+        default: latest
+  schedule:
+    - cron: '0 0 * * *'
+
+env:
+  API_URL: https://kamp.azurewebsites.net
+  ADMIN_USER: ${{ secrets.API_ADMIN_USER }}
+  ADMIN_PASSWORD: ${{ secrets.API_ADMIN_PASSWORD }}
+  MONGO_STRING: ${{ secrets.MONGO_STRING }}
+  MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }}
+  IMAGE: ghcr.io/mpetuska/kodex/cli
+  TAG: ${{ github.event.inputs.tag }}
+  LOG_LEVEL: ${{ github.event.inputs.logLevel }}
+
+concurrency:
+  group: production
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    environment: kodex
+    strategy:
+      max-parallel: 10
+      matrix:
+        repository:
+          - 'mavenCentral'
+        options:
+          - '--include=com'
+          - '--include=org'
+          - '--include=io'
+          - '--from=a --to=c --exclude=com'
+          - '--from=d --to=f'
+          - '--from=g --to=l --exclude=io'
+          - '--from=m --to=p --exclude=org'
+          - '--from=q --to=t'
+          - '--from=u --to=z'
+    steps:
+      - uses: docker/login-action@v1.10.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - run: >-
+          docker run -a stderr -a stdout 
+            -e="LOG_LEVEL=${LOG_LEVEL:-INFO}" 
+            -e=API_URL 
+            -e=ADMIN_USER
+            -e=ADMIN_PASSWORD 
+            -e=MONGO_STRING
+            -e=MONGO_DATABASE
+            "${{ env.IMAGE }}:${TAG:-latest}" scan ${{ matrix.repository }} ${{ matrix.options }}
