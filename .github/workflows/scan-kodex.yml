@@ -7,6 +7,10 @@ on:
         description: 'Log level'
         required: true
         default: INFO
+      tag:
+        description: 'CLI image tag'
+        required: true
+        default: latest
   schedule:
     - cron: '0 0 * * *'
 
@@ -17,6 +21,7 @@ env:
   MONGO_STRING: ${{ secrets.MONGO_STRING }}
   MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }}
   IMAGE: docker.pkg.github.com/mpetuska/kamp/cli-kodex
+  TAG: ${{ github.event.inputs.tag }}
   LOG_LEVEL: ${{ github.event.inputs.logLevel }}
 
 concurrency:
@@ -60,4 +65,4 @@ jobs:
             -e=ADMIN_PASSWORD 
             -e=MONGO_STRING
             -e=MONGO_DATABASE
-            ${{ env.IMAGE }}:sha-${{ steps.short-sha.outputs.sha }} scan ${{ matrix.repository }} ${{ matrix.options }}
+            "${{ env.IMAGE }}:${TAG:-latest}" scan ${{ matrix.repository }} ${{ matrix.options }}
