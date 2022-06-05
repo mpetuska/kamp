@@ -22,7 +22,8 @@ env:
   ADMIN_PASSWORD: ${{ secrets.API_ADMIN_PASSWORD }}
   MONGO_STRING: ${{ secrets.MONGO_STRING }}
   MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }}
-  IMAGE: ${{ github.repository }}/kodex-cli
+  REGISTRY: ghcr.io
+  IMAGE: ${{ env.REGISTRY }}/${{ github.repository }}/kodex-cli
   TAG: ${{ github.event.inputs.tag }}
   LOG_LEVEL: ${{ github.event.inputs.logLevel }}
 
