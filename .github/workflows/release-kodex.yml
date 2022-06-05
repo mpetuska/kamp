@@ -2,6 +2,9 @@ name: Release Kodex
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - kodex
 
 concurrency:
   group: production
