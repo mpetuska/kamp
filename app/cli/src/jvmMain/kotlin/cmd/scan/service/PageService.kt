@@ -95,7 +95,9 @@ class PageService(
               explicitChildren = explicitC,
             )
           }
-          if (explicitChildren) logger.info("Finished scanning included page tree at $item in ${duration.toHumanString()}")
+          if (explicitChildren) {
+            logger.info("Finished scanning included page tree at $item in ${duration.toHumanString()}")
+          }
         }
       }
     }

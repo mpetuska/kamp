@@ -79,7 +79,6 @@ sealed class KotlinTarget(
     return result
   }
 
-
   companion object {
     fun values(): Set<KotlinTarget> = JS.values() + JVM.values() + Native.values() + Common
     fun fromString(id: String): KotlinTarget {

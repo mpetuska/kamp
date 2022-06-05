@@ -12,8 +12,10 @@ class KotlinTargetTest {
     (KotlinTarget.values() + KotlinTarget.Unknown("test")).forEach { target ->
       "KotlinTarget ${target::class.simpleName} should be able to handle serialization" {
         val json = Json.encodeToString(KotlinTarget.serializer(), target)
-        json shouldBeEqualIgnoringCase
-          """{"id":"${target.id}","category":"${target.category}","family":"${target.family}","platform":"${target.platform}"}"""
+        json shouldBeEqualIgnoringCase """{"id":"${target.id}",""" +
+          """category":"${target.category}",""" +
+          """family":"${target.family}",""" +
+          """platform":"${target.platform}"}"""
         Json.decodeFromString(KotlinTarget.serializer(), json) shouldBe target
       }
     }

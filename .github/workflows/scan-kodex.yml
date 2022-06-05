@@ -41,9 +41,10 @@ jobs:
         repository:
           - 'mavenCentral'
         options:
-          - '--include=com/'
+          - '--include=com/ --exclude=com/github/'
+          - '--include=com/github/'
           - '--include=org/'
-          - '--include=io/ --exclude=github/'
+          - '--include=io/ --exclude=io/github/'
           - '--include=io/github/'
           - '--exclude-letters'
           - '--include=a'
