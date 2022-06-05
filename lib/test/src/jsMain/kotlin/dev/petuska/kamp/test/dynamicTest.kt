@@ -14,5 +14,4 @@ actual fun dynamicTests(builder: DynamicTestBuilder.() -> Unit) {
     }.onFailure { it.printStackTrace() }
   }
   results.none { it.isFailure } shouldBe true
-  return
 }
