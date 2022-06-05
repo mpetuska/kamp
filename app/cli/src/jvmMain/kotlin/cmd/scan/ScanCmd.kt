@@ -12,6 +12,7 @@ import dev.petuska.kamp.cli.cmd.scan.domain.Repository
 import dev.petuska.kamp.cli.cmd.scan.domain.SimpleMavenArtefact
 import dev.petuska.kamp.cli.cmd.scan.service.PageService
 import dev.petuska.kamp.cli.cmd.scan.service.SimpleMavenArtefactService
+import dev.petuska.kamp.cli.util.toHumanString
 import dev.petuska.kamp.core.domain.KotlinLibrary
 import dev.petuska.kamp.core.domain.KotlinTarget
 import dev.petuska.kamp.core.util.logger
@@ -104,11 +105,8 @@ class ScanCmd(
       )
       client.close()
     }
-    val timeStr = duration.toComponents { hours, minutes, seconds, nanoseconds ->
-      "${hours}h ${minutes}m $seconds.${nanoseconds}s"
-    }
     logger.info(
-      "Finished scanning ${repository.alias} in $timeStr"
+      "Finished scanning ${repository.alias} in ${duration.toHumanString()}"
     )
   }
 }
