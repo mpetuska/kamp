@@ -30,16 +30,16 @@ class SimpleMavenArtefactService(
     }
 
   fun findKotlinLibraries(artefacts: Flow<FileData<SimpleMavenArtefact>>): Flow<FileData<KotlinLibrary>> =
-    artefacts.mapNotNull { artefact ->
+    artefacts.mapNotNull { (_, artefact) ->
       with(GradleModuleProcessor()) {
-        val module = client.getGradleModule(artefact.file)?.takeIf { it.data.isRootModule }
+        val module = client.getGradleModule(artefact)?.takeIf { it.data.isRootModule }
         val supportedTargets = module?.data?.supportedTargets?.takeIf { it.isNotEmpty() }
         supportedTargets?.let {
-          client.getMavenPom(artefact.file)?.data?.let { pom ->
+          client.getMavenPom(artefact)?.data?.let { pom ->
             with(PomProcessor()) {
               KotlinLibrary(
                 targets = it,
-                artefact = artefact.data,
+                artefact = artefact,
                 description = pom.description,
                 website = pom.url,
                 scm = pom.scmUrl,

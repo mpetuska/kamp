@@ -4,11 +4,13 @@ sealed class RepoItem(
   val repositoryRootUrl: String,
   name: String,
 ) {
-  val name: String = name.removeSuffix(SEP)
+  val name: String = name.removeSuffix(SEP).removePrefix(SEP)
   abstract val directory: RepoDirectory
 
-  open val absolutePath: String = "${directory.absolutePath.takeIf { it != SEP } ?: ""}$SEP$name".removeSuffix(SEP)
-  val url = "$repositoryRootUrl$absolutePath"
+  open val absolutePath: String by lazy {
+    "${directory.absolutePath.takeIf { it != SEP } ?: ""}$SEP${this.name}"
+  }
+  val url by lazy { "${repositoryRootUrl.removeSuffix(SEP)}$absolutePath" }
 
   override fun toString(): String = absolutePath
   override fun equals(other: Any?): Boolean {
@@ -29,11 +31,11 @@ sealed class RepoItem(
     operator fun invoke(
       repositoryRootUrl: String,
       name: String,
-      directoryPath: String,
+      directory: RepoDirectory,
     ): RepoItem = if (name.endsWith(SEP)) {
-      RepoDirectory.fromPath(repositoryRootUrl, "$directoryPath$SEP$name")
+      RepoDirectory(repositoryRootUrl, name, directory)
     } else {
-      RepoFile(repositoryRootUrl, name, RepoDirectory.fromPath(repositoryRootUrl, directoryPath))
+      RepoFile(repositoryRootUrl, name, directory)
     }
   }
 }
@@ -46,30 +48,27 @@ class RepoFile(
   fun <T : Any> data(data: T) = FileData(this, data)
 }
 
-open class RepoDirectory private constructor(
-  tmpDir: RepoDirectory?,
+abstract class RepoDirectory private constructor(
   repositoryRootUrl: String,
   name: String,
 ) : RepoItem(repositoryRootUrl, name) {
-  constructor (
-    repositoryRootUrl: String,
-    name: String,
-    directory: RepoDirectory
-  ) : this(directory, repositoryRootUrl, name)
-
-  override val directory: RepoDirectory by lazy {
-    tmpDir!!
-  }
-
   companion object {
+    operator fun invoke(
+      repositoryRootUrl: String,
+      name: String,
+      directory: RepoDirectory,
+    ): RepoDirectory = object : RepoDirectory(repositoryRootUrl, name) {
+      override val directory: RepoDirectory = directory
+    }
+
     fun fromPath(repositoryRootUrl: String, path: String): RepoDirectory {
       val nPath = path.removePrefix(SEP + SEP).removePrefix(SEP).removeSuffix(SEP)
       return if (nPath == SEP || nPath.isBlank()) {
         Root(repositoryRootUrl)
       } else if (!nPath.contains(SEP)) {
-        RepoDirectory(repositoryRootUrl, path, Root(repositoryRootUrl))
+        RepoDirectory(repositoryRootUrl, nPath, Root(repositoryRootUrl))
       } else {
-        val chunks = path.split(SEP)
+        val chunks = nPath.split(SEP)
         val name = chunks.last()
         val parentPath = chunks.dropLast(1).joinToString(SEP)
         RepoDirectory(repositoryRootUrl, name, fromPath(repositoryRootUrl, parentPath))
@@ -77,14 +76,13 @@ open class RepoDirectory private constructor(
     }
   }
 
-  fun list(items: Collection<RepoItem>): Listed =
-    Listed(repositoryRootUrl, name, directory, items)
+  fun list(items: Collection<RepoItem>): Listed = Listed(repositoryRootUrl, name, this, items)
 
-  fun dir(name: String) = RepoDirectory(repositoryRootUrl, name, directory)
-  fun file(name: String) = RepoFile(repositoryRootUrl, name, directory)
-  fun item(name: String) = invoke(repositoryRootUrl, name, directory.absolutePath)
+  fun dir(name: String) = RepoDirectory(repositoryRootUrl, name, this)
+  fun file(name: String) = RepoFile(repositoryRootUrl, name, this)
+  fun item(name: String) = RepoItem.invoke(repositoryRootUrl, name, this)
 
-  class Root(repositoryRootUrl: String) : RepoDirectory(null, repositoryRootUrl, "") {
+  class Root(repositoryRootUrl: String) : RepoDirectory(repositoryRootUrl, "") {
     override val directory: RepoDirectory get() = this
     override val absolutePath: String = SEP
   }
@@ -92,7 +90,7 @@ open class RepoDirectory private constructor(
   class Listed(
     repositoryRootUrl: String,
     name: String,
-    directory: RepoDirectory,
+    override val directory: RepoDirectory,
     val items: Collection<RepoItem>
-  ) : RepoDirectory(repositoryRootUrl, name, directory)
+  ) : RepoDirectory(repositoryRootUrl, name)
 }

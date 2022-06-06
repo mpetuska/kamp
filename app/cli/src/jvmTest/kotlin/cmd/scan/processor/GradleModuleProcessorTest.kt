@@ -1,7 +1,6 @@
-package dev.petuska.kamp.cli.processor
+package dev.petuska.kamp.cli.cmd.scan.processor
 
 import dev.petuska.kamp.cli.cmd.scan.domain.GradleModule
-import dev.petuska.kamp.cli.cmd.scan.processor.GradleModuleProcessor
 import dev.petuska.kamp.cli.testutil.parseJsonFile
 import dev.petuska.kamp.core.domain.KotlinTarget
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder

@@ -5,6 +5,7 @@ import dev.petuska.kamp.core.config.serialisation
 import dev.petuska.kamp.repository.config.repositoryDI
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BasicAuthCredentials
@@ -28,7 +29,10 @@ fun sharedDI() = DI {
   bindProvider {
     HttpClient(CIO) {
       val timeout = 2.5.minutes.toLong(DurationUnit.MILLISECONDS)
-      engine { requestTimeout = timeout }
+      engine {
+        requestTimeout = timeout
+        maxConnectionsCount = 64
+      }
       defaultRequest {
         contentType(ContentType.Application.Json)
         accept(ContentType.Application.Json)
@@ -39,6 +43,11 @@ fun sharedDI() = DI {
         requestTimeoutMillis = timeout
         connectTimeoutMillis = timeout
         socketTimeoutMillis = timeout
+      }
+      install(HttpRequestRetry) {
+        retryOnServerErrors(maxRetries = 2)
+        retryOnException(maxRetries = 2)
+        exponentialDelay()
       }
       install(ContentNegotiation) {
         json(instance("pretty"))

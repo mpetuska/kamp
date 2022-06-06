@@ -7,14 +7,17 @@ import dev.petuska.kamp.cli.cmd.scan.domain.RepoItem.Companion.SEP
 import dev.petuska.kamp.cli.util.toHumanString
 import dev.petuska.kamp.core.util.logger
 import kotlinx.coroutines.channels.ProducerScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
+import kotlin.time.Duration
 import kotlin.time.measureTime
 
 class PageService(
   private val client: MavenRepositoryClient<*>,
+  private val delay: Duration,
 ) {
   private val logger = logger()
   private val pathSeparator = Regex("[\\.$SEP\\\\]")
@@ -24,14 +27,17 @@ class PageService(
     exclude: Collection<String>,
     path: String = "",
   ): Flow<RepoDirectory.Listed> = channelFlow {
-    scanPage(RepoDirectory.fromPath(client.repositoryRootUrl, path), include, exclude)
+    scanPage(
+      RepoDirectory.fromPath(client.repositoryRootUrl, path),
+      include.map { it.removePrefix(SEP) },
+      exclude.map { it.removePrefix(SEP) },
+    )
   }
 
   private fun RepoItem.isIncluded(
     include: List<Pair<String, String?>>,
     exclude: List<Pair<String, String?>>,
   ): Triple<Boolean, Boolean, Boolean> {
-    val safePath = absolutePath.removePrefix("/").removeSuffix("/")
     var explicit = false
     var explicitChildren = false
     val included = include.takeIf { it.isNotEmpty() }?.let { filter ->
@@ -39,18 +45,18 @@ class PageService(
         if (match.isNotBlank()) explicit = true
         if (next == null) explicitChildren = true
         if (next == null) {
-          safePath.equals(match, ignoreCase = true)
+          absolutePath.equals(match, ignoreCase = true)
         } else {
-          safePath.startsWith(match, ignoreCase = true)
+          absolutePath.startsWith(match, ignoreCase = true)
         }
       }
     } ?: true
     val excluded = exclude.takeIf { it.isNotEmpty() }?.let { filter ->
       filter.any { (match, next) ->
         if (next == null) {
-          safePath.equals(match, ignoreCase = true)
+          absolutePath.equals(match, ignoreCase = true)
         } else {
-          safePath.startsWith(match, ignoreCase = true)
+          absolutePath.startsWith(match, ignoreCase = true)
         }
       }
     } ?: false
@@ -60,7 +66,7 @@ class PageService(
   private fun Collection<String>.splitFirst(): List<Pair<String, String?>> = map {
     val s = it.split(pathSeparator, limit = 2)
     val next = s.getOrNull(1)
-    s[0] to if (next?.isBlank() == true) null else (next ?: "")
+    "$SEP${s[0]}" to if (next?.isBlank() == true) null else (next ?: "")
   }
 
   private suspend fun ProducerScope<RepoDirectory.Listed>.scanPage(
@@ -73,7 +79,7 @@ class PageService(
       val cInclude = include.splitFirst()
       val cExclude = exclude.splitFirst()
       val includes = cInclude.map {
-        "$page/${it.first}".removePrefix(SEP) to it.second
+        page.item(it.first).absolutePath to it.second
       }
       val excludes = cExclude.map { exc ->
         var first = "$page/${exc.first}"
@@ -110,6 +116,7 @@ class PageService(
             logger.info("Finished scanning included page tree at $item in ${duration.toHumanString()}")
           }
         }
+        delay(delay)
       }
     }
   }

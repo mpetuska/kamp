@@ -4,11 +4,9 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.groups.cooccurring
-import com.github.ajalt.clikt.parameters.options.flag
-import com.github.ajalt.clikt.parameters.options.multiple
-import com.github.ajalt.clikt.parameters.options.option
-import com.github.ajalt.clikt.parameters.options.required
+import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.choice
+import com.github.ajalt.clikt.parameters.types.long
 import dev.petuska.kamp.cli.cmd.scan.domain.FileData
 import dev.petuska.kamp.cli.cmd.scan.domain.Repository
 import dev.petuska.kamp.cli.cmd.scan.domain.SimpleMavenArtefact
@@ -20,7 +18,6 @@ import dev.petuska.kamp.core.domain.KotlinTarget
 import dev.petuska.kamp.core.util.logger
 import dev.petuska.kamp.repository.LibraryRepository
 import io.ktor.client.HttpClient
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
@@ -30,29 +27,36 @@ import kotlinx.serialization.json.Json
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.measureTime
 
 class ScanCmd(
   override val di: DI
 ) : CliktCommand(name = "scan", help = "Scan a maven repository for kotlin libraries"), DIAware {
   private class FilterOptions : OptionGroup() {
-    val from by option(help = "Repository root page filter start")
-      .choice(('a'..'z').associateBy(Char::toString), ignoreCase = true).required()
+    val from by option(help = "Repository root page filter start").choice(
+      ('a'..'z').associateBy(Char::toString),
+      ignoreCase = true
+    ).required()
 
-    val to by option(help = "Repository root page filter end")
-      .choice(('a'..'z').associateBy(Char::toString), ignoreCase = true).required()
+    val to by option(help = "Repository root page filter end").choice(
+      ('a'..'z').associateBy(Char::toString),
+      ignoreCase = true
+    ).required()
   }
 
-  private val repository by argument(help = "Repository alias to scan for")
-    .choice(Repository.values().associateBy(Repository::alias), ignoreCase = true)
+  private val repository by argument(help = "Repository alias to scan for").choice(
+    Repository.values().associateBy(Repository::alias), ignoreCase = true
+  )
 
-  private val include by option(help = "Repository root page filter to include")
-    .multiple()
+  private val include by option(help = "Repository root page filter to include").multiple()
 
-  private val exclude by option(help = "Repository root page filter to exclude")
-    .multiple()
+  private val exclude by option(help = "Repository root page filter to exclude").multiple()
 
   private val excludeLetters by option(help = "Same as if you were to pass --exclude for a..z").flag()
+
+  private val delay by option(help = "Worker processing delay in milliseconds").long().convert { it.milliseconds }
+    .default(2.milliseconds)
 
   private val filterOptions by FilterOptions().cooccurring()
 
@@ -61,7 +65,6 @@ class ScanCmd(
   private val logger = logger()
   private val libraryRepository by di.instance<LibraryRepository>()
 
-  @OptIn(FlowPreview::class)
   override fun run() = runBlocking {
     val client = run {
       val json by di.instance<Json>("pretty")
@@ -70,22 +73,21 @@ class ScanCmd(
     }
     logger.info("Scanning ${repository.alias} repository")
 
-    val includes = run {
-      include + (filterOptions?.run { from..to }?.map(Char::toString) ?: listOf())
-    }
-    val excludes = exclude + (if (excludeLetters) ('a'..'z').map(Char::toString) else listOf())
+    val includes = include.plus(filterOptions?.run { from..to }?.map(Char::toString) ?: listOf())
+    val excludes = exclude.plus(if (excludeLetters) ('a'..'z').map(Char::toString) else listOf())
 
     logger.info("Bootstrapping repository page lookup")
     val pages = PageService(
       client = client,
+      delay = delay,
     ).findPages(include = includes, exclude = excludes).buffer()
     logger.info("Bootstrapping maven artefact lookup")
     val scanner = SimpleMavenArtefactService(
       client = client,
     )
+    var count = 0
     val duration = measureTime {
       coroutineScope {
-        var count = 0
         val artefacts: Flow<FileData<SimpleMavenArtefact>> = scanner.findMavenArtefacts(pages).buffer()
         val libraries: Flow<FileData<KotlinLibrary>> = scanner.findKotlinLibraries(artefacts).buffer()
         libraries.collect { (_, lib) ->
@@ -93,15 +95,13 @@ class ScanCmd(
           count++
           launch { libraryRepository.create(lib) }
         }
-        logger.info(
-          "Found $count kotlin libraries with gradle metadata in ${repository.alias} repository " +
-            "filtered by $includes, explicitly excluding $excludes."
-        )
         client.close()
       }
     }
+    logger.info("Finished scanning ${repository.alias} in ${duration.toHumanString()}")
     logger.info(
-      "Finished scanning ${repository.alias} in ${duration.toHumanString()}"
+      "Found $count kotlin libraries with gradle metadata in ${repository.alias} repository " +
+        "filtered by $includes, explicitly excluding $excludes."
     )
   }
 }

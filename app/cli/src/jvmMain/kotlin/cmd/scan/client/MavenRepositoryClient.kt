@@ -1,6 +1,7 @@
 package dev.petuska.kamp.cli.cmd.scan.client
 
 import dev.petuska.kamp.cli.cmd.scan.domain.*
+import dev.petuska.kamp.cli.cmd.scan.util.gradleMetadataFile
 import dev.petuska.kamp.cli.cmd.scan.util.mavenPomFile
 import dev.petuska.kamp.cli.util.asDocument
 import dev.petuska.kamp.core.domain.MavenArtefact
@@ -43,9 +44,9 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
               seconds = it.substring(12 until 14).toInt(),
             ).timestamp
           }
-          val latestVersion =
-            doc.selectFirst("versioning>latest")?.text()
-              ?: doc.selectXpath("//version").first()?.text() ?: versions.last()
+          val latestVersion = doc.selectFirst("versioning>latest")?.text()
+            ?: doc.selectXpath("//version").first()?.text()
+            ?: versions.last()
           SimpleMavenArtefact(
             // https://repo1.maven.org/maven2/com/inmobi/monetization/inmobi-mediation/maven-metadata.xml
             group = doc.selectFirst("groupId")?.text() ?: doc.selectFirst("groupdId")!!.text(),
@@ -65,7 +66,7 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
   }
 
   suspend fun getGradleModule(artifact: A): FileData<GradleModule>? =
-    getGradleModule(artifact.mavenPomFile(repositoryRootUrl))
+    getGradleModule(artifact.gradleMetadataFile(repositoryRootUrl))
 
   suspend fun getGradleModule(file: RepoFile): FileData<GradleModule>? = supervisorScope {
     val url = file.url
@@ -91,14 +92,15 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
   }
 
   suspend fun listRepositoryPath(dir: RepoDirectory): List<RepoItem>? = supervisorScope {
-    runCatchingIO(logger) {
-      client.get(dir.url).takeIf { it.status != HttpStatusCode.NotFound }
-        ?.bodyAsText()
-        ?.asDocument()
-        ?.let(::parsePage)
+    runCatchingIO {
+      client.get(dir.url).takeIf { it.status != HttpStatusCode.NotFound }?.bodyAsText()?.asDocument()?.let(::parsePage)
         ?.map(dir::item)
+    }.onFailure {
+      logger.error("Failed to list repository path at ${dir.url}", it)
     }.getOrNull()
   }
 
-  override fun close() = client.close()
+  override fun close() {
+    client.close()
+  }
 }
