@@ -21,6 +21,7 @@ import io.ktor.client.HttpClient
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
@@ -77,31 +78,34 @@ class ScanCmd(
     val excludes = exclude.plus(if (excludeLetters) ('a'..'z').map(Char::toString) else listOf())
 
     logger.info("Bootstrapping repository page lookup")
+    var pageCount = 0
     val pages = PageService(
       client = client,
       delay = delay,
-    ).findPages(include = includes, exclude = excludes).buffer()
+    ).findPages(include = includes, exclude = excludes).buffer().onEach { pageCount++ }
     logger.info("Bootstrapping maven artefact lookup")
     val scanner = SimpleMavenArtefactService(
       client = client,
     )
-    var count = 0
+    var libCount = 0
     val duration = measureTime {
       coroutineScope {
         val artefacts: Flow<FileData<SimpleMavenArtefact>> = scanner.findMavenArtefacts(pages).buffer()
         val libraries: Flow<FileData<KotlinLibrary>> = scanner.findKotlinLibraries(artefacts).buffer()
         libraries.collect { (_, lib) ->
           logger.info("Found kotlin library: ${lib._id} ${lib.targets.map(KotlinTarget::id)}")
-          count++
+          libCount++
           launch { libraryRepository.create(lib) }
         }
         client.close()
       }
     }
-    logger.info("Finished scanning ${repository.alias} in ${duration.toHumanString()}")
+    val filterMsg = " filtered by $includes, explicitly excluding $excludes."
     logger.info(
-      "Found $count kotlin libraries with gradle metadata in ${repository.alias} repository " +
-        "filtered by $includes, explicitly excluding $excludes."
+      "Finished scanning ${repository.alias} in ${duration.toHumanString()} and found $pageCount subpages" + filterMsg
+    )
+    logger.info(
+      "Found $libCount kotlin libraries with gradle metadata in ${repository.alias} repository" + filterMsg
     )
   }
 }

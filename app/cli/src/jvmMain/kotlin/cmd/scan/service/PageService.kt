@@ -72,8 +72,8 @@ class PageService(
     include: Collection<String>,
     exclude: Collection<String>,
     explicitChildren: Boolean = false,
-  ): Long {
-    val (counts, children) = supervisorScope {
+  ): Int {
+    return supervisorScope {
       val cInclude = include.splitFirst()
       val cExclude = exclude.splitFirst()
       val includes = cInclude.map {
@@ -98,7 +98,7 @@ class PageService(
           } else {
             logger.debug("Looking for pages in $item")
           }
-          var count by Delegates.notNull<Long>()
+          var count by Delegates.notNull<Int>()
           val duration = measureTime {
             count = scanPage(
               page = item,
@@ -114,8 +114,7 @@ class PageService(
           }
           count
         }.also { delay(delay) }
-      } to directories.size
+      }.awaitAll().sum() + directories.size
     }
-    return counts.awaitAll().sum() + children
   }
 }
