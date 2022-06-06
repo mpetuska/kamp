@@ -53,11 +53,7 @@ class PageService(
     } ?: true
     val excluded = exclude.takeIf { it.isNotEmpty() }?.let { filter ->
       filter.any { (match, next) ->
-        if (next == null) {
-          absolutePath.equals(match, ignoreCase = true)
-        } else {
-          absolutePath.startsWith(match, ignoreCase = true)
-        }
+        next.isNullOrBlank() && absolutePath.startsWith(match, ignoreCase = true)
       }
     } ?: false
     return Triple((included && !excluded), explicit, explicitChildren)
