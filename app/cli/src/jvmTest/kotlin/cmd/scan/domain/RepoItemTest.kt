@@ -6,15 +6,13 @@ import dev.petuska.kamp.test.dynamicTests
 import io.kotest.matchers.shouldBe
 
 class RepoItemTest {
-  private val testUrl = "https://test.com/"
-
   @TestFactory
   fun directory() = dynamicTests {
     listOf(
       "/", "/dir", "/dir/sub/"
     ).forEach { path ->
       "[$path] should be parsed into RepoDirectory" {
-        val dir = RepoDirectory.fromPath(testUrl, path)
+        val dir = RepoDirectory.fromPath(path)
         dir.absolutePath shouldBe if (path.length <= 1) SEP else path.removeSuffix(SEP)
       }
     }
@@ -22,7 +20,7 @@ class RepoItemTest {
 
   @TestFactory
   fun directoryChildren() = dynamicTests {
-    val parents = listOf("/", "/dir", "/dir/sub/").map { RepoDirectory.fromPath(testUrl, it) }
+    val parents = listOf("/", "/dir", "/dir/sub/").map(RepoDirectory::fromPath)
     val children = listOf(
       "",
       "/",
@@ -43,7 +41,7 @@ class RepoItemTest {
 
   @TestFactory
   fun item() = dynamicTests {
-    val parent = RepoDirectory.Root(testUrl)
+    val parent = RepoDirectory.Root
     "/dev/petuska/gradle-kotlin-delegates/maven-metadata.xml" {
       val next = parent.item("/dev/petuska/gradle-kotlin-delegates/maven-metadata.xml")
       (next is RepoFile) shouldBe true

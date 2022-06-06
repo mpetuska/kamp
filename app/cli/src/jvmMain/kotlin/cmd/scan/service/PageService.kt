@@ -28,7 +28,7 @@ class PageService(
     path: String = "",
   ): Flow<RepoDirectory.Listed> = channelFlow {
     scanPage(
-      RepoDirectory.fromPath(client.repositoryRootUrl, path),
+      RepoDirectory.fromPath(path),
       include.map { it.removePrefix(SEP) },
       exclude.map { it.removePrefix(SEP) },
     )

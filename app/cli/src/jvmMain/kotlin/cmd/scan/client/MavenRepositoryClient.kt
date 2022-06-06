@@ -20,7 +20,7 @@ import kotlinx.serialization.json.Json
 import org.jsoup.nodes.Document
 
 abstract class MavenRepositoryClient<A : MavenArtefact>(
-  val repositoryRootUrl: String,
+  private val repositoryRootUrl: String,
 ) : Closeable {
   protected abstract fun parsePage(page: Document): List<String>?
   protected abstract val client: HttpClient
@@ -59,17 +59,17 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
         }
       }.onFailure {
         if (doc.selectFirst("plugins") == null) {
-          logger.error("Unable to parse maven-metadata.xml from ${mavenMetadata.url}", it)
+          logger.error("Unable to parse maven-metadata.xml from ${mavenMetadata.url(repositoryRootUrl)}", it)
         }
       }.getOrNull()
     }
   }
 
   suspend fun getGradleModule(artifact: A): FileData<GradleModule>? =
-    getGradleModule(artifact.gradleMetadataFile(repositoryRootUrl))
+    getGradleModule(artifact.gradleMetadataFile())
 
   suspend fun getGradleModule(file: RepoFile): FileData<GradleModule>? = supervisorScope {
-    val url = file.url
+    val url = file.url(repositoryRootUrl)
     runCatchingIO {
       logger.debug("Looking for gradle module in $url")
       client.get(url).takeIf { it.status != HttpStatusCode.NotFound }?.bodyAsText()?.let { module ->
@@ -80,10 +80,10 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
     }.getOrNull()
   }
 
-  suspend fun getMavenPom(artifact: A): FileData<Document>? = getMavenPom(artifact.mavenPomFile(repositoryRootUrl))
+  suspend fun getMavenPom(artifact: A): FileData<Document>? = getMavenPom(artifact.mavenPomFile())
 
   suspend fun getMavenPom(file: RepoFile): FileData<Document>? = supervisorScope {
-    val url = file.url
+    val url = file.url(repositoryRootUrl)
     runCatchingIO {
       client.get(url).takeIf { it.status != HttpStatusCode.NotFound }?.bodyAsText()?.asDocument()?.let(file::data)
     }.onFailure {
@@ -92,11 +92,12 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
   }
 
   suspend fun listRepositoryPath(dir: RepoDirectory): List<RepoItem>? = supervisorScope {
+    val url = dir.url(repositoryRootUrl)
     runCatchingIO {
-      client.get(dir.url).takeIf { it.status != HttpStatusCode.NotFound }?.bodyAsText()?.asDocument()?.let(::parsePage)
+      client.get(url).takeIf { it.status != HttpStatusCode.NotFound }?.bodyAsText()?.asDocument()?.let(::parsePage)
         ?.map(dir::item)
     }.onFailure {
-      logger.error("Failed to list repository path at ${dir.url}", it)
+      logger.error("Failed to list repository path at $url", it)
     }.getOrNull()
   }
 
