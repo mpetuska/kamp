@@ -81,10 +81,8 @@ class PageService(
       val includes = cInclude.map {
         page.item(it.first).absolutePath to it.second
       }
-      val excludes = cExclude.map { exc ->
-        var first = "$page/${exc.first}"
-        exc.second?.let { first += "$SEP$it" }
-        first.removePrefix(SEP).removeSuffix(SEP) to exc.second
+      val excludes = cExclude.map {
+        page.item(it.first).absolutePath to it.second
       }
 
       val items = client.listRepositoryPath(page) ?: listOf()
