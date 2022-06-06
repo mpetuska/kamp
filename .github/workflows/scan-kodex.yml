@@ -40,7 +40,8 @@ jobs:
           # com/
           - '--root=com/ --exclude-letters'
           - '--root=com/ --include=github/'
-          - '--root=com/ --from=a --to=h --exclude=github/'
+          - '--root=com/ --include=google/'
+          - '--root=com/ --from=a --to=h --exclude=github/ --exclude=google/'
           - '--root=com/ --from=i --to=q'
           - '--root=com/ --from=q --to=z'
           # org/

@@ -16,9 +16,9 @@ class GradleModuleProcessor {
             "androidJvm" -> KotlinTarget.JVM.Android
             "jvm" -> KotlinTarget.JVM.Java
             "js" -> when (attrs.orgJetbrainsKotlinJsCompiler) {
-              "legacy" -> KotlinTarget.JS.Legacy
               "ir" -> KotlinTarget.JS.IR
-              else -> null
+//              "legacy" -> KotlinTarget.JS.Legacy
+              else -> KotlinTarget.JS.Legacy
             }
 
             "native" -> KotlinTarget.Native.values().find { it.id == attrs.orgJetbrainsKotlinNativeTarget }
