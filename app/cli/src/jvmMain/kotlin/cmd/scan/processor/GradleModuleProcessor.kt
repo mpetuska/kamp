@@ -21,7 +21,7 @@ class GradleModuleProcessor {
               else -> KotlinTarget.JS.Legacy
             }
 
-            "native" -> KotlinTarget.Native.values().find { it.id == attrs.orgJetbrainsKotlinNativeTarget }
+            "native" -> KotlinTarget.Native.values().find { attrs.orgJetbrainsKotlinNativeTarget.equals(it.id) }
 
             else -> null
           } ?: (attrs.orgJetbrainsKotlinNativeTarget ?: attrs.orgJetbrainsKotlinPlatformType)
