@@ -10,4 +10,19 @@ class ArtifactoryClient(
   override val json: Json,
 ) : AnchorClient<SimpleMavenArtefact>(url) {
   override fun String.isBackLink(): Boolean = startsWith("..")
+  override fun buildArtefact(
+    group: String,
+    name: String,
+    latestVersion: String,
+    releaseVersion: String?,
+    versions: List<String>?,
+    lastUpdated: Long?
+  ) = SimpleMavenArtefact(
+    group = group,
+    name = name,
+    latestVersion = latestVersion,
+    releaseVersion = releaseVersion,
+    versions = versions,
+    lastUpdated = lastUpdated,
+  )
 }
