@@ -45,8 +45,8 @@ fun sharedDI() = DI {
         socketTimeoutMillis = timeout
       }
       install(HttpRequestRetry) {
-        retryOnServerErrors(maxRetries = 2)
-        retryOnException(maxRetries = 2)
+        retryOnServerErrors(maxRetries = 3)
+        retryOnException(maxRetries = 3)
         exponentialDelay()
       }
       install(ContentNegotiation) {
