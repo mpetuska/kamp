@@ -50,7 +50,7 @@ class StatisticRepository(
     return runCatchingIO { collection.countDocuments(buildQuery(from, to) ?: "{}") }.getOrThrow()
   }
 
-  suspend fun getByDate(date: String): LibrariesStatistic? {
+  suspend fun findByDate(date: String): LibrariesStatistic? {
     return runCatchingIO { collection.findOneById(date) }.getOrThrow()
   }
 

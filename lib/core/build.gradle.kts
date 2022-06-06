@@ -14,6 +14,7 @@ kotlin {
     jvmMain {
       dependencies {
         implementation("ch.qos.logback:logback-classic:_")
+        api("org.slf4j:slf4j-api:_")
       }
     }
   }

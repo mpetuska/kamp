@@ -4,10 +4,12 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.groups.cooccurring
-import com.github.ajalt.clikt.parameters.options.*
+import com.github.ajalt.clikt.parameters.options.flag
+import com.github.ajalt.clikt.parameters.options.multiple
+import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.choice
-import com.github.ajalt.clikt.parameters.types.int
-import com.github.ajalt.clikt.parameters.types.long
+import dev.petuska.kamp.cli.cmd.scan.domain.FileData
 import dev.petuska.kamp.cli.cmd.scan.domain.Repository
 import dev.petuska.kamp.cli.cmd.scan.domain.SimpleMavenArtefact
 import dev.petuska.kamp.cli.cmd.scan.service.PageService
@@ -22,14 +24,12 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
-import kotlinx.coroutines.flow.produceIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
-import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.measureTime
 
 class ScanCmd(
@@ -56,12 +56,6 @@ class ScanCmd(
 
   private val filterOptions by FilterOptions().cooccurring()
 
-  private val delay by option(help = "Worker processing delay in milliseconds")
-    .long().convert { it.milliseconds }
-
-  private val workers by option(help = "Concurrent worker count")
-    .int().default(Runtime.getRuntime().availableProcessors())
-
   // ===================================================================================================================
 
   private val logger = logger()
@@ -84,22 +78,20 @@ class ScanCmd(
     logger.info("Bootstrapping repository page lookup")
     val pages = PageService(
       client = client,
-    ).findPages(include = includes, exclude = excludes)
+    ).findPages(include = includes, exclude = excludes).buffer()
     logger.info("Bootstrapping maven artefact lookup")
     val scanner = SimpleMavenArtefactService(
-      workers = workers,
-      delay = delay,
       client = client,
     )
     val duration = measureTime {
       coroutineScope {
         var count = 0
-        val artefacts: Flow<SimpleMavenArtefact> = scanner.findMavenArtefacts(pages.buffer().produceIn(this))
-        val libraries: Flow<KotlinLibrary> = scanner.findKotlinLibraries(artefacts)
-        libraries.buffer().collect {
-          logger.info("Found kotlin library: ${it._id} ${it.targets.map(KotlinTarget::id)}")
+        val artefacts: Flow<FileData<SimpleMavenArtefact>> = scanner.findMavenArtefacts(pages).buffer()
+        val libraries: Flow<FileData<KotlinLibrary>> = scanner.findKotlinLibraries(artefacts).buffer()
+        libraries.collect { (_, lib) ->
+          logger.info("Found kotlin library: ${lib._id} ${lib.targets.map(KotlinTarget::id)}")
           count++
-          launch { libraryRepository.create(it) }
+          launch { libraryRepository.create(lib) }
         }
         logger.info(
           "Found $count kotlin libraries with gradle metadata in ${repository.alias} repository " +

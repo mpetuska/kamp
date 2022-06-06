@@ -1,7 +1,9 @@
 package dev.petuska.kamp.cli.cmd.scan.service
 
 import dev.petuska.kamp.cli.cmd.scan.client.MavenRepositoryClient
-import dev.petuska.kamp.cli.cmd.scan.domain.RepositoryItem
+import dev.petuska.kamp.cli.cmd.scan.domain.RepoDirectory
+import dev.petuska.kamp.cli.cmd.scan.domain.RepoItem
+import dev.petuska.kamp.cli.cmd.scan.domain.RepoItem.Companion.SEP
 import dev.petuska.kamp.cli.util.toHumanString
 import dev.petuska.kamp.core.util.logger
 import kotlinx.coroutines.channels.ProducerScope
@@ -15,21 +17,21 @@ class PageService(
   private val client: MavenRepositoryClient<*>,
 ) {
   private val logger = logger()
-  private val pathSeparator = Regex("[\\./\\\\]")
+  private val pathSeparator = Regex("[\\.$SEP\\\\]")
 
   fun findPages(
-    path: String = "",
     include: Collection<String>,
     exclude: Collection<String>,
-  ): Flow<RepositoryItem.Directory> = channelFlow {
-    producePages(RepositoryItem.Directory("", path), include, exclude)
+    path: String = "",
+  ): Flow<RepoDirectory.Listed> = channelFlow {
+    scanPage(RepoDirectory.fromPath(client.repositoryRootUrl, path), include, exclude)
   }
 
-  private fun RepositoryItem.isIncluded(
+  private fun RepoItem.isIncluded(
     include: List<Pair<String, String?>>,
     exclude: List<Pair<String, String?>>,
   ): Triple<Boolean, Boolean, Boolean> {
-    val safePath = path.removePrefix("/").removeSuffix("/")
+    val safePath = absolutePath.removePrefix("/").removeSuffix("/")
     var explicit = false
     var explicitChildren = false
     val included = include.takeIf { it.isNotEmpty() }?.let { filter ->
@@ -61,8 +63,8 @@ class PageService(
     s[0] to if (next?.isBlank() == true) null else (next ?: "")
   }
 
-  private suspend fun ProducerScope<RepositoryItem.Directory>.producePages(
-    parent: RepositoryItem.Directory,
+  private suspend fun ProducerScope<RepoDirectory.Listed>.scanPage(
+    page: RepoDirectory,
     include: Collection<String>,
     exclude: Collection<String>,
     explicitChildren: Boolean = false,
@@ -71,24 +73,25 @@ class PageService(
       val cInclude = include.splitFirst()
       val cExclude = exclude.splitFirst()
       val includes = cInclude.map {
-        "$parent/${it.first}".removePrefix("/") to it.second
+        "$page/${it.first}".removePrefix(SEP) to it.second
       }
       val excludes = cExclude.map { exc ->
-        var first = "$parent/${exc.first}"
-        exc.second?.let { first += "/$it" }
-        first.removePrefix("/").removeSuffix("/") to exc.second
+        var first = "$page/${exc.first}"
+        exc.second?.let { first += "$SEP$it" }
+        first.removePrefix(SEP).removeSuffix(SEP) to exc.second
       }
 
-      val items = client.listRepositoryPath(parent.path)
-        ?.filterIsInstance<RepositoryItem.Directory>()
-        ?.mapNotNull { item ->
+      val items = client.listRepositoryPath(page) ?: listOf()
+      send(page.list(items))
+      val directories = items
+        .filterIsInstance<RepoDirectory>()
+        .mapNotNull { item ->
           val (included, explicit, explicitC) = item.isIncluded(includes, excludes)
           item.takeIf { included }?.let { Triple(it, explicit, explicitC) }
         }
 
-      items?.map { (item, explicit, explicitC) ->
-        logger.debug("Found page [${item.name}] in $parent")
-        send(item)
+      directories.forEach { (item, explicit, explicitC) ->
+        logger.debug("Found page [${item.name}] in $page")
         launch {
           if (explicit || explicitChildren) {
             logger.info("Scanning included page tree in $item")
@@ -96,8 +99,8 @@ class PageService(
             logger.debug("Looking for pages in $item")
           }
           val duration = measureTime {
-            producePages(
-              parent = item,
+            scanPage(
+              page = item,
               include = cInclude.mapNotNull { it.second?.takeIf(String::isNotBlank) },
               exclude = cExclude.mapNotNull { it.second?.takeIf(String::isNotBlank) },
               explicitChildren = explicitC,
