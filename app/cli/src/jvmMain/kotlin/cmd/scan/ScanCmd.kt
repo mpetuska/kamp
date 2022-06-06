@@ -102,7 +102,7 @@ class ScanCmd(
     }
     val filterMsg = " filtered by $includes, explicitly excluding $excludes."
     logger.info(
-      "Finished scanning ${repository.alias} in ${duration.toHumanString()} and found $pageCount subpages" + filterMsg
+      "Finished scanning ${repository.alias} in ${duration.toHumanString()} and scanned $pageCount subpages" + filterMsg
     )
     logger.info(
       "Found $libCount kotlin libraries with gradle metadata in ${repository.alias} repository" + filterMsg

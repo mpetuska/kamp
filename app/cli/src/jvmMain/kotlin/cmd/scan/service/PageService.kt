@@ -85,9 +85,12 @@ class PageService(
 
       val items = client.listRepositoryPath(page) ?: listOf()
       send(page.list(items))
+      // Try to avoid at least some subpages for versions
+      val modulePage = items.any { it.name == "maven-metadata.xml" }
       val directories = items.filterIsInstance<RepoDirectory>().mapNotNull { item ->
         val (included, explicit, explicitC) = item.isIncluded(includes, excludes)
-        item.takeIf { included }?.let { Triple(it, explicit, explicitC) }
+        item.takeIf { included && (!modulePage || !item.name.getOrElse(0) { 'a' }.isDigit()) }
+          ?.let { Triple(it, explicit, explicitC) }
       }
 
       directories.map { (item, explicit, explicitC) ->

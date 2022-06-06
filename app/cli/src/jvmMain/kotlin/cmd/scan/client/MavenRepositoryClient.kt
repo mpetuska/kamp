@@ -1,6 +1,7 @@
 package dev.petuska.kamp.cli.cmd.scan.client
 
 import dev.petuska.kamp.cli.cmd.scan.domain.*
+import dev.petuska.kamp.cli.cmd.scan.domain.RepoItem.Companion.SEP
 import dev.petuska.kamp.cli.cmd.scan.util.gradleMetadataFile
 import dev.petuska.kamp.cli.cmd.scan.util.mavenPomFile
 import dev.petuska.kamp.cli.util.asDocument
@@ -44,9 +45,9 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
               seconds = it.substring(12 until 14).toInt(),
             ).timestamp
           }
-          val latestVersion = doc.selectFirst("versioning>latest")?.text()
-            ?: doc.selectXpath("//version").first()?.text()
-            ?: versions.last()
+          val latestVersion =
+            doc.selectFirst("versioning>latest")?.text() ?: doc.selectXpath("//version").first()?.text()
+              ?: versions.last()
           SimpleMavenArtefact(
             // https://repo1.maven.org/maven2/com/inmobi/monetization/inmobi-mediation/maven-metadata.xml
             group = doc.selectFirst("groupId")?.text() ?: doc.selectFirst("groupdId")!!.text(),
@@ -65,8 +66,7 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
     }
   }
 
-  suspend fun getGradleModule(artifact: A): FileData<GradleModule>? =
-    getGradleModule(artifact.gradleMetadataFile())
+  suspend fun getGradleModule(artifact: A): FileData<GradleModule>? = getGradleModule(artifact.gradleMetadataFile())
 
   suspend fun getGradleModule(file: RepoFile): FileData<GradleModule>? = supervisorScope {
     val url = file.url(repositoryRootUrl)
@@ -92,13 +92,22 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
   }
 
   suspend fun listRepositoryPath(dir: RepoDirectory): List<RepoItem>? = supervisorScope {
-    val url = dir.url(repositoryRootUrl)
-    runCatchingIO {
-      client.get(url).takeIf { it.status != HttpStatusCode.NotFound }?.bodyAsText()?.asDocument()?.let(::parsePage)
-        ?.map(dir::item)
-    }.onFailure {
-      logger.error("Failed to list repository path at $url", it)
-    }.getOrNull()
+    val urls = dir.url(repositoryRootUrl).let { listOf(it, it + SEP) }
+    var result: List<RepoItem>? = null
+    for (url in urls) {
+      result = runCatchingIO {
+        client.get(url)
+          .takeIf { it.status != HttpStatusCode.NotFound }
+          ?.bodyAsText()
+          ?.asDocument()
+          ?.let(::parsePage)
+          ?.map(dir::item)
+      }.onFailure {
+        logger.error("Failed to list repository path at $url", it)
+      }.getOrNull()
+      if (result != null) break
+    }
+    result
   }
 
   override fun close() {
