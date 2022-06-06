@@ -6,12 +6,14 @@ import dev.petuska.kamp.cli.cmd.scan.domain.RepoItem
 import dev.petuska.kamp.cli.cmd.scan.domain.RepoItem.Companion.SEP
 import dev.petuska.kamp.cli.util.toHumanString
 import dev.petuska.kamp.core.util.logger
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
+import kotlin.properties.Delegates
 import kotlin.time.Duration
 import kotlin.time.measureTime
 
@@ -70,8 +72,8 @@ class PageService(
     include: Collection<String>,
     exclude: Collection<String>,
     explicitChildren: Boolean = false,
-  ) {
-    supervisorScope {
+  ): Long {
+    val (counts, children) = supervisorScope {
       val cInclude = include.splitFirst()
       val cExclude = exclude.splitFirst()
       val includes = cInclude.map {
@@ -83,35 +85,37 @@ class PageService(
 
       val items = client.listRepositoryPath(page) ?: listOf()
       send(page.list(items))
-      val directories = items
-        .filterIsInstance<RepoDirectory>()
-        .mapNotNull { item ->
-          val (included, explicit, explicitC) = item.isIncluded(includes, excludes)
-          item.takeIf { included }?.let { Triple(it, explicit, explicitC) }
-        }
+      val directories = items.filterIsInstance<RepoDirectory>().mapNotNull { item ->
+        val (included, explicit, explicitC) = item.isIncluded(includes, excludes)
+        item.takeIf { included }?.let { Triple(it, explicit, explicitC) }
+      }
 
-      directories.forEach { (item, explicit, explicitC) ->
+      directories.map { (item, explicit, explicitC) ->
         logger.debug("Found page [${item.name}] in $page")
-        launch {
+        async {
           if (explicit || explicitChildren) {
             logger.info("Scanning included page tree in $item")
           } else {
             logger.debug("Looking for pages in $item")
           }
+          var count by Delegates.notNull<Long>()
           val duration = measureTime {
-            scanPage(
+            count = scanPage(
               page = item,
               include = cInclude.mapNotNull { it.second?.takeIf(String::isNotBlank) },
               exclude = cExclude.mapNotNull { it.second?.takeIf(String::isNotBlank) },
               explicitChildren = explicitC,
             )
           }
-          if (explicitChildren) {
-            logger.info("Finished scanning included page tree at $item in ${duration.toHumanString()}")
+          if (explicit || explicitChildren) {
+            logger.info(
+              "Finished scanning included page tree at $item in ${duration.toHumanString()} and found $count subpages"
+            )
           }
-        }
-        delay(delay)
-      }
+          count
+        }.also { delay(delay) }
+      } to directories.size
     }
+    return counts.awaitAll().sum() + children
   }
 }
