@@ -8,7 +8,6 @@ import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.long
 import dev.petuska.kamp.cli.cmd.scan.domain.FileData
-import dev.petuska.kamp.cli.cmd.scan.domain.RepoDirectory
 import dev.petuska.kamp.cli.cmd.scan.domain.Repository
 import dev.petuska.kamp.cli.cmd.scan.domain.SimpleMavenArtefact
 import dev.petuska.kamp.cli.cmd.scan.service.PageService
@@ -51,7 +50,7 @@ class ScanCmd(
     Repository.values().associateBy(Repository::alias), ignoreCase = true
   )
 
-  private val root by option(help = "Repository root page path").default("")
+  private val root by option(help = "Repository root page path").default("/")
 
   private val include by option(help = "Repository root page filter to include").multiple()
 
@@ -59,8 +58,8 @@ class ScanCmd(
 
   private val excludeLetters by option(help = "Same as if you were to pass --exclude for a..z").flag()
 
-  private val delay by option(help = "Worker processing delay in milliseconds").long().convert { it.milliseconds }
-    .default(2.milliseconds)
+  private val delay by option(help = "Delay between subpage scans in milliseconds").long().convert { it.milliseconds }
+    .default(10.milliseconds)
 
   private val filterOptions by FilterOptions().cooccurring()
 
@@ -75,9 +74,8 @@ class ScanCmd(
       val httpClient by di.instance<HttpClient>()
       repository.client(repository.url, httpClient, json)
     }
-    logger.info("Scanning ${repository.alias} repository")
+    logger.info("Scanning ${repository.alias} repository from $root")
 
-    val rootDir = RepoDirectory.fromPath(root)
     val includes = include.plus(
       filterOptions?.run { from..to }?.map(Char::toString) ?: listOf()
     )
@@ -90,7 +88,7 @@ class ScanCmd(
     val pages = PageService(
       client = client,
       delay = delay,
-    ).findPages(include = includes, exclude = excludes, path = rootDir.absolutePath).buffer().onEach { pageCount++ }
+    ).findPages(include = includes, exclude = excludes, path = root).buffer().onEach { pageCount++ }
     logger.info("Bootstrapping maven artefact lookup")
     val scanner = SimpleMavenArtefactService(
       client = client,
@@ -108,7 +106,7 @@ class ScanCmd(
         client.close()
       }
     }
-    val filterMsg = " filtered by $includes, explicitly excluding $excludes."
+    val filterMsg = " scanning from $root filtered by $includes, explicitly excluding $excludes."
     logger.info(
       "Finished scanning ${repository.alias} in ${duration.toHumanString()} and scanned $pageCount subpages" + filterMsg
     )

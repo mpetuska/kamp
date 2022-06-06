@@ -38,15 +38,18 @@ jobs:
           - 'mavenCentral'
         options:
           # com/
+          - '--root=com/ --exclude-letters'
           - '--root=com/ --include=github/'
           - '--root=com/ --from=a --to=h --exclude=github/'
           - '--root=com/ --from=i --to=q'
           - '--root=com/ --from=q --to=z'
           # org/
+          - '--root=org/ --exclude-letters'
           - '--root=org/ --from=a --to=h'
           - '--root=org/ --from=i --to=q'
           - '--root=org/ --from=q --to=z'
           # io/
+          - '--root=io/ --exclude-letters'
           - '--root=io/ --include=github/'
           - '--root=io/ --from=a --to=h --exclude=github/'
           - '--root=io/ --from=i --to=q'
