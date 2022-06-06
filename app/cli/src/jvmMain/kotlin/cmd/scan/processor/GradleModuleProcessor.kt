@@ -13,6 +13,7 @@ class GradleModuleProcessor {
         variant.attributes?.let { attrs ->
           when (attrs.orgJetbrainsKotlinPlatformType) {
             "common" -> KotlinTarget.Common
+            "wasm" -> KotlinTarget.Wasm
             "androidJvm" -> KotlinTarget.JVM.Android
             "jvm" -> KotlinTarget.JVM.Java
             "js" -> when (attrs.orgJetbrainsKotlinJsCompiler) {

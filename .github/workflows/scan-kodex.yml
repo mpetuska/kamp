@@ -45,10 +45,12 @@ jobs:
           - '--root=com/ --from=i --to=q'
           - '--root=com/ --from=q --to=z'
           # org/
+          - '--root=org/ --include=webjars/'
+          - '--root=org/ --include=netbeans/'
           - '--root=org/ --exclude-letters'
           - '--root=org/ --from=a --to=h'
-          - '--root=org/ --from=i --to=q'
-          - '--root=org/ --from=q --to=z'
+          - '--root=org/ --from=i --to=q --exclude=netbeans/'
+          - '--root=org/ --from=q --to=z --exclude=webjars/'
           # io/
           - '--root=io/ --exclude-letters'
           - '--root=io/ --include=github/'

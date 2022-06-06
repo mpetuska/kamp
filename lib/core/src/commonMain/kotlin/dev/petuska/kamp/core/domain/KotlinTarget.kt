@@ -100,6 +100,8 @@ sealed class KotlinTarget(
 
   object Common : KotlinTarget(category = "metadata", platform = "common", displayCategory = "Metadata")
 
+  object Wasm : KotlinTarget(category = "wasm", platform = "wasm", displayCategory = "Wasm")
+
   sealed class JS(platform: String) : KotlinTarget(
     category = category,
     platform = platform,
