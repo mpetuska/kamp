@@ -8,6 +8,7 @@ import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.long
 import dev.petuska.kamp.cli.cmd.scan.domain.FileData
+import dev.petuska.kamp.cli.cmd.scan.domain.RepoDirectory
 import dev.petuska.kamp.cli.cmd.scan.domain.Repository
 import dev.petuska.kamp.cli.cmd.scan.domain.SimpleMavenArtefact
 import dev.petuska.kamp.cli.cmd.scan.service.PageService
@@ -50,6 +51,8 @@ class ScanCmd(
     Repository.values().associateBy(Repository::alias), ignoreCase = true
   )
 
+  private val root by option(help = "Repository root page path").default("")
+
   private val include by option(help = "Repository root page filter to include").multiple()
 
   private val exclude by option(help = "Repository root page filter to exclude").multiple()
@@ -74,15 +77,20 @@ class ScanCmd(
     }
     logger.info("Scanning ${repository.alias} repository")
 
-    val includes = include.plus(filterOptions?.run { from..to }?.map(Char::toString) ?: listOf())
-    val excludes = exclude.plus(if (excludeLetters) ('a'..'z').map(Char::toString) else listOf())
+    val rootDir = RepoDirectory.fromPath(root)
+    val includes = include.plus(
+      filterOptions?.run { from..to }?.map(Char::toString) ?: listOf()
+    )
+    val excludes = exclude.plus(
+      if (excludeLetters) ('a'..'z').map(Char::toString) else listOf()
+    )
 
     logger.info("Bootstrapping repository page lookup")
     var pageCount = 0
     val pages = PageService(
       client = client,
       delay = delay,
-    ).findPages(include = includes, exclude = excludes).buffer().onEach { pageCount++ }
+    ).findPages(include = includes, exclude = excludes, path = rootDir.absolutePath).buffer().onEach { pageCount++ }
     logger.info("Bootstrapping maven artefact lookup")
     val scanner = SimpleMavenArtefactService(
       client = client,

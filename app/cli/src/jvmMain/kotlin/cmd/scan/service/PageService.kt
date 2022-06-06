@@ -25,9 +25,9 @@ class PageService(
   private val pathSeparator = Regex("[\\.$SEP\\\\]")
 
   fun findPages(
-    include: Collection<String>,
-    exclude: Collection<String>,
     path: String = "",
+    include: Collection<String> = listOf(),
+    exclude: Collection<String> = listOf(),
   ): Flow<RepoDirectory.Listed> = channelFlow {
     scanPage(
       RepoDirectory.fromPath(path),
