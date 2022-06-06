@@ -92,7 +92,7 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
   }
 
   suspend fun listRepositoryPath(dir: RepoDirectory): List<RepoItem>? = supervisorScope {
-    val urls = dir.url(repositoryRootUrl).let { listOf(it, it + SEP) }
+    val urls = dir.url(repositoryRootUrl).let { listOf(it + SEP, it) }
     var result: List<RepoItem>? = null
     for (url in urls) {
       result = runCatchingIO {
