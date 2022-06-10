@@ -8,25 +8,26 @@ class GradleModuleProcessor {
     get() = component?.url == null
 
   val GradleModule.supportedTargets
-    get(): Set<KotlinTarget>? =
-      variants?.mapNotNull { variant ->
-        variant.attributes?.let { attrs ->
-          when (attrs.orgJetbrainsKotlinPlatformType) {
-            "common" -> KotlinTarget.Common
-            "wasm" -> KotlinTarget.Wasm
-            "androidJvm" -> KotlinTarget.JVM.Android
-            "jvm" -> KotlinTarget.JVM.Java
-            "js" -> when (attrs.orgJetbrainsKotlinJsCompiler) {
-              "ir" -> KotlinTarget.JS.IR
-//              "legacy" -> KotlinTarget.JS.Legacy
-              else -> KotlinTarget.JS.Legacy
-            }
+    get(): Set<KotlinTarget>? = variants?.mapNotNull { variant ->
+      variant.attributes?.let { attrs ->
+        when (attrs.orgJetbrainsKotlinPlatformType) {
+          "common" -> KotlinTarget.Common.let(::listOf)
+          "wasm" -> KotlinTarget.Wasm.let(::listOf)
+          "androidJvm" -> KotlinTarget.JVM.Android.let(::listOf)
+          "jvm" -> KotlinTarget.JVM.Java.let(::listOf)
+          "js" -> when (attrs.orgJetbrainsKotlinJsCompiler) {
+            "ir" -> KotlinTarget.JS.IR
+            "legacy" -> KotlinTarget.JS.Legacy
+            else -> KotlinTarget.JS.Legacy
+          }.let(::listOf)
 
-            "native" -> KotlinTarget.Native.values().find { attrs.orgJetbrainsKotlinNativeTarget.equals(it.id) }
+          "native" -> attrs.orgJetbrainsKotlinNativeTarget?.let { target ->
+            KotlinTarget.Native.values().find { target == it.id }?.let(::listOf)
+          } ?: KotlinTarget.Native.values()
 
-            else -> null
-          } ?: (attrs.orgJetbrainsKotlinNativeTarget ?: attrs.orgJetbrainsKotlinPlatformType)
-            ?.let(KotlinTarget::Unknown)
-        }
-      }?.toSet()
+          else -> null
+        } ?: (attrs.orgJetbrainsKotlinNativeTarget ?: attrs.orgJetbrainsKotlinPlatformType)?.let(KotlinTarget::Unknown)
+          ?.let(::listOf)
+      }
+    }?.flatten()?.toSet()
 }

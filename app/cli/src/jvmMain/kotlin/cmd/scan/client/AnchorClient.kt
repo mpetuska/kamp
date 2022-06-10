@@ -10,7 +10,7 @@ abstract class AnchorClient<T : MavenArtefact>(
 
   override fun parsePage(page: Document): List<String>? =
     page.getElementsByTag("a").mapNotNull { elm ->
-      val text = elm.text()
-      text.takeIf { it.isNotBlank() && !it.isBackLink() }
+      val text = elm.attr("href")
+      text.takeIf { it.isNotBlank() && !elm.text().isBackLink() }
     }
 }
