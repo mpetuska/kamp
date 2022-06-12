@@ -13,8 +13,8 @@ on:
         description: 'CLI image tag'
         required: true
         default: latest
-  schedule:
-    - cron: '0 0 * * *'
+#  schedule:
+#    - cron: '0 0 * * *'
 
 env:
   API_URL: https://kamp.azurewebsites.net
