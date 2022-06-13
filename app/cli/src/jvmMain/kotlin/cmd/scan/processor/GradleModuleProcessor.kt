@@ -23,7 +23,9 @@ class GradleModuleProcessor {
 
           "native" -> attrs.orgJetbrainsKotlinNativeTarget?.let { target ->
             KotlinTarget.Native.values().find { target == it.id }?.let(::listOf)
-          } ?: KotlinTarget.Native.values()
+          } ?: run {
+            if (component?.module == "kotlin-test") KotlinTarget.Native.values() else null
+          }
 
           else -> null
         } ?: (attrs.orgJetbrainsKotlinNativeTarget ?: attrs.orgJetbrainsKotlinPlatformType)?.let(KotlinTarget::Unknown)
