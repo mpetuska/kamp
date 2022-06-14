@@ -80,7 +80,7 @@ sealed class KotlinTarget(
   }
 
   companion object {
-    fun values(): Set<KotlinTarget> = JS.values() + JVM.values() + Native.values() + Common
+    fun values(): Set<KotlinTarget> = setOf(Common, Wasm) + JVM.values() + JS.values() + Native.values()
     fun fromString(id: String): KotlinTarget {
       return values().find { it.id == id } ?: Unknown(id)
     }
@@ -102,21 +102,6 @@ sealed class KotlinTarget(
 
   object Wasm : KotlinTarget(category = "wasm", platform = "wasm", displayCategory = "Wasm")
 
-  sealed class JS(platform: String) : KotlinTarget(
-    category = category,
-    platform = platform,
-    displayCategory = "JS",
-    id = "${category}_$platform"
-  ) {
-    companion object {
-      const val category = "js"
-      fun values(): Set<JS> = setOf(Legacy, IR)
-    }
-
-    object Legacy : JS("legacy")
-    object IR : JS("ir")
-  }
-
   sealed class JVM(platform: String) : KotlinTarget(
     category = category,
     platform = platform,
@@ -132,6 +117,21 @@ sealed class KotlinTarget(
     object Android : JVM("android")
   }
 
+  sealed class JS(platform: String) : KotlinTarget(
+    category = category,
+    platform = platform,
+    displayCategory = "JS",
+    id = "${category}_$platform"
+  ) {
+    companion object {
+      const val category = "js"
+      fun values(): Set<JS> = setOf(Legacy, IR)
+    }
+
+    object Legacy : JS("legacy")
+    object IR : JS("ir")
+  }
+
   sealed class Native(
     family: String,
     platform: String,
@@ -145,14 +145,15 @@ sealed class KotlinTarget(
   ) {
     companion object {
       const val category = "native"
-      fun values(): Set<Native> = AndroidNative.values() +
-        IOS.values() +
-        WatchOS.values() +
-        TvOS.values() +
-        MacOS.values() +
-        Mingw.values() +
-        Linux.values() +
-        Wasm32
+      fun values(): Set<Native> =
+        AndroidNative.values() +
+          IOS.values() +
+          WatchOS.values() +
+          TvOS.values() +
+          MacOS.values() +
+          Mingw.values() +
+          Linux.values() +
+          Wasm32
     }
 
     object Wasm32 : Native("wasm", "wasm32")

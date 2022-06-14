@@ -97,6 +97,7 @@ class LibraryRepository(private val collection: CoroutineCollection<KotlinLibrar
       KotlinTarget.Common.category,
       KotlinTarget.JVM.category,
       KotlinTarget.JS.category,
+      KotlinTarget.Wasm.category,
       KotlinTarget.Native.category,
       KotlinTarget.Unknown.category,
     )
