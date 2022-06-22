@@ -1,5 +1,6 @@
 pluginManagement {
   repositories {
+    mavenLocal()
     gradlePluginPortal()
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
@@ -8,13 +9,14 @@ pluginManagement {
 
 plugins {
   id("de.fayard.refreshVersions") version "0.40.2"
-  id("com.gradle.enterprise") version "3.10.1"
+  id("com.gradle.enterprise") version "3.10.2"
 }
 
 refreshVersions {
   versionsPropertiesFile = rootDir.resolve("gradle/versions.properties")
   extraArtifactVersionKeyRules(rootDir.resolve("gradle/versions.rules"))
 }
+includeBuild("build-conventions")
 
 rootProject.name = "kamp"
 include(
@@ -26,4 +28,3 @@ include(
   ":app:server",
   ":app:client",
 )
-includeBuild("build-conventions")

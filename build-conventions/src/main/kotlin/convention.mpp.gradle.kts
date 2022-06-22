@@ -1,9 +1,10 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import util.enableSCSS
 
 plugins {
   id("convention.common")
   kotlin("multiplatform")
-  kotlin("plugin.serialization")
+  id("dev.petuska.klip")
 }
 
 kotlin {
@@ -50,5 +51,11 @@ kotlin {
         implementation(project(":lib:test"))
       }
     }
+  }
+}
+
+tasks {
+  withType<KotlinCompile> {
+    kotlinOptions.jvmTarget = "11"
   }
 }

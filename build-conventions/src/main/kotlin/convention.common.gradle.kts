@@ -17,6 +17,7 @@ rootDir.resolve("local.properties").takeIf(File::exists)?.let {
 }
 
 repositories {
+  mavenLocal()
   mavenCentral()
   maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
   google()

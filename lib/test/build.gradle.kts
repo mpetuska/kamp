@@ -11,6 +11,7 @@ kotlin {
         api("io.kotest:kotest-assertions-core:_")
         api("io.kotest:kotest-property:_")
         api("org.jetbrains.kotlinx:kotlinx-coroutines-test:_")
+        api("dev.petuska:klip")
       }
     }
     jsMain {
