@@ -1,0 +1,13 @@
+{
+    "configurations": [
+        {
+          "type": "gradle",
+          "name": "Run CLI",
+          "environment": {}, // optional
+          "dependsOn": [], // optional
+          "tasks": [":app:cli:jvmRun"],
+          "args": ["--args='-h'"], // optional
+          "initScripts": {}, // optional
+        }
+    ]
+}
