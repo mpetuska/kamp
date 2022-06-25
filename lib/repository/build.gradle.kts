@@ -1,5 +1,6 @@
 plugins {
   id("convention.mpp")
+  kotlin("plugin.serialization")
 }
 
 kotlin {
