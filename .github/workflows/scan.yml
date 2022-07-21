@@ -14,7 +14,7 @@ env:
   API_URL: https://kamp.azurewebsites.net
   ADMIN_USER: ${{ secrets.API_ADMIN_USER }}
   ADMIN_PASSWORD: ${{ secrets.API_ADMIN_PASSWORD }}
-  IMAGE: docker.pkg.github.com/mpetuska/kamp/scanner:latest
+  IMAGE: docker.pkg.github.com/mpetuska/kamp/cli
   LOG_LEVEL: ${{ github.event.inputs.logLevel }}
 
 jobs:
@@ -40,4 +40,8 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
           password: ${{ github.token }}
-      - run: docker run -a stderr -a stdout -e "LOG_LEVEL=${LOG_LEVEL:-INFO}" -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD ${{ env.IMAGE }} ${{ matrix.repository }} ${{ matrix.options }}
+      - uses: benjlevesque/short-sha@v1.2
+        id: short-sha
+        with:
+          length: 7
+      - run: docker run -a stderr -a stdout -e "LOG_LEVEL=${LOG_LEVEL:-INFO}" -e API_URL -e ADMIN_USER -e ADMIN_PASSWORD ${{ env.IMAGE }}:sha-${{ steps.short-sha.outputs.sha }} ${{ matrix.repository }} ${{ matrix.options }}

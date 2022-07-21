@@ -2,11 +2,22 @@ name: Release Kodex
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - kodex
+
+concurrency:
+  group: kodex
+  cancel-in-progress: false
 
 jobs:
+  #  check:
+  #    uses: ./.github/workflows/check.yml
+
   build:
     name: Build Apps
     runs-on: ubuntu-latest
+    environment: kodex
     env:
       REGISTRY: ghcr.io
     steps:
@@ -57,15 +68,19 @@ jobs:
       #          add_git_labels: true
       #          tags: latest
 
-      - name: Build CLI Docker image & push to GitHub Packages
-        uses: docker/build-push-action@v5
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
         with:
-          directory: ./app/cli/
+          registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ github.token }}
-          registry: ${{ env.REGISTRY }}
-          image: ${{ env.REGISTRY }}/${{ github.repository }}/kodex/cli
-          addLatest: true
+
+      - name: Build CLI Docker image & push to GitHub Packages
+        uses: docker/build-push-action@v3
+        with:
+          context: ./app/cli/
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ github.repository }}/kodex/cli:latest
 
 #  deploy-Infrastructure:
 #    runs-on: ubuntu-latest

@@ -11,8 +11,8 @@ on:
         description: 'CLI image tag'
         required: true
         default: latest
-  schedule:
-    - cron: '0 0 * * *'
+#  schedule:
+#    - cron: '0 0 * * *'
 
 env:
   MONGO_STRING: ${{ secrets.MONGO_STRING }}

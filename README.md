@@ -35,4 +35,4 @@ repositories are:
 
 ## App
 
-The driving server and client to expose the data collected by the scanner as a nice web-based catalogue. 
+The driving server and client to expose the data collected by the cli as a nice web-based catalogue. 

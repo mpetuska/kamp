@@ -1,0 +1,79 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../multiplatform-settings/1.0.0-alpha01/multiplatform-settings-1.0.0-alpha01.module",
+    "group": "com.russhwolf",
+    "module": "multiplatform-settings",
+    "version": "1.0.0-alpha01",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.3.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "iosSimulatorArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.6.21"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "multiplatform-settings.klib",
+          "url": "multiplatform-settings-iossimulatorarm64-1.0.0-alpha01.klib",
+          "size": 62962,
+          "sha512": "8cea45dbd31e219e04a98271201e2e5e3a9028ade49fd3995003acd9da5c36c582b23f17f46e77b33aeb659ff7bfbde3bc7ae4d187bb203866705789a41b8d52",
+          "sha256": "52599c89d644e7963fd2fc22451c4dd3c48310d8652acee5ce9d8011ab7fa29e",
+          "sha1": "75a954391be099bd30b28a346b5c157219515027",
+          "md5": "6cf255869d0aad0b1fdb0673cd4997f8"
+        }
+      ]
+    },
+    {
+      "name": "iosSimulatorArm64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.6.21"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "multiplatform-settings-iossimulatorarm64-1.0.0-alpha01-metadata.jar",
+          "url": "multiplatform-settings-iossimulatorarm64-1.0.0-alpha01-metadata.jar",
+          "size": 10929,
+          "sha512": "f786c64d4d23398be1466a68343f11120ee8f7b181bd2c67d0251b81348f021be50ccd5ce875185c81cf2c9981216d5afb9fa09989a02fd92789acd714460080",
+          "sha256": "580236f8e589da41551c869f96946299c25a8c31d9fb1553a2eba99292cd0f80",
+          "sha1": "1e3b59b9ffee6c7d1b0f23dcfc2d14d72069cccb",
+          "md5": "f37e6757e0c68113ee4405ed0316cbc2"
+        }
+      ]
+    }
+  ]
+}

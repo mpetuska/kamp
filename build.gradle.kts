@@ -1,21 +1,20 @@
 plugins {
-  id("com.github.jakemarsden.git-hooks")
-  idea
+  if (System.getenv("CI") == null) id("convention.git-hooks")
+  id("convention.common")
 }
 
-gitHooks {
-  setHooks(
-    mapOf(
-      "post-checkout" to "ktlintApplyToIdea",
-      "pre-commit" to "ktlintFormat",
-      "pre-push" to "ktlintCheck"
-    )
-  )
+gradleEnterprise {
+  buildScan {
+    termsOfServiceUrl = "https://gradle.com/terms-of-service"
+    termsOfServiceAgree = "yes"
+  }
 }
 
-idea {
-  module {
-    isDownloadSources = true
-    isDownloadJavadoc = true
+tasks {
+  register("detektAll", io.gitlab.arturbosch.detekt.Detekt::class) {
+    description = "Run Detekt for all modules"
+    config.from(project.detekt.config)
+    buildUponDefaultConfig = project.detekt.buildUponDefaultConfig
+    setSource(files(projectDir))
   }
 }

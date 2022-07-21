@@ -1,0 +1,8 @@
+org.reduxkotlin:redux-kotlin(-*)
+                ^^^^^^^^^^^^
+org.litote.kmongo:kmongo(-*)
+                  ^^^^^^
+dev.petuska:klip(-*)
+            ^^^^
+dev.petuska:kmdc(-*)
+            ^^^^

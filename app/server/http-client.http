@@ -1,0 +1,14 @@
+###
+GET {{host}}/api/libraries?target=android_x64
+
+###
+GET {{host}}/api/libraries/count
+
+###
+GET {{host}}/api/statistics/count
+
+###
+GET {{host}}/api/statistics
+
+###
+GET {{host}}/api/status

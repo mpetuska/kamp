@@ -1,0 +1,7 @@
+[libraries]
+#guava = "com.google.guava:guava:30.0-jre"
+#junit-jupiter = "org.junit.jupiter:junit-jupiter-api:5.7.1"
+#junit-engine = { module="org.junit.jupiter:junit-jupiter-engine" }
+
+[bundles]
+#testDependencies = ["junit-jupiter", "junit-engine"]
