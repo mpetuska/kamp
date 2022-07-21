@@ -3,7 +3,7 @@ package dev.petuska.kamp.client.view.component
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import app.softwork.routingcompose.HashRouter
+import app.softwork.routingcompose.Router
 import dev.petuska.kamp.client.store.AppStore
 import dev.petuska.kamp.client.store.action.AppAction
 import dev.petuska.kamp.client.store.state.Page
@@ -78,10 +78,11 @@ fun MDCTopAppBarContextScope.Navbar() {
         // KampIcon()
       }
       Section(align = MDCTopAppBarSectionAlign.End) {
+        val router = Router.current
         CountBadge()
         ActionButton(attrs = {
           classes("material-icons")
-          onClick { HashRouter.navigate("/${Page.Home}") }
+          onClick { router.navigate("/${Page.Home}") }
         }) {
           Text("home")
         }

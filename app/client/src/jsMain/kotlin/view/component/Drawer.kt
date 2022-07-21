@@ -2,7 +2,7 @@ package dev.petuska.kamp.client.view.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import app.softwork.routingcompose.HashRouter
+import app.softwork.routingcompose.Router
 import dev.petuska.kamp.client.store.AppStore
 import dev.petuska.kamp.client.store.action.AppAction
 import dev.petuska.kamp.client.store.state.Page
@@ -57,12 +57,13 @@ fun Drawer() {
 fun PageList(vararg pages: Page, selectable: Boolean = true) {
   val current by select { page }
   val store by rememberInstance<AppStore>()
+  val router = Router.current
   MDCList(
     selection = MDCListSelection.Single,
     attrs = {
       onAction {
         store.dispatch(AppAction.SetDrawer(false))
-        HashRouter.navigate("/${pages[it.detail.index]}")
+        router.navigate("/${pages[it.detail.index]}")
       }
     }
   ) {

@@ -27,13 +27,13 @@ fun AppRouter() {
       val page = Page.values().find { it.route == rootRoute }?.also {
         store.dispatch(AppAction.SetPage(it))
       }
-
       when (page) {
         Page.Home -> HomePage()
         Page.Search -> SearchPage()
         Page.Statistics -> StatisticsPage()
         Page.Random -> MDCBody1("Random")
-        null -> HashRouter.navigate("/${Page.Home}")
+        null -> println("null")
+//        null -> router.navigate("/${Page.Home}")
       }
     }
   }

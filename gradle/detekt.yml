@@ -32,6 +32,8 @@ comments:
 #    active: true
 
 naming:
+  InvalidPackageDeclaration:
+    active: false
   MatchingDeclarationName:
     active: false
   TopLevelPropertyNaming:

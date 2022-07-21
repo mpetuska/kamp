@@ -5,6 +5,7 @@ import java.util.Properties
 
 plugins {
   id("io.gitlab.arturbosch.detekt")
+  kotlin("plugin.serialization")
   idea
 }
 
