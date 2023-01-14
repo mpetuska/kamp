@@ -10,7 +10,7 @@ jobs:
     env:
       REGISTRY: ghcr.io
     steps:
-      - uses: actions/checkout@v2.3.4
+      - uses: actions/checkout@v2.6.0
         with:
           ref: ${{ github.ref }}
 
