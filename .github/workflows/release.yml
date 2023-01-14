@@ -109,7 +109,7 @@ jobs:
           name: static-web-app
           path: dist/
       - name: Prepare Env
-        uses: DamianReeves/write-file-action@v1.0
+        uses: DamianReeves/write-file-action@v1.2
         with:
           path: dist/application.env
           contents: |
