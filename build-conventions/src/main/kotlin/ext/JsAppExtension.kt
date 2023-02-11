@@ -8,8 +8,14 @@ import java.io.File
 interface JsAppExtension : AppExtension {
   val outputFileName: Property<String>
   val distributionDir: Property<File>
-  val devServer: Property<DevServer>
+  val devServer: Property<Action<DevServer>>
   fun devServer(action: Action<DevServer>) {
-    devServer.get().also(action::execute).let(devServer::set)
+    val old = devServer.get()
+    devServer.set(
+      Action<DevServer> {
+        old.execute(this)
+        action.execute(this)
+      }
+    )
   }
 }

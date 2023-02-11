@@ -10,7 +10,7 @@ plugins {
 val jsApp = the<AppExtension>().extensions.create<JsAppExtension>("js").apply {
   outputFileName.convention("${project.name}-${project.version}.js")
   distributionDir.convention(buildDir.resolve("dist/js/WEB-INF"))
-  devServer.convention(DevServer())
+  devServer.convention(Action {})
   devServer {
     port = 3000
     proxy = mutableMapOf("/api/*" to "http://localhost:8080")
@@ -28,7 +28,10 @@ kotlin {
       }
       commonWebpackConfig {
         outputFileName = jsApp.outputFileName.get()
-        devServer = jsApp.devServer.get()
+        devServer = (devServer ?: DevServer()).apply(jsApp.devServer.get()::execute)
+      }
+      runTask {
+        this.outputFileName = jsApp.outputFileName.get()
       }
     }
   }
@@ -40,8 +43,8 @@ tasks {
       if (name == "index.html") {
         expand(
           project.properties + mapOf(
-            "jsOutputFileName" to jsApp.outputFileName,
-            "outputFileName" to jsApp.outputFileName,
+            "jsOutputFileName" to jsApp.outputFileName.get(),
+            "outputFileName" to jsApp.outputFileName.get(),
           )
         )
       }
