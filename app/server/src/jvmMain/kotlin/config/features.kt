@@ -1,7 +1,7 @@
-package dev.petuska.kamp.server.config
+package dev.petuska.kodex.server.config
 
-import dev.petuska.kamp.server.util.PrivateEnv
-import dev.petuska.kamp.server.util.PublicEnv
+import dev.petuska.kodex.server.util.PrivateEnv
+import dev.petuska.kodex.server.util.PublicEnv
 import io.ktor.serialization.kotlinx.cbor.cbor
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
@@ -34,7 +34,9 @@ fun Application.features() {
   install(Authentication) {
     basic {
       validate { credentials ->
-        if (credentials.name == PrivateEnv.ADMIN_USER && credentials.password == PrivateEnv.ADMIN_PASSWORD) {
+        if (credentials.name == PrivateEnv.ADMIN_USER &&
+          credentials.password == PrivateEnv.ADMIN_PASSWORD
+        ) {
           UserIdPrincipal(credentials.name)
         } else {
           null

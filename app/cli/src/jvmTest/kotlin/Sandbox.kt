@@ -1,4 +1,4 @@
-package dev.petuska.kamp.cli
+package dev.petuska.kodex.cli
 
 import kotlin.test.Test
 

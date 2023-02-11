@@ -1,11 +1,11 @@
-package dev.petuska.kamp.cli.cmd.scan.service
+package dev.petuska.kodex.cli.cmd.scan.service
 
-import dev.petuska.kamp.cli.cmd.scan.client.MavenRepositoryClient
-import dev.petuska.kamp.cli.cmd.scan.domain.RepoDirectory
-import dev.petuska.kamp.cli.cmd.scan.domain.RepoItem
-import dev.petuska.kamp.cli.cmd.scan.domain.RepoItem.Companion.SEP
-import dev.petuska.kamp.cli.util.toHumanString
-import dev.petuska.kamp.core.util.logger
+import dev.petuska.kodex.cli.cmd.scan.client.MavenRepositoryClient
+import dev.petuska.kodex.cli.cmd.scan.domain.RepoDirectory
+import dev.petuska.kodex.cli.cmd.scan.domain.RepoItem
+import dev.petuska.kodex.cli.cmd.scan.domain.RepoItem.Companion.SEP
+import dev.petuska.kodex.cli.util.toHumanString
+import dev.petuska.kodex.core.util.logger
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.channels.ProducerScope
@@ -112,7 +112,8 @@ class PageService(
           }
           if (explicit || explicitChildren) {
             logger.info(
-              "Finished scanning included page tree at $item in ${duration.toHumanString()} and found $count subpages"
+              "Finished scanning included page tree at $item in " +
+                "${duration.toHumanString()} and found $count subpages"
             )
           }
           count

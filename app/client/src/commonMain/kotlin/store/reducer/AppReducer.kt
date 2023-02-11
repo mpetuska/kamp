@@ -1,13 +1,10 @@
-package dev.petuska.kamp.client.store.reducer
+package dev.petuska.kodex.client.store.reducer
 
-import dev.petuska.kamp.client.store.action.AppAction
-import dev.petuska.kamp.client.store.state.AppState
-import org.reduxkotlin.ReducerForActionType
-import org.reduxkotlin.reducerForActionType
+import dev.petuska.kodex.client.store.action.AppAction
+import dev.petuska.kodex.client.store.state.AppState
+import org.reduxkotlin.typedReducer
 
-typealias AppReducer = ReducerForActionType<AppState, AppAction>
-
-fun loadReducer() = reducerForActionType<AppState, AppAction> { state, action ->
+fun loadReducer() = typedReducer<AppState, AppAction> { state, action ->
   when (action) {
     is AppAction.SetLibraries -> state.copy(libraries = action.libraries)
     is AppAction.SetSearch -> state.copy(search = action.search)
@@ -20,8 +17,10 @@ fun loadReducer() = reducerForActionType<AppState, AppAction> { state, action ->
       loading = action.loading,
       progress = action.progress.takeIf { action.loading },
     )
+
     is AppAction.AddTargets -> state.copy(targets = action.targets + (state.targets ?: setOf()))
     is AppAction.RemoveTargets -> state.copy(targets = (state.targets ?: setOf()) - action.targets)
     is AppAction.SetPage -> state.copy(page = action.page)
+    is AppAction.SetDarkTheme -> state.copy(darkTheme = action.enabled)
   }
 }

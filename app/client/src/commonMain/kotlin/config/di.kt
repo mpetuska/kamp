@@ -1,11 +1,11 @@
-package dev.petuska.kamp.client.config
+package dev.petuska.kodex.client.config
 
-import dev.petuska.kamp.client.service.LibraryService
-import dev.petuska.kamp.client.store.AppStore
-import dev.petuska.kamp.client.store.state.AppState
-import dev.petuska.kamp.client.util.UrlUtils
-import dev.petuska.kamp.core.config.serialisation
-import dev.petuska.kamp.core.util.DIModule
+import dev.petuska.kodex.client.service.LibraryService
+import dev.petuska.kodex.client.store.AppStore
+import dev.petuska.kodex.client.store.state.AppState
+import dev.petuska.kodex.client.util.UrlUtils
+import dev.petuska.kodex.core.config.serialisation
+import dev.petuska.kodex.core.util.DIModule
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
@@ -20,7 +20,7 @@ import org.reduxkotlin.Store
 fun loadDI(env: AppEnv, store: Store<AppState>) = DI {
   import(serialisation)
   import(services)
-  bind<HttpClient>("kamp") with singleton {
+  bind<HttpClient>("kodex") with singleton {
     HttpClient {
       install(ContentNegotiation) {
         json(instance())
@@ -39,5 +39,5 @@ fun loadDI(env: AppEnv, store: Store<AppState>) = DI {
 }
 
 private val services by DIModule {
-  bindSingleton { LibraryService(instance("kamp"), instance()) }
+  bindSingleton { LibraryService(instance("kodex"), instance()) }
 }

@@ -1,6 +1,7 @@
 # Ignore Gradle project-specific cache directory
 .gradle/
 .idea/
+!.idea/icon.png
 local.properties
 *.log
 logs/

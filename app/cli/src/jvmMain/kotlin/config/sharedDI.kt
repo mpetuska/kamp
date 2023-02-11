@@ -1,8 +1,8 @@
-package dev.petuska.kamp.cli.config
+package dev.petuska.kodex.cli.config
 
-import dev.petuska.kamp.cli.util.PrivateEnv
-import dev.petuska.kamp.core.config.serialisation
-import dev.petuska.kamp.repository.config.repositoryDI
+import dev.petuska.kodex.cli.util.PrivateEnv
+import dev.petuska.kodex.core.config.serialisation
+import dev.petuska.kodex.repository.config.repositoryDI
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.HttpRequestRetry
@@ -55,7 +55,7 @@ fun sharedDI() = DI {
       }
     }
   }
-  bindProvider("kamp") {
+  bindProvider("kodex") {
     instance<HttpClient>().config {
       defaultRequest {
         url(PrivateEnv.API_URL)

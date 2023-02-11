@@ -1,16 +1,8 @@
-package dev.petuska.kamp.client.view.page.search
+package dev.petuska.kodex.client.view.page.search
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import dev.petuska.kamp.client.service.LibraryService
-import dev.petuska.kamp.client.store.AppStore
-import dev.petuska.kamp.client.store.action.AppAction
-import dev.petuska.kamp.client.store.thunk.fetchLibraryPage
-import dev.petuska.kamp.client.util.Routing
-import dev.petuska.kamp.client.util.select
-import dev.petuska.kamp.client.view.style.AppStyle
-import dev.petuska.kamp.core.domain.KotlinTarget
 import dev.petuska.kmdc.button.Icon
 import dev.petuska.kmdc.button.Label
 import dev.petuska.kmdc.button.MDCButton
@@ -23,6 +15,14 @@ import dev.petuska.kmdc.layout.grid.MDCLayoutGridScope
 import dev.petuska.kmdc.textfield.MDCTextField
 import dev.petuska.kmdc.textfield.MDCTextFieldType
 import dev.petuska.kmdc.typography.MDCOverline
+import dev.petuska.kodex.client.service.LibraryService
+import dev.petuska.kodex.client.store.AppStore
+import dev.petuska.kodex.client.store.action.AppAction
+import dev.petuska.kodex.client.store.thunk.fetchLibraryPage
+import dev.petuska.kodex.client.util.Routing
+import dev.petuska.kodex.client.util.select
+import dev.petuska.kodex.client.view.style.AppStyle
+import dev.petuska.kodex.core.domain.KotlinTarget
 import org.jetbrains.compose.web.dom.Text
 import org.kodein.di.compose.rememberInstance
 

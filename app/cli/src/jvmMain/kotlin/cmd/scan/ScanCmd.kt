@@ -1,22 +1,27 @@
-package dev.petuska.kamp.cli.cmd.scan
+package dev.petuska.kodex.cli.cmd.scan
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.groups.cooccurring
-import com.github.ajalt.clikt.parameters.options.*
+import com.github.ajalt.clikt.parameters.options.convert
+import com.github.ajalt.clikt.parameters.options.default
+import com.github.ajalt.clikt.parameters.options.flag
+import com.github.ajalt.clikt.parameters.options.multiple
+import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.long
-import dev.petuska.kamp.cli.cmd.scan.domain.FileData
-import dev.petuska.kamp.cli.cmd.scan.domain.Repository
-import dev.petuska.kamp.cli.cmd.scan.domain.SimpleMavenArtefact
-import dev.petuska.kamp.cli.cmd.scan.service.PageService
-import dev.petuska.kamp.cli.cmd.scan.service.SimpleMavenArtefactService
-import dev.petuska.kamp.cli.util.toHumanString
-import dev.petuska.kamp.core.domain.KotlinLibrary
-import dev.petuska.kamp.core.domain.KotlinTarget
-import dev.petuska.kamp.core.util.logger
-import dev.petuska.kamp.repository.LibraryRepository
+import dev.petuska.kodex.cli.cmd.scan.domain.FileData
+import dev.petuska.kodex.cli.cmd.scan.domain.Repository
+import dev.petuska.kodex.cli.cmd.scan.domain.SimpleMavenArtefact
+import dev.petuska.kodex.cli.cmd.scan.service.PageService
+import dev.petuska.kodex.cli.cmd.scan.service.SimpleMavenArtefactService
+import dev.petuska.kodex.cli.util.toHumanString
+import dev.petuska.kodex.core.domain.KotlinLibrary
+import dev.petuska.kodex.core.domain.KotlinTarget
+import dev.petuska.kodex.core.util.logger
+import dev.petuska.kodex.repository.LibraryRepository
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -47,7 +52,8 @@ class ScanCmd(
   }
 
   private val repository by argument(help = "Repository alias to scan for").choice(
-    Repository.values().associateBy(Repository::alias), ignoreCase = true
+    Repository.values().associateBy(Repository::alias),
+    ignoreCase = true
   )
 
   private val root by option(help = "Repository root page path").default("/")
@@ -56,14 +62,16 @@ class ScanCmd(
 
   private val exclude by option(help = "Repository root page filter to exclude").multiple()
 
-  private val excludeLetters by option(help = "Same as if you were to pass --exclude for a..z").flag()
+  private val excludeLetters by option(help = "Same as if you were to pass --exclude for a..z")
+    .flag()
 
-  private val delay by option(help = "Delay between subpage scans in milliseconds").long().convert { it.milliseconds }
+  private val delay by option(help = "Delay between subpage scans in milliseconds").long()
+    .convert { it.milliseconds }
     .default(10.milliseconds)
 
   private val filterOptions by FilterOptions().cooccurring()
 
-  // ===================================================================================================================
+  // =============================================================================================
 
   private val logger = logger()
   private val libraryRepository by di.instance<LibraryRepository>()
@@ -88,7 +96,8 @@ class ScanCmd(
     val pages = PageService(
       client = client,
       delay = delay,
-    ).findPages(include = includes, exclude = excludes, path = root).buffer().onEach { pageCount++ }
+    ).findPages(include = includes, exclude = excludes, path = root).buffer()
+      .onEach { pageCount++ }
     logger.info("Bootstrapping maven artefact lookup")
     val scanner = SimpleMavenArtefactService(
       client = client,
@@ -96,8 +105,10 @@ class ScanCmd(
     var libCount = 0
     val duration = measureTime {
       coroutineScope {
-        val artefacts: Flow<FileData<SimpleMavenArtefact>> = scanner.findMavenArtefacts(pages).buffer()
-        val libraries: Flow<FileData<KotlinLibrary>> = scanner.findKotlinLibraries(artefacts).buffer()
+        val artefacts: Flow<FileData<SimpleMavenArtefact>> =
+          scanner.findMavenArtefacts(pages).buffer()
+        val libraries: Flow<FileData<KotlinLibrary>> =
+          scanner.findKotlinLibraries(artefacts).buffer()
         libraries.collect { (_, lib) ->
           logger.info("Found kotlin library: ${lib._id} ${lib.targets.map(KotlinTarget::id)}")
           libCount++
@@ -106,12 +117,15 @@ class ScanCmd(
         client.close()
       }
     }
-    val filterMsg = " scanning from $root filtered by $includes, explicitly excluding $excludes."
+    val filterMsg =
+      " scanning from $root filtered by $includes, explicitly excluding $excludes."
     logger.info(
-      "Finished scanning ${repository.alias} in ${duration.toHumanString()} and scanned $pageCount subpages" + filterMsg
+      "Finished scanning ${repository.alias} in ${duration.toHumanString()} " +
+        "and scanned $pageCount subpages" + filterMsg
     )
     logger.info(
-      "Found $libCount kotlin libraries with gradle metadata in ${repository.alias} repository" + filterMsg
+      "Found $libCount kotlin libraries with gradle metadata in ${repository.alias} repository" +
+        filterMsg
     )
   }
 }

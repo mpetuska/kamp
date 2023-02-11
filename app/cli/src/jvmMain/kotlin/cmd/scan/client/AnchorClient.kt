@@ -1,6 +1,6 @@
-package dev.petuska.kamp.cli.cmd.scan.client
+package dev.petuska.kodex.cli.cmd.scan.client
 
-import dev.petuska.kamp.core.domain.MavenArtefact
+import dev.petuska.kodex.core.domain.MavenArtefact
 import org.jsoup.nodes.Document
 
 abstract class AnchorClient<T : MavenArtefact>(

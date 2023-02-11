@@ -1,9 +1,9 @@
-package dev.petuska.kamp.client.view.page.home
+package dev.petuska.kodex.client.view.page.home
 
 import androidx.compose.runtime.Composable
-import dev.petuska.kamp.client.store.state.Page
-import dev.petuska.kamp.client.view.component.PageList
 import dev.petuska.kmdc.typography.MDCBody1
+import dev.petuska.kodex.client.store.state.Page
+import dev.petuska.kodex.client.view.component.PageList
 
 @Composable
 fun HomePage() {

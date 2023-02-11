@@ -4,30 +4,18 @@ plugins {
   id("convention.app-compose")
 }
 
-mppApp {
-  jvmMainClass by "dev.petuska.kamp.client.MainKt"
-}
-
-val jsOutputFile = "kamp-$version.js"
-
-kotlin {
+app {
+  jvm {
+    mainClass.set("dev.petuska.kodex.client.MainKt")
+  }
   js {
-    browser {
-      distribution {
-        directory = buildDir.resolve("dist/js/WEB-INF")
-      }
-      commonWebpackConfig {
-        outputFileName = jsOutputFile
-        devServer = devServer?.copy(
-          port = 3000,
-//          proxy = mutableMapOf("/api/*" to "http://localhost:8080"),
-          proxy = mutableMapOf("/api/*" to "https://kamp.azurewebsites.net"),
-          open = false
-        )
-      }
+    devServer {
+      proxy = mutableMapOf("/api/*" to "https://kodex.azurewebsites.net")
     }
   }
+}
 
+kotlin {
   sourceSets {
     commonMain {
       dependencies {
@@ -35,6 +23,7 @@ kotlin {
         implementation(project(":lib:fullstack"))
         implementation("org.reduxkotlin:redux-kotlin-threadsafe:_")
         implementation("org.reduxkotlin:redux-kotlin-thunk:_")
+        implementation("org.reduxkotlin:redux-kotlin-compose:_")
 
         implementation("io.ktor:ktor-client-auth:_")
         implementation("io.ktor:ktor-client-content-negotiation:_")
@@ -48,21 +37,19 @@ kotlin {
       dependencies {
         implementation("app.softwork:routing-compose:_")
         implementation("dev.petuska:kmdc:_")
-        implementation(npm("@fortawesome/fontawesome-svg-core", versionFor("version.npm.fontawesome.core")))
-        implementation(npm("@fortawesome/free-solid-svg-icons", versionFor("version.npm.fontawesome")))
-        implementation(npm("@fortawesome/free-regular-svg-icons", versionFor("version.npm.fontawesome")))
-        implementation(npm("@fortawesome/free-brands-svg-icons", versionFor("version.npm.fontawesome")))
+        implementation(
+          npm("@fortawesome/fontawesome-svg-core", versionFor("version.npm.fontawesome.core"))
+        )
+        implementation(
+          npm("@fortawesome/free-solid-svg-icons", versionFor("version.npm.fontawesome"))
+        )
+        implementation(
+          npm("@fortawesome/free-regular-svg-icons", versionFor("version.npm.fontawesome"))
+        )
+        implementation(
+          npm("@fortawesome/free-brands-svg-icons", versionFor("version.npm.fontawesome"))
+        )
         implementation(npm("@fortawesome/fontawesome-free", versionFor("version.npm.fontawesome")))
-      }
-    }
-  }
-}
-
-tasks {
-  named("jsProcessResources", Copy::class) {
-    eachFile {
-      if (name == "index.html") {
-        expand(project.properties + mapOf("jsOutputFileName" to jsOutputFile))
       }
     }
   }

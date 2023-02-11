@@ -1,9 +1,9 @@
-package dev.petuska.kamp.server
+package dev.petuska.kodex.server
 
-import dev.petuska.kamp.core.di.ApplicationDIScope
-import dev.petuska.kamp.server.config.features
-import dev.petuska.kamp.server.config.routing
-import dev.petuska.kamp.server.util.PublicEnv
+import dev.petuska.kodex.core.di.ApplicationDIScope
+import dev.petuska.kodex.server.config.features
+import dev.petuska.kodex.server.config.routing
+import dev.petuska.kodex.server.util.PublicEnv
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationStopPreparing
 import io.ktor.server.application.log

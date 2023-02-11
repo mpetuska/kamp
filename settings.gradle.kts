@@ -3,13 +3,15 @@ pluginManagement {
     mavenLocal()
     gradlePluginPortal()
     mavenCentral()
+    google()
+    maven("https://oss.sonatype.org/content/repositories/snapshots")
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
   }
 }
 
 plugins {
-  id("de.fayard.refreshVersions") version "0.40.2"
-  id("com.gradle.enterprise") version "3.10.3"
+  id("de.fayard.refreshVersions") version "0.51.0"
+  id("com.gradle.enterprise") version "3.12.3"
 }
 
 refreshVersions {
@@ -18,7 +20,7 @@ refreshVersions {
 }
 includeBuild("build-conventions")
 
-rootProject.name = "kamp"
+rootProject.name = "kodex"
 include(
   ":lib:test",
   ":lib:core",

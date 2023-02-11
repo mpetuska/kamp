@@ -1,6 +1,7 @@
 plugins {
-  id("convention.mpp")
-  kotlin("plugin.serialization")
+  id("convention.library-js")
+  id("convention.library-jvm")
+  id("convention.library-android")
 }
 
 kotlin {

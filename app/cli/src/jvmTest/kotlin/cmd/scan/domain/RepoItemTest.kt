@@ -1,15 +1,17 @@
-package dev.petuska.kamp.cli.cmd.scan.domain
+package dev.petuska.kodex.cli.cmd.scan.domain
 
-import dev.petuska.kamp.cli.cmd.scan.domain.RepoItem.Companion.SEP
-import dev.petuska.kamp.test.TestFactory
-import dev.petuska.kamp.test.dynamicTests
+import dev.petuska.kodex.cli.cmd.scan.domain.RepoItem.Companion.SEP
+import dev.petuska.kodex.test.dynamicTests
 import io.kotest.matchers.shouldBe
+import org.junit.Test
 
 class RepoItemTest {
-  @TestFactory
+  @Test
   fun directory() = dynamicTests {
     listOf(
-      "/", "/dir", "/dir/sub/"
+      "/",
+      "/dir",
+      "/dir/sub/"
     ).forEach { path ->
       "[$path] should be parsed into RepoDirectory" {
         val dir = RepoDirectory.fromPath(path)
@@ -18,7 +20,7 @@ class RepoItemTest {
     }
   }
 
-  @TestFactory
+  @Test
   fun directoryChildren() = dynamicTests {
     val parents = listOf("/", "/dir", "/dir/sub/").map(RepoDirectory::fromPath)
     val children = listOf(
@@ -39,7 +41,7 @@ class RepoItemTest {
     }
   }
 
-  @TestFactory
+  @Test
   fun item() = dynamicTests {
     val parent = RepoDirectory.Root
     "/dev/petuska/gradle-kotlin-delegates/maven-metadata.xml" {

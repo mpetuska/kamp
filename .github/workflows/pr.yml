@@ -61,7 +61,7 @@ jobs:
         with:
           path: dist/application.env
           contents: |
-            API_URL=https://kamp.azurewebsites.net
+            API_URL=https://kodex.azurewebsites.net
           write-mode: overwrite
       - name: Deploy Azure Static Web App
         uses: Azure/static-web-apps-deploy@v0.0.1-preview

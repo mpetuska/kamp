@@ -1,4 +1,4 @@
-package dev.petuska.kamp.cli.cmd.scan.domain
+package dev.petuska.kodex.cli.cmd.scan.domain
 
 sealed class RepoItem(
   name: String,

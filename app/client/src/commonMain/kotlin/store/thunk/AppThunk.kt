@@ -1,11 +1,11 @@
-package dev.petuska.kamp.client.store.thunk
+package dev.petuska.kodex.client.store.thunk
 
-import dev.petuska.kamp.client.service.LibraryService
-import dev.petuska.kamp.client.store.action.AppAction
-import dev.petuska.kamp.client.store.state.AppState
-import dev.petuska.kamp.client.util.suspending
-import dev.petuska.kamp.core.domain.KotlinTarget
-import org.reduxkotlin.Thunk
+import dev.petuska.kodex.client.service.LibraryService
+import dev.petuska.kodex.client.store.action.AppAction
+import dev.petuska.kodex.client.store.state.AppState
+import dev.petuska.kodex.client.util.suspending
+import dev.petuska.kodex.core.domain.KotlinTarget
+import org.reduxkotlin.thunk.Thunk
 
 typealias AppThunk = Thunk<AppState>
 
@@ -22,7 +22,12 @@ fun LibraryService.fetchLibraryPage(
 
     dispatch(AppAction.SetLoading(true))
     val theLibraries =
-      search(page, size, theSearch, theTargets?.map(KotlinTarget::platform)?.toSet()) { current, total ->
+      search(
+        page,
+        size,
+        theSearch,
+        theTargets?.map(KotlinTarget::platform)?.toSet()
+      ) { current, total ->
         val progress = total.toDouble() / current
         dispatch(AppAction.SetLoading(progress > 0, progress))
       }

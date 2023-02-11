@@ -1,10 +1,12 @@
-package dev.petuska.kamp.cli.cmd.scan.util
+package dev.petuska.kodex.cli.cmd.scan.util
 
-import dev.petuska.kamp.cli.cmd.scan.domain.RepoDirectory
-import dev.petuska.kamp.cli.cmd.scan.domain.RepoItem.Companion.SEP
-import dev.petuska.kamp.core.domain.MavenArtefact
+import dev.petuska.kodex.cli.cmd.scan.domain.RepoDirectory
+import dev.petuska.kodex.cli.cmd.scan.domain.RepoItem.Companion.SEP
+import dev.petuska.kodex.core.domain.MavenArtefact
 
-fun MavenArtefact.gradleMetadataFileName(version: String = this.version): String = "$name-$version.module"
+fun MavenArtefact.gradleMetadataFileName(version: String = this.version): String =
+  "$name-$version.module"
+
 fun MavenArtefact.mavenPomFileName(version: String = this.version): String = "$name-$version.pom"
 
 fun MavenArtefact.moduleRootDirectory() = RepoDirectory.fromPath(

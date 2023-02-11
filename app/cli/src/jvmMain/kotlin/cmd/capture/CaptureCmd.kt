@@ -1,9 +1,9 @@
-package dev.petuska.kamp.cli.cmd.capture
+package dev.petuska.kodex.cli.cmd.capture
 
 import com.github.ajalt.clikt.core.CliktCommand
-import dev.petuska.kamp.core.util.logger
-import dev.petuska.kamp.repository.LibraryRepository
-import dev.petuska.kamp.repository.StatisticRepository
+import dev.petuska.kodex.core.util.logger
+import dev.petuska.kodex.repository.LibraryRepository
+import dev.petuska.kodex.repository.StatisticRepository
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -13,7 +13,8 @@ import org.kodein.di.instance
 
 class CaptureCmd(
   override val di: DI
-) : CliktCommand(name = "capture", help = "Capture a snapshot of current library distribution"), DIAware {
+) : CliktCommand(name = "capture", help = "Capture a snapshot of current library distribution"),
+  DIAware {
   private val logger = logger()
   private val libRepository by instance<LibraryRepository>()
   private val statRepository by instance<StatisticRepository>()

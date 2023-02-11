@@ -1,15 +1,15 @@
-package dev.petuska.kamp.client.view.page
+package dev.petuska.kodex.client.view.page
 
 import androidx.compose.runtime.Composable
 import app.softwork.routingcompose.HashRouter
-import dev.petuska.kamp.client.store.AppStore
-import dev.petuska.kamp.client.store.action.AppAction
-import dev.petuska.kamp.client.store.state.Page
-import dev.petuska.kamp.client.store.thunk.parseQuery
-import dev.petuska.kamp.client.view.page.home.HomePage
-import dev.petuska.kamp.client.view.page.search.SearchPage
-import dev.petuska.kamp.client.view.page.statistics.StatisticsPage
 import dev.petuska.kmdc.typography.MDCBody1
+import dev.petuska.kodex.client.store.AppStore
+import dev.petuska.kodex.client.store.action.AppAction
+import dev.petuska.kodex.client.store.state.Page
+import dev.petuska.kodex.client.store.thunk.parseQuery
+import dev.petuska.kodex.client.view.page.home.HomePage
+import dev.petuska.kodex.client.view.page.search.SearchPage
+import dev.petuska.kodex.client.view.page.statistics.StatisticsPage
 import org.kodein.di.compose.rememberInstance
 
 @Composable

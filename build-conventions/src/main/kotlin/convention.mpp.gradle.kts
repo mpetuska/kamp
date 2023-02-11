@@ -1,35 +1,22 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import util.enableSCSS
 
 plugins {
   id("convention.common")
   kotlin("multiplatform")
-  id("dev.petuska.klip")
+  kotlin("plugin.serialization")
 }
 
 kotlin {
   jvm()
   js(IR) {
     useCommonJs()
-    enableSCSS(main = true, test = true)
     browser {
-      testTask {
-        useKarma {
-          when (project.properties["kotlin.js.test.browser"]) {
-            "firefox" -> useFirefox()
-            "firefox-headless" -> useFirefoxHeadless()
-            "firefox-developer" -> useFirefoxDeveloper()
-            "firefox-developer-headless" -> useFirefoxDeveloperHeadless()
-            "chrome" -> useChrome()
-            "chrome-headless" -> useChromeHeadless()
-            "chromium" -> useChromium()
-            "chromium-headless" -> useChromiumHeadless()
-            "safari" -> useSafari()
-            "opera" -> useOpera()
-            else -> usePhantomJS()
-          }
-        }
+      commonWebpackConfig {
+        scssSupport { enabled.set(true) }
+        configDirectory = project.rootDir.resolve("gradle/webpack.config.d")
       }
+      testTask { useKarma {} }
     }
   }
 
@@ -56,6 +43,8 @@ kotlin {
 
 tasks {
   withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
+    compilerOptions {
+      jvmTarget.set(JvmTarget.JVM_11)
+    }
   }
 }

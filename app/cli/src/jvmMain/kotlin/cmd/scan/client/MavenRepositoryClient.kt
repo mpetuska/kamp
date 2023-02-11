@@ -1,13 +1,13 @@
-package dev.petuska.kamp.cli.cmd.scan.client
+package dev.petuska.kodex.cli.cmd.scan.client
 
-import dev.petuska.kamp.cli.cmd.scan.domain.*
-import dev.petuska.kamp.cli.cmd.scan.domain.RepoItem.Companion.SEP
-import dev.petuska.kamp.cli.cmd.scan.util.gradleMetadataFile
-import dev.petuska.kamp.cli.cmd.scan.util.mavenPomFile
-import dev.petuska.kamp.cli.util.asDocument
-import dev.petuska.kamp.core.domain.MavenArtefact
-import dev.petuska.kamp.core.util.logger
-import dev.petuska.kamp.repository.util.runCatchingIO
+import dev.petuska.kodex.cli.cmd.scan.domain.*
+import dev.petuska.kodex.cli.cmd.scan.domain.RepoItem.Companion.SEP
+import dev.petuska.kodex.cli.cmd.scan.util.gradleMetadataFile
+import dev.petuska.kodex.cli.cmd.scan.util.mavenPomFile
+import dev.petuska.kodex.cli.util.asDocument
+import dev.petuska.kodex.core.domain.MavenArtefact
+import dev.petuska.kodex.core.util.logger
+import dev.petuska.kodex.repository.util.runCatchingIO
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
@@ -71,13 +71,21 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
         }
       }.onFailure {
         if (doc.selectFirst("plugins") == null) {
-          logger.error("Unable to parse maven-metadata.xml from ${mavenMetadata.url(repositoryRootUrl)}", it)
+          logger.error(
+            "Unable to parse maven-metadata.xml from ${
+            mavenMetadata.url(
+              repositoryRootUrl
+            )
+            }",
+            it
+          )
         }
       }.getOrNull()
     }
   }
 
-  suspend fun getGradleModule(artifact: A): FileData<GradleModule>? = getGradleModule(artifact.gradleMetadataFile())
+  suspend fun getGradleModule(artifact: A): FileData<GradleModule>? =
+    getGradleModule(artifact.gradleMetadataFile())
 
   suspend fun getGradleModule(file: RepoFile): FileData<GradleModule>? = supervisorScope {
     val url = file.url(repositoryRootUrl)
@@ -96,7 +104,8 @@ abstract class MavenRepositoryClient<A : MavenArtefact>(
   suspend fun getMavenPom(file: RepoFile): FileData<Document>? = supervisorScope {
     val url = file.url(repositoryRootUrl)
     runCatchingIO {
-      client.get(url).takeIf { it.status != HttpStatusCode.NotFound }?.bodyAsText()?.asDocument()?.let(file::data)
+      client.get(url).takeIf { it.status != HttpStatusCode.NotFound }?.bodyAsText()?.asDocument()
+        ?.let(file::data)
     }.onFailure {
       logger.error("Unable to extract Maven pom file from $url", it)
     }.getOrNull()

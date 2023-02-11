@@ -1,11 +1,11 @@
-package dev.petuska.kamp.server.util
+package dev.petuska.kodex.server.util
 
-import dev.petuska.kamp.core.util.Env
+import dev.petuska.kodex.core.util.Env
 import org.slf4j.event.Level
 
 object PrivateEnv : Env() {
   val MONGO_STRING by EnvDelegate { it ?: "mongodb://localhost:27017" }
-  val MONGO_DATABASE by EnvDelegate { it ?: "kamp" }
+  val MONGO_DATABASE by EnvDelegate { it ?: "kodex" }
   val ADMIN_USER by EnvDelegate { requireNotNull(it) }
   val ADMIN_PASSWORD by EnvDelegate { requireNotNull(it) }
 }

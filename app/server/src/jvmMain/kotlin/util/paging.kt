@@ -1,20 +1,21 @@
-package dev.petuska.kamp.server.util
+package dev.petuska.kodex.server.util
 
-import dev.petuska.kamp.core.domain.PagedResponse
-import dev.petuska.kamp.core.util.buildIf
+import dev.petuska.kodex.core.domain.PagedResponse
+import dev.petuska.kodex.core.util.buildIf
 import io.ktor.http.URLBuilder
 import io.ktor.server.request.ApplicationRequest
 import io.ktor.server.request.port
 import io.ktor.server.request.uri
 
-fun ApplicationRequest.buildNextUrl(currentElementCount: Int): String? = buildIf(currentElementCount == pageSize) {
-  URLBuilder(call.request.uri)
-    .apply {
-      port = call.request.port()
-      parameters["page"] = "${page + 1}"
-      parameters["size"] = "$pageSize"
-    }.buildString()
-}
+fun ApplicationRequest.buildNextUrl(currentElementCount: Int): String? =
+  buildIf(currentElementCount == pageSize) {
+    URLBuilder(call.request.uri)
+      .apply {
+        port = call.request.port()
+        parameters["page"] = "${page + 1}"
+        parameters["size"] = "$pageSize"
+      }.buildString()
+  }
 
 fun ApplicationRequest.buildPrevUrl(): String? = buildIf(page > 1) {
   URLBuilder(call.request.uri)

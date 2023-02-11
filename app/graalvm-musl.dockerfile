@@ -1,4 +1,4 @@
-# registry.gitlab.com/martynas.petuska/kamp/graalvm-ce-musl:20.3.0-java11
+# registry.gitlab.com/martynas.petuska/kodex/graalvm-ce-musl:20.3.0-java11
 ARG graalvmVersion=20.3.0
 ARG muslVersion=1.2.1
 ARG zlibVersion=1.2.11

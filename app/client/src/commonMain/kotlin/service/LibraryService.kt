@@ -1,9 +1,9 @@
-package dev.petuska.kamp.client.service
+package dev.petuska.kodex.client.service
 
-import dev.petuska.kamp.client.util.UrlUtils
-import dev.petuska.kamp.core.domain.Count
-import dev.petuska.kamp.core.domain.KotlinLibrary
-import dev.petuska.kamp.core.domain.PagedResponse
+import dev.petuska.kodex.client.util.UrlUtils
+import dev.petuska.kodex.core.domain.Count
+import dev.petuska.kodex.core.domain.KotlinLibrary
+import dev.petuska.kodex.core.domain.PagedResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.onDownload
@@ -23,7 +23,15 @@ class LibraryService(private val client: HttpClient, private val urlUtils: UrlUt
     val searchQuery = search?.let { "search=$it" } ?: ""
     val targetsQuery = targets?.joinToString(prefix = "target=", separator = "&target=") ?: ""
 
-    return client.get("/api/libraries${buildQuery(pagination, searchQuery, targetsQuery)}".toApiUrl()) {
+    return client.get(
+      "/api/libraries${
+      buildQuery(
+        pagination,
+        searchQuery,
+        targetsQuery
+      )
+      }".toApiUrl()
+    ) {
       onDownload(onProgress)
     }.body()
   }
@@ -32,10 +40,12 @@ class LibraryService(private val client: HttpClient, private val urlUtils: UrlUt
     val searchQuery = search?.let { "search=$it" }
     val targetsQuery = targets?.joinToString(prefix = "target=", separator = "&target=")
 
-    return client.get("/api/libraries/count${buildQuery(searchQuery, targetsQuery)}".toApiUrl()).body()
+    return client.get("/api/libraries/count${buildQuery(searchQuery, targetsQuery)}".toApiUrl())
+      .body()
   }
 
   private fun buildQuery(vararg query: String?): String {
-    return query.toSet().filterNotNull().takeIf(List<String>::isNotEmpty)?.joinToString("&", prefix = "?") ?: ""
+    return query.toSet().filterNotNull().takeIf(List<String>::isNotEmpty)
+      ?.joinToString("&", prefix = "?") ?: ""
   }
 }

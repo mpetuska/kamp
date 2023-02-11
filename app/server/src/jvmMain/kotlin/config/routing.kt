@@ -1,8 +1,8 @@
-package dev.petuska.kamp.server.config
+package dev.petuska.kodex.server.config
 
-import dev.petuska.kamp.repository.LibraryRepository
-import dev.petuska.kamp.repository.StatisticRepository
-import dev.petuska.kamp.server.util.*
+import dev.petuska.kodex.repository.LibraryRepository
+import dev.petuska.kodex.repository.StatisticRepository
+import dev.petuska.kodex.server.util.*
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.call

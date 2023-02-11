@@ -9,12 +9,3 @@ gradleEnterprise {
     termsOfServiceAgree = "yes"
   }
 }
-
-tasks {
-  register("detektAll", io.gitlab.arturbosch.detekt.Detekt::class) {
-    description = "Run Detekt for all modules"
-    config.from(project.detekt.config)
-    buildUponDefaultConfig = project.detekt.buildUponDefaultConfig
-    setSource(files(projectDir))
-  }
-}

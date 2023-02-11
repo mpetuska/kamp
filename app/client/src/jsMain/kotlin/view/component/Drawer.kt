@@ -1,20 +1,9 @@
-package dev.petuska.kamp.client.view.component
+package dev.petuska.kodex.client.view.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import app.softwork.routingcompose.Router
-import dev.petuska.kamp.client.store.AppStore
-import dev.petuska.kamp.client.store.action.AppAction
-import dev.petuska.kamp.client.store.state.Page
-import dev.petuska.kamp.client.util.select
-import dev.petuska.kmdc.drawer.Content
-import dev.petuska.kmdc.drawer.Header
-import dev.petuska.kmdc.drawer.MDCDrawer
-import dev.petuska.kmdc.drawer.MDCDrawerType
-import dev.petuska.kmdc.drawer.Subtitle
-import dev.petuska.kmdc.drawer.Title
-import dev.petuska.kmdc.drawer.onClosed
-import dev.petuska.kmdc.drawer.onOpened
+import dev.petuska.kmdc.drawer.*
 import dev.petuska.kmdc.list.MDCList
 import dev.petuska.kmdc.list.MDCListSelection
 import dev.petuska.kmdc.list.item.Graphic
@@ -22,6 +11,10 @@ import dev.petuska.kmdc.list.item.ListItem
 import dev.petuska.kmdc.list.item.Text
 import dev.petuska.kmdc.list.onAction
 import dev.petuska.kmdc.typography.mdcTypography
+import dev.petuska.kodex.client.store.AppStore
+import dev.petuska.kodex.client.store.action.AppAction
+import dev.petuska.kodex.client.store.state.Page
+import dev.petuska.kodex.client.util.select
 import org.kodein.di.compose.rememberInstance
 import org.jetbrains.compose.web.dom.Text as CText
 
@@ -44,7 +37,7 @@ fun Drawer() {
     }
   ) {
     Header {
-      Title("KAMP")
+      Title("KODEX")
       Subtitle("Find your stuff")
     }
     Content {

@@ -23,8 +23,8 @@ runBlocking {
 
   val sourceDB = KMongo.createClient(sourceUrl).coroutine
   val targetDB = KMongo.createClient(targetUrl).coroutine
-  val targetCol = targetDB.getDatabase("kamp").getCollection<Document>("libraries")
-  sourceDB.getDatabase("kamp").getCollection<Document>("libraries").find().consumeEach {
+  val targetCol = targetDB.getDatabase("kodex").getCollection<Document>("libraries")
+  sourceDB.getDatabase("kodex").getCollection<Document>("libraries").find().consumeEach {
     val id = it["_id"]?.also {
       targetCol.deleteOneById(it)
     }

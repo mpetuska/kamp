@@ -1,11 +1,6 @@
-package dev.petuska.kamp.client.view.style
+package dev.petuska.kodex.client.view.style
 
-import org.jetbrains.compose.web.css.AlignItems
-import org.jetbrains.compose.web.css.DisplayStyle
-import org.jetbrains.compose.web.css.StyleSheet
-import org.jetbrains.compose.web.css.alignItems
-import org.jetbrains.compose.web.css.display
-import org.jetbrains.compose.web.css.justifyItems
+import org.jetbrains.compose.web.css.*
 
 object AppStyle : StyleSheet() {
   val fixFabContainer by style {

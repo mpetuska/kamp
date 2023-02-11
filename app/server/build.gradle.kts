@@ -1,11 +1,13 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
-  id("convention.app-mpp")
+  id("convention.app-jvm")
 }
 
-mppApp {
-  jvmMainClass by "dev.petuska.kamp.server.MainKt"
+app {
+  jvm {
+    mainClass.set("dev.petuska.kodex.server.MainKt")
+  }
 }
 
 kotlin {

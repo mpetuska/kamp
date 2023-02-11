@@ -6,3 +6,5 @@ dev.petuska:klip(-*)
             ^^^^
 dev.petuska:kmdc(-*)
             ^^^^
+io.gitlab.arturbosch.detekt:detekt(-*)
+                     ^^^^^^

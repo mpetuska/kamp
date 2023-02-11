@@ -1,13 +1,9 @@
-package dev.petuska.kamp.client.view.component
+package dev.petuska.kodex.client.view.component
 
 import androidx.compose.runtime.Composable
 import dev.petuska.kmdc.core.AttrsBuilder
 import dev.petuska.kmdc.core.ContentBuilder
-import org.jetbrains.compose.web.css.DisplayStyle
-import org.jetbrains.compose.web.css.FlexDirection
-import org.jetbrains.compose.web.css.StyleSheet
-import org.jetbrains.compose.web.css.display
-import org.jetbrains.compose.web.css.flexDirection
+import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.Div
 import org.w3c.dom.HTMLDivElement
 

@@ -40,20 +40,20 @@ naming:
     constantPattern: '[A-Z][_a-zA-Z0-9]*'
   FunctionNaming:
     ignoreAnnotated:
-      - Composable
+      - androidx.compose.runtime.Composable
 
 style:
+  ForbiddenComment:
+    active: false
   WildcardImport:
     active: false
   UnnecessaryAbstractClass:
     active: false
   MaxLineLength:
-    active: false
+    active: true
+    maxLineLength: 100
   MagicNumber:
     active: false
-  UnusedPrivateMember:
-    ignoreAnnotated:
-      - MDCExternalAPI
 
 formatting:
   Filename:
@@ -62,3 +62,5 @@ formatting:
     active: false
   Indentation:
     indentSize: 2
+  FinalNewline:
+    active: true

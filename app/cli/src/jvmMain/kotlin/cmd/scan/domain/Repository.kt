@@ -1,8 +1,8 @@
-package dev.petuska.kamp.cli.cmd.scan.domain
+package dev.petuska.kodex.cli.cmd.scan.domain
 
-import dev.petuska.kamp.cli.cmd.scan.client.ArtifactoryClient
-import dev.petuska.kamp.cli.cmd.scan.client.JBossClient
-import dev.petuska.kamp.cli.cmd.scan.client.MavenRepositoryClient
+import dev.petuska.kodex.cli.cmd.scan.client.ArtifactoryClient
+import dev.petuska.kodex.cli.cmd.scan.client.JBossClient
+import dev.petuska.kodex.cli.cmd.scan.client.MavenRepositoryClient
 import io.ktor.client.HttpClient
 import kotlinx.serialization.json.Json
 

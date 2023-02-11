@@ -1,4 +1,4 @@
-package dev.petuska.kamp.cli.testutil
+package dev.petuska.kodex.cli.testutil
 
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json

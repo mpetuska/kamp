@@ -1,4 +1,4 @@
-package dev.petuska.kamp.cli.cmd.scan.processor
+package dev.petuska.kodex.cli.cmd.scan.processor
 
 import org.jsoup.nodes.Document
 

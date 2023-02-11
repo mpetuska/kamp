@@ -9,14 +9,17 @@ plugins {
 }
 
 repositories {
-  mavenLocal()
   gradlePluginPortal()
   mavenCentral()
-  maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
   google()
+  if (findProperty("project.enableSnapshots") == "true") {
+    maven("https://oss.sonatype.org/content/repositories/snapshots")
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+  }
 }
 
 dependencies {
+  implementation("com.android.tools.build:gradle:_")
   implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:_")
   implementation("org.jetbrains.kotlin:kotlin-serialization:_")
   implementation("org.jetbrains.compose:compose-gradle-plugin:_")
@@ -25,13 +28,23 @@ dependencies {
   implementation("gradle.plugin.com.github.jengelman.gradle.plugins:shadow:_")
   implementation("dev.petuska:klip-gradle-plugin:_")
   @OptIn(InternalRefreshVersionsApi::class)
-  implementation("de.fayard.refreshVersions:refreshVersions-core:${RefreshVersionsCorePlugin.currentVersion}")
+  implementation(
+    "de.fayard.refreshVersions:refreshVersions-core:${RefreshVersionsCorePlugin.currentVersion}"
+  )
+}
+
+kotlin {
+  sourceSets {
+    all {
+      languageSettings.optIn("kotlin.RequiresOptIn")
+    }
+  }
 }
 
 tasks {
   withType<KotlinCompile> {
     kotlinOptions {
-      languageVersion = "1.4"
+      languageVersion = "1.4" // 1.9 from gradle 8
     }
   }
 }

@@ -1,5 +1,5 @@
 plugins {
-  id("convention.mpp")
+  id("convention.library-mpp")
 }
 
 kotlin {
@@ -19,9 +19,9 @@ kotlin {
         api(kotlin("test-js"))
       }
     }
-    jvmMain {
+    jvmCommonMain {
       dependencies {
-        api(kotlin("test-junit5"))
+        api(kotlin("test-junit"))
       }
     }
   }

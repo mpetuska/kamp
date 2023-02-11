@@ -1,7 +1,7 @@
-package dev.petuska.kamp.cli.cmd.scan.processor
+package dev.petuska.kodex.cli.cmd.scan.processor
 
-import dev.petuska.kamp.cli.cmd.scan.domain.GradleModule
-import dev.petuska.kamp.core.domain.KotlinTarget
+import dev.petuska.kodex.cli.cmd.scan.domain.GradleModule
+import dev.petuska.kodex.core.domain.KotlinTarget
 
 class GradleModuleProcessor {
   val GradleModule.isRootModule
@@ -28,7 +28,9 @@ class GradleModuleProcessor {
           }
 
           else -> null
-        } ?: (attrs.orgJetbrainsKotlinNativeTarget ?: attrs.orgJetbrainsKotlinPlatformType)?.let(KotlinTarget::Unknown)
+        } ?: (attrs.orgJetbrainsKotlinNativeTarget ?: attrs.orgJetbrainsKotlinPlatformType)?.let(
+          KotlinTarget::Unknown
+        )
           ?.let(::listOf)
       }
     }?.flatten()?.toSet()

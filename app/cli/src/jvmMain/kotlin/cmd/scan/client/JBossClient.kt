@@ -1,6 +1,6 @@
-package dev.petuska.kamp.cli.cmd.scan.client
+package dev.petuska.kodex.cli.cmd.scan.client
 
-import dev.petuska.kamp.cli.cmd.scan.domain.SimpleMavenArtefact
+import dev.petuska.kodex.cli.cmd.scan.domain.SimpleMavenArtefact
 import io.ktor.client.HttpClient
 import kotlinx.serialization.json.Json
 

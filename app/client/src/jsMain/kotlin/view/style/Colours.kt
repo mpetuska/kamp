@@ -1,4 +1,4 @@
-package dev.petuska.kamp.client.view.style
+package dev.petuska.kodex.client.view.style
 
 import org.jetbrains.compose.web.css.CSSColorValue
 import org.jetbrains.compose.web.css.Color

@@ -1,4 +1,4 @@
-package dev.petuska.kamp.client.config
+package dev.petuska.kodex.client.config
 
 @Suppress("PropertyName", "VariableNaming")
 interface AppEnv {

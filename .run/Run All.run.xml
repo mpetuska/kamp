@@ -1,8 +1,8 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Run All" type="CompoundRunConfigurationType">
-    <toRun name="Run Mongo" type="docker-deploy" />
-    <toRun name="kamp:app:client [jsBrowserDevelopmentRun]" type="GradleRunConfiguration" />
-    <toRun name="kamp:app:server [run]" type="GradleRunConfiguration" />
-    <method v="2" />
-  </configuration>
+    <configuration default="false" name="Run All" type="CompoundRunConfigurationType">
+        <toRun name="Run Mongo" type="docker-deploy" />
+        <toRun name="kodex:app:client [jsBrowserDevelopmentRun]" type="GradleRunConfiguration" />
+        <toRun name="kodex:app:server [run]" type="GradleRunConfiguration" />
+        <method v="2" />
+    </configuration>
 </component>

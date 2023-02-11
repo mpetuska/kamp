@@ -1,8 +1,8 @@
-package dev.petuska.kamp.server.config
+package dev.petuska.kodex.server.config
 
-import dev.petuska.kamp.core.config.serialisation
-import dev.petuska.kamp.repository.config.repositoryDI
-import dev.petuska.kamp.server.util.PrivateEnv
+import dev.petuska.kodex.core.config.serialisation
+import dev.petuska.kodex.repository.config.repositoryDI
+import dev.petuska.kodex.server.util.PrivateEnv
 import io.ktor.server.application.Application
 import org.kodein.di.ktor.di
 

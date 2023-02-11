@@ -1,9 +1,9 @@
-package dev.petuska.kamp.client.store.state
+package dev.petuska.kodex.client.store.state
 
-import dev.petuska.kamp.client.config.AppEnv
-import dev.petuska.kamp.core.domain.KotlinLibrary
-import dev.petuska.kamp.core.domain.KotlinTarget
-import dev.petuska.kamp.core.domain.PagedResponse
+import dev.petuska.kodex.client.config.AppEnv
+import dev.petuska.kodex.core.domain.KotlinLibrary
+import dev.petuska.kodex.core.domain.KotlinTarget
+import dev.petuska.kodex.core.domain.PagedResponse
 
 data class AppState(
   val env: AppEnv,
@@ -15,6 +15,7 @@ data class AppState(
   val drawerOpen: Boolean = false,
   val progress: Number? = null,
   val loading: Boolean = false,
+  val darkTheme: Boolean = true,
 )
 
 enum class Page(val icon: String) {

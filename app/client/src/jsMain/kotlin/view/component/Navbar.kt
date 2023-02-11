@@ -1,19 +1,19 @@
-package dev.petuska.kamp.client.view.component
+package dev.petuska.kodex.client.view.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import app.softwork.routingcompose.Router
-import dev.petuska.kamp.client.store.AppStore
-import dev.petuska.kamp.client.store.action.AppAction
-import dev.petuska.kamp.client.store.state.Page
-import dev.petuska.kamp.client.util.FABIcon
-import dev.petuska.kamp.client.util.select
-import dev.petuska.kamp.client.view.style.AppStyle
 import dev.petuska.kmdc.core.AttrsBuilder
 import dev.petuska.kmdc.linear.progress.MDCLinearProgress
 import dev.petuska.kmdc.top.app.bar.*
 import dev.petuska.kmdc.typography.mdcTypography
+import dev.petuska.kodex.client.store.AppStore
+import dev.petuska.kodex.client.store.action.AppAction
+import dev.petuska.kodex.client.store.state.Page
+import dev.petuska.kodex.client.util.FABIcon
+import dev.petuska.kodex.client.util.select
+import dev.petuska.kodex.client.view.style.AppStyle
 import org.jetbrains.compose.web.attributes.ATarget
 import org.jetbrains.compose.web.attributes.href
 import org.jetbrains.compose.web.attributes.target
@@ -72,10 +72,10 @@ fun MDCTopAppBarContextScope.Navbar() {
           Text(if (drawerOpen) "close" else "menu")
         }
         val title = remember(page) {
-          "KAMP" + if (page != Page.Home) " | ${page.name.uppercase()}" else ""
+          "KODEX" + if (page != Page.Home) " | ${page.name.uppercase()}" else ""
         }
         Title(title)
-        // KampIcon()
+        // KodexIcon()
       }
       Section(align = MDCTopAppBarSectionAlign.End) {
         val router = Router.current
@@ -88,7 +88,7 @@ fun MDCTopAppBarContextScope.Navbar() {
         }
         ActionLink(
           attrs = {
-            href("https://github.com/mpetuska/kamp")
+            href("https://github.com/mpetuska/kodex")
             target(ATarget.Blank)
             classes(AppStyle.fixFabContainer)
           }
@@ -119,9 +119,9 @@ private fun CountBadge() {
 
 @Composable
 @Suppress("UnusedPrivateMember")
-private fun KampIcon(attrs: AttrsBuilder<HTMLImageElement>? = null) {
+private fun KodexIcon(attrs: AttrsBuilder<HTMLImageElement>? = null) {
   Img(
-    src = "./images/kamp.svg",
+    src = "./images/kodex.svg",
     attrs = {
       classes(NavbarStyle.logo)
       attrs?.invoke(this)

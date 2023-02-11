@@ -1,9 +1,9 @@
-package dev.petuska.kamp.client.store.action
+package dev.petuska.kodex.client.store.action
 
-import dev.petuska.kamp.client.store.state.Page
-import dev.petuska.kamp.core.domain.KotlinLibrary
-import dev.petuska.kamp.core.domain.KotlinTarget
-import dev.petuska.kamp.core.domain.PagedResponse
+import dev.petuska.kodex.client.store.state.Page
+import dev.petuska.kodex.core.domain.KotlinLibrary
+import dev.petuska.kodex.core.domain.KotlinTarget
+import dev.petuska.kodex.core.domain.PagedResponse
 
 sealed class AppAction {
   object ToggleDrawer : AppAction()
@@ -22,4 +22,5 @@ sealed class AppAction {
   data class SetCount(val count: Long?) : AppAction()
   data class SetLoading(val loading: Boolean, val progress: Number? = null) : AppAction()
   data class SetPage(val page: Page) : AppAction()
+  data class SetDarkTheme(val enabled: Boolean) : AppAction()
 }

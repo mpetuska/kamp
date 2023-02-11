@@ -1,5 +1,5 @@
 plugins {
-  id("convention.mpp")
+  id("convention.library-mpp")
 }
 
 kotlin {

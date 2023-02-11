@@ -1,4 +1,4 @@
-package dev.petuska.kamp.client.config
+package dev.petuska.kodex.client.config
 
 import kotlinx.browser.window
 import kotlinx.coroutines.await
@@ -16,7 +16,8 @@ actual suspend fun loadEnv(vararg args: String): AppEnv {
     }.let(JSON::parse)
   val env = object : AppEnv {
     override val API_URL: String = envJson["API_URL"]!!.toString()
-    override val DEV_MODE: Boolean = envJson["DEV_MODE"]?.let { !"$it".equals("false", ignoreCase = true) } ?: false
+    override val DEV_MODE: Boolean =
+      envJson["DEV_MODE"]?.let { !"$it".equals("false", ignoreCase = true) } ?: false
   }
   window.asDynamic().env = env
   return env

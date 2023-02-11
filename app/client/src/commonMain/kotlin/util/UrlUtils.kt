@@ -1,6 +1,6 @@
-package dev.petuska.kamp.client.util
+package dev.petuska.kodex.client.util
 
-import dev.petuska.kamp.client.config.AppEnv
+import dev.petuska.kodex.client.config.AppEnv
 
 class UrlUtils(private val env: AppEnv) {
   fun String.toApiUrl() = "${env.API_URL}/${removePrefix("/")}"

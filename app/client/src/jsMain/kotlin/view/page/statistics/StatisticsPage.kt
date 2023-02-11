@@ -1,4 +1,4 @@
-package dev.petuska.kamp.client.view.page.statistics
+package dev.petuska.kodex.client.view.page.statistics
 
 import androidx.compose.runtime.Composable
 import dev.petuska.kmdc.typography.MDCBody1

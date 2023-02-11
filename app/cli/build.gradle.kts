@@ -1,9 +1,11 @@
 plugins {
-  id("convention.app-mpp")
+  id("convention.app-jvm")
 }
 
-mppApp {
-  jvmMainClass by "dev.petuska.kamp.cli.MainKt"
+app {
+  jvm {
+    mainClass.set("dev.petuska.kodex.cli.MainKt")
+  }
 }
 
 kotlin {

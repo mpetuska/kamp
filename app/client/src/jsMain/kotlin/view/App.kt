@@ -1,13 +1,13 @@
-package dev.petuska.kamp.client.view
+package dev.petuska.kodex.client.view
 
 import androidx.compose.runtime.Composable
-import dev.petuska.kamp.client.view.component.Drawer
-import dev.petuska.kamp.client.view.component.Navbar
-import dev.petuska.kamp.client.view.page.AppRouter
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBar
 import dev.petuska.kmdc.top.app.bar.MDCTopAppBarType
 import dev.petuska.kmdc.top.app.bar.Main
 import dev.petuska.kmdc.typography.mdcTypography
+import dev.petuska.kodex.client.view.component.Drawer
+import dev.petuska.kodex.client.view.component.Navbar
+import dev.petuska.kodex.client.view.page.AppRouter
 
 @Composable
 fun App() {

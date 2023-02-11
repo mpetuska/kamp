@@ -4,7 +4,7 @@ terraform {
     // export ARTIFACTORY_PASSWORD=xxx
     url     = "https://mpetuska.jfrog.io/artifactory"
     repo    = "terraform-state"
-    subpath = "kamp"
+    subpath = "kodex"
   }
   required_providers {
     mongodbatlas = {
@@ -33,20 +33,20 @@ provider "cloudflare" {
   // export CLOUDFLARE_API_TOKEN=xxx
 }
 
-resource "mongodbatlas_project" "kamp" {
-  name   = "kamp"
+resource "mongodbatlas_project" "kodex" {
+  name   = "kodex"
   org_id = "60533df97f4d234d9e691ce6"
 }
 
-data "mongodbatlas_cluster" "kamp" {
-  project_id = mongodbatlas_project.kamp.id
-  name       = "kamp"
+data "mongodbatlas_cluster" "kodex" {
+  project_id = mongodbatlas_project.kodex.id
+  name       = "kodex"
 }
 
 resource "mongodbatlas_database_user" "admin" {
-  username           = "kamp-admin"
-  password           = uuidv5("oid", "${data.mongodbatlas_cluster.kamp.id}-admin")
-  project_id         = mongodbatlas_project.kamp.id
+  username           = "kodex-admin"
+  password           = uuidv5("oid", "${data.mongodbatlas_cluster.kodex.id}-admin")
+  project_id         = mongodbatlas_project.kodex.id
   auth_database_name = "admin"
 
   roles {
@@ -60,9 +60,9 @@ resource "mongodbatlas_database_user" "admin" {
 }
 
 resource "mongodbatlas_database_user" "reader" {
-  username           = "kamp-reader"
-  password           = uuidv5("oid", "${data.mongodbatlas_cluster.kamp.id}-reader")
-  project_id         = mongodbatlas_project.kamp.id
+  username           = "kodex-reader"
+  password           = uuidv5("oid", "${data.mongodbatlas_cluster.kodex.id}-reader")
+  project_id         = mongodbatlas_project.kodex.id
   auth_database_name = "admin"
 
   roles {
@@ -71,22 +71,22 @@ resource "mongodbatlas_database_user" "reader" {
   }
 }
 
-resource "azurerm_resource_group" "kamp" {
+resource "azurerm_resource_group" "kodex" {
   location = "West Europe"
-  name     = "kamp"
+  name     = "kodex"
 }
 
-resource "azurerm_application_insights" "kamp" {
-  name                = azurerm_resource_group.kamp.name
-  location            = azurerm_resource_group.kamp.location
-  resource_group_name = azurerm_resource_group.kamp.name
+resource "azurerm_application_insights" "kodex" {
+  name                = azurerm_resource_group.kodex.name
+  location            = azurerm_resource_group.kodex.location
+  resource_group_name = azurerm_resource_group.kodex.name
   application_type    = "java"
 }
 
-resource "azurerm_static_site" "kamp" {
-  name                = azurerm_resource_group.kamp.name
-  resource_group_name = azurerm_resource_group.kamp.name
-  location            = azurerm_resource_group.kamp.location
+resource "azurerm_static_site" "kodex" {
+  name                = azurerm_resource_group.kodex.name
+  resource_group_name = azurerm_resource_group.kodex.name
+  location            = azurerm_resource_group.kodex.location
 }
 
 data "cloudflare_zones" "petuska_dev" {
@@ -97,8 +97,8 @@ data "cloudflare_zones" "petuska_dev" {
 
 resource "cloudflare_record" "www" {
   zone_id = data.cloudflare_zones.petuska_dev.zones[0].id
-  name    = "www.kamp"
-  value   = azurerm_static_site.kamp.default_host_name
+  name    = "www.kodex"
+  value   = azurerm_static_site.kodex.default_host_name
   type    = "CNAME"
   proxied = false
   ttl     = 1
@@ -106,17 +106,17 @@ resource "cloudflare_record" "www" {
 
 resource "cloudflare_record" "root" {
   zone_id = data.cloudflare_zones.petuska_dev.zones[0].id
-  name    = "kamp"
-  value   = "www.kamp.petuska.dev"
+  name    = "kodex"
+  value   = "www.kodex.petuska.dev"
   type    = "CNAME"
   proxied = true
   ttl     = 1
 }
 
-resource "azurerm_app_service_plan" "kamp" {
-  location            = azurerm_resource_group.kamp.location
-  name                = azurerm_resource_group.kamp.name
-  resource_group_name = azurerm_resource_group.kamp.name
+resource "azurerm_app_service_plan" "kodex" {
+  location            = azurerm_resource_group.kodex.location
+  name                = azurerm_resource_group.kodex.name
+  resource_group_name = azurerm_resource_group.kodex.name
   kind                = "Linux"
   reserved            = true
   sku {
@@ -128,18 +128,18 @@ resource "azurerm_app_service_plan" "kamp" {
 locals {
   database_admin_credentials        = "${mongodbatlas_database_user.admin.username}:${mongodbatlas_database_user.admin.password}"
   database_reader_credentials       = "${mongodbatlas_database_user.reader.username}:${mongodbatlas_database_user.reader.password}"
-  connection_string_chunks          = split("//", data.mongodbatlas_cluster.kamp.connection_strings[0].standard_srv)
+  connection_string_chunks          = split("//", data.mongodbatlas_cluster.kodex.connection_strings[0].standard_srv)
   connection_string_options         = "ssl=true&retryWrites=true&w=majority"
   database_admin_connection_string  = "${local.connection_string_chunks[0]}//${local.database_admin_credentials}@${local.connection_string_chunks[1]}/${local.database_name}?${local.connection_string_options}"
   database_reader_connection_string = "${local.connection_string_chunks[0]}//${local.database_reader_credentials}@${local.connection_string_chunks[1]}/${local.database_name}?${local.connection_string_options}"
-  database_name                     = "kamp"
+  database_name                     = "kodex"
 }
 
-resource "azurerm_app_service" "kamp" {
-  name                = azurerm_app_service_plan.kamp.name
-  location            = azurerm_app_service_plan.kamp.location
-  resource_group_name = azurerm_app_service_plan.kamp.resource_group_name
-  app_service_plan_id = azurerm_app_service_plan.kamp.id
+resource "azurerm_app_service" "kodex" {
+  name                = azurerm_app_service_plan.kodex.name
+  location            = azurerm_app_service_plan.kodex.location
+  resource_group_name = azurerm_app_service_plan.kodex.resource_group_name
+  app_service_plan_id = azurerm_app_service_plan.kodex.id
   https_only          = true
 
   site_config {
@@ -171,8 +171,8 @@ resource "azurerm_app_service" "kamp" {
     MONGO_DATABASE                      = local.database_name
     ADMIN_USER                          = var.api_admin_user
     ADMIN_PASSWORD                      = var.api_admin_password
-    AZURE_MONITOR_INSTRUMENTATION_KEY   = azurerm_application_insights.kamp.instrumentation_key
-    APPINSIGHTS_INSTRUMENTATIONKEY      = azurerm_application_insights.kamp.instrumentation_key
+    AZURE_MONITOR_INSTRUMENTATION_KEY   = azurerm_application_insights.kodex.instrumentation_key
+    APPINSIGHTS_INSTRUMENTATIONKEY      = azurerm_application_insights.kodex.instrumentation_key
     APPINSIGHTS_PROFILERFEATURE_VERSION = "1.0.0"
     JVM_ARGS                            = ""
   }

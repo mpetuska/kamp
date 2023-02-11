@@ -1,4 +1,4 @@
-package dev.petuska.kamp.client.util
+package dev.petuska.kodex.client.util
 
 import androidx.compose.runtime.Composable
 import org.jetbrains.compose.web.dom.AttrBuilderContext

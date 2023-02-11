@@ -1,4 +1,4 @@
-package dev.petuska.kamp.cli.util
+package dev.petuska.kodex.cli.util
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory.getLogger

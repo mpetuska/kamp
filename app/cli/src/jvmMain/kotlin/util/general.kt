@@ -1,4 +1,4 @@
-package dev.petuska.kamp.cli.util
+package dev.petuska.kodex.cli.util
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

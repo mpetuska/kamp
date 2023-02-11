@@ -1,6 +1,6 @@
-package dev.petuska.kamp.cli.cmd.scan.domain
+package dev.petuska.kodex.cli.cmd.scan.domain
 
-import dev.petuska.kamp.core.domain.MavenArtefact
+import dev.petuska.kodex.core.domain.MavenArtefact
 
 data class SimpleMavenArtefact(
   override val group: String,

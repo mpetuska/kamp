@@ -1,11 +1,11 @@
-package dev.petuska.kamp.cli
+package dev.petuska.kodex.cli
 
-import dev.petuska.kamp.cli.cmd.KampCmd
-import dev.petuska.kamp.cli.config.sharedDI
-import dev.petuska.kamp.core.di.ApplicationDIScope
+import dev.petuska.kodex.cli.cmd.KodexCmd
+import dev.petuska.kodex.cli.config.sharedDI
+import dev.petuska.kodex.core.di.ApplicationDIScope
 
 fun main(args: Array<String>) {
   val di = sharedDI()
-  KampCmd(di).main(args)
+  KodexCmd(di).main(args)
   ApplicationDIScope.close()
 }
