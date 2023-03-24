@@ -29,7 +29,7 @@ jobs:
       - name: Build Apps
         run: ./gradlew assemble
       - name: Upload Static Web App Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         id: upload
         with:
           path: app/build/dist/WEB-INF
