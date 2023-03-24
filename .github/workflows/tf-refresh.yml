@@ -29,7 +29,7 @@ jobs:
       - name: Terraform init
         run: terraform init
         working-directory: infra
-      - uses: benjlevesque/short-sha@v1.2
+      - uses: benjlevesque/short-sha@v2.2
         id: short-sha
         with:
           length: 7
