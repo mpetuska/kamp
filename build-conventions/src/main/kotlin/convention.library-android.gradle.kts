@@ -4,12 +4,14 @@ plugins {
 }
 
 android {
-  namespace = "${rootProject.group}.${rootProject.name}.${project.name}"
   compileSdk = 33
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+  }
   defaultConfig {
     minSdk = 21
     targetSdk = 33
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     publishing {
       multipleVariants {
         withSourcesJar()
@@ -22,19 +24,5 @@ android {
 
 kotlin {
   android()
-  sourceSets {
-    androidUnitTest {
-      dependencies {
-        implementation(kotlin("test-junit"))
-      }
-    }
-    androidInstrumentedTest {
-      dependencies {
-        implementation(kotlin("test-junit"))
-        implementation("androidx.test.ext:junit:_")
-        implementation("androidx.test.ext:junit-ktx:_")
-        implementation("androidx.test.espresso:espresso-core:_")
-      }
-    }
-  }
+  jvmToolchain(11)
 }

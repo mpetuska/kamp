@@ -22,8 +22,10 @@ fun execAndCapture(cmd: String): String? {
 
 fun linkedSourceSets(
   vararg sourceSets: String
-) = ReadOnlyProperty<NamedDomainObjectContainer<KotlinSourceSet>,
-  (action: Action<KotlinSourceSet>) -> Unit> { thisRef, property ->
+) = ReadOnlyProperty<
+  NamedDomainObjectContainer<KotlinSourceSet>,
+  (action: Action<KotlinSourceSet>) -> Unit
+  > { thisRef, property ->
   sourceSets.forEach {
     thisRef.named(it) {
       kotlin.srcDir("src/${property.name}/kotlin")

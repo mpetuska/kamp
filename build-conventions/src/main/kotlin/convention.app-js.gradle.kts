@@ -1,13 +1,13 @@
 import ext.AppExtension
 import ext.JsAppExtension
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalDistributionDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig.DevServer
 
 plugins {
   id("convention.app-common")
-  id("convention.library-js")
 }
 
-val jsApp = the<AppExtension>().extensions.create<JsAppExtension>("js").apply {
+val app = the<AppExtension>().extensions.create<JsAppExtension>("js").apply {
   outputFileName.convention("${project.name}-${project.version}.js")
   distributionDir.convention(buildDir.resolve("dist/js/WEB-INF"))
   devServer.convention(Action {})
@@ -21,17 +21,21 @@ val jsApp = the<AppExtension>().extensions.create<JsAppExtension>("js").apply {
 kotlin {
   js(IR) {
     binaries.executable()
+    useCommonJs()
     browser {
-      @OptIn(org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalDistributionDsl::class)
+      @OptIn(ExperimentalDistributionDsl::class)
       distribution {
-        directory = jsApp.distributionDir.get()
+        directory = app.distributionDir.get()
       }
       commonWebpackConfig {
-        outputFileName = jsApp.outputFileName.get()
-        devServer = (devServer ?: DevServer()).apply(jsApp.devServer.get()::execute)
+        outputFileName = app.outputFileName.get()
+        devServer = (devServer ?: DevServer()).apply(app.devServer.get()::execute)
+        configDirectory = rootDir.resolve("gradle/webpack.config.d")
+        cssSupport { enabled.set(true) }
+        scssSupport { enabled.set(true) }
       }
       runTask {
-        this.outputFileName = jsApp.outputFileName.get()
+        outputFileName = app.outputFileName.get()
       }
     }
   }
@@ -43,21 +47,14 @@ tasks {
       if (name == "index.html") {
         expand(
           project.properties + mapOf(
-            "jsOutputFileName" to jsApp.outputFileName.get(),
-            "outputFileName" to jsApp.outputFileName.get(),
+            "jsOutputFileName" to app.outputFileName.get(),
+            "outputFileName" to app.outputFileName.get(),
           )
         )
       }
     }
   }
-}
-
-afterEvaluate {
-  tasks {
-    names.filter { it.startsWith("js") && it.endsWith("Run") }.forEach {
-      named(it) {
-        group = "run"
-      }
-    }
+  matching { it.name.startsWith("js") && it.name.endsWith("Run") }.configureEach {
+    group = "run"
   }
 }

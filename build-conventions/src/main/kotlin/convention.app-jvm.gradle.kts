@@ -5,20 +5,23 @@ import util.Git
 
 plugins {
   id("convention.app-common")
-  id("convention.library-jvm")
   id("com.github.johnrengelman.shadow")
 }
 
-val jvmApp = the<AppExtension>().extensions.create<JvmAppExtension>("jvm").apply {
+val app = the<AppExtension>().extensions.create<JvmAppExtension>("jvm").apply {
   fatJar.convention(true)
 }
 
+kotlin {
+  jvm()
+}
+
 tasks {
-  val jvmRuntimeClasspath = configurations.named("jvmRuntimeClasspath")
-  val compileKotlinJvm = named("compileKotlinJvm")
-  val jvmProcessResources = named("jvmProcessResources")
+  val runtimeClasspath = configurations.named("jvmRuntimeClasspath")
+  val compileKotlin = named("compileKotlinJvm")
+  val processResources = named("jvmProcessResources")
   val fatJar = register<ShadowJar>("jvmFatJar") {
-    onlyIf { jvmApp.fatJar.get() }
+    onlyIf { app.fatJar.get() }
     group = "build"
     manifest {
       attributes(
@@ -28,24 +31,24 @@ tasks {
           "Implementation-Version" to project.version,
           "Created-By" to "${GradleVersion.current()}",
           "Created-From" to Git.headCommitHash
-        ) + (jvmApp.mainClass.orNull?.let { mapOf("Main-Class" to it) } ?: mapOf())
+        ) + (app.mainClass.orNull?.let { mapOf("Main-Class" to it) } ?: mapOf())
       )
     }
     mergeServiceFiles()
     archiveAppendix.set("jvm")
     archiveClassifier.set("fat")
-    from(compileKotlinJvm, jvmProcessResources)
-    configurations.add(jvmRuntimeClasspath.get())
-    inputs.property("mainClassName", jvmApp.mainClass)
+    from(compileKotlin, processResources)
+    configurations.add(runtimeClasspath.get())
+    inputs.property("mainClassName", app.mainClass)
   }
   assemble {
     dependsOn(fatJar)
   }
   register<JavaExec>("jvmRun") {
-    onlyIf { jvmApp.mainClass.isPresent }
-    classpath(compileKotlinJvm, jvmProcessResources, jvmRuntimeClasspath)
-    mainClass.set(jvmApp.mainClass)
-    inputs.property("mainClass", jvmApp.mainClass)
+    onlyIf { app.mainClass.isPresent }
+    classpath(compileKotlin, processResources, runtimeClasspath)
+    mainClass.set(app.mainClass)
+    inputs.property("mainClass", app.mainClass)
   }
   withType<JavaExec> {
     group = "run"

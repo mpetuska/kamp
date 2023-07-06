@@ -1,7 +1,9 @@
 import ext.AppExtension
 
 plugins {
-  id("convention.library-common")
+  id("convention.common")
+  kotlin("multiplatform")
 }
 
-project.extensions.create("app", AppExtension::class)
+val app = extensions.create<AppExtension>("app").apply {
+}

@@ -1,4 +1,5 @@
 plugins {
+  id("convention.detekt")
   id("com.github.jakemarsden.git-hooks")
 }
 

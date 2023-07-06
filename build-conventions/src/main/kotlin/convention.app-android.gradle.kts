@@ -2,8 +2,8 @@ import ext.AndroidAppExtension
 import ext.AppExtension
 
 plugins {
-  id("convention.app-common")
   id("com.android.application")
+  id("convention.app-common")
 }
 
 val androidApp = the<AppExtension>().extensions.create<AndroidAppExtension>("android").apply {
@@ -25,19 +25,4 @@ android {
 
 kotlin {
   android()
-  sourceSets {
-    androidUnitTest {
-      dependencies {
-        implementation(kotlin("test-junit"))
-      }
-    }
-    androidInstrumentedTest {
-      dependencies {
-        implementation(kotlin("test-junit"))
-        implementation("androidx.test.ext:junit:_")
-        implementation("androidx.test.ext:junit-ktx:_")
-        implementation("androidx.test.espresso:espresso-core:_")
-      }
-    }
-  }
 }

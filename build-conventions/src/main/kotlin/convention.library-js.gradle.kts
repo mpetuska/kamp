@@ -4,20 +4,14 @@ plugins {
 
 kotlin {
   js(IR) {
-    useCommonJs()
+    useEsModules()
     browser {
       commonWebpackConfig {
+        cssSupport { enabled.set(true) }
         scssSupport { enabled.set(true) }
         configDirectory = project.rootDir.resolve("gradle/webpack.config.d")
       }
       testTask { useKarma {} }
-    }
-  }
-  sourceSets {
-    jsTest {
-      dependencies {
-        implementation(kotlin("test-js"))
-      }
     }
   }
 }

@@ -1,0 +1,102 @@
+[versions]
+build-config = "4.1.1"
+clikt = "4.0.0"
+compose = "1.4.1"
+compose-routing = "0.2.12"
+detekt = "1.23.0"
+dokka = "1.8.20"
+jsoup = "1.16.1"
+kmdc = "0.1.1"
+kmongo = "4.9.0"
+koin = "3.4.2"
+koin-android = "3.4.2"
+koin-androidx = "3.4.5"
+koin-annotations = "1.2.2"
+koin-compose = "1.0.3"
+koin-ktor = "3.4.1"
+kotest = "5.6.2"
+kotlin = "1.8.20"
+kotlinx-coroutines = "1.7.2"
+kotlinx-serialization = "1.5.1"
+ksp = "1.8.20-1.0.11"
+ktor = "2.3.2"
+logback = "1.4.8"
+plugin-android = "7.3.1"
+plugin-git-hooks = "0.0.2"
+plugin-shadow = "7.0.0"
+plugin-versions = "0.47.0"
+plugin-versions-update = "0.8.0"
+redux = "0.6.0"
+redux-compose = "0.6.0"
+redux-thunk = "0.6.0"
+
+[libraries]
+redux-threadsafe = { module = "org.reduxkotlin:redux-kotlin-threadsafe", version.ref = "redux" }
+redux-compose = { module = "org.reduxkotlin:redux-kotlin-compose", version.ref = "redux-compose" }
+redux-thunk = { module = "org.reduxkotlin:redux-kotlin-thunk", version.ref = "redux-thunk" }
+clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "clikt" }
+compose-html-core = { module = "org.jetbrains.compose.html:html-core", version.ref = "compose" }
+compose-html-svg = { module = "org.jetbrains.compose.html:html-svg", version.ref = "compose" }
+compose-routing = { module = "app.softwork:routing-compose", version.ref = "compose-routing" }
+compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose" }
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
+kmdc = { module = "dev.petuska:kmdc", version.ref = "kmdc" }
+kmongo = { module = "org.litote.kmongo:kmongo-coroutine-serialization", version.ref = "kmongo" }
+koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koin-annotations" }
+koin-compiler = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-annotations" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-compose" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koin-ktor" }
+koin-logger-slf4j = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koin-ktor" }
+kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+kotlin-test-annotations-common = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "kotlin" }
+kotlin-test-common = { module = "org.jetbrains.kotlin:kotlin-test-common", version.ref = "kotlin" }
+kotlin-test-js = { module = "org.jetbrains.kotlin:kotlin-test-js", version.ref = "kotlin" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+kotlin-test-junit5 = { module = "org.jetbrains.kotlin:kotlin-test-junit5", version.ref = "kotlin" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
+kotlinx-serialization-cbor = { module = "org.jetbrains.kotlinx:kotlinx-serialization-cbor", version.ref = "kotlinx-serialization" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+ksp-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
+ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-serialization-kotlinx-cbor = { module = "io.ktor:ktor-serialization-kotlinx-cbor", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-server-auth = { module = "io.ktor:ktor-server-auth", version.ref = "ktor" }
+ktor-server-caching-headers = { module = "io.ktor:ktor-server-caching-headers", version.ref = "ktor" }
+ktor-server-call-logging = { module = "io.ktor:ktor-server-call-logging", version.ref = "ktor" }
+ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
+ktor-server-compression = { module = "io.ktor:ktor-server-compression", version.ref = "ktor" }
+ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
+ktor-server-default-headers = { module = "io.ktor:ktor-server-default-headers", version.ref = "ktor" }
+ktor-server-status-pages = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktor" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+plugin-android = { module = "com.android.tools.build:gradle", version.ref = "plugin-android" }
+plugin-compose = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose" }
+plugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+plugin-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
+plugin-git-hooks = { module = "com.github.jakemarsden:git-hooks-gradle-plugin", version.ref = "plugin-git-hooks" }
+plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+plugin-kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
+plugin-ksp = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
+plugin-shadow = { module = "gradle.plugin.com.github.jengelman.gradle.plugins:shadow", version.ref = "plugin-shadow" }
+plugin-versions = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "plugin-versions" }
+plugin-versions-update = { module = "nl.littlerobots.vcu:plugin", version.ref = "plugin-versions-update" }
+
+[plugins]
+build-config = { id = "com.github.gmazzo.buildconfig", version.ref = "build-config" }
+compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-js = { id = "org.jetbrains.kotlin.js", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+versions = { id = "com.github.ben-manes.versions", version.ref = "plugin-versions" }
+versions-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "plugin-versions-update" }

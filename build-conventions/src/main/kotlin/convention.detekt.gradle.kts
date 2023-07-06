@@ -1,17 +1,20 @@
 import io.gitlab.arturbosch.detekt.Detekt
+import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
   id("io.gitlab.arturbosch.detekt")
 }
 
+val libs = the<LibrariesForLibs>()
+
 dependencies {
-  detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:_")
+  detektPlugins(libs.detekt.formatting)
 }
 
 detekt {
   config.from(rootDir.resolve("gradle/detekt.yml"))
   buildUponDefaultConfig = true
-  source = files("src/", "*.kts")
+  source.from(files("src/", "*.kts"))
 }
 
 tasks {
@@ -33,10 +36,10 @@ tasks {
         xml.required.set(true)
         // similar to the console output, contains issue signature to manually edit baseline files
         txt.required.set(true)
-                /*
-                 * standardized SARIF format (https://sarifweb.azurewebsites.net/)
-                 * to support integrations with Github Code Scanning
-                 */
+        /*
+         * standardized SARIF format (https://sarifweb.azurewebsites.net/)
+         * to support integrations with Github Code Scanning
+         */
         sarif.required.set(true)
       }
       include("**/*.kt", "**/*.kts")
