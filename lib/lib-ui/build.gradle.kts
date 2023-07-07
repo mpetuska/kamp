@@ -15,7 +15,19 @@ kotlin {
     commonMain {
       dependencies {
         api(projects.lib.libClient)
+        @OptIn(ExperimentalComposeLibrary::class)
+        api(compose.components.resources)
+        api(compose.preview)
         api(compose.material3)
+      }
+    }
+    jvmMain {
+      dependencies {
+        api(compose.desktop.currentOs)
+      }
+    }
+    androidMain {
+      dependencies {
       }
     }
     commonTest {

@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-  namespace = "${rootProject.group}.${rootProject.name}.ui"
+  namespace = "${rootProject.group}.${rootProject.name}.client"
 }
 
 kotlin {
@@ -28,9 +28,10 @@ kotlin {
         implementation(libs.ktor.serialization.kotlinx.cbor)
       }
     }
-    jsMain {
+    androidMain {
       dependencies {
-        implementation(libs.ktor.client.js)
+        api(libs.androidx.lifecycle.compose)
+        implementation(libs.ktor.client.cio)
       }
     }
     jvmMain {
@@ -38,9 +39,9 @@ kotlin {
         implementation(libs.ktor.client.cio)
       }
     }
-    androidMain {
+    jsMain {
       dependencies {
-        implementation(libs.ktor.client.cio)
+        implementation(libs.ktor.client.js)
       }
     }
   }
