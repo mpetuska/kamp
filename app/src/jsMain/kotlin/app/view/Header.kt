@@ -97,6 +97,7 @@ private fun RenderContext.SearchModal() = modal({
         inputField(store = searchStore) {
           type("search")
           placeholder("Search...")
+          attr("autofocus", "autofocus")
         }
       }
       stackUpClose {
